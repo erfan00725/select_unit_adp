@@ -17,10 +17,10 @@ services:
     container_name: mariadb_server
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: dashboard_db
-      MYSQL_USER: dashboard_user
-      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: ns_root_5769
+      MYSQL_DATABASE: ns_db
+      MYSQL_USER: ns_user
+      MYSQL_PASSWORD: ns_u_root
     ports:
       - "3306:3306"
     volumes:
@@ -32,9 +32,9 @@ services:
     restart: unless-stopped
     environment:
       - ADMINER_DEFAULT_SERVER=mariadb
-      - ADMINER_DEFAULT_DB=dashboard_db
+      - ADMINER_DEFAULT_DB=ns_db
       - ADMINER_DEFAULT_USERNAME=root
-      - ADMINER_DEFAULT_PASSWORD=root
+      - ADMINER_DEFAULT_PASSWORD=ns_root_5769
     ports:
       - "8080:8080"
 
