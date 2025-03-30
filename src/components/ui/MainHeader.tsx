@@ -1,0 +1,56 @@
+"use client";
+import React from "react";
+import Logo from "./Logo";
+import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+import clsx from "clsx";
+import { usePathname } from "next/navigation";
+import { NavBarConfigs } from "@/constants/configs";
+
+function MainHeader() {
+  const pathName = usePathname();
+  console.log(pathName);
+
+  return (
+    <header className="bg-white shadow-sm sticky top-0">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          <div className="flex items-center">
+            <Logo className="text-2xl" />
+          </div>
+          <nav className="flex justify-items-center space-x-8">
+            {NavBarConfigs.map((config, index) => {
+              return (
+                <Link
+                  key={index}
+                  href={config.href}
+                  className={clsx(
+                    "text-gray-900 font-light hover:text-indigo-600  ",
+                    { "font-bold! ": pathName === config.href }
+                  )}
+                >
+                  {config.label}
+                </Link>
+              );
+            })}
+          </nav>
+          <div>
+            <Link
+              href="/login"
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              <FontAwesomeIcon
+                icon={faSignOutAlt}
+                className="mr-2 w-4 h-auto"
+              />
+              Logout
+            </Link>
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+export default MainHeader;

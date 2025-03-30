@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+html {
+  @apply w-full min-h-full relative;
+}
+body {
+  @apply w-full h-full pb-[108px] bg-gray-50;
+}
+
+.input {
+  @apply w-[450px] p-3 pl-4 text-gray-800  border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder:text-gray-400;
+}
+
+.btn {
+  @apply w-full cursor-pointer text-black bg-[#c4c4c4] hover:bg-black hover:text-white rounded-full transition-colors flex items-center justify-center font-medium text-sm sm:text-base h-12 px-5;
+}
+
+.card {
+  @apply bg-white shadow rounded-lg p-6;
+}
+
+.container,
+.container_center {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 min-h-full;
+}
+
+.container_center {
+  @apply flex justify-center items-center;
+}
