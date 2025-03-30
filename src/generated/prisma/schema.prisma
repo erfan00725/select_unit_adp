@@ -1,0 +1,146 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Student {
+  id           BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  FirstName    String    @db.VarChar(255)
+  LastName     String    @db.VarChar(255)
+  NationalCode String    @unique @db.VarChar(255)
+  Father       String?   @db.VarChar(255)
+  Birth        DateTime? @db.Date
+  Address      String?   @db.VarChar(255)
+  HomeNumber   String?   @db.VarChar(255)
+  PhoneNumber  String?   @db.VarChar(255)
+  fieldId      BigInt    @map("Field") @db.UnsignedBigInt
+  Grade        Grade
+  Updated_at   DateTime  @default(now()) @db.Timestamp()
+  Created_at   DateTime  @default(now()) @db.Timestamp()
+
+  field       Field        @relation(fields: [fieldId], references: [id])
+  selectUnits SelectUnit[]
+}
+
+model User {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  UserName   String    @db.VarChar(255)
+  Password   String    @db.VarChar(255)
+  Type       UserType?
+  Created_at DateTime  @default(now()) @db.Timestamp()
+}
+
+model Lesson {
+  id             BigInt      @id @default(autoincrement()) @db.UnsignedBigInt
+  TeacherId      BigInt      @db.UnsignedBigInt
+  LessonName     String      @db.VarChar(255)
+  Unit           Int
+  Grade          LessonGrade
+  fieldId        BigInt?     @map("Field") @db.UnsignedBigInt
+  PassCondition  Int?
+  TheoriHours    Int?
+  PracticalHours Int?
+  RequireLesson  Int?
+  RequireUnit    BigInt?     @db.UnsignedBigInt
+  NotifCode      BigInt      @db.UnsignedBigInt
+  ValidFrom      DateTime    @db.Date
+  ValidTill      DateTime?   @db.Date
+  PricePerUnit   BigInt?     @db.BigInt
+  Created_at     DateTime    @default(now()) @db.Timestamp()
+  Updated_at     DateTime    @default(now()) @db.Timestamp()
+
+  field           Field?       @relation(fields: [fieldId], references: [id])
+  teacher         Teacher      @relation(fields: [TeacherId], references: [id])
+  requiredForUnit Lesson[]     @relation("LessonRequirement")
+  requiresUnit    Lesson?      @relation("LessonRequirement", fields: [RequireUnit], references: [id])
+  selectUnits     SelectUnit[]
+}
+
+model SelectUnit {
+  StudentId  BigInt   @db.UnsignedBigInt
+  LessonId   BigInt   @db.UnsignedBigInt
+  Year       Int
+  Period     Period
+  ExtraFee   BigInt   @default(0) @db.UnsignedBigInt
+  Created_at DateTime @default(now()) @db.Timestamp()
+  Updated_at DateTime @default(now()) @db.Timestamp()
+
+  student Student @relation(fields: [StudentId], references: [id])
+  lesson  Lesson  @relation(fields: [LessonId], references: [id])
+
+  @@id([StudentId, LessonId, Year, Period])
+}
+
+model Field {
+  id         BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
+  Name       String   @db.VarChar(255)
+  FixedFee   BigInt   @default(0) @db.BigInt
+  Created_at DateTime @default(now()) @db.Timestamp()
+
+  students Student[]
+  lessons  Lesson[]
+  teachers Teacher[]
+}
+
+model General {
+  Key        String   @id @db.VarChar(255)
+  Value      String   @db.VarChar(255)
+  Updated_at DateTime @default(now()) @db.Timestamp()
+  Created_at DateTime @default(now()) @db.Timestamp()
+}
+
+model Teacher {
+  id           BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  NationalCode String    @unique @db.VarChar(255)
+  FirstName    String    @db.VarChar(255)
+  LastName     String    @db.VarChar(255)
+  PhoneNumber  String    @db.VarChar(255)
+  fieldId      BigInt?   @map("Field") @db.UnsignedBigInt
+  Birth        DateTime? @db.Date
+  Updated_at   DateTime  @default(now()) @db.Timestamp()
+  Created_at   DateTime  @default(now()) @db.Timestamp()
+
+  field   Field?   @relation(fields: [fieldId], references: [id])
+  lessons Lesson[]
+}
+
+enum Grade {
+  GRADE_7  @map("7")
+  GRADE_8  @map("8")
+  GRADE_9  @map("9")
+  GRADE_10 @map("10")
+  GRADE_11 @map("11")
+  GRADE_12 @map("12")
+}
+
+enum LessonGrade {
+  GENERAL  @map("0")
+  GRADE_7  @map("7")
+  GRADE_8  @map("8")
+  GRADE_9  @map("9")
+  GRADE_10 @map("10")
+  GRADE_11 @map("11")
+  GRADE_12 @map("12")
+}
+
+enum UserType {
+  admin
+  user
+}
+
+enum Period {
+  first
+  second
+  summer
+}
