@@ -35,9 +35,5 @@ const formConfig: FormPageProps = {
 };
 
 export default function AddCoursePage() {
-  return (
-    <div>
-      <FormPage {...formConfig} />
-    </div>
-  );
+  return <FormPage {...formConfig} />;
 }
