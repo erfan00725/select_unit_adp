@@ -1,20 +1,62 @@
 "use server";
 
-import { FieldDataType } from "@/types/Tables";
+import { BaseListFilterParams, FieldDataType } from "@/types/Tables";
 import { prisma } from "../prisma";
 import { revalidatePath } from "next/cache";
 
 // Get all fields
-export async function getFields() {
+export async function getFields(params?: BaseListFilterParams) {
   try {
+    // Default values for pagination
+    const limit = params?.limit || 10;
+    const page = params?.page || 1;
+    const skip = (page - 1) * limit;
+    const query = params?.query || "";
+    const order = params?.order || "asc";
+    const from = params?.from;
+    const to = params?.to;
+
+    // Build where condition for search
+    let where: any = query
+      ? {
+          OR: [{ Name: { contains: query } }],
+        }
+      : {};
+
+    // Add date range filter if provided
+    if (from || to) {
+      where.Created_at = {};
+      if (from) where.Created_at.gte = from;
+      if (to) where.Created_at.lte = to;
+    }
+
+    // Get total count for pagination
+    const totalCount = await prisma.field.count({ where });
+
+    // Get fields with filtering, sorting and pagination
     const fields = await prisma.field.findMany({
+      where,
       include: {
         students: true,
         lessons: true,
         teachers: true,
       },
+      orderBy: {
+        Name: order === "asc" ? "asc" : "desc",
+      },
+      skip,
+      take: limit,
     });
-    return { fields };
+
+    return {
+      fields,
+      pagination: {
+        total: totalCount,
+        totalPages: Math.ceil(totalCount / limit),
+        currentPage: page,
+        limit,
+      },
+    };
   } catch (error) {
     console.error("Failed to fetch fields:", error);
     return { error: "Failed to fetch fields" };
@@ -55,8 +97,13 @@ export async function createField(data: FieldDataType) {
       return { error: "A field with this name already exists" };
     }
 
+    const editedData = {
+      ...data,
+      id: undefined,
+    };
+
     const field = await prisma.field.create({
-      data,
+      data: editedData,
     });
 
     revalidatePath("/dashboard/fields");
@@ -84,9 +131,14 @@ export async function updateField(id: bigint, data: Partial<FieldDataType>) {
       }
     }
 
+    const editedData = {
+      ...data,
+      id: undefined,
+    };
+
     const field = await prisma.field.update({
       where: { id },
-      data,
+      data: editedData,
     });
 
     revalidatePath("/dashboard/fields");

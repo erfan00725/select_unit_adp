@@ -4,6 +4,7 @@ import "@/assets/styles/globals.css";
 import "@/assets/styles/tailwindGeneral.css";
 import MainHeader from "@/components/ui/MainHeader";
 import MainFooter from "@/components/ui/MainFooter";
+import { ToastifyProvider } from "@/components/providers/ToastifyProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,7 +33,8 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <main>{children}</main>
+          <main className="container">{children}</main>
+          <ToastifyProvider />
         </body>
       </html>
       <MainFooter />

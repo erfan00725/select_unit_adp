@@ -1,35 +1,22 @@
 import React from "react";
-import DataTable from "@/components/ui/DataTable";
 import PageHeader from "@/components/ui/PageHeader";
-import { CourseTableConfig, StudentTableConfig } from "@/constants/testdata";
+import StudentsPageTable from "@/components/ui/pages/students/StudentsPageTable";
+import LessonsPageTable from "@/components/ui/pages/Lessons/LessonsPageTable";
+import { getLessons } from "@/lib/actions";
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const lessonsData = await getLessons({ limit: 5, order: "desc" });
+  const studentsData = await getLessons({ limit: 5, order: "desc" });
+
   return (
-    <div className="container">
+    <div>
       <PageHeader
         title="Student & Course Management"
         description="Manage students and courses information"
       />
 
-      {/* Student Management Section */}
-      <DataTable
-        tableData={StudentTableConfig}
-        title="Student Management"
-        addButtonLabel="Add New Student"
-        addUrl="/"
-        deleteBaseUrl="/"
-        editBaseUrl="/"
-      />
-      {/* Course Management Section */}
-      <DataTable
-        tableData={CourseTableConfig}
-        title="Course Management"
-        addButtonLabel="Add New Course"
-        addUrl="/"
-        deleteBaseUrl="/"
-        editBaseUrl="/"
-        limit={5}
-      />
+      <LessonsPageTable limit={5} lessonsData={lessonsData} />
+      <StudentsPageTable limit={5} />
     </div>
   );
 }

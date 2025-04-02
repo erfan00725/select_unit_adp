@@ -1,19 +1,66 @@
 "use server";
 
-import { TeacherDataType } from "@/types/Tables";
+import { BaseListFilterParams, TeacherDataType } from "@/types/Tables";
 import { prisma } from "../prisma";
 import { revalidatePath } from "next/cache";
 
 // Get all teachers
-export async function getTeachers() {
+export async function getTeachers(params?: BaseListFilterParams) {
   try {
+    // Default values for pagination
+    const limit = params?.limit || 10;
+    const page = params?.page || 1;
+    const skip = (page - 1) * limit;
+    const query = params?.query || "";
+    const order = params?.order || "asc";
+    const from = params?.from;
+    const to = params?.to;
+
+    // Build where condition for search
+    let where: any = query
+      ? {
+          OR: [
+            { FirstName: { contains: query } },
+            { LastName: { contains: query } },
+            { NationalCode: { contains: query } },
+            { PhoneNumber: { contains: query } },
+          ],
+        }
+      : {};
+
+    // Add date range filter if provided
+    if (from || to) {
+      where.Created_at = {};
+      if (from) where.Created_at.gte = from;
+      if (to) where.Created_at.lte = to;
+    }
+
+    // Get total count for pagination
+    const totalCount = await prisma.teacher.count({ where });
+
+    // Get teachers with filtering, sorting and pagination
     const teachers = await prisma.teacher.findMany({
+      where,
       include: {
         field: true,
         lessons: true,
       },
+      orderBy: {
+        LastName: order === "asc" ? "asc" : "desc",
+      },
+      skip,
+      take: limit,
     });
-    return { teachers };
+
+    return {
+      teachers,
+      pagination: {
+        total: totalCount,
+        totalPages: Math.ceil(totalCount / limit),
+        currentPage: page,
+        limit,
+      },
+    };
   } catch (error) {
     console.error("Failed to fetch teachers:", error);
     return { error: "Failed to fetch teachers" };
@@ -53,8 +100,13 @@ export async function createTeacher(data: TeacherDataType) {
       return { error: "A teacher with this national code already exists" };
     }
 
+    const editedData = {
+      ...data,
+      id: undefined,
+    };
+
     const teacher = await prisma.teacher.create({
-      data,
+      data: editedData,
     });
 
     revalidatePath("/dashboard/teachers");
@@ -84,10 +136,14 @@ export async function updateTeacher(
         return { error: "A teacher with this national code already exists" };
       }
     }
+    const editedData = {
+      ...data,
+      id: undefined,
+    };
 
     const teacher = await prisma.teacher.update({
       where: { id },
-      data,
+      data: editedData,
     });
 
     revalidatePath("/dashboard/teachers");

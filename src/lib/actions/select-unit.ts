@@ -3,18 +3,71 @@
 import { Period } from "@/generated/prisma";
 import { prisma } from "../prisma";
 import { revalidatePath } from "next/cache";
-import { SelectUnitDataType } from "@/types/Tables";
+import { BaseListFilterParams, SelectUnitDataType } from "@/types/Tables";
 
 // Get all select units
-export async function getSelectUnits() {
+export async function getSelectUnits(params?: BaseListFilterParams) {
   try {
+    const {
+      query,
+      order = "asc",
+      limit = 10,
+      page = 1,
+      from,
+      to,
+    } = params || {};
+
+    // Calculate skip for pagination
+    const skip = (page - 1) * limit;
+
+    // Build where condition for search
+    let where: any = query
+      ? {
+          OR: [
+            { student: { FirstName: { contains: query } } },
+            { student: { LastName: { contains: query } } },
+            { student: { NationalCode: { contains: query } } },
+            { lesson: { LessonName: { contains: query } } },
+          ],
+        }
+      : {};
+
+    // Add date range filter if provided
+    if (from || to) {
+      where.Created_at = {};
+      if (from) where.Created_at.gte = from;
+      if (to) where.Created_at.lte = to;
+    }
+
+    // Get total count for pagination
+    const totalCount = await prisma.selectUnit.count({ where });
+
+    // Get paginated and filtered data
     const selectUnits = await prisma.selectUnit.findMany({
+      where,
       include: {
         student: true,
         lesson: true,
       },
+      orderBy: {
+        Created_at: order === "asc" ? "asc" : "desc",
+      },
+      skip,
+      take: limit,
     });
-    return { selectUnits };
+
+    // Calculate pagination metadata
+    const totalPages = Math.ceil(totalCount / limit);
+
+    return {
+      selectUnits,
+      pagination: {
+        total: totalCount,
+        totalPages,
+        currentPage: page,
+        limit,
+      },
+    };
   } catch (error) {
     console.error("Failed to fetch select units:", error);
     return { error: "Failed to fetch select units" };
@@ -22,10 +75,36 @@ export async function getSelectUnits() {
 }
 
 // Get select units by student ID
-export async function getSelectUnitsByStudent(studentId: bigint) {
+export async function getSelectUnitsByStudent(
+  studentId: bigint,
+  params?: BaseListFilterParams
+) {
   try {
+    const { query, order = "asc", limit = 10, page = 1 } = params || {};
+
+    // Calculate skip for pagination
+    const skip = (page - 1) * limit;
+
+    // Build where condition for search
+    let where: any = { StudentId: studentId };
+
+    if (query) {
+      where = {
+        ...where,
+        OR: [
+          { lesson: { LessonName: { contains: query } } },
+          { lesson: { teacher: { FirstName: { contains: query } } } },
+          { lesson: { teacher: { LastName: { contains: query } } } },
+        ],
+      };
+    }
+
+    // Get total count for pagination
+    const totalCount = await prisma.selectUnit.count({ where });
+
+    // Get paginated and filtered data
     const selectUnits = await prisma.selectUnit.findMany({
-      where: { StudentId: studentId },
+      where,
       include: {
         lesson: {
           include: {
@@ -33,9 +112,25 @@ export async function getSelectUnitsByStudent(studentId: bigint) {
           },
         },
       },
+      orderBy: {
+        Created_at: order === "asc" ? "asc" : "desc",
+      },
+      skip,
+      take: limit,
     });
 
-    return { selectUnits };
+    // Calculate pagination metadata
+    const totalPages = Math.ceil(totalCount / limit);
+
+    return {
+      selectUnits,
+      pagination: {
+        total: totalCount,
+        totalPages,
+        currentPage: page,
+        limit,
+      },
+    };
   } catch (error) {
     console.error("Failed to fetch student select units:", error);
     return { error: "Failed to fetch student select units" };
@@ -43,16 +138,58 @@ export async function getSelectUnitsByStudent(studentId: bigint) {
 }
 
 // Get select units by lesson ID
-export async function getSelectUnitsByLesson(lessonId: bigint) {
+export async function getSelectUnitsByLesson(
+  lessonId: bigint,
+  params?: BaseListFilterParams
+) {
   try {
+    const { query, order = "asc", limit = 10, page = 1 } = params || {};
+
+    // Calculate skip for pagination
+    const skip = (page - 1) * limit;
+
+    // Build where condition for search
+    let where: any = { LessonId: lessonId };
+
+    if (query) {
+      where = {
+        ...where,
+        OR: [
+          { student: { FirstName: { contains: query } } },
+          { student: { LastName: { contains: query } } },
+          { student: { NationalCode: { contains: query } } },
+        ],
+      };
+    }
+
+    // Get total count for pagination
+    const totalCount = await prisma.selectUnit.count({ where });
+
+    // Get paginated and filtered data
     const selectUnits = await prisma.selectUnit.findMany({
-      where: { LessonId: lessonId },
+      where,
       include: {
         student: true,
       },
+      orderBy: {
+        Created_at: order === "asc" ? "asc" : "desc",
+      },
+      skip,
+      take: limit,
     });
 
-    return { selectUnits };
+    // Calculate pagination metadata
+    const totalPages = Math.ceil(totalCount / limit);
+
+    return {
+      selectUnits,
+      pagination: {
+        total: totalCount,
+        totalPages,
+        currentPage: page,
+        limit,
+      },
+    };
   } catch (error) {
     console.error("Failed to fetch lesson select units:", error);
     return { error: "Failed to fetch lesson select units" };
@@ -60,13 +197,43 @@ export async function getSelectUnitsByLesson(lessonId: bigint) {
 }
 
 // Get select units by year and period
-export async function getSelectUnitsByYearPeriod(year: number, period: Period) {
+export async function getSelectUnitsByYearPeriod(
+  year: number,
+  period: Period,
+  params?: BaseListFilterParams
+) {
   try {
+    const { query, order = "asc", limit = 10, page = 1 } = params || {};
+
+    // Calculate skip for pagination
+    const skip = (page - 1) * limit;
+
+    // Build where condition for search
+    let where: any = {
+      Year: year,
+      Period: period,
+    };
+
+    if (query) {
+      where = {
+        ...where,
+        OR: [
+          { student: { FirstName: { contains: query } } },
+          { student: { LastName: { contains: query } } },
+          { student: { NationalCode: { contains: query } } },
+          { lesson: { LessonName: { contains: query } } },
+          { lesson: { teacher: { FirstName: { contains: query } } } },
+          { lesson: { teacher: { LastName: { contains: query } } } },
+        ],
+      };
+    }
+
+    // Get total count for pagination
+    const totalCount = await prisma.selectUnit.count({ where });
+
+    // Get paginated and filtered data
     const selectUnits = await prisma.selectUnit.findMany({
-      where: {
-        Year: year,
-        Period: period,
-      },
+      where,
       include: {
         student: true,
         lesson: {
@@ -75,9 +242,25 @@ export async function getSelectUnitsByYearPeriod(year: number, period: Period) {
           },
         },
       },
+      orderBy: {
+        Created_at: order === "asc" ? "asc" : "desc",
+      },
+      skip,
+      take: limit,
     });
 
-    return { selectUnits };
+    // Calculate pagination metadata
+    const totalPages = Math.ceil(totalCount / limit);
+
+    return {
+      selectUnits,
+      pagination: {
+        total: totalCount,
+        totalPages,
+        currentPage: page,
+        limit,
+      },
+    };
   } catch (error) {
     console.error("Failed to fetch select units by year and period:", error);
     return { error: "Failed to fetch select units by year and period" };

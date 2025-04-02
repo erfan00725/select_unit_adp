@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Input from "./Input";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
@@ -13,6 +13,7 @@ const Form: React.FC<FormProps> = ({
   onSubmit,
   addText = "Add",
   Header,
+  useDefaultValues = false,
 }) => {
   // Create a state object to store all input values
   const [formData, setFormData] = useState<Record<string, any>>({});
@@ -24,6 +25,23 @@ const Form: React.FC<FormProps> = ({
       [name]: value,
     }));
   };
+
+  useEffect(() => {
+    if (useDefaultValues) {
+      const defaultValues: Record<string, any> = {};
+      inputs.forEach((input) => {
+        console.log(input.defaultValue);
+        defaultValues[input.name] = input.defaultValue || "";
+      });
+      setFormData(defaultValues);
+    } else {
+      setFormData({});
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
 
   // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
@@ -48,9 +66,10 @@ const Form: React.FC<FormProps> = ({
             >
               <label
                 htmlFor={input.name}
-                className="block text-sm font-medium text-gray-700 mb-1"
+                className="block text-sm font-medium text-gray-700 mb-1 min-w-[100px]"
               >
                 {input.title}
+                {input.required && <span className="text-red-500">*</span>}
               </label>
               {input.type === "textarea" ? (
                 <textarea

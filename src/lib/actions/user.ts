@@ -3,6 +3,7 @@
 import { prisma } from "../prisma";
 import { revalidatePath } from "next/cache";
 import { UserDataType } from "@/types/Tables";
+import bcrypt from "bcryptjs";
 
 // Get all users
 export async function getUsers() {
@@ -45,10 +46,14 @@ export async function createUser(data: UserDataType) {
     }
 
     // In a real application, you would hash the password here
-    // For example: data.Password = await bcrypt.hash(data.Password, 10);
+    data.Password = await bcrypt.hash(data.Password, 10);
+    const editedData = {
+      ...data,
+      id: undefined,
+    };
 
     const user = await prisma.user.create({
-      data,
+      data: editedData,
     });
 
     revalidatePath("/dashboard/users");
@@ -77,13 +82,18 @@ export async function updateUser(id: bigint, data: Partial<UserDataType>) {
     }
 
     // In a real application, you would hash the password here if it's being updated
-    // if (data.Password) {
-    //   data.Password = await bcrypt.hash(data.Password, 10);
-    // }
+    if (data.Password) {
+      data.Password = await bcrypt.hash(data.Password, 10);
+    }
+
+    const editedData = {
+      ...data,
+      id: undefined,
+    };
 
     const user = await prisma.user.update({
       where: { id },
-      data,
+      data: editedData,
     });
 
     revalidatePath("/dashboard/users");

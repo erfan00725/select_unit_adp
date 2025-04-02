@@ -2,17 +2,73 @@
 
 import { prisma } from "../prisma";
 import { revalidatePath } from "next/cache";
-import { StudentDataType } from "@/types/Tables";
+import { BaseListFilterParams, StudentDataType } from "@/types/Tables";
 
 // Get all students
-export async function getStudents() {
+export async function getStudents(params?: BaseListFilterParams) {
   try {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    const {
+      query,
+      order = "asc",
+      limit = 10,
+      page = 1,
+      from,
+      to,
+    } = params || {};
+
+    // Calculate skip for pagination
+    const skip = (page - 1) * limit;
+
+    // Build where condition for search
+    let where: any = query
+      ? {
+          OR: [
+            { FirstName: { contains: query } },
+            { LastName: { contains: query } },
+            { NationalCode: { contains: query } },
+            { PhoneNumber: { contains: query } },
+            { field: { Name: { contains: query } } },
+          ],
+        }
+      : {};
+
+    // Add date range filter if provided
+    if (from || to) {
+      where.Created_at = {};
+      if (from) where.Created_at.gte = from;
+      if (to) where.Created_at.lte = to;
+    }
+
+    // Get total count for pagination
+    const totalCount = await prisma.student.count({ where });
+
+    // Get paginated and filtered data
     const students = await prisma.student.findMany({
+      where,
       include: {
         field: true,
       },
+      orderBy: {
+        Created_at: order === "asc" ? "asc" : "desc",
+      },
+      skip,
+      take: limit,
     });
-    return { students };
+
+    // Calculate pagination metadata
+    const totalPages = Math.ceil(totalCount / limit);
+
+    return {
+      students,
+      pagination: {
+        total: totalCount,
+        totalPages,
+        currentPage: page,
+        limit,
+      },
+    };
   } catch (error) {
     console.error("Failed to fetch students:", error);
     return { error: "Failed to fetch students" };
@@ -35,7 +91,7 @@ export async function getStudentById(id: bigint) {
     });
 
     if (!student) {
-      return { error: "Student not found" };
+      return { error: "Student not found", code: 404 };
     }
 
     return { student };
@@ -56,8 +112,13 @@ export async function createStudent(data: StudentDataType) {
       return { error: "A student with this national code already exists" };
     }
 
+    const editedData = {
+      ...data,
+      id: undefined,
+    };
+
     const student = await prisma.student.create({
-      data,
+      data: editedData,
     });
 
     revalidatePath("/dashboard/students");
@@ -87,10 +148,14 @@ export async function updateStudent(
         return { error: "A student with this national code already exists" };
       }
     }
+    const editedData = {
+      ...data,
+      id: undefined,
+    };
 
     const student = await prisma.student.update({
       where: { id },
-      data,
+      data: editedData,
     });
 
     revalidatePath("/dashboard/students");

@@ -81,7 +81,7 @@ const DataTable = <T extends DataBaseType>({
                   )}
                   {baseUrl && (
                     <Link
-                      href={`${baseUrl}/${row.id}/delete`}
+                      href={`${baseUrl}/${row.id}?delete=true`}
                       className="text-red-600 hover:text-red-900"
                     >
                       Delete

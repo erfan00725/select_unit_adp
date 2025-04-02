@@ -2,17 +2,11 @@
 
 // Import necessary enum types from Prisma
 import { Grade, LessonGrade, UserType, Period } from "@/generated/prisma";
+import { Orders } from "./General";
 
 export type DataBaseType = {
-  id: string;
+  id: string | bigint;
 };
-
-// Original Data types
-export interface StudentDataType extends DataBaseType {
-  studentName: string;
-  email: string;
-  program: string;
-}
 
 export interface CourseDataType extends DataBaseType {
   courseName: string;
@@ -26,7 +20,7 @@ export interface FieldDataType extends DataBaseType {
   FixedFee: bigint;
 }
 
-export interface StudentDataType {
+export interface StudentDataType extends DataBaseType {
   FirstName: string;
   LastName: string;
   NationalCode: string;
@@ -65,7 +59,7 @@ export interface LessonDataType extends DataBaseType {
   PricePerUnit?: bigint;
 }
 
-export interface SelectUnitDataType extends DataBaseType {
+export interface SelectUnitDataType {
   StudentId: bigint;
   LessonId: bigint;
   Year: number;
@@ -82,4 +76,13 @@ export interface UserDataType extends DataBaseType {
 export interface GeneralDataType extends DataBaseType {
   Key: string;
   Value: string;
+}
+
+export interface BaseListFilterParams {
+  query?: string;
+  order?: Orders;
+  limit?: number;
+  page?: number;
+  from?: Date;
+  to?: Date;
 }

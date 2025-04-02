@@ -5,7 +5,7 @@ import React from "react";
 
 const StudentCourses = () => {
   return (
-    <div className="container">
+    <div>
       <PageHeader title="Student Courses" />
       <SelectUnit selectedCourses={selectedCourses} studentData={studentData} />
     </div>

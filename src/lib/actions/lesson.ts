@@ -2,18 +2,82 @@
 
 import { prisma } from "../prisma";
 import { revalidatePath } from "next/cache";
-import { LessonDataType } from "@/types/Tables";
+import { BaseListFilterParams, LessonDataType } from "@/types/Tables";
+
+type LessonsParams = {
+  unit?: string;
+};
 
 // Get all lessons
-export async function getLessons() {
+export async function getLessons(
+  params?: BaseListFilterParams & LessonsParams
+) {
   try {
+    const {
+      query,
+      order = "asc",
+      limit = 10,
+      page = 1,
+      from,
+      to,
+      unit,
+    } = params || {};
+
+    // Calculate skip for pagination
+    const skip = (page - 1) * limit;
+
+    // Build where condition for search
+    let where: any = query
+      ? {
+          OR: [
+            { LessonName: { contains: query } },
+            { teacher: { FirstName: { contains: query } } },
+            { teacher: { LastName: { contains: query } } },
+            { field: { Name: { contains: query } } },
+          ],
+        }
+      : {};
+
+    // Add date range filter if provided
+    if (from || to) {
+      where.Created_at = {};
+      if (from) where.Created_at.gte = from;
+      if (to) where.Created_at.lte = to;
+    }
+
+    if (unit) {
+      where.Unit = Number(unit);
+    }
+
+    // Get total count for pagination
+    const totalCount = await prisma.lesson.count({ where });
+
+    // Get paginated and filtered data
     const lessons = await prisma.lesson.findMany({
+      where,
       include: {
         field: true,
         teacher: true,
       },
+      orderBy: {
+        Created_at: order === "asc" ? "asc" : "desc",
+      },
+      skip,
+      take: limit,
     });
-    return { lessons };
+
+    // Calculate pagination metadata
+    const totalPages = Math.ceil(totalCount / limit);
+
+    return {
+      lessons,
+      pagination: {
+        total: totalCount,
+        totalPages,
+        currentPage: page,
+        limit,
+      },
+    };
   } catch (error) {
     console.error("Failed to fetch lessons:", error);
     return { error: "Failed to fetch lessons" };
@@ -29,8 +93,8 @@ export async function getLessonById(id: bigint) {
         field: true,
         teacher: true,
         selectUnits: true,
-        requiredForUnit: true,
-        requiresUnit: true,
+        requiredForLesson: true,
+        requiresLesson: true,
       },
     });
 
@@ -69,9 +133,9 @@ export async function createLesson(data: LessonDataType) {
     }
 
     // Check if required lesson exists if provided
-    if (data.RequireUnit) {
+    if (data.RequireLesson) {
       const requiredLesson = await prisma.lesson.findUnique({
-        where: { id: data.RequireUnit },
+        where: { id: data.RequireLesson },
       });
 
       if (!requiredLesson) {
@@ -79,8 +143,18 @@ export async function createLesson(data: LessonDataType) {
       }
     }
 
+    const editedData = {
+      ...data,
+      id: undefined,
+    };
+
     const lesson = await prisma.lesson.create({
-      data,
+      data: {
+        ...editedData,
+        RequireUnit: editedData.RequireUnit
+          ? Number(editedData.RequireUnit)
+          : null,
+      },
     });
 
     revalidatePath("/dashboard/lessons");
@@ -136,9 +210,19 @@ export async function updateLesson(id: bigint, data: Partial<LessonDataType>) {
       }
     }
 
+    const editedData = {
+      ...data,
+      id: undefined,
+    };
+
     const lesson = await prisma.lesson.update({
       where: { id },
-      data,
+      data: {
+        ...editedData,
+        RequireUnit: editedData.RequireUnit
+          ? Number(editedData.RequireUnit)
+          : null,
+      },
     });
 
     revalidatePath("/dashboard/lessons");
@@ -158,7 +242,7 @@ export async function deleteLesson(id: bigint) {
       where: { id },
       include: {
         selectUnits: true,
-        requiredForUnit: true,
+        requiredForLesson: true,
       },
     });
 
@@ -166,7 +250,7 @@ export async function deleteLesson(id: bigint) {
       return { error: "Cannot delete lesson with existing course selections" };
     }
 
-    if (lessonWithSelectUnits?.requiredForUnit.length) {
+    if (lessonWithSelectUnits?.requiredForLesson.length) {
       return {
         error: "Cannot delete lesson that is required for other lessons",
       };

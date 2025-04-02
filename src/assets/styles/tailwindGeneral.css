@@ -8,7 +8,7 @@ body {
 }
 
 .input {
-  @apply w-[450px] p-3 pl-4 text-gray-800  border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder:text-gray-400;
+  @apply p-3 pl-4 text-gray-800  border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder:text-gray-400;
 }
 
 .btn {
@@ -26,4 +26,11 @@ body {
 
 .container_center {
   @apply flex justify-center items-center;
+}
+
+.filterWrapper input {
+  @apply px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500;
+}
+.filterNoBorder input {
+  @apply border-none p-0;
 }
