@@ -1453,12 +1453,12 @@ export namespace Prisma {
    */
 
   export type LessonCountOutputType = {
-    requiredForUnit: number
+    requiredForLesson: number
     selectUnits: number
   }
 
   export type LessonCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    requiredForUnit?: boolean | LessonCountOutputTypeCountRequiredForUnitArgs
+    requiredForLesson?: boolean | LessonCountOutputTypeCountRequiredForLessonArgs
     selectUnits?: boolean | LessonCountOutputTypeCountSelectUnitsArgs
   }
 
@@ -1476,7 +1476,7 @@ export namespace Prisma {
   /**
    * LessonCountOutputType without action
    */
-  export type LessonCountOutputTypeCountRequiredForUnitArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type LessonCountOutputTypeCountRequiredForLessonArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: LessonWhereInput
   }
 
@@ -1606,6 +1606,7 @@ export namespace Prisma {
     PhoneNumber: string | null
     fieldId: bigint | null
     Grade: $Enums.Grade | null
+    Gender: boolean | null
     Updated_at: Date | null
     Created_at: Date | null
   }
@@ -1622,6 +1623,7 @@ export namespace Prisma {
     PhoneNumber: string | null
     fieldId: bigint | null
     Grade: $Enums.Grade | null
+    Gender: boolean | null
     Updated_at: Date | null
     Created_at: Date | null
   }
@@ -1638,6 +1640,7 @@ export namespace Prisma {
     PhoneNumber: number
     fieldId: number
     Grade: number
+    Gender: number
     Updated_at: number
     Created_at: number
     _all: number
@@ -1666,6 +1669,7 @@ export namespace Prisma {
     PhoneNumber?: true
     fieldId?: true
     Grade?: true
+    Gender?: true
     Updated_at?: true
     Created_at?: true
   }
@@ -1682,6 +1686,7 @@ export namespace Prisma {
     PhoneNumber?: true
     fieldId?: true
     Grade?: true
+    Gender?: true
     Updated_at?: true
     Created_at?: true
   }
@@ -1698,6 +1703,7 @@ export namespace Prisma {
     PhoneNumber?: true
     fieldId?: true
     Grade?: true
+    Gender?: true
     Updated_at?: true
     Created_at?: true
     _all?: true
@@ -1801,6 +1807,7 @@ export namespace Prisma {
     PhoneNumber: string | null
     fieldId: bigint
     Grade: $Enums.Grade
+    Gender: boolean
     Updated_at: Date
     Created_at: Date
     _count: StudentCountAggregateOutputType | null
@@ -1836,6 +1843,7 @@ export namespace Prisma {
     PhoneNumber?: boolean
     fieldId?: boolean
     Grade?: boolean
+    Gender?: boolean
     Updated_at?: boolean
     Created_at?: boolean
     field?: boolean | FieldDefaultArgs<ExtArgs>
@@ -1857,11 +1865,12 @@ export namespace Prisma {
     PhoneNumber?: boolean
     fieldId?: boolean
     Grade?: boolean
+    Gender?: boolean
     Updated_at?: boolean
     Created_at?: boolean
   }
 
-  export type StudentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "FirstName" | "LastName" | "NationalCode" | "Father" | "Birth" | "Address" | "HomeNumber" | "PhoneNumber" | "fieldId" | "Grade" | "Updated_at" | "Created_at", ExtArgs["result"]["student"]>
+  export type StudentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "FirstName" | "LastName" | "NationalCode" | "Father" | "Birth" | "Address" | "HomeNumber" | "PhoneNumber" | "fieldId" | "Grade" | "Gender" | "Updated_at" | "Created_at", ExtArgs["result"]["student"]>
   export type StudentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     field?: boolean | FieldDefaultArgs<ExtArgs>
     selectUnits?: boolean | Student$selectUnitsArgs<ExtArgs>
@@ -1886,6 +1895,7 @@ export namespace Prisma {
       PhoneNumber: string | null
       fieldId: bigint
       Grade: $Enums.Grade
+      Gender: boolean
       Updated_at: Date
       Created_at: Date
     }, ExtArgs["result"]["student"]>
@@ -2270,6 +2280,7 @@ export namespace Prisma {
     readonly PhoneNumber: FieldRef<"Student", 'String'>
     readonly fieldId: FieldRef<"Student", 'BigInt'>
     readonly Grade: FieldRef<"Student", 'Grade'>
+    readonly Gender: FieldRef<"Student", 'Boolean'>
     readonly Updated_at: FieldRef<"Student", 'DateTime'>
     readonly Created_at: FieldRef<"Student", 'DateTime'>
   }
@@ -3607,8 +3618,8 @@ export namespace Prisma {
     PassCondition: number | null
     TheoriHours: number | null
     PracticalHours: number | null
-    RequireLesson: number | null
-    RequireUnit: bigint | null
+    RequireLesson: bigint | null
+    RequireUnit: number | null
     NotifCode: bigint | null
     PricePerUnit: bigint | null
   }
@@ -3623,8 +3634,8 @@ export namespace Prisma {
     PassCondition: number | null
     TheoriHours: number | null
     PracticalHours: number | null
-    RequireLesson: number | null
-    RequireUnit: bigint | null
+    RequireLesson: bigint | null
+    RequireUnit: number | null
     NotifCode: bigint | null
     ValidFrom: Date | null
     ValidTill: Date | null
@@ -3643,8 +3654,8 @@ export namespace Prisma {
     PassCondition: number | null
     TheoriHours: number | null
     PracticalHours: number | null
-    RequireLesson: number | null
-    RequireUnit: bigint | null
+    RequireLesson: bigint | null
+    RequireUnit: number | null
     NotifCode: bigint | null
     ValidFrom: Date | null
     ValidTill: Date | null
@@ -3860,8 +3871,8 @@ export namespace Prisma {
     PassCondition: number | null
     TheoriHours: number | null
     PracticalHours: number | null
-    RequireLesson: number | null
-    RequireUnit: bigint | null
+    RequireLesson: bigint | null
+    RequireUnit: number | null
     NotifCode: bigint
     ValidFrom: Date
     ValidTill: Date | null
@@ -3909,8 +3920,8 @@ export namespace Prisma {
     Updated_at?: boolean
     field?: boolean | Lesson$fieldArgs<ExtArgs>
     teacher?: boolean | TeacherDefaultArgs<ExtArgs>
-    requiredForUnit?: boolean | Lesson$requiredForUnitArgs<ExtArgs>
-    requiresUnit?: boolean | Lesson$requiresUnitArgs<ExtArgs>
+    requiredForLesson?: boolean | Lesson$requiredForLessonArgs<ExtArgs>
+    requiresLesson?: boolean | Lesson$requiresLessonArgs<ExtArgs>
     selectUnits?: boolean | Lesson$selectUnitsArgs<ExtArgs>
     _count?: boolean | LessonCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["lesson"]>
@@ -3941,8 +3952,8 @@ export namespace Prisma {
   export type LessonInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     field?: boolean | Lesson$fieldArgs<ExtArgs>
     teacher?: boolean | TeacherDefaultArgs<ExtArgs>
-    requiredForUnit?: boolean | Lesson$requiredForUnitArgs<ExtArgs>
-    requiresUnit?: boolean | Lesson$requiresUnitArgs<ExtArgs>
+    requiredForLesson?: boolean | Lesson$requiredForLessonArgs<ExtArgs>
+    requiresLesson?: boolean | Lesson$requiresLessonArgs<ExtArgs>
     selectUnits?: boolean | Lesson$selectUnitsArgs<ExtArgs>
     _count?: boolean | LessonCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -3952,8 +3963,8 @@ export namespace Prisma {
     objects: {
       field: Prisma.$FieldPayload<ExtArgs> | null
       teacher: Prisma.$TeacherPayload<ExtArgs>
-      requiredForUnit: Prisma.$LessonPayload<ExtArgs>[]
-      requiresUnit: Prisma.$LessonPayload<ExtArgs> | null
+      requiredForLesson: Prisma.$LessonPayload<ExtArgs>[]
+      requiresLesson: Prisma.$LessonPayload<ExtArgs> | null
       selectUnits: Prisma.$SelectUnitPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -3966,8 +3977,8 @@ export namespace Prisma {
       PassCondition: number | null
       TheoriHours: number | null
       PracticalHours: number | null
-      RequireLesson: number | null
-      RequireUnit: bigint | null
+      RequireLesson: bigint | null
+      RequireUnit: number | null
       NotifCode: bigint
       ValidFrom: Date
       ValidTill: Date | null
@@ -4316,8 +4327,8 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     field<T extends Lesson$fieldArgs<ExtArgs> = {}>(args?: Subset<T, Lesson$fieldArgs<ExtArgs>>): Prisma__FieldClient<$Result.GetResult<Prisma.$FieldPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     teacher<T extends TeacherDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TeacherDefaultArgs<ExtArgs>>): Prisma__TeacherClient<$Result.GetResult<Prisma.$TeacherPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    requiredForUnit<T extends Lesson$requiredForUnitArgs<ExtArgs> = {}>(args?: Subset<T, Lesson$requiredForUnitArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LessonPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    requiresUnit<T extends Lesson$requiresUnitArgs<ExtArgs> = {}>(args?: Subset<T, Lesson$requiresUnitArgs<ExtArgs>>): Prisma__LessonClient<$Result.GetResult<Prisma.$LessonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    requiredForLesson<T extends Lesson$requiredForLessonArgs<ExtArgs> = {}>(args?: Subset<T, Lesson$requiredForLessonArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LessonPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    requiresLesson<T extends Lesson$requiresLessonArgs<ExtArgs> = {}>(args?: Subset<T, Lesson$requiresLessonArgs<ExtArgs>>): Prisma__LessonClient<$Result.GetResult<Prisma.$LessonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     selectUnits<T extends Lesson$selectUnitsArgs<ExtArgs> = {}>(args?: Subset<T, Lesson$selectUnitsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SelectUnitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -4357,8 +4368,8 @@ export namespace Prisma {
     readonly PassCondition: FieldRef<"Lesson", 'Int'>
     readonly TheoriHours: FieldRef<"Lesson", 'Int'>
     readonly PracticalHours: FieldRef<"Lesson", 'Int'>
-    readonly RequireLesson: FieldRef<"Lesson", 'Int'>
-    readonly RequireUnit: FieldRef<"Lesson", 'BigInt'>
+    readonly RequireLesson: FieldRef<"Lesson", 'BigInt'>
+    readonly RequireUnit: FieldRef<"Lesson", 'Int'>
     readonly NotifCode: FieldRef<"Lesson", 'BigInt'>
     readonly ValidFrom: FieldRef<"Lesson", 'DateTime'>
     readonly ValidTill: FieldRef<"Lesson", 'DateTime'>
@@ -4727,9 +4738,9 @@ export namespace Prisma {
   }
 
   /**
-   * Lesson.requiredForUnit
+   * Lesson.requiredForLesson
    */
-  export type Lesson$requiredForUnitArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Lesson$requiredForLessonArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Lesson
      */
@@ -4751,9 +4762,9 @@ export namespace Prisma {
   }
 
   /**
-   * Lesson.requiresUnit
+   * Lesson.requiresLesson
    */
-  export type Lesson$requiresUnitArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Lesson$requiresLessonArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Lesson
      */
@@ -7752,6 +7763,7 @@ export namespace Prisma {
     PhoneNumber: string | null
     fieldId: bigint | null
     Birth: Date | null
+    Gender: boolean | null
     Updated_at: Date | null
     Created_at: Date | null
   }
@@ -7764,6 +7776,7 @@ export namespace Prisma {
     PhoneNumber: string | null
     fieldId: bigint | null
     Birth: Date | null
+    Gender: boolean | null
     Updated_at: Date | null
     Created_at: Date | null
   }
@@ -7776,6 +7789,7 @@ export namespace Prisma {
     PhoneNumber: number
     fieldId: number
     Birth: number
+    Gender: number
     Updated_at: number
     Created_at: number
     _all: number
@@ -7800,6 +7814,7 @@ export namespace Prisma {
     PhoneNumber?: true
     fieldId?: true
     Birth?: true
+    Gender?: true
     Updated_at?: true
     Created_at?: true
   }
@@ -7812,6 +7827,7 @@ export namespace Prisma {
     PhoneNumber?: true
     fieldId?: true
     Birth?: true
+    Gender?: true
     Updated_at?: true
     Created_at?: true
   }
@@ -7824,6 +7840,7 @@ export namespace Prisma {
     PhoneNumber?: true
     fieldId?: true
     Birth?: true
+    Gender?: true
     Updated_at?: true
     Created_at?: true
     _all?: true
@@ -7923,6 +7940,7 @@ export namespace Prisma {
     PhoneNumber: string
     fieldId: bigint | null
     Birth: Date | null
+    Gender: boolean
     Updated_at: Date
     Created_at: Date
     _count: TeacherCountAggregateOutputType | null
@@ -7954,6 +7972,7 @@ export namespace Prisma {
     PhoneNumber?: boolean
     fieldId?: boolean
     Birth?: boolean
+    Gender?: boolean
     Updated_at?: boolean
     Created_at?: boolean
     field?: boolean | Teacher$fieldArgs<ExtArgs>
@@ -7971,11 +7990,12 @@ export namespace Prisma {
     PhoneNumber?: boolean
     fieldId?: boolean
     Birth?: boolean
+    Gender?: boolean
     Updated_at?: boolean
     Created_at?: boolean
   }
 
-  export type TeacherOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "NationalCode" | "FirstName" | "LastName" | "PhoneNumber" | "fieldId" | "Birth" | "Updated_at" | "Created_at", ExtArgs["result"]["teacher"]>
+  export type TeacherOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "NationalCode" | "FirstName" | "LastName" | "PhoneNumber" | "fieldId" | "Birth" | "Gender" | "Updated_at" | "Created_at", ExtArgs["result"]["teacher"]>
   export type TeacherInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     field?: boolean | Teacher$fieldArgs<ExtArgs>
     lessons?: boolean | Teacher$lessonsArgs<ExtArgs>
@@ -7996,6 +8016,7 @@ export namespace Prisma {
       PhoneNumber: string
       fieldId: bigint | null
       Birth: Date | null
+      Gender: boolean
       Updated_at: Date
       Created_at: Date
     }, ExtArgs["result"]["teacher"]>
@@ -8376,6 +8397,7 @@ export namespace Prisma {
     readonly PhoneNumber: FieldRef<"Teacher", 'String'>
     readonly fieldId: FieldRef<"Teacher", 'BigInt'>
     readonly Birth: FieldRef<"Teacher", 'DateTime'>
+    readonly Gender: FieldRef<"Teacher", 'Boolean'>
     readonly Updated_at: FieldRef<"Teacher", 'DateTime'>
     readonly Created_at: FieldRef<"Teacher", 'DateTime'>
   }
@@ -8808,6 +8830,7 @@ export namespace Prisma {
     PhoneNumber: 'PhoneNumber',
     fieldId: 'fieldId',
     Grade: 'Grade',
+    Gender: 'Gender',
     Updated_at: 'Updated_at',
     Created_at: 'Created_at'
   };
@@ -8890,6 +8913,7 @@ export namespace Prisma {
     PhoneNumber: 'PhoneNumber',
     fieldId: 'fieldId',
     Birth: 'Birth',
+    Gender: 'Gender',
     Updated_at: 'Updated_at',
     Created_at: 'Created_at'
   };
@@ -9000,6 +9024,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
    * Reference to a field of type 'UserType'
    */
   export type EnumUserTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserType'>
@@ -9052,6 +9083,7 @@ export namespace Prisma {
     PhoneNumber?: StringNullableFilter<"Student"> | string | null
     fieldId?: BigIntFilter<"Student"> | bigint | number
     Grade?: EnumGradeFilter<"Student"> | $Enums.Grade
+    Gender?: BoolFilter<"Student"> | boolean
     Updated_at?: DateTimeFilter<"Student"> | Date | string
     Created_at?: DateTimeFilter<"Student"> | Date | string
     field?: XOR<FieldScalarRelationFilter, FieldWhereInput>
@@ -9070,6 +9102,7 @@ export namespace Prisma {
     PhoneNumber?: SortOrderInput | SortOrder
     fieldId?: SortOrder
     Grade?: SortOrder
+    Gender?: SortOrder
     Updated_at?: SortOrder
     Created_at?: SortOrder
     field?: FieldOrderByWithRelationInput
@@ -9092,6 +9125,7 @@ export namespace Prisma {
     PhoneNumber?: StringNullableFilter<"Student"> | string | null
     fieldId?: BigIntFilter<"Student"> | bigint | number
     Grade?: EnumGradeFilter<"Student"> | $Enums.Grade
+    Gender?: BoolFilter<"Student"> | boolean
     Updated_at?: DateTimeFilter<"Student"> | Date | string
     Created_at?: DateTimeFilter<"Student"> | Date | string
     field?: XOR<FieldScalarRelationFilter, FieldWhereInput>
@@ -9110,6 +9144,7 @@ export namespace Prisma {
     PhoneNumber?: SortOrderInput | SortOrder
     fieldId?: SortOrder
     Grade?: SortOrder
+    Gender?: SortOrder
     Updated_at?: SortOrder
     Created_at?: SortOrder
     _count?: StudentCountOrderByAggregateInput
@@ -9134,6 +9169,7 @@ export namespace Prisma {
     PhoneNumber?: StringNullableWithAggregatesFilter<"Student"> | string | null
     fieldId?: BigIntWithAggregatesFilter<"Student"> | bigint | number
     Grade?: EnumGradeWithAggregatesFilter<"Student"> | $Enums.Grade
+    Gender?: BoolWithAggregatesFilter<"Student"> | boolean
     Updated_at?: DateTimeWithAggregatesFilter<"Student"> | Date | string
     Created_at?: DateTimeWithAggregatesFilter<"Student"> | Date | string
   }
@@ -9206,8 +9242,8 @@ export namespace Prisma {
     PassCondition?: IntNullableFilter<"Lesson"> | number | null
     TheoriHours?: IntNullableFilter<"Lesson"> | number | null
     PracticalHours?: IntNullableFilter<"Lesson"> | number | null
-    RequireLesson?: IntNullableFilter<"Lesson"> | number | null
-    RequireUnit?: BigIntNullableFilter<"Lesson"> | bigint | number | null
+    RequireLesson?: BigIntNullableFilter<"Lesson"> | bigint | number | null
+    RequireUnit?: IntNullableFilter<"Lesson"> | number | null
     NotifCode?: BigIntFilter<"Lesson"> | bigint | number
     ValidFrom?: DateTimeFilter<"Lesson"> | Date | string
     ValidTill?: DateTimeNullableFilter<"Lesson"> | Date | string | null
@@ -9216,8 +9252,8 @@ export namespace Prisma {
     Updated_at?: DateTimeFilter<"Lesson"> | Date | string
     field?: XOR<FieldNullableScalarRelationFilter, FieldWhereInput> | null
     teacher?: XOR<TeacherScalarRelationFilter, TeacherWhereInput>
-    requiredForUnit?: LessonListRelationFilter
-    requiresUnit?: XOR<LessonNullableScalarRelationFilter, LessonWhereInput> | null
+    requiredForLesson?: LessonListRelationFilter
+    requiresLesson?: XOR<LessonNullableScalarRelationFilter, LessonWhereInput> | null
     selectUnits?: SelectUnitListRelationFilter
   }
 
@@ -9241,8 +9277,8 @@ export namespace Prisma {
     Updated_at?: SortOrder
     field?: FieldOrderByWithRelationInput
     teacher?: TeacherOrderByWithRelationInput
-    requiredForUnit?: LessonOrderByRelationAggregateInput
-    requiresUnit?: LessonOrderByWithRelationInput
+    requiredForLesson?: LessonOrderByRelationAggregateInput
+    requiresLesson?: LessonOrderByWithRelationInput
     selectUnits?: SelectUnitOrderByRelationAggregateInput
     _relevance?: LessonOrderByRelevanceInput
   }
@@ -9260,8 +9296,8 @@ export namespace Prisma {
     PassCondition?: IntNullableFilter<"Lesson"> | number | null
     TheoriHours?: IntNullableFilter<"Lesson"> | number | null
     PracticalHours?: IntNullableFilter<"Lesson"> | number | null
-    RequireLesson?: IntNullableFilter<"Lesson"> | number | null
-    RequireUnit?: BigIntNullableFilter<"Lesson"> | bigint | number | null
+    RequireLesson?: BigIntNullableFilter<"Lesson"> | bigint | number | null
+    RequireUnit?: IntNullableFilter<"Lesson"> | number | null
     NotifCode?: BigIntFilter<"Lesson"> | bigint | number
     ValidFrom?: DateTimeFilter<"Lesson"> | Date | string
     ValidTill?: DateTimeNullableFilter<"Lesson"> | Date | string | null
@@ -9270,8 +9306,8 @@ export namespace Prisma {
     Updated_at?: DateTimeFilter<"Lesson"> | Date | string
     field?: XOR<FieldNullableScalarRelationFilter, FieldWhereInput> | null
     teacher?: XOR<TeacherScalarRelationFilter, TeacherWhereInput>
-    requiredForUnit?: LessonListRelationFilter
-    requiresUnit?: XOR<LessonNullableScalarRelationFilter, LessonWhereInput> | null
+    requiredForLesson?: LessonListRelationFilter
+    requiresLesson?: XOR<LessonNullableScalarRelationFilter, LessonWhereInput> | null
     selectUnits?: SelectUnitListRelationFilter
   }, "id">
 
@@ -9313,8 +9349,8 @@ export namespace Prisma {
     PassCondition?: IntNullableWithAggregatesFilter<"Lesson"> | number | null
     TheoriHours?: IntNullableWithAggregatesFilter<"Lesson"> | number | null
     PracticalHours?: IntNullableWithAggregatesFilter<"Lesson"> | number | null
-    RequireLesson?: IntNullableWithAggregatesFilter<"Lesson"> | number | null
-    RequireUnit?: BigIntNullableWithAggregatesFilter<"Lesson"> | bigint | number | null
+    RequireLesson?: BigIntNullableWithAggregatesFilter<"Lesson"> | bigint | number | null
+    RequireUnit?: IntNullableWithAggregatesFilter<"Lesson"> | number | null
     NotifCode?: BigIntWithAggregatesFilter<"Lesson"> | bigint | number
     ValidFrom?: DateTimeWithAggregatesFilter<"Lesson"> | Date | string
     ValidTill?: DateTimeNullableWithAggregatesFilter<"Lesson"> | Date | string | null
@@ -9512,6 +9548,7 @@ export namespace Prisma {
     PhoneNumber?: StringFilter<"Teacher"> | string
     fieldId?: BigIntNullableFilter<"Teacher"> | bigint | number | null
     Birth?: DateTimeNullableFilter<"Teacher"> | Date | string | null
+    Gender?: BoolFilter<"Teacher"> | boolean
     Updated_at?: DateTimeFilter<"Teacher"> | Date | string
     Created_at?: DateTimeFilter<"Teacher"> | Date | string
     field?: XOR<FieldNullableScalarRelationFilter, FieldWhereInput> | null
@@ -9526,6 +9563,7 @@ export namespace Prisma {
     PhoneNumber?: SortOrder
     fieldId?: SortOrderInput | SortOrder
     Birth?: SortOrderInput | SortOrder
+    Gender?: SortOrder
     Updated_at?: SortOrder
     Created_at?: SortOrder
     field?: FieldOrderByWithRelationInput
@@ -9544,6 +9582,7 @@ export namespace Prisma {
     PhoneNumber?: StringFilter<"Teacher"> | string
     fieldId?: BigIntNullableFilter<"Teacher"> | bigint | number | null
     Birth?: DateTimeNullableFilter<"Teacher"> | Date | string | null
+    Gender?: BoolFilter<"Teacher"> | boolean
     Updated_at?: DateTimeFilter<"Teacher"> | Date | string
     Created_at?: DateTimeFilter<"Teacher"> | Date | string
     field?: XOR<FieldNullableScalarRelationFilter, FieldWhereInput> | null
@@ -9558,6 +9597,7 @@ export namespace Prisma {
     PhoneNumber?: SortOrder
     fieldId?: SortOrderInput | SortOrder
     Birth?: SortOrderInput | SortOrder
+    Gender?: SortOrder
     Updated_at?: SortOrder
     Created_at?: SortOrder
     _count?: TeacherCountOrderByAggregateInput
@@ -9578,6 +9618,7 @@ export namespace Prisma {
     PhoneNumber?: StringWithAggregatesFilter<"Teacher"> | string
     fieldId?: BigIntNullableWithAggregatesFilter<"Teacher"> | bigint | number | null
     Birth?: DateTimeNullableWithAggregatesFilter<"Teacher"> | Date | string | null
+    Gender?: BoolWithAggregatesFilter<"Teacher"> | boolean
     Updated_at?: DateTimeWithAggregatesFilter<"Teacher"> | Date | string
     Created_at?: DateTimeWithAggregatesFilter<"Teacher"> | Date | string
   }
@@ -9593,6 +9634,7 @@ export namespace Prisma {
     HomeNumber?: string | null
     PhoneNumber?: string | null
     Grade: $Enums.Grade
+    Gender?: boolean
     Updated_at?: Date | string
     Created_at?: Date | string
     field: FieldCreateNestedOneWithoutStudentsInput
@@ -9611,6 +9653,7 @@ export namespace Prisma {
     PhoneNumber?: string | null
     fieldId: bigint | number
     Grade: $Enums.Grade
+    Gender?: boolean
     Updated_at?: Date | string
     Created_at?: Date | string
     selectUnits?: SelectUnitUncheckedCreateNestedManyWithoutStudentInput
@@ -9627,6 +9670,7 @@ export namespace Prisma {
     HomeNumber?: NullableStringFieldUpdateOperationsInput | string | null
     PhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     Grade?: EnumGradeFieldUpdateOperationsInput | $Enums.Grade
+    Gender?: BoolFieldUpdateOperationsInput | boolean
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     field?: FieldUpdateOneRequiredWithoutStudentsNestedInput
@@ -9645,6 +9689,7 @@ export namespace Prisma {
     PhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     fieldId?: BigIntFieldUpdateOperationsInput | bigint | number
     Grade?: EnumGradeFieldUpdateOperationsInput | $Enums.Grade
+    Gender?: BoolFieldUpdateOperationsInput | boolean
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     selectUnits?: SelectUnitUncheckedUpdateManyWithoutStudentNestedInput
@@ -9662,6 +9707,7 @@ export namespace Prisma {
     PhoneNumber?: string | null
     fieldId: bigint | number
     Grade: $Enums.Grade
+    Gender?: boolean
     Updated_at?: Date | string
     Created_at?: Date | string
   }
@@ -9677,6 +9723,7 @@ export namespace Prisma {
     HomeNumber?: NullableStringFieldUpdateOperationsInput | string | null
     PhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     Grade?: EnumGradeFieldUpdateOperationsInput | $Enums.Grade
+    Gender?: BoolFieldUpdateOperationsInput | boolean
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9693,6 +9740,7 @@ export namespace Prisma {
     PhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     fieldId?: BigIntFieldUpdateOperationsInput | bigint | number
     Grade?: EnumGradeFieldUpdateOperationsInput | $Enums.Grade
+    Gender?: BoolFieldUpdateOperationsInput | boolean
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9761,7 +9809,7 @@ export namespace Prisma {
     PassCondition?: number | null
     TheoriHours?: number | null
     PracticalHours?: number | null
-    RequireLesson?: number | null
+    RequireUnit?: number | null
     NotifCode: bigint | number
     ValidFrom: Date | string
     ValidTill?: Date | string | null
@@ -9770,8 +9818,8 @@ export namespace Prisma {
     Updated_at?: Date | string
     field?: FieldCreateNestedOneWithoutLessonsInput
     teacher: TeacherCreateNestedOneWithoutLessonsInput
-    requiredForUnit?: LessonCreateNestedManyWithoutRequiresUnitInput
-    requiresUnit?: LessonCreateNestedOneWithoutRequiredForUnitInput
+    requiredForLesson?: LessonCreateNestedManyWithoutRequiresLessonInput
+    requiresLesson?: LessonCreateNestedOneWithoutRequiredForLessonInput
     selectUnits?: SelectUnitCreateNestedManyWithoutLessonInput
   }
 
@@ -9785,15 +9833,15 @@ export namespace Prisma {
     PassCondition?: number | null
     TheoriHours?: number | null
     PracticalHours?: number | null
-    RequireLesson?: number | null
-    RequireUnit?: bigint | number | null
+    RequireLesson?: bigint | number | null
+    RequireUnit?: number | null
     NotifCode: bigint | number
     ValidFrom: Date | string
     ValidTill?: Date | string | null
     PricePerUnit?: bigint | number | null
     Created_at?: Date | string
     Updated_at?: Date | string
-    requiredForUnit?: LessonUncheckedCreateNestedManyWithoutRequiresUnitInput
+    requiredForLesson?: LessonUncheckedCreateNestedManyWithoutRequiresLessonInput
     selectUnits?: SelectUnitUncheckedCreateNestedManyWithoutLessonInput
   }
 
@@ -9805,7 +9853,7 @@ export namespace Prisma {
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
     PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
-    RequireLesson?: NullableIntFieldUpdateOperationsInput | number | null
+    RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
     NotifCode?: BigIntFieldUpdateOperationsInput | bigint | number
     ValidFrom?: DateTimeFieldUpdateOperationsInput | Date | string
     ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -9814,8 +9862,8 @@ export namespace Prisma {
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     field?: FieldUpdateOneWithoutLessonsNestedInput
     teacher?: TeacherUpdateOneRequiredWithoutLessonsNestedInput
-    requiredForUnit?: LessonUpdateManyWithoutRequiresUnitNestedInput
-    requiresUnit?: LessonUpdateOneWithoutRequiredForUnitNestedInput
+    requiredForLesson?: LessonUpdateManyWithoutRequiresLessonNestedInput
+    requiresLesson?: LessonUpdateOneWithoutRequiredForLessonNestedInput
     selectUnits?: SelectUnitUpdateManyWithoutLessonNestedInput
   }
 
@@ -9829,15 +9877,15 @@ export namespace Prisma {
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
     PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
-    RequireLesson?: NullableIntFieldUpdateOperationsInput | number | null
-    RequireUnit?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    RequireLesson?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
     NotifCode?: BigIntFieldUpdateOperationsInput | bigint | number
     ValidFrom?: DateTimeFieldUpdateOperationsInput | Date | string
     ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     PricePerUnit?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    requiredForUnit?: LessonUncheckedUpdateManyWithoutRequiresUnitNestedInput
+    requiredForLesson?: LessonUncheckedUpdateManyWithoutRequiresLessonNestedInput
     selectUnits?: SelectUnitUncheckedUpdateManyWithoutLessonNestedInput
   }
 
@@ -9851,8 +9899,8 @@ export namespace Prisma {
     PassCondition?: number | null
     TheoriHours?: number | null
     PracticalHours?: number | null
-    RequireLesson?: number | null
-    RequireUnit?: bigint | number | null
+    RequireLesson?: bigint | number | null
+    RequireUnit?: number | null
     NotifCode: bigint | number
     ValidFrom: Date | string
     ValidTill?: Date | string | null
@@ -9869,7 +9917,7 @@ export namespace Prisma {
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
     PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
-    RequireLesson?: NullableIntFieldUpdateOperationsInput | number | null
+    RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
     NotifCode?: BigIntFieldUpdateOperationsInput | bigint | number
     ValidFrom?: DateTimeFieldUpdateOperationsInput | Date | string
     ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -9888,8 +9936,8 @@ export namespace Prisma {
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
     PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
-    RequireLesson?: NullableIntFieldUpdateOperationsInput | number | null
-    RequireUnit?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    RequireLesson?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
     NotifCode?: BigIntFieldUpdateOperationsInput | bigint | number
     ValidFrom?: DateTimeFieldUpdateOperationsInput | Date | string
     ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -10083,6 +10131,7 @@ export namespace Prisma {
     LastName: string
     PhoneNumber: string
     Birth?: Date | string | null
+    Gender?: boolean
     Updated_at?: Date | string
     Created_at?: Date | string
     field?: FieldCreateNestedOneWithoutTeachersInput
@@ -10097,6 +10146,7 @@ export namespace Prisma {
     PhoneNumber: string
     fieldId?: bigint | number | null
     Birth?: Date | string | null
+    Gender?: boolean
     Updated_at?: Date | string
     Created_at?: Date | string
     lessons?: LessonUncheckedCreateNestedManyWithoutTeacherInput
@@ -10109,6 +10159,7 @@ export namespace Prisma {
     LastName?: StringFieldUpdateOperationsInput | string
     PhoneNumber?: StringFieldUpdateOperationsInput | string
     Birth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Gender?: BoolFieldUpdateOperationsInput | boolean
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     field?: FieldUpdateOneWithoutTeachersNestedInput
@@ -10123,6 +10174,7 @@ export namespace Prisma {
     PhoneNumber?: StringFieldUpdateOperationsInput | string
     fieldId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Birth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Gender?: BoolFieldUpdateOperationsInput | boolean
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     lessons?: LessonUncheckedUpdateManyWithoutTeacherNestedInput
@@ -10136,6 +10188,7 @@ export namespace Prisma {
     PhoneNumber: string
     fieldId?: bigint | number | null
     Birth?: Date | string | null
+    Gender?: boolean
     Updated_at?: Date | string
     Created_at?: Date | string
   }
@@ -10147,6 +10200,7 @@ export namespace Prisma {
     LastName?: StringFieldUpdateOperationsInput | string
     PhoneNumber?: StringFieldUpdateOperationsInput | string
     Birth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Gender?: BoolFieldUpdateOperationsInput | boolean
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10159,6 +10213,7 @@ export namespace Prisma {
     PhoneNumber?: StringFieldUpdateOperationsInput | string
     fieldId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Birth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Gender?: BoolFieldUpdateOperationsInput | boolean
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10222,6 +10277,11 @@ export namespace Prisma {
     not?: NestedEnumGradeFilter<$PrismaModel> | $Enums.Grade
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[]
@@ -10271,6 +10331,7 @@ export namespace Prisma {
     PhoneNumber?: SortOrder
     fieldId?: SortOrder
     Grade?: SortOrder
+    Gender?: SortOrder
     Updated_at?: SortOrder
     Created_at?: SortOrder
   }
@@ -10292,6 +10353,7 @@ export namespace Prisma {
     PhoneNumber?: SortOrder
     fieldId?: SortOrder
     Grade?: SortOrder
+    Gender?: SortOrder
     Updated_at?: SortOrder
     Created_at?: SortOrder
   }
@@ -10308,6 +10370,7 @@ export namespace Prisma {
     PhoneNumber?: SortOrder
     fieldId?: SortOrder
     Grade?: SortOrder
+    Gender?: SortOrder
     Updated_at?: SortOrder
     Created_at?: SortOrder
   }
@@ -10391,6 +10454,14 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumGradeFilter<$PrismaModel>
     _max?: NestedEnumGradeFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -10855,6 +10926,7 @@ export namespace Prisma {
     PhoneNumber?: SortOrder
     fieldId?: SortOrder
     Birth?: SortOrder
+    Gender?: SortOrder
     Updated_at?: SortOrder
     Created_at?: SortOrder
   }
@@ -10872,6 +10944,7 @@ export namespace Prisma {
     PhoneNumber?: SortOrder
     fieldId?: SortOrder
     Birth?: SortOrder
+    Gender?: SortOrder
     Updated_at?: SortOrder
     Created_at?: SortOrder
   }
@@ -10884,6 +10957,7 @@ export namespace Prisma {
     PhoneNumber?: SortOrder
     fieldId?: SortOrder
     Birth?: SortOrder
+    Gender?: SortOrder
     Updated_at?: SortOrder
     Created_at?: SortOrder
   }
@@ -10935,6 +11009,10 @@ export namespace Prisma {
 
   export type EnumGradeFieldUpdateOperationsInput = {
     set?: $Enums.Grade
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
@@ -10993,16 +11071,16 @@ export namespace Prisma {
     connect?: TeacherWhereUniqueInput
   }
 
-  export type LessonCreateNestedManyWithoutRequiresUnitInput = {
-    create?: XOR<LessonCreateWithoutRequiresUnitInput, LessonUncheckedCreateWithoutRequiresUnitInput> | LessonCreateWithoutRequiresUnitInput[] | LessonUncheckedCreateWithoutRequiresUnitInput[]
-    connectOrCreate?: LessonCreateOrConnectWithoutRequiresUnitInput | LessonCreateOrConnectWithoutRequiresUnitInput[]
-    createMany?: LessonCreateManyRequiresUnitInputEnvelope
+  export type LessonCreateNestedManyWithoutRequiresLessonInput = {
+    create?: XOR<LessonCreateWithoutRequiresLessonInput, LessonUncheckedCreateWithoutRequiresLessonInput> | LessonCreateWithoutRequiresLessonInput[] | LessonUncheckedCreateWithoutRequiresLessonInput[]
+    connectOrCreate?: LessonCreateOrConnectWithoutRequiresLessonInput | LessonCreateOrConnectWithoutRequiresLessonInput[]
+    createMany?: LessonCreateManyRequiresLessonInputEnvelope
     connect?: LessonWhereUniqueInput | LessonWhereUniqueInput[]
   }
 
-  export type LessonCreateNestedOneWithoutRequiredForUnitInput = {
-    create?: XOR<LessonCreateWithoutRequiredForUnitInput, LessonUncheckedCreateWithoutRequiredForUnitInput>
-    connectOrCreate?: LessonCreateOrConnectWithoutRequiredForUnitInput
+  export type LessonCreateNestedOneWithoutRequiredForLessonInput = {
+    create?: XOR<LessonCreateWithoutRequiredForLessonInput, LessonUncheckedCreateWithoutRequiredForLessonInput>
+    connectOrCreate?: LessonCreateOrConnectWithoutRequiredForLessonInput
     connect?: LessonWhereUniqueInput
   }
 
@@ -11013,10 +11091,10 @@ export namespace Prisma {
     connect?: SelectUnitWhereUniqueInput | SelectUnitWhereUniqueInput[]
   }
 
-  export type LessonUncheckedCreateNestedManyWithoutRequiresUnitInput = {
-    create?: XOR<LessonCreateWithoutRequiresUnitInput, LessonUncheckedCreateWithoutRequiresUnitInput> | LessonCreateWithoutRequiresUnitInput[] | LessonUncheckedCreateWithoutRequiresUnitInput[]
-    connectOrCreate?: LessonCreateOrConnectWithoutRequiresUnitInput | LessonCreateOrConnectWithoutRequiresUnitInput[]
-    createMany?: LessonCreateManyRequiresUnitInputEnvelope
+  export type LessonUncheckedCreateNestedManyWithoutRequiresLessonInput = {
+    create?: XOR<LessonCreateWithoutRequiresLessonInput, LessonUncheckedCreateWithoutRequiresLessonInput> | LessonCreateWithoutRequiresLessonInput[] | LessonUncheckedCreateWithoutRequiresLessonInput[]
+    connectOrCreate?: LessonCreateOrConnectWithoutRequiresLessonInput | LessonCreateOrConnectWithoutRequiresLessonInput[]
+    createMany?: LessonCreateManyRequiresLessonInputEnvelope
     connect?: LessonWhereUniqueInput | LessonWhereUniqueInput[]
   }
 
@@ -11073,28 +11151,28 @@ export namespace Prisma {
     update?: XOR<XOR<TeacherUpdateToOneWithWhereWithoutLessonsInput, TeacherUpdateWithoutLessonsInput>, TeacherUncheckedUpdateWithoutLessonsInput>
   }
 
-  export type LessonUpdateManyWithoutRequiresUnitNestedInput = {
-    create?: XOR<LessonCreateWithoutRequiresUnitInput, LessonUncheckedCreateWithoutRequiresUnitInput> | LessonCreateWithoutRequiresUnitInput[] | LessonUncheckedCreateWithoutRequiresUnitInput[]
-    connectOrCreate?: LessonCreateOrConnectWithoutRequiresUnitInput | LessonCreateOrConnectWithoutRequiresUnitInput[]
-    upsert?: LessonUpsertWithWhereUniqueWithoutRequiresUnitInput | LessonUpsertWithWhereUniqueWithoutRequiresUnitInput[]
-    createMany?: LessonCreateManyRequiresUnitInputEnvelope
+  export type LessonUpdateManyWithoutRequiresLessonNestedInput = {
+    create?: XOR<LessonCreateWithoutRequiresLessonInput, LessonUncheckedCreateWithoutRequiresLessonInput> | LessonCreateWithoutRequiresLessonInput[] | LessonUncheckedCreateWithoutRequiresLessonInput[]
+    connectOrCreate?: LessonCreateOrConnectWithoutRequiresLessonInput | LessonCreateOrConnectWithoutRequiresLessonInput[]
+    upsert?: LessonUpsertWithWhereUniqueWithoutRequiresLessonInput | LessonUpsertWithWhereUniqueWithoutRequiresLessonInput[]
+    createMany?: LessonCreateManyRequiresLessonInputEnvelope
     set?: LessonWhereUniqueInput | LessonWhereUniqueInput[]
     disconnect?: LessonWhereUniqueInput | LessonWhereUniqueInput[]
     delete?: LessonWhereUniqueInput | LessonWhereUniqueInput[]
     connect?: LessonWhereUniqueInput | LessonWhereUniqueInput[]
-    update?: LessonUpdateWithWhereUniqueWithoutRequiresUnitInput | LessonUpdateWithWhereUniqueWithoutRequiresUnitInput[]
-    updateMany?: LessonUpdateManyWithWhereWithoutRequiresUnitInput | LessonUpdateManyWithWhereWithoutRequiresUnitInput[]
+    update?: LessonUpdateWithWhereUniqueWithoutRequiresLessonInput | LessonUpdateWithWhereUniqueWithoutRequiresLessonInput[]
+    updateMany?: LessonUpdateManyWithWhereWithoutRequiresLessonInput | LessonUpdateManyWithWhereWithoutRequiresLessonInput[]
     deleteMany?: LessonScalarWhereInput | LessonScalarWhereInput[]
   }
 
-  export type LessonUpdateOneWithoutRequiredForUnitNestedInput = {
-    create?: XOR<LessonCreateWithoutRequiredForUnitInput, LessonUncheckedCreateWithoutRequiredForUnitInput>
-    connectOrCreate?: LessonCreateOrConnectWithoutRequiredForUnitInput
-    upsert?: LessonUpsertWithoutRequiredForUnitInput
+  export type LessonUpdateOneWithoutRequiredForLessonNestedInput = {
+    create?: XOR<LessonCreateWithoutRequiredForLessonInput, LessonUncheckedCreateWithoutRequiredForLessonInput>
+    connectOrCreate?: LessonCreateOrConnectWithoutRequiredForLessonInput
+    upsert?: LessonUpsertWithoutRequiredForLessonInput
     disconnect?: LessonWhereInput | boolean
     delete?: LessonWhereInput | boolean
     connect?: LessonWhereUniqueInput
-    update?: XOR<XOR<LessonUpdateToOneWithWhereWithoutRequiredForUnitInput, LessonUpdateWithoutRequiredForUnitInput>, LessonUncheckedUpdateWithoutRequiredForUnitInput>
+    update?: XOR<XOR<LessonUpdateToOneWithWhereWithoutRequiredForLessonInput, LessonUpdateWithoutRequiredForLessonInput>, LessonUncheckedUpdateWithoutRequiredForLessonInput>
   }
 
   export type SelectUnitUpdateManyWithoutLessonNestedInput = {
@@ -11111,17 +11189,17 @@ export namespace Prisma {
     deleteMany?: SelectUnitScalarWhereInput | SelectUnitScalarWhereInput[]
   }
 
-  export type LessonUncheckedUpdateManyWithoutRequiresUnitNestedInput = {
-    create?: XOR<LessonCreateWithoutRequiresUnitInput, LessonUncheckedCreateWithoutRequiresUnitInput> | LessonCreateWithoutRequiresUnitInput[] | LessonUncheckedCreateWithoutRequiresUnitInput[]
-    connectOrCreate?: LessonCreateOrConnectWithoutRequiresUnitInput | LessonCreateOrConnectWithoutRequiresUnitInput[]
-    upsert?: LessonUpsertWithWhereUniqueWithoutRequiresUnitInput | LessonUpsertWithWhereUniqueWithoutRequiresUnitInput[]
-    createMany?: LessonCreateManyRequiresUnitInputEnvelope
+  export type LessonUncheckedUpdateManyWithoutRequiresLessonNestedInput = {
+    create?: XOR<LessonCreateWithoutRequiresLessonInput, LessonUncheckedCreateWithoutRequiresLessonInput> | LessonCreateWithoutRequiresLessonInput[] | LessonUncheckedCreateWithoutRequiresLessonInput[]
+    connectOrCreate?: LessonCreateOrConnectWithoutRequiresLessonInput | LessonCreateOrConnectWithoutRequiresLessonInput[]
+    upsert?: LessonUpsertWithWhereUniqueWithoutRequiresLessonInput | LessonUpsertWithWhereUniqueWithoutRequiresLessonInput[]
+    createMany?: LessonCreateManyRequiresLessonInputEnvelope
     set?: LessonWhereUniqueInput | LessonWhereUniqueInput[]
     disconnect?: LessonWhereUniqueInput | LessonWhereUniqueInput[]
     delete?: LessonWhereUniqueInput | LessonWhereUniqueInput[]
     connect?: LessonWhereUniqueInput | LessonWhereUniqueInput[]
-    update?: LessonUpdateWithWhereUniqueWithoutRequiresUnitInput | LessonUpdateWithWhereUniqueWithoutRequiresUnitInput[]
-    updateMany?: LessonUpdateManyWithWhereWithoutRequiresUnitInput | LessonUpdateManyWithWhereWithoutRequiresUnitInput[]
+    update?: LessonUpdateWithWhereUniqueWithoutRequiresLessonInput | LessonUpdateWithWhereUniqueWithoutRequiresLessonInput[]
+    updateMany?: LessonUpdateManyWithWhereWithoutRequiresLessonInput | LessonUpdateManyWithWhereWithoutRequiresLessonInput[]
     deleteMany?: LessonScalarWhereInput | LessonScalarWhereInput[]
   }
 
@@ -11414,6 +11492,11 @@ export namespace Prisma {
     not?: NestedEnumGradeFilter<$PrismaModel> | $Enums.Grade
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[]
@@ -11532,6 +11615,14 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumGradeFilter<$PrismaModel>
     _max?: NestedEnumGradeFilter<$PrismaModel>
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -11808,6 +11899,7 @@ export namespace Prisma {
     LastName: string
     PhoneNumber: string
     Birth?: Date | string | null
+    Gender?: boolean
     Updated_at?: Date | string
     Created_at?: Date | string
     field?: FieldCreateNestedOneWithoutTeachersInput
@@ -11821,6 +11913,7 @@ export namespace Prisma {
     PhoneNumber: string
     fieldId?: bigint | number | null
     Birth?: Date | string | null
+    Gender?: boolean
     Updated_at?: Date | string
     Created_at?: Date | string
   }
@@ -11830,7 +11923,7 @@ export namespace Prisma {
     create: XOR<TeacherCreateWithoutLessonsInput, TeacherUncheckedCreateWithoutLessonsInput>
   }
 
-  export type LessonCreateWithoutRequiresUnitInput = {
+  export type LessonCreateWithoutRequiresLessonInput = {
     id?: bigint | number
     LessonName: string
     Unit: number
@@ -11838,7 +11931,7 @@ export namespace Prisma {
     PassCondition?: number | null
     TheoriHours?: number | null
     PracticalHours?: number | null
-    RequireLesson?: number | null
+    RequireUnit?: number | null
     NotifCode: bigint | number
     ValidFrom: Date | string
     ValidTill?: Date | string | null
@@ -11847,11 +11940,11 @@ export namespace Prisma {
     Updated_at?: Date | string
     field?: FieldCreateNestedOneWithoutLessonsInput
     teacher: TeacherCreateNestedOneWithoutLessonsInput
-    requiredForUnit?: LessonCreateNestedManyWithoutRequiresUnitInput
+    requiredForLesson?: LessonCreateNestedManyWithoutRequiresLessonInput
     selectUnits?: SelectUnitCreateNestedManyWithoutLessonInput
   }
 
-  export type LessonUncheckedCreateWithoutRequiresUnitInput = {
+  export type LessonUncheckedCreateWithoutRequiresLessonInput = {
     id?: bigint | number
     TeacherId: bigint | number
     LessonName: string
@@ -11861,28 +11954,28 @@ export namespace Prisma {
     PassCondition?: number | null
     TheoriHours?: number | null
     PracticalHours?: number | null
-    RequireLesson?: number | null
+    RequireUnit?: number | null
     NotifCode: bigint | number
     ValidFrom: Date | string
     ValidTill?: Date | string | null
     PricePerUnit?: bigint | number | null
     Created_at?: Date | string
     Updated_at?: Date | string
-    requiredForUnit?: LessonUncheckedCreateNestedManyWithoutRequiresUnitInput
+    requiredForLesson?: LessonUncheckedCreateNestedManyWithoutRequiresLessonInput
     selectUnits?: SelectUnitUncheckedCreateNestedManyWithoutLessonInput
   }
 
-  export type LessonCreateOrConnectWithoutRequiresUnitInput = {
+  export type LessonCreateOrConnectWithoutRequiresLessonInput = {
     where: LessonWhereUniqueInput
-    create: XOR<LessonCreateWithoutRequiresUnitInput, LessonUncheckedCreateWithoutRequiresUnitInput>
+    create: XOR<LessonCreateWithoutRequiresLessonInput, LessonUncheckedCreateWithoutRequiresLessonInput>
   }
 
-  export type LessonCreateManyRequiresUnitInputEnvelope = {
-    data: LessonCreateManyRequiresUnitInput | LessonCreateManyRequiresUnitInput[]
+  export type LessonCreateManyRequiresLessonInputEnvelope = {
+    data: LessonCreateManyRequiresLessonInput | LessonCreateManyRequiresLessonInput[]
     skipDuplicates?: boolean
   }
 
-  export type LessonCreateWithoutRequiredForUnitInput = {
+  export type LessonCreateWithoutRequiredForLessonInput = {
     id?: bigint | number
     LessonName: string
     Unit: number
@@ -11890,7 +11983,7 @@ export namespace Prisma {
     PassCondition?: number | null
     TheoriHours?: number | null
     PracticalHours?: number | null
-    RequireLesson?: number | null
+    RequireUnit?: number | null
     NotifCode: bigint | number
     ValidFrom: Date | string
     ValidTill?: Date | string | null
@@ -11899,11 +11992,11 @@ export namespace Prisma {
     Updated_at?: Date | string
     field?: FieldCreateNestedOneWithoutLessonsInput
     teacher: TeacherCreateNestedOneWithoutLessonsInput
-    requiresUnit?: LessonCreateNestedOneWithoutRequiredForUnitInput
+    requiresLesson?: LessonCreateNestedOneWithoutRequiredForLessonInput
     selectUnits?: SelectUnitCreateNestedManyWithoutLessonInput
   }
 
-  export type LessonUncheckedCreateWithoutRequiredForUnitInput = {
+  export type LessonUncheckedCreateWithoutRequiredForLessonInput = {
     id?: bigint | number
     TeacherId: bigint | number
     LessonName: string
@@ -11913,8 +12006,8 @@ export namespace Prisma {
     PassCondition?: number | null
     TheoriHours?: number | null
     PracticalHours?: number | null
-    RequireLesson?: number | null
-    RequireUnit?: bigint | number | null
+    RequireLesson?: bigint | number | null
+    RequireUnit?: number | null
     NotifCode: bigint | number
     ValidFrom: Date | string
     ValidTill?: Date | string | null
@@ -11924,9 +12017,9 @@ export namespace Prisma {
     selectUnits?: SelectUnitUncheckedCreateNestedManyWithoutLessonInput
   }
 
-  export type LessonCreateOrConnectWithoutRequiredForUnitInput = {
+  export type LessonCreateOrConnectWithoutRequiredForLessonInput = {
     where: LessonWhereUniqueInput
-    create: XOR<LessonCreateWithoutRequiredForUnitInput, LessonUncheckedCreateWithoutRequiredForUnitInput>
+    create: XOR<LessonCreateWithoutRequiredForLessonInput, LessonUncheckedCreateWithoutRequiredForLessonInput>
   }
 
   export type SelectUnitCreateWithoutLessonInput = {
@@ -12004,6 +12097,7 @@ export namespace Prisma {
     LastName?: StringFieldUpdateOperationsInput | string
     PhoneNumber?: StringFieldUpdateOperationsInput | string
     Birth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Gender?: BoolFieldUpdateOperationsInput | boolean
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     field?: FieldUpdateOneWithoutTeachersNestedInput
@@ -12017,24 +12111,25 @@ export namespace Prisma {
     PhoneNumber?: StringFieldUpdateOperationsInput | string
     fieldId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Birth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Gender?: BoolFieldUpdateOperationsInput | boolean
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type LessonUpsertWithWhereUniqueWithoutRequiresUnitInput = {
+  export type LessonUpsertWithWhereUniqueWithoutRequiresLessonInput = {
     where: LessonWhereUniqueInput
-    update: XOR<LessonUpdateWithoutRequiresUnitInput, LessonUncheckedUpdateWithoutRequiresUnitInput>
-    create: XOR<LessonCreateWithoutRequiresUnitInput, LessonUncheckedCreateWithoutRequiresUnitInput>
+    update: XOR<LessonUpdateWithoutRequiresLessonInput, LessonUncheckedUpdateWithoutRequiresLessonInput>
+    create: XOR<LessonCreateWithoutRequiresLessonInput, LessonUncheckedCreateWithoutRequiresLessonInput>
   }
 
-  export type LessonUpdateWithWhereUniqueWithoutRequiresUnitInput = {
+  export type LessonUpdateWithWhereUniqueWithoutRequiresLessonInput = {
     where: LessonWhereUniqueInput
-    data: XOR<LessonUpdateWithoutRequiresUnitInput, LessonUncheckedUpdateWithoutRequiresUnitInput>
+    data: XOR<LessonUpdateWithoutRequiresLessonInput, LessonUncheckedUpdateWithoutRequiresLessonInput>
   }
 
-  export type LessonUpdateManyWithWhereWithoutRequiresUnitInput = {
+  export type LessonUpdateManyWithWhereWithoutRequiresLessonInput = {
     where: LessonScalarWhereInput
-    data: XOR<LessonUpdateManyMutationInput, LessonUncheckedUpdateManyWithoutRequiresUnitInput>
+    data: XOR<LessonUpdateManyMutationInput, LessonUncheckedUpdateManyWithoutRequiresLessonInput>
   }
 
   export type LessonScalarWhereInput = {
@@ -12050,8 +12145,8 @@ export namespace Prisma {
     PassCondition?: IntNullableFilter<"Lesson"> | number | null
     TheoriHours?: IntNullableFilter<"Lesson"> | number | null
     PracticalHours?: IntNullableFilter<"Lesson"> | number | null
-    RequireLesson?: IntNullableFilter<"Lesson"> | number | null
-    RequireUnit?: BigIntNullableFilter<"Lesson"> | bigint | number | null
+    RequireLesson?: BigIntNullableFilter<"Lesson"> | bigint | number | null
+    RequireUnit?: IntNullableFilter<"Lesson"> | number | null
     NotifCode?: BigIntFilter<"Lesson"> | bigint | number
     ValidFrom?: DateTimeFilter<"Lesson"> | Date | string
     ValidTill?: DateTimeNullableFilter<"Lesson"> | Date | string | null
@@ -12060,18 +12155,18 @@ export namespace Prisma {
     Updated_at?: DateTimeFilter<"Lesson"> | Date | string
   }
 
-  export type LessonUpsertWithoutRequiredForUnitInput = {
-    update: XOR<LessonUpdateWithoutRequiredForUnitInput, LessonUncheckedUpdateWithoutRequiredForUnitInput>
-    create: XOR<LessonCreateWithoutRequiredForUnitInput, LessonUncheckedCreateWithoutRequiredForUnitInput>
+  export type LessonUpsertWithoutRequiredForLessonInput = {
+    update: XOR<LessonUpdateWithoutRequiredForLessonInput, LessonUncheckedUpdateWithoutRequiredForLessonInput>
+    create: XOR<LessonCreateWithoutRequiredForLessonInput, LessonUncheckedCreateWithoutRequiredForLessonInput>
     where?: LessonWhereInput
   }
 
-  export type LessonUpdateToOneWithWhereWithoutRequiredForUnitInput = {
+  export type LessonUpdateToOneWithWhereWithoutRequiredForLessonInput = {
     where?: LessonWhereInput
-    data: XOR<LessonUpdateWithoutRequiredForUnitInput, LessonUncheckedUpdateWithoutRequiredForUnitInput>
+    data: XOR<LessonUpdateWithoutRequiredForLessonInput, LessonUncheckedUpdateWithoutRequiredForLessonInput>
   }
 
-  export type LessonUpdateWithoutRequiredForUnitInput = {
+  export type LessonUpdateWithoutRequiredForLessonInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     LessonName?: StringFieldUpdateOperationsInput | string
     Unit?: IntFieldUpdateOperationsInput | number
@@ -12079,7 +12174,7 @@ export namespace Prisma {
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
     PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
-    RequireLesson?: NullableIntFieldUpdateOperationsInput | number | null
+    RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
     NotifCode?: BigIntFieldUpdateOperationsInput | bigint | number
     ValidFrom?: DateTimeFieldUpdateOperationsInput | Date | string
     ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -12088,11 +12183,11 @@ export namespace Prisma {
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     field?: FieldUpdateOneWithoutLessonsNestedInput
     teacher?: TeacherUpdateOneRequiredWithoutLessonsNestedInput
-    requiresUnit?: LessonUpdateOneWithoutRequiredForUnitNestedInput
+    requiresLesson?: LessonUpdateOneWithoutRequiredForLessonNestedInput
     selectUnits?: SelectUnitUpdateManyWithoutLessonNestedInput
   }
 
-  export type LessonUncheckedUpdateWithoutRequiredForUnitInput = {
+  export type LessonUncheckedUpdateWithoutRequiredForLessonInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     TeacherId?: BigIntFieldUpdateOperationsInput | bigint | number
     LessonName?: StringFieldUpdateOperationsInput | string
@@ -12102,8 +12197,8 @@ export namespace Prisma {
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
     PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
-    RequireLesson?: NullableIntFieldUpdateOperationsInput | number | null
-    RequireUnit?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    RequireLesson?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
     NotifCode?: BigIntFieldUpdateOperationsInput | bigint | number
     ValidFrom?: DateTimeFieldUpdateOperationsInput | Date | string
     ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -12140,6 +12235,7 @@ export namespace Prisma {
     HomeNumber?: string | null
     PhoneNumber?: string | null
     Grade: $Enums.Grade
+    Gender?: boolean
     Updated_at?: Date | string
     Created_at?: Date | string
     field: FieldCreateNestedOneWithoutStudentsInput
@@ -12157,6 +12253,7 @@ export namespace Prisma {
     PhoneNumber?: string | null
     fieldId: bigint | number
     Grade: $Enums.Grade
+    Gender?: boolean
     Updated_at?: Date | string
     Created_at?: Date | string
   }
@@ -12174,7 +12271,7 @@ export namespace Prisma {
     PassCondition?: number | null
     TheoriHours?: number | null
     PracticalHours?: number | null
-    RequireLesson?: number | null
+    RequireUnit?: number | null
     NotifCode: bigint | number
     ValidFrom: Date | string
     ValidTill?: Date | string | null
@@ -12183,8 +12280,8 @@ export namespace Prisma {
     Updated_at?: Date | string
     field?: FieldCreateNestedOneWithoutLessonsInput
     teacher: TeacherCreateNestedOneWithoutLessonsInput
-    requiredForUnit?: LessonCreateNestedManyWithoutRequiresUnitInput
-    requiresUnit?: LessonCreateNestedOneWithoutRequiredForUnitInput
+    requiredForLesson?: LessonCreateNestedManyWithoutRequiresLessonInput
+    requiresLesson?: LessonCreateNestedOneWithoutRequiredForLessonInput
   }
 
   export type LessonUncheckedCreateWithoutSelectUnitsInput = {
@@ -12197,15 +12294,15 @@ export namespace Prisma {
     PassCondition?: number | null
     TheoriHours?: number | null
     PracticalHours?: number | null
-    RequireLesson?: number | null
-    RequireUnit?: bigint | number | null
+    RequireLesson?: bigint | number | null
+    RequireUnit?: number | null
     NotifCode: bigint | number
     ValidFrom: Date | string
     ValidTill?: Date | string | null
     PricePerUnit?: bigint | number | null
     Created_at?: Date | string
     Updated_at?: Date | string
-    requiredForUnit?: LessonUncheckedCreateNestedManyWithoutRequiresUnitInput
+    requiredForLesson?: LessonUncheckedCreateNestedManyWithoutRequiresLessonInput
   }
 
   export type LessonCreateOrConnectWithoutSelectUnitsInput = {
@@ -12235,6 +12332,7 @@ export namespace Prisma {
     HomeNumber?: NullableStringFieldUpdateOperationsInput | string | null
     PhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     Grade?: EnumGradeFieldUpdateOperationsInput | $Enums.Grade
+    Gender?: BoolFieldUpdateOperationsInput | boolean
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     field?: FieldUpdateOneRequiredWithoutStudentsNestedInput
@@ -12252,6 +12350,7 @@ export namespace Prisma {
     PhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     fieldId?: BigIntFieldUpdateOperationsInput | bigint | number
     Grade?: EnumGradeFieldUpdateOperationsInput | $Enums.Grade
+    Gender?: BoolFieldUpdateOperationsInput | boolean
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -12275,7 +12374,7 @@ export namespace Prisma {
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
     PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
-    RequireLesson?: NullableIntFieldUpdateOperationsInput | number | null
+    RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
     NotifCode?: BigIntFieldUpdateOperationsInput | bigint | number
     ValidFrom?: DateTimeFieldUpdateOperationsInput | Date | string
     ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -12284,8 +12383,8 @@ export namespace Prisma {
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     field?: FieldUpdateOneWithoutLessonsNestedInput
     teacher?: TeacherUpdateOneRequiredWithoutLessonsNestedInput
-    requiredForUnit?: LessonUpdateManyWithoutRequiresUnitNestedInput
-    requiresUnit?: LessonUpdateOneWithoutRequiredForUnitNestedInput
+    requiredForLesson?: LessonUpdateManyWithoutRequiresLessonNestedInput
+    requiresLesson?: LessonUpdateOneWithoutRequiredForLessonNestedInput
   }
 
   export type LessonUncheckedUpdateWithoutSelectUnitsInput = {
@@ -12298,15 +12397,15 @@ export namespace Prisma {
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
     PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
-    RequireLesson?: NullableIntFieldUpdateOperationsInput | number | null
-    RequireUnit?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    RequireLesson?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
     NotifCode?: BigIntFieldUpdateOperationsInput | bigint | number
     ValidFrom?: DateTimeFieldUpdateOperationsInput | Date | string
     ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     PricePerUnit?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    requiredForUnit?: LessonUncheckedUpdateManyWithoutRequiresUnitNestedInput
+    requiredForLesson?: LessonUncheckedUpdateManyWithoutRequiresLessonNestedInput
   }
 
   export type StudentCreateWithoutFieldInput = {
@@ -12320,6 +12419,7 @@ export namespace Prisma {
     HomeNumber?: string | null
     PhoneNumber?: string | null
     Grade: $Enums.Grade
+    Gender?: boolean
     Updated_at?: Date | string
     Created_at?: Date | string
     selectUnits?: SelectUnitCreateNestedManyWithoutStudentInput
@@ -12336,6 +12436,7 @@ export namespace Prisma {
     HomeNumber?: string | null
     PhoneNumber?: string | null
     Grade: $Enums.Grade
+    Gender?: boolean
     Updated_at?: Date | string
     Created_at?: Date | string
     selectUnits?: SelectUnitUncheckedCreateNestedManyWithoutStudentInput
@@ -12359,7 +12460,7 @@ export namespace Prisma {
     PassCondition?: number | null
     TheoriHours?: number | null
     PracticalHours?: number | null
-    RequireLesson?: number | null
+    RequireUnit?: number | null
     NotifCode: bigint | number
     ValidFrom: Date | string
     ValidTill?: Date | string | null
@@ -12367,8 +12468,8 @@ export namespace Prisma {
     Created_at?: Date | string
     Updated_at?: Date | string
     teacher: TeacherCreateNestedOneWithoutLessonsInput
-    requiredForUnit?: LessonCreateNestedManyWithoutRequiresUnitInput
-    requiresUnit?: LessonCreateNestedOneWithoutRequiredForUnitInput
+    requiredForLesson?: LessonCreateNestedManyWithoutRequiresLessonInput
+    requiresLesson?: LessonCreateNestedOneWithoutRequiredForLessonInput
     selectUnits?: SelectUnitCreateNestedManyWithoutLessonInput
   }
 
@@ -12381,15 +12482,15 @@ export namespace Prisma {
     PassCondition?: number | null
     TheoriHours?: number | null
     PracticalHours?: number | null
-    RequireLesson?: number | null
-    RequireUnit?: bigint | number | null
+    RequireLesson?: bigint | number | null
+    RequireUnit?: number | null
     NotifCode: bigint | number
     ValidFrom: Date | string
     ValidTill?: Date | string | null
     PricePerUnit?: bigint | number | null
     Created_at?: Date | string
     Updated_at?: Date | string
-    requiredForUnit?: LessonUncheckedCreateNestedManyWithoutRequiresUnitInput
+    requiredForLesson?: LessonUncheckedCreateNestedManyWithoutRequiresLessonInput
     selectUnits?: SelectUnitUncheckedCreateNestedManyWithoutLessonInput
   }
 
@@ -12410,6 +12511,7 @@ export namespace Prisma {
     LastName: string
     PhoneNumber: string
     Birth?: Date | string | null
+    Gender?: boolean
     Updated_at?: Date | string
     Created_at?: Date | string
     lessons?: LessonCreateNestedManyWithoutTeacherInput
@@ -12422,6 +12524,7 @@ export namespace Prisma {
     LastName: string
     PhoneNumber: string
     Birth?: Date | string | null
+    Gender?: boolean
     Updated_at?: Date | string
     Created_at?: Date | string
     lessons?: LessonUncheckedCreateNestedManyWithoutTeacherInput
@@ -12468,6 +12571,7 @@ export namespace Prisma {
     PhoneNumber?: StringNullableFilter<"Student"> | string | null
     fieldId?: BigIntFilter<"Student"> | bigint | number
     Grade?: EnumGradeFilter<"Student"> | $Enums.Grade
+    Gender?: BoolFilter<"Student"> | boolean
     Updated_at?: DateTimeFilter<"Student"> | Date | string
     Created_at?: DateTimeFilter<"Student"> | Date | string
   }
@@ -12515,6 +12619,7 @@ export namespace Prisma {
     PhoneNumber?: StringFilter<"Teacher"> | string
     fieldId?: BigIntNullableFilter<"Teacher"> | bigint | number | null
     Birth?: DateTimeNullableFilter<"Teacher"> | Date | string | null
+    Gender?: BoolFilter<"Teacher"> | boolean
     Updated_at?: DateTimeFilter<"Teacher"> | Date | string
     Created_at?: DateTimeFilter<"Teacher"> | Date | string
   }
@@ -12550,7 +12655,7 @@ export namespace Prisma {
     PassCondition?: number | null
     TheoriHours?: number | null
     PracticalHours?: number | null
-    RequireLesson?: number | null
+    RequireUnit?: number | null
     NotifCode: bigint | number
     ValidFrom: Date | string
     ValidTill?: Date | string | null
@@ -12558,8 +12663,8 @@ export namespace Prisma {
     Created_at?: Date | string
     Updated_at?: Date | string
     field?: FieldCreateNestedOneWithoutLessonsInput
-    requiredForUnit?: LessonCreateNestedManyWithoutRequiresUnitInput
-    requiresUnit?: LessonCreateNestedOneWithoutRequiredForUnitInput
+    requiredForLesson?: LessonCreateNestedManyWithoutRequiresLessonInput
+    requiresLesson?: LessonCreateNestedOneWithoutRequiredForLessonInput
     selectUnits?: SelectUnitCreateNestedManyWithoutLessonInput
   }
 
@@ -12572,15 +12677,15 @@ export namespace Prisma {
     PassCondition?: number | null
     TheoriHours?: number | null
     PracticalHours?: number | null
-    RequireLesson?: number | null
-    RequireUnit?: bigint | number | null
+    RequireLesson?: bigint | number | null
+    RequireUnit?: number | null
     NotifCode: bigint | number
     ValidFrom: Date | string
     ValidTill?: Date | string | null
     PricePerUnit?: bigint | number | null
     Created_at?: Date | string
     Updated_at?: Date | string
-    requiredForUnit?: LessonUncheckedCreateNestedManyWithoutRequiresUnitInput
+    requiredForLesson?: LessonUncheckedCreateNestedManyWithoutRequiresLessonInput
     selectUnits?: SelectUnitUncheckedCreateNestedManyWithoutLessonInput
   }
 
@@ -12675,7 +12780,7 @@ export namespace Prisma {
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type LessonCreateManyRequiresUnitInput = {
+  export type LessonCreateManyRequiresLessonInput = {
     id?: bigint | number
     TeacherId: bigint | number
     LessonName: string
@@ -12685,7 +12790,7 @@ export namespace Prisma {
     PassCondition?: number | null
     TheoriHours?: number | null
     PracticalHours?: number | null
-    RequireLesson?: number | null
+    RequireUnit?: number | null
     NotifCode: bigint | number
     ValidFrom: Date | string
     ValidTill?: Date | string | null
@@ -12703,7 +12808,7 @@ export namespace Prisma {
     Updated_at?: Date | string
   }
 
-  export type LessonUpdateWithoutRequiresUnitInput = {
+  export type LessonUpdateWithoutRequiresLessonInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     LessonName?: StringFieldUpdateOperationsInput | string
     Unit?: IntFieldUpdateOperationsInput | number
@@ -12711,7 +12816,7 @@ export namespace Prisma {
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
     PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
-    RequireLesson?: NullableIntFieldUpdateOperationsInput | number | null
+    RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
     NotifCode?: BigIntFieldUpdateOperationsInput | bigint | number
     ValidFrom?: DateTimeFieldUpdateOperationsInput | Date | string
     ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -12720,11 +12825,11 @@ export namespace Prisma {
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     field?: FieldUpdateOneWithoutLessonsNestedInput
     teacher?: TeacherUpdateOneRequiredWithoutLessonsNestedInput
-    requiredForUnit?: LessonUpdateManyWithoutRequiresUnitNestedInput
+    requiredForLesson?: LessonUpdateManyWithoutRequiresLessonNestedInput
     selectUnits?: SelectUnitUpdateManyWithoutLessonNestedInput
   }
 
-  export type LessonUncheckedUpdateWithoutRequiresUnitInput = {
+  export type LessonUncheckedUpdateWithoutRequiresLessonInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     TeacherId?: BigIntFieldUpdateOperationsInput | bigint | number
     LessonName?: StringFieldUpdateOperationsInput | string
@@ -12734,18 +12839,18 @@ export namespace Prisma {
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
     PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
-    RequireLesson?: NullableIntFieldUpdateOperationsInput | number | null
+    RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
     NotifCode?: BigIntFieldUpdateOperationsInput | bigint | number
     ValidFrom?: DateTimeFieldUpdateOperationsInput | Date | string
     ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     PricePerUnit?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    requiredForUnit?: LessonUncheckedUpdateManyWithoutRequiresUnitNestedInput
+    requiredForLesson?: LessonUncheckedUpdateManyWithoutRequiresLessonNestedInput
     selectUnits?: SelectUnitUncheckedUpdateManyWithoutLessonNestedInput
   }
 
-  export type LessonUncheckedUpdateManyWithoutRequiresUnitInput = {
+  export type LessonUncheckedUpdateManyWithoutRequiresLessonInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     TeacherId?: BigIntFieldUpdateOperationsInput | bigint | number
     LessonName?: StringFieldUpdateOperationsInput | string
@@ -12755,7 +12860,7 @@ export namespace Prisma {
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
     PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
-    RequireLesson?: NullableIntFieldUpdateOperationsInput | number | null
+    RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
     NotifCode?: BigIntFieldUpdateOperationsInput | bigint | number
     ValidFrom?: DateTimeFieldUpdateOperationsInput | Date | string
     ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -12802,6 +12907,7 @@ export namespace Prisma {
     HomeNumber?: string | null
     PhoneNumber?: string | null
     Grade: $Enums.Grade
+    Gender?: boolean
     Updated_at?: Date | string
     Created_at?: Date | string
   }
@@ -12815,8 +12921,8 @@ export namespace Prisma {
     PassCondition?: number | null
     TheoriHours?: number | null
     PracticalHours?: number | null
-    RequireLesson?: number | null
-    RequireUnit?: bigint | number | null
+    RequireLesson?: bigint | number | null
+    RequireUnit?: number | null
     NotifCode: bigint | number
     ValidFrom: Date | string
     ValidTill?: Date | string | null
@@ -12832,6 +12938,7 @@ export namespace Prisma {
     LastName: string
     PhoneNumber: string
     Birth?: Date | string | null
+    Gender?: boolean
     Updated_at?: Date | string
     Created_at?: Date | string
   }
@@ -12847,6 +12954,7 @@ export namespace Prisma {
     HomeNumber?: NullableStringFieldUpdateOperationsInput | string | null
     PhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     Grade?: EnumGradeFieldUpdateOperationsInput | $Enums.Grade
+    Gender?: BoolFieldUpdateOperationsInput | boolean
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     selectUnits?: SelectUnitUpdateManyWithoutStudentNestedInput
@@ -12863,6 +12971,7 @@ export namespace Prisma {
     HomeNumber?: NullableStringFieldUpdateOperationsInput | string | null
     PhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     Grade?: EnumGradeFieldUpdateOperationsInput | $Enums.Grade
+    Gender?: BoolFieldUpdateOperationsInput | boolean
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     selectUnits?: SelectUnitUncheckedUpdateManyWithoutStudentNestedInput
@@ -12879,6 +12988,7 @@ export namespace Prisma {
     HomeNumber?: NullableStringFieldUpdateOperationsInput | string | null
     PhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     Grade?: EnumGradeFieldUpdateOperationsInput | $Enums.Grade
+    Gender?: BoolFieldUpdateOperationsInput | boolean
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -12891,7 +13001,7 @@ export namespace Prisma {
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
     PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
-    RequireLesson?: NullableIntFieldUpdateOperationsInput | number | null
+    RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
     NotifCode?: BigIntFieldUpdateOperationsInput | bigint | number
     ValidFrom?: DateTimeFieldUpdateOperationsInput | Date | string
     ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -12899,8 +13009,8 @@ export namespace Prisma {
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     teacher?: TeacherUpdateOneRequiredWithoutLessonsNestedInput
-    requiredForUnit?: LessonUpdateManyWithoutRequiresUnitNestedInput
-    requiresUnit?: LessonUpdateOneWithoutRequiredForUnitNestedInput
+    requiredForLesson?: LessonUpdateManyWithoutRequiresLessonNestedInput
+    requiresLesson?: LessonUpdateOneWithoutRequiredForLessonNestedInput
     selectUnits?: SelectUnitUpdateManyWithoutLessonNestedInput
   }
 
@@ -12913,15 +13023,15 @@ export namespace Prisma {
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
     PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
-    RequireLesson?: NullableIntFieldUpdateOperationsInput | number | null
-    RequireUnit?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    RequireLesson?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
     NotifCode?: BigIntFieldUpdateOperationsInput | bigint | number
     ValidFrom?: DateTimeFieldUpdateOperationsInput | Date | string
     ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     PricePerUnit?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    requiredForUnit?: LessonUncheckedUpdateManyWithoutRequiresUnitNestedInput
+    requiredForLesson?: LessonUncheckedUpdateManyWithoutRequiresLessonNestedInput
     selectUnits?: SelectUnitUncheckedUpdateManyWithoutLessonNestedInput
   }
 
@@ -12934,8 +13044,8 @@ export namespace Prisma {
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
     PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
-    RequireLesson?: NullableIntFieldUpdateOperationsInput | number | null
-    RequireUnit?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    RequireLesson?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
     NotifCode?: BigIntFieldUpdateOperationsInput | bigint | number
     ValidFrom?: DateTimeFieldUpdateOperationsInput | Date | string
     ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -12951,6 +13061,7 @@ export namespace Prisma {
     LastName?: StringFieldUpdateOperationsInput | string
     PhoneNumber?: StringFieldUpdateOperationsInput | string
     Birth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Gender?: BoolFieldUpdateOperationsInput | boolean
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     lessons?: LessonUpdateManyWithoutTeacherNestedInput
@@ -12963,6 +13074,7 @@ export namespace Prisma {
     LastName?: StringFieldUpdateOperationsInput | string
     PhoneNumber?: StringFieldUpdateOperationsInput | string
     Birth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Gender?: BoolFieldUpdateOperationsInput | boolean
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     lessons?: LessonUncheckedUpdateManyWithoutTeacherNestedInput
@@ -12975,6 +13087,7 @@ export namespace Prisma {
     LastName?: StringFieldUpdateOperationsInput | string
     PhoneNumber?: StringFieldUpdateOperationsInput | string
     Birth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Gender?: BoolFieldUpdateOperationsInput | boolean
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -12988,8 +13101,8 @@ export namespace Prisma {
     PassCondition?: number | null
     TheoriHours?: number | null
     PracticalHours?: number | null
-    RequireLesson?: number | null
-    RequireUnit?: bigint | number | null
+    RequireLesson?: bigint | number | null
+    RequireUnit?: number | null
     NotifCode: bigint | number
     ValidFrom: Date | string
     ValidTill?: Date | string | null
@@ -13006,7 +13119,7 @@ export namespace Prisma {
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
     PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
-    RequireLesson?: NullableIntFieldUpdateOperationsInput | number | null
+    RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
     NotifCode?: BigIntFieldUpdateOperationsInput | bigint | number
     ValidFrom?: DateTimeFieldUpdateOperationsInput | Date | string
     ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -13014,8 +13127,8 @@ export namespace Prisma {
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     field?: FieldUpdateOneWithoutLessonsNestedInput
-    requiredForUnit?: LessonUpdateManyWithoutRequiresUnitNestedInput
-    requiresUnit?: LessonUpdateOneWithoutRequiredForUnitNestedInput
+    requiredForLesson?: LessonUpdateManyWithoutRequiresLessonNestedInput
+    requiresLesson?: LessonUpdateOneWithoutRequiredForLessonNestedInput
     selectUnits?: SelectUnitUpdateManyWithoutLessonNestedInput
   }
 
@@ -13028,15 +13141,15 @@ export namespace Prisma {
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
     PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
-    RequireLesson?: NullableIntFieldUpdateOperationsInput | number | null
-    RequireUnit?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    RequireLesson?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
     NotifCode?: BigIntFieldUpdateOperationsInput | bigint | number
     ValidFrom?: DateTimeFieldUpdateOperationsInput | Date | string
     ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     PricePerUnit?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    requiredForUnit?: LessonUncheckedUpdateManyWithoutRequiresUnitNestedInput
+    requiredForLesson?: LessonUncheckedUpdateManyWithoutRequiresLessonNestedInput
     selectUnits?: SelectUnitUncheckedUpdateManyWithoutLessonNestedInput
   }
 
@@ -13049,8 +13162,8 @@ export namespace Prisma {
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
     PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
-    RequireLesson?: NullableIntFieldUpdateOperationsInput | number | null
-    RequireUnit?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    RequireLesson?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
     NotifCode?: BigIntFieldUpdateOperationsInput | bigint | number
     ValidFrom?: DateTimeFieldUpdateOperationsInput | Date | string
     ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

@@ -28,6 +28,7 @@ model Student {
   PhoneNumber  String?   @db.VarChar(255)
   fieldId      BigInt    @db.UnsignedBigInt @map("Field")
   Grade        Grade
+  Gender       Boolean   @db.Bit(1) @default(true)
   Updated_at   DateTime  @default(now()) @db.Timestamp()
   Created_at   DateTime  @default(now()) @db.Timestamp()
 
@@ -53,8 +54,8 @@ model Lesson {
   PassCondition  Int?
   TheoriHours    Int?
   PracticalHours Int?
-  RequireLesson  Int?
-  RequireUnit    BigInt?   @db.UnsignedBigInt
+  RequireLesson  BigInt?   @db.UnsignedBigInt
+  RequireUnit    Int?
   NotifCode      BigInt    @db.UnsignedBigInt
   ValidFrom      DateTime  @db.Date
   ValidTill      DateTime? @db.Date
@@ -64,8 +65,8 @@ model Lesson {
 
   field           Field?       @relation(fields: [fieldId], references: [id])
   teacher         Teacher      @relation(fields: [TeacherId], references: [id])
-  requiredForUnit Lesson[]     @relation("LessonRequirement")
-  requiresUnit    Lesson?      @relation("LessonRequirement", fields: [RequireUnit], references: [id])
+  requiredForLesson Lesson[]     @relation("LessonRequirement")
+  requiresLesson    Lesson?      @relation("LessonRequirement", fields: [RequireLesson], references: [id])
   selectUnits     SelectUnit[]
 }
 
@@ -110,6 +111,7 @@ model Teacher {
   PhoneNumber  String    @db.VarChar(255)
   fieldId      BigInt?   @db.UnsignedBigInt @map("Field")
   Birth        DateTime? @db.Date
+  Gender       Boolean   @db.Bit(1) @default(true)
   Updated_at   DateTime  @default(now()) @db.Timestamp()
   Created_at   DateTime  @default(now()) @db.Timestamp()
 

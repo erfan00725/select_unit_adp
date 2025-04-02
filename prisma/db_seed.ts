@@ -98,6 +98,46 @@ async function main() {
     "Programming Fundamentals",
     "Data Structures",
     "Algorithms",
+    "Advanced Mathematics",
+    "Calculus",
+    "Physics I",
+    "Physics II",
+    "Organic Chemistry",
+    "Inorganic Chemistry",
+    "Cell Biology",
+    "Programming Fundamentals",
+    "Data Structures",
+    "Algorithms",
+    "Advanced Mathematics",
+    "Calculus",
+    "Physics I",
+    "Physics II",
+    "Organic Chemistry",
+    "Inorganic Chemistry",
+    "Cell Biology",
+    "Programming Fundamentals",
+    "Data Structures",
+    "Algorithms",
+    "Advanced Mathematics",
+    "Calculus",
+    "Physics I",
+    "Physics II",
+    "Organic Chemistry",
+    "Inorganic Chemistry",
+    "Cell Biology",
+    "Programming Fundamentals",
+    "Data Structures",
+    "Algorithms",
+    "Advanced Mathematics",
+    "Calculus",
+    "Physics I",
+    "Physics II",
+    "Organic Chemistry",
+    "Inorganic Chemistry",
+    "Cell Biology",
+    "Programming Fundamentals",
+    "Data Structures",
+    "Algorithms",
   ];
 
   // Use the enum values directly from Prisma
@@ -136,6 +176,7 @@ async function main() {
           probability: 0.7,
         }),
         PricePerUnit: faker.number.bigInt({ min: 500000, max: 2000000 }),
+        RequireUnit: faker.number.int({ min: 0, max: 20 }),
       },
     });
     lessons.push(lesson);
@@ -148,7 +189,7 @@ async function main() {
       await prisma.lesson.update({
         where: { id: lessons[i].id },
         data: {
-          RequireUnit: lessons[i - 1].id,
+          RequireLesson: lessons[i - 1].id,
         },
       });
       console.log(

@@ -129,6 +129,7 @@ exports.Prisma.StudentScalarFieldEnum = {
   PhoneNumber: 'PhoneNumber',
   fieldId: 'fieldId',
   Grade: 'Grade',
+  Gender: 'Gender',
   Updated_at: 'Updated_at',
   Created_at: 'Created_at'
 };
@@ -193,6 +194,7 @@ exports.Prisma.TeacherScalarFieldEnum = {
   PhoneNumber: 'PhoneNumber',
   fieldId: 'fieldId',
   Birth: 'Birth',
+  Gender: 'Gender',
   Updated_at: 'Updated_at',
   Created_at: 'Created_at'
 };
