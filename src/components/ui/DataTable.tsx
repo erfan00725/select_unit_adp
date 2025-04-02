@@ -1,59 +1,32 @@
-import { StudentTableType, CourseTableType } from "@/types/Tables";
+import { DataBaseType } from "@/types/Tables";
 import clsx from "clsx";
 import Link from "next/link";
 import React from "react";
 
-// type Column = {
-//   header: string;
-//   accessor: string;
-//   cellRenderer?: (value: any, row: any) => React.ReactNode;
-// };
-
-// type ActionButton<T> = {
-//   label: string;
-//   onClick: (row: T) => void;
-//   className?: string;
-// };
-
-// type DataTableProps = {
-//   title: string;
-//   columns: Column[];
-//   data: any[];
-//   actionButtons?: ActionButton<any>[];
-//   addButtonLabel?: string;
-//   onAddClick?: () => void;
-// };
-
-// First tableData Object is the Header Value
-type Props = {
+type Props<T extends DataBaseType> = {
   title: string;
   description?: string;
-  tableData: StudentTableType[] | CourseTableType[];
+  tableData: T[];
+  headers: string[];
   addUrl?: string;
   addButtonLabel?: string;
-  editBaseUrl?: string;
-  deleteBaseUrl?: string;
+  baseUrl?: string;
   limit?: number;
   scrollable?: boolean;
 };
 
-const DataTable: React.FC<Props> = ({
+const DataTable = <T extends DataBaseType>({
   tableData,
+  headers,
   title,
   addButtonLabel,
   addUrl,
   description,
-  deleteBaseUrl,
-  editBaseUrl,
+  baseUrl,
   limit = 50,
   scrollable = false,
-}) => {
-  const headers = Object.values(tableData[0]) || [];
-  const rows = tableData.filter((_, index) => index > 0 && index < limit);
-
-  // const newData = data[0].map((_, colIndex) =>
-  //   data.map((row) => row[colIndex])
-  // );
+}: Props<T>) => {
+  const rows = tableData.filter((_, index) => index < limit);
 
   return (
     <div className="card mb-8">
@@ -75,7 +48,7 @@ const DataTable: React.FC<Props> = ({
                   {header}
                 </th>
               ))}
-              {editBaseUrl || deleteBaseUrl ? (
+              {baseUrl ? (
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Action
                 </th>
@@ -90,21 +63,25 @@ const DataTable: React.FC<Props> = ({
                     key={colIndex}
                     className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
                   >
-                    {data}
+                    {baseUrl ? (
+                      <Link href={`${baseUrl}/${row.id}`}>{data || "_"}</Link>
+                    ) : (
+                      data || "_"
+                    )}
                   </td>
                 ))}
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  {editBaseUrl && (
+                  {baseUrl && (
                     <Link
-                      href={editBaseUrl + row.id}
+                      href={`${baseUrl}/${row.id}/edit`}
                       className="text-indigo-600 hover:text-indigo-900 mr-3"
                     >
                       Edit
                     </Link>
                   )}
-                  {deleteBaseUrl && (
+                  {baseUrl && (
                     <Link
-                      href={deleteBaseUrl + row.id}
+                      href={`${baseUrl}/${row.id}/delete`}
                       className="text-red-600 hover:text-red-900"
                     >
                       Delete
