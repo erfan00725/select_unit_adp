@@ -27,7 +27,7 @@ model Student {
   HomeNumber   String?   @db.VarChar(255)
   PhoneNumber  String?   @db.VarChar(255)
   fieldId      BigInt    @db.UnsignedBigInt @map("Field")
-  Grade        Grade
+  Grade        Grade     @default(GRADE_7)
   Gender       Boolean   @db.Bit(1) @default(true)
   Updated_at   DateTime  @default(now()) @db.Timestamp()
   Created_at   DateTime  @default(now()) @db.Timestamp()
@@ -40,31 +40,31 @@ model User {
   id         BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
   UserName   String   @db.VarChar(255)
   Password   String   @db.VarChar(255)
-  Type       UserType?
+  Type       UserType? @default(user)
   Created_at DateTime @default(now()) @db.Timestamp()
 }
 
 model Lesson {
   id             BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
-  TeacherId      BigInt    @db.UnsignedBigInt
+  TeacherId      BigInt?    @db.UnsignedBigInt
   LessonName     String    @db.VarChar(255)
   Unit           Int
-  Grade          LessonGrade
+  Grade          LessonGrade? @default(GENERAL)
   fieldId        BigInt?   @db.UnsignedBigInt @map("Field")
   PassCondition  Int?
   TheoriHours    Int?
   PracticalHours Int?
   RequireLesson  BigInt?   @db.UnsignedBigInt
   RequireUnit    Int?
-  NotifCode      BigInt    @db.UnsignedBigInt
-  ValidFrom      DateTime  @db.Date
+  NotifCode      BigInt?   @db.UnsignedBigInt
+  ValidFrom      DateTime? @db.Date @default(now())
   ValidTill      DateTime? @db.Date
   PricePerUnit   BigInt?   @db.BigInt
   Created_at     DateTime  @default(now()) @db.Timestamp()
   Updated_at     DateTime  @default(now()) @db.Timestamp()
 
   field           Field?       @relation(fields: [fieldId], references: [id])
-  teacher         Teacher      @relation(fields: [TeacherId], references: [id])
+  teacher         Teacher?      @relation(fields: [TeacherId], references: [id])
   requiredForLesson Lesson[]     @relation("LessonRequirement")
   requiresLesson    Lesson?      @relation("LessonRequirement", fields: [RequireLesson], references: [id])
   selectUnits     SelectUnit[]
@@ -75,7 +75,7 @@ model SelectUnit {
   LessonId   BigInt  @db.UnsignedBigInt
   Year       Int
   Period     Period
-  ExtraFee   BigInt   @default(0) @db.UnsignedBigInt
+  ExtraFee   BigInt?   @default(0) @db.UnsignedBigInt
   Created_at DateTime @default(now()) @db.Timestamp()
   Updated_at DateTime @default(now()) @db.Timestamp()
 
@@ -88,7 +88,7 @@ model SelectUnit {
 model Field {
   id        BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
   Name      String   @db.VarChar(255)
-  FixedFee  BigInt   @default(0) @db.BigInt
+  FixedFee  BigInt?   @default(0) @db.BigInt
   Created_at DateTime @default(now()) @db.Timestamp()
 
   students Student[]

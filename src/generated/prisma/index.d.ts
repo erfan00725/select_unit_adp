@@ -3863,18 +3863,18 @@ export namespace Prisma {
 
   export type LessonGroupByOutputType = {
     id: bigint
-    TeacherId: bigint
+    TeacherId: bigint | null
     LessonName: string
     Unit: number
-    Grade: $Enums.LessonGrade
+    Grade: $Enums.LessonGrade | null
     fieldId: bigint | null
     PassCondition: number | null
     TheoriHours: number | null
     PracticalHours: number | null
     RequireLesson: bigint | null
     RequireUnit: number | null
-    NotifCode: bigint
-    ValidFrom: Date
+    NotifCode: bigint | null
+    ValidFrom: Date | null
     ValidTill: Date | null
     PricePerUnit: bigint | null
     Created_at: Date
@@ -3919,7 +3919,7 @@ export namespace Prisma {
     Created_at?: boolean
     Updated_at?: boolean
     field?: boolean | Lesson$fieldArgs<ExtArgs>
-    teacher?: boolean | TeacherDefaultArgs<ExtArgs>
+    teacher?: boolean | Lesson$teacherArgs<ExtArgs>
     requiredForLesson?: boolean | Lesson$requiredForLessonArgs<ExtArgs>
     requiresLesson?: boolean | Lesson$requiresLessonArgs<ExtArgs>
     selectUnits?: boolean | Lesson$selectUnitsArgs<ExtArgs>
@@ -3951,7 +3951,7 @@ export namespace Prisma {
   export type LessonOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "TeacherId" | "LessonName" | "Unit" | "Grade" | "fieldId" | "PassCondition" | "TheoriHours" | "PracticalHours" | "RequireLesson" | "RequireUnit" | "NotifCode" | "ValidFrom" | "ValidTill" | "PricePerUnit" | "Created_at" | "Updated_at", ExtArgs["result"]["lesson"]>
   export type LessonInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     field?: boolean | Lesson$fieldArgs<ExtArgs>
-    teacher?: boolean | TeacherDefaultArgs<ExtArgs>
+    teacher?: boolean | Lesson$teacherArgs<ExtArgs>
     requiredForLesson?: boolean | Lesson$requiredForLessonArgs<ExtArgs>
     requiresLesson?: boolean | Lesson$requiresLessonArgs<ExtArgs>
     selectUnits?: boolean | Lesson$selectUnitsArgs<ExtArgs>
@@ -3962,25 +3962,25 @@ export namespace Prisma {
     name: "Lesson"
     objects: {
       field: Prisma.$FieldPayload<ExtArgs> | null
-      teacher: Prisma.$TeacherPayload<ExtArgs>
+      teacher: Prisma.$TeacherPayload<ExtArgs> | null
       requiredForLesson: Prisma.$LessonPayload<ExtArgs>[]
       requiresLesson: Prisma.$LessonPayload<ExtArgs> | null
       selectUnits: Prisma.$SelectUnitPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: bigint
-      TeacherId: bigint
+      TeacherId: bigint | null
       LessonName: string
       Unit: number
-      Grade: $Enums.LessonGrade
+      Grade: $Enums.LessonGrade | null
       fieldId: bigint | null
       PassCondition: number | null
       TheoriHours: number | null
       PracticalHours: number | null
       RequireLesson: bigint | null
       RequireUnit: number | null
-      NotifCode: bigint
-      ValidFrom: Date
+      NotifCode: bigint | null
+      ValidFrom: Date | null
       ValidTill: Date | null
       PricePerUnit: bigint | null
       Created_at: Date
@@ -4326,7 +4326,7 @@ export namespace Prisma {
   export interface Prisma__LessonClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     field<T extends Lesson$fieldArgs<ExtArgs> = {}>(args?: Subset<T, Lesson$fieldArgs<ExtArgs>>): Prisma__FieldClient<$Result.GetResult<Prisma.$FieldPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    teacher<T extends TeacherDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TeacherDefaultArgs<ExtArgs>>): Prisma__TeacherClient<$Result.GetResult<Prisma.$TeacherPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    teacher<T extends Lesson$teacherArgs<ExtArgs> = {}>(args?: Subset<T, Lesson$teacherArgs<ExtArgs>>): Prisma__TeacherClient<$Result.GetResult<Prisma.$TeacherPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     requiredForLesson<T extends Lesson$requiredForLessonArgs<ExtArgs> = {}>(args?: Subset<T, Lesson$requiredForLessonArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LessonPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     requiresLesson<T extends Lesson$requiresLessonArgs<ExtArgs> = {}>(args?: Subset<T, Lesson$requiresLessonArgs<ExtArgs>>): Prisma__LessonClient<$Result.GetResult<Prisma.$LessonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     selectUnits<T extends Lesson$selectUnitsArgs<ExtArgs> = {}>(args?: Subset<T, Lesson$selectUnitsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SelectUnitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -4738,6 +4738,25 @@ export namespace Prisma {
   }
 
   /**
+   * Lesson.teacher
+   */
+  export type Lesson$teacherArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Teacher
+     */
+    select?: TeacherSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Teacher
+     */
+    omit?: TeacherOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeacherInclude<ExtArgs> | null
+    where?: TeacherWhereInput
+  }
+
+  /**
    * Lesson.requiredForLesson
    */
   export type Lesson$requiredForLessonArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5017,7 +5036,7 @@ export namespace Prisma {
     LessonId: bigint
     Year: number
     Period: $Enums.Period
-    ExtraFee: bigint
+    ExtraFee: bigint | null
     Created_at: Date
     Updated_at: Date
     _count: SelectUnitCountAggregateOutputType | null
@@ -5082,7 +5101,7 @@ export namespace Prisma {
       LessonId: bigint
       Year: number
       Period: $Enums.Period
-      ExtraFee: bigint
+      ExtraFee: bigint | null
       Created_at: Date
       Updated_at: Date
     }, ExtArgs["result"]["selectUnit"]>
@@ -5990,7 +6009,7 @@ export namespace Prisma {
   export type FieldGroupByOutputType = {
     id: bigint
     Name: string
-    FixedFee: bigint
+    FixedFee: bigint | null
     Created_at: Date
     _count: FieldCountAggregateOutputType | null
     _avg: FieldAvgAggregateOutputType | null
@@ -6051,7 +6070,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: bigint
       Name: string
-      FixedFee: bigint
+      FixedFee: bigint | null
       Created_at: Date
     }, ExtArgs["result"]["field"]>
     composites: {}
@@ -9234,24 +9253,24 @@ export namespace Prisma {
     OR?: LessonWhereInput[]
     NOT?: LessonWhereInput | LessonWhereInput[]
     id?: BigIntFilter<"Lesson"> | bigint | number
-    TeacherId?: BigIntFilter<"Lesson"> | bigint | number
+    TeacherId?: BigIntNullableFilter<"Lesson"> | bigint | number | null
     LessonName?: StringFilter<"Lesson"> | string
     Unit?: IntFilter<"Lesson"> | number
-    Grade?: EnumLessonGradeFilter<"Lesson"> | $Enums.LessonGrade
+    Grade?: EnumLessonGradeNullableFilter<"Lesson"> | $Enums.LessonGrade | null
     fieldId?: BigIntNullableFilter<"Lesson"> | bigint | number | null
     PassCondition?: IntNullableFilter<"Lesson"> | number | null
     TheoriHours?: IntNullableFilter<"Lesson"> | number | null
     PracticalHours?: IntNullableFilter<"Lesson"> | number | null
     RequireLesson?: BigIntNullableFilter<"Lesson"> | bigint | number | null
     RequireUnit?: IntNullableFilter<"Lesson"> | number | null
-    NotifCode?: BigIntFilter<"Lesson"> | bigint | number
-    ValidFrom?: DateTimeFilter<"Lesson"> | Date | string
+    NotifCode?: BigIntNullableFilter<"Lesson"> | bigint | number | null
+    ValidFrom?: DateTimeNullableFilter<"Lesson"> | Date | string | null
     ValidTill?: DateTimeNullableFilter<"Lesson"> | Date | string | null
     PricePerUnit?: BigIntNullableFilter<"Lesson"> | bigint | number | null
     Created_at?: DateTimeFilter<"Lesson"> | Date | string
     Updated_at?: DateTimeFilter<"Lesson"> | Date | string
     field?: XOR<FieldNullableScalarRelationFilter, FieldWhereInput> | null
-    teacher?: XOR<TeacherScalarRelationFilter, TeacherWhereInput>
+    teacher?: XOR<TeacherNullableScalarRelationFilter, TeacherWhereInput> | null
     requiredForLesson?: LessonListRelationFilter
     requiresLesson?: XOR<LessonNullableScalarRelationFilter, LessonWhereInput> | null
     selectUnits?: SelectUnitListRelationFilter
@@ -9259,18 +9278,18 @@ export namespace Prisma {
 
   export type LessonOrderByWithRelationInput = {
     id?: SortOrder
-    TeacherId?: SortOrder
+    TeacherId?: SortOrderInput | SortOrder
     LessonName?: SortOrder
     Unit?: SortOrder
-    Grade?: SortOrder
+    Grade?: SortOrderInput | SortOrder
     fieldId?: SortOrderInput | SortOrder
     PassCondition?: SortOrderInput | SortOrder
     TheoriHours?: SortOrderInput | SortOrder
     PracticalHours?: SortOrderInput | SortOrder
     RequireLesson?: SortOrderInput | SortOrder
     RequireUnit?: SortOrderInput | SortOrder
-    NotifCode?: SortOrder
-    ValidFrom?: SortOrder
+    NotifCode?: SortOrderInput | SortOrder
+    ValidFrom?: SortOrderInput | SortOrder
     ValidTill?: SortOrderInput | SortOrder
     PricePerUnit?: SortOrderInput | SortOrder
     Created_at?: SortOrder
@@ -9288,24 +9307,24 @@ export namespace Prisma {
     AND?: LessonWhereInput | LessonWhereInput[]
     OR?: LessonWhereInput[]
     NOT?: LessonWhereInput | LessonWhereInput[]
-    TeacherId?: BigIntFilter<"Lesson"> | bigint | number
+    TeacherId?: BigIntNullableFilter<"Lesson"> | bigint | number | null
     LessonName?: StringFilter<"Lesson"> | string
     Unit?: IntFilter<"Lesson"> | number
-    Grade?: EnumLessonGradeFilter<"Lesson"> | $Enums.LessonGrade
+    Grade?: EnumLessonGradeNullableFilter<"Lesson"> | $Enums.LessonGrade | null
     fieldId?: BigIntNullableFilter<"Lesson"> | bigint | number | null
     PassCondition?: IntNullableFilter<"Lesson"> | number | null
     TheoriHours?: IntNullableFilter<"Lesson"> | number | null
     PracticalHours?: IntNullableFilter<"Lesson"> | number | null
     RequireLesson?: BigIntNullableFilter<"Lesson"> | bigint | number | null
     RequireUnit?: IntNullableFilter<"Lesson"> | number | null
-    NotifCode?: BigIntFilter<"Lesson"> | bigint | number
-    ValidFrom?: DateTimeFilter<"Lesson"> | Date | string
+    NotifCode?: BigIntNullableFilter<"Lesson"> | bigint | number | null
+    ValidFrom?: DateTimeNullableFilter<"Lesson"> | Date | string | null
     ValidTill?: DateTimeNullableFilter<"Lesson"> | Date | string | null
     PricePerUnit?: BigIntNullableFilter<"Lesson"> | bigint | number | null
     Created_at?: DateTimeFilter<"Lesson"> | Date | string
     Updated_at?: DateTimeFilter<"Lesson"> | Date | string
     field?: XOR<FieldNullableScalarRelationFilter, FieldWhereInput> | null
-    teacher?: XOR<TeacherScalarRelationFilter, TeacherWhereInput>
+    teacher?: XOR<TeacherNullableScalarRelationFilter, TeacherWhereInput> | null
     requiredForLesson?: LessonListRelationFilter
     requiresLesson?: XOR<LessonNullableScalarRelationFilter, LessonWhereInput> | null
     selectUnits?: SelectUnitListRelationFilter
@@ -9313,18 +9332,18 @@ export namespace Prisma {
 
   export type LessonOrderByWithAggregationInput = {
     id?: SortOrder
-    TeacherId?: SortOrder
+    TeacherId?: SortOrderInput | SortOrder
     LessonName?: SortOrder
     Unit?: SortOrder
-    Grade?: SortOrder
+    Grade?: SortOrderInput | SortOrder
     fieldId?: SortOrderInput | SortOrder
     PassCondition?: SortOrderInput | SortOrder
     TheoriHours?: SortOrderInput | SortOrder
     PracticalHours?: SortOrderInput | SortOrder
     RequireLesson?: SortOrderInput | SortOrder
     RequireUnit?: SortOrderInput | SortOrder
-    NotifCode?: SortOrder
-    ValidFrom?: SortOrder
+    NotifCode?: SortOrderInput | SortOrder
+    ValidFrom?: SortOrderInput | SortOrder
     ValidTill?: SortOrderInput | SortOrder
     PricePerUnit?: SortOrderInput | SortOrder
     Created_at?: SortOrder
@@ -9341,18 +9360,18 @@ export namespace Prisma {
     OR?: LessonScalarWhereWithAggregatesInput[]
     NOT?: LessonScalarWhereWithAggregatesInput | LessonScalarWhereWithAggregatesInput[]
     id?: BigIntWithAggregatesFilter<"Lesson"> | bigint | number
-    TeacherId?: BigIntWithAggregatesFilter<"Lesson"> | bigint | number
+    TeacherId?: BigIntNullableWithAggregatesFilter<"Lesson"> | bigint | number | null
     LessonName?: StringWithAggregatesFilter<"Lesson"> | string
     Unit?: IntWithAggregatesFilter<"Lesson"> | number
-    Grade?: EnumLessonGradeWithAggregatesFilter<"Lesson"> | $Enums.LessonGrade
+    Grade?: EnumLessonGradeNullableWithAggregatesFilter<"Lesson"> | $Enums.LessonGrade | null
     fieldId?: BigIntNullableWithAggregatesFilter<"Lesson"> | bigint | number | null
     PassCondition?: IntNullableWithAggregatesFilter<"Lesson"> | number | null
     TheoriHours?: IntNullableWithAggregatesFilter<"Lesson"> | number | null
     PracticalHours?: IntNullableWithAggregatesFilter<"Lesson"> | number | null
     RequireLesson?: BigIntNullableWithAggregatesFilter<"Lesson"> | bigint | number | null
     RequireUnit?: IntNullableWithAggregatesFilter<"Lesson"> | number | null
-    NotifCode?: BigIntWithAggregatesFilter<"Lesson"> | bigint | number
-    ValidFrom?: DateTimeWithAggregatesFilter<"Lesson"> | Date | string
+    NotifCode?: BigIntNullableWithAggregatesFilter<"Lesson"> | bigint | number | null
+    ValidFrom?: DateTimeNullableWithAggregatesFilter<"Lesson"> | Date | string | null
     ValidTill?: DateTimeNullableWithAggregatesFilter<"Lesson"> | Date | string | null
     PricePerUnit?: BigIntNullableWithAggregatesFilter<"Lesson"> | bigint | number | null
     Created_at?: DateTimeWithAggregatesFilter<"Lesson"> | Date | string
@@ -9367,7 +9386,7 @@ export namespace Prisma {
     LessonId?: BigIntFilter<"SelectUnit"> | bigint | number
     Year?: IntFilter<"SelectUnit"> | number
     Period?: EnumPeriodFilter<"SelectUnit"> | $Enums.Period
-    ExtraFee?: BigIntFilter<"SelectUnit"> | bigint | number
+    ExtraFee?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
     Created_at?: DateTimeFilter<"SelectUnit"> | Date | string
     Updated_at?: DateTimeFilter<"SelectUnit"> | Date | string
     student?: XOR<StudentScalarRelationFilter, StudentWhereInput>
@@ -9379,7 +9398,7 @@ export namespace Prisma {
     LessonId?: SortOrder
     Year?: SortOrder
     Period?: SortOrder
-    ExtraFee?: SortOrder
+    ExtraFee?: SortOrderInput | SortOrder
     Created_at?: SortOrder
     Updated_at?: SortOrder
     student?: StudentOrderByWithRelationInput
@@ -9395,7 +9414,7 @@ export namespace Prisma {
     LessonId?: BigIntFilter<"SelectUnit"> | bigint | number
     Year?: IntFilter<"SelectUnit"> | number
     Period?: EnumPeriodFilter<"SelectUnit"> | $Enums.Period
-    ExtraFee?: BigIntFilter<"SelectUnit"> | bigint | number
+    ExtraFee?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
     Created_at?: DateTimeFilter<"SelectUnit"> | Date | string
     Updated_at?: DateTimeFilter<"SelectUnit"> | Date | string
     student?: XOR<StudentScalarRelationFilter, StudentWhereInput>
@@ -9407,7 +9426,7 @@ export namespace Prisma {
     LessonId?: SortOrder
     Year?: SortOrder
     Period?: SortOrder
-    ExtraFee?: SortOrder
+    ExtraFee?: SortOrderInput | SortOrder
     Created_at?: SortOrder
     Updated_at?: SortOrder
     _count?: SelectUnitCountOrderByAggregateInput
@@ -9425,7 +9444,7 @@ export namespace Prisma {
     LessonId?: BigIntWithAggregatesFilter<"SelectUnit"> | bigint | number
     Year?: IntWithAggregatesFilter<"SelectUnit"> | number
     Period?: EnumPeriodWithAggregatesFilter<"SelectUnit"> | $Enums.Period
-    ExtraFee?: BigIntWithAggregatesFilter<"SelectUnit"> | bigint | number
+    ExtraFee?: BigIntNullableWithAggregatesFilter<"SelectUnit"> | bigint | number | null
     Created_at?: DateTimeWithAggregatesFilter<"SelectUnit"> | Date | string
     Updated_at?: DateTimeWithAggregatesFilter<"SelectUnit"> | Date | string
   }
@@ -9436,7 +9455,7 @@ export namespace Prisma {
     NOT?: FieldWhereInput | FieldWhereInput[]
     id?: BigIntFilter<"Field"> | bigint | number
     Name?: StringFilter<"Field"> | string
-    FixedFee?: BigIntFilter<"Field"> | bigint | number
+    FixedFee?: BigIntNullableFilter<"Field"> | bigint | number | null
     Created_at?: DateTimeFilter<"Field"> | Date | string
     students?: StudentListRelationFilter
     lessons?: LessonListRelationFilter
@@ -9446,7 +9465,7 @@ export namespace Prisma {
   export type FieldOrderByWithRelationInput = {
     id?: SortOrder
     Name?: SortOrder
-    FixedFee?: SortOrder
+    FixedFee?: SortOrderInput | SortOrder
     Created_at?: SortOrder
     students?: StudentOrderByRelationAggregateInput
     lessons?: LessonOrderByRelationAggregateInput
@@ -9460,7 +9479,7 @@ export namespace Prisma {
     OR?: FieldWhereInput[]
     NOT?: FieldWhereInput | FieldWhereInput[]
     Name?: StringFilter<"Field"> | string
-    FixedFee?: BigIntFilter<"Field"> | bigint | number
+    FixedFee?: BigIntNullableFilter<"Field"> | bigint | number | null
     Created_at?: DateTimeFilter<"Field"> | Date | string
     students?: StudentListRelationFilter
     lessons?: LessonListRelationFilter
@@ -9470,7 +9489,7 @@ export namespace Prisma {
   export type FieldOrderByWithAggregationInput = {
     id?: SortOrder
     Name?: SortOrder
-    FixedFee?: SortOrder
+    FixedFee?: SortOrderInput | SortOrder
     Created_at?: SortOrder
     _count?: FieldCountOrderByAggregateInput
     _avg?: FieldAvgOrderByAggregateInput
@@ -9485,7 +9504,7 @@ export namespace Prisma {
     NOT?: FieldScalarWhereWithAggregatesInput | FieldScalarWhereWithAggregatesInput[]
     id?: BigIntWithAggregatesFilter<"Field"> | bigint | number
     Name?: StringWithAggregatesFilter<"Field"> | string
-    FixedFee?: BigIntWithAggregatesFilter<"Field"> | bigint | number
+    FixedFee?: BigIntNullableWithAggregatesFilter<"Field"> | bigint | number | null
     Created_at?: DateTimeWithAggregatesFilter<"Field"> | Date | string
   }
 
@@ -9633,7 +9652,7 @@ export namespace Prisma {
     Address?: string | null
     HomeNumber?: string | null
     PhoneNumber?: string | null
-    Grade: $Enums.Grade
+    Grade?: $Enums.Grade
     Gender?: boolean
     Updated_at?: Date | string
     Created_at?: Date | string
@@ -9652,7 +9671,7 @@ export namespace Prisma {
     HomeNumber?: string | null
     PhoneNumber?: string | null
     fieldId: bigint | number
-    Grade: $Enums.Grade
+    Grade?: $Enums.Grade
     Gender?: boolean
     Updated_at?: Date | string
     Created_at?: Date | string
@@ -9706,7 +9725,7 @@ export namespace Prisma {
     HomeNumber?: string | null
     PhoneNumber?: string | null
     fieldId: bigint | number
-    Grade: $Enums.Grade
+    Grade?: $Enums.Grade
     Gender?: boolean
     Updated_at?: Date | string
     Created_at?: Date | string
@@ -9805,19 +9824,19 @@ export namespace Prisma {
     id?: bigint | number
     LessonName: string
     Unit: number
-    Grade: $Enums.LessonGrade
+    Grade?: $Enums.LessonGrade | null
     PassCondition?: number | null
     TheoriHours?: number | null
     PracticalHours?: number | null
     RequireUnit?: number | null
-    NotifCode: bigint | number
-    ValidFrom: Date | string
+    NotifCode?: bigint | number | null
+    ValidFrom?: Date | string | null
     ValidTill?: Date | string | null
     PricePerUnit?: bigint | number | null
     Created_at?: Date | string
     Updated_at?: Date | string
     field?: FieldCreateNestedOneWithoutLessonsInput
-    teacher: TeacherCreateNestedOneWithoutLessonsInput
+    teacher?: TeacherCreateNestedOneWithoutLessonsInput
     requiredForLesson?: LessonCreateNestedManyWithoutRequiresLessonInput
     requiresLesson?: LessonCreateNestedOneWithoutRequiredForLessonInput
     selectUnits?: SelectUnitCreateNestedManyWithoutLessonInput
@@ -9825,18 +9844,18 @@ export namespace Prisma {
 
   export type LessonUncheckedCreateInput = {
     id?: bigint | number
-    TeacherId: bigint | number
+    TeacherId?: bigint | number | null
     LessonName: string
     Unit: number
-    Grade: $Enums.LessonGrade
+    Grade?: $Enums.LessonGrade | null
     fieldId?: bigint | number | null
     PassCondition?: number | null
     TheoriHours?: number | null
     PracticalHours?: number | null
     RequireLesson?: bigint | number | null
     RequireUnit?: number | null
-    NotifCode: bigint | number
-    ValidFrom: Date | string
+    NotifCode?: bigint | number | null
+    ValidFrom?: Date | string | null
     ValidTill?: Date | string | null
     PricePerUnit?: bigint | number | null
     Created_at?: Date | string
@@ -9849,19 +9868,19 @@ export namespace Prisma {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     LessonName?: StringFieldUpdateOperationsInput | string
     Unit?: IntFieldUpdateOperationsInput | number
-    Grade?: EnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade
+    Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
     PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
     RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
-    NotifCode?: BigIntFieldUpdateOperationsInput | bigint | number
-    ValidFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    NotifCode?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ValidFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     PricePerUnit?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     field?: FieldUpdateOneWithoutLessonsNestedInput
-    teacher?: TeacherUpdateOneRequiredWithoutLessonsNestedInput
+    teacher?: TeacherUpdateOneWithoutLessonsNestedInput
     requiredForLesson?: LessonUpdateManyWithoutRequiresLessonNestedInput
     requiresLesson?: LessonUpdateOneWithoutRequiredForLessonNestedInput
     selectUnits?: SelectUnitUpdateManyWithoutLessonNestedInput
@@ -9869,18 +9888,18 @@ export namespace Prisma {
 
   export type LessonUncheckedUpdateInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
-    TeacherId?: BigIntFieldUpdateOperationsInput | bigint | number
+    TeacherId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     LessonName?: StringFieldUpdateOperationsInput | string
     Unit?: IntFieldUpdateOperationsInput | number
-    Grade?: EnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade
+    Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
     fieldId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
     PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
     RequireLesson?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
-    NotifCode?: BigIntFieldUpdateOperationsInput | bigint | number
-    ValidFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    NotifCode?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ValidFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     PricePerUnit?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9891,18 +9910,18 @@ export namespace Prisma {
 
   export type LessonCreateManyInput = {
     id?: bigint | number
-    TeacherId: bigint | number
+    TeacherId?: bigint | number | null
     LessonName: string
     Unit: number
-    Grade: $Enums.LessonGrade
+    Grade?: $Enums.LessonGrade | null
     fieldId?: bigint | number | null
     PassCondition?: number | null
     TheoriHours?: number | null
     PracticalHours?: number | null
     RequireLesson?: bigint | number | null
     RequireUnit?: number | null
-    NotifCode: bigint | number
-    ValidFrom: Date | string
+    NotifCode?: bigint | number | null
+    ValidFrom?: Date | string | null
     ValidTill?: Date | string | null
     PricePerUnit?: bigint | number | null
     Created_at?: Date | string
@@ -9913,13 +9932,13 @@ export namespace Prisma {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     LessonName?: StringFieldUpdateOperationsInput | string
     Unit?: IntFieldUpdateOperationsInput | number
-    Grade?: EnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade
+    Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
     PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
     RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
-    NotifCode?: BigIntFieldUpdateOperationsInput | bigint | number
-    ValidFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    NotifCode?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ValidFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     PricePerUnit?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9928,18 +9947,18 @@ export namespace Prisma {
 
   export type LessonUncheckedUpdateManyInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
-    TeacherId?: BigIntFieldUpdateOperationsInput | bigint | number
+    TeacherId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     LessonName?: StringFieldUpdateOperationsInput | string
     Unit?: IntFieldUpdateOperationsInput | number
-    Grade?: EnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade
+    Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
     fieldId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
     PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
     RequireLesson?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
-    NotifCode?: BigIntFieldUpdateOperationsInput | bigint | number
-    ValidFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    NotifCode?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ValidFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     PricePerUnit?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9949,7 +9968,7 @@ export namespace Prisma {
   export type SelectUnitCreateInput = {
     Year: number
     Period: $Enums.Period
-    ExtraFee?: bigint | number
+    ExtraFee?: bigint | number | null
     Created_at?: Date | string
     Updated_at?: Date | string
     student: StudentCreateNestedOneWithoutSelectUnitsInput
@@ -9961,7 +9980,7 @@ export namespace Prisma {
     LessonId: bigint | number
     Year: number
     Period: $Enums.Period
-    ExtraFee?: bigint | number
+    ExtraFee?: bigint | number | null
     Created_at?: Date | string
     Updated_at?: Date | string
   }
@@ -9969,7 +9988,7 @@ export namespace Prisma {
   export type SelectUnitUpdateInput = {
     Year?: IntFieldUpdateOperationsInput | number
     Period?: EnumPeriodFieldUpdateOperationsInput | $Enums.Period
-    ExtraFee?: BigIntFieldUpdateOperationsInput | bigint | number
+    ExtraFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     student?: StudentUpdateOneRequiredWithoutSelectUnitsNestedInput
@@ -9981,7 +10000,7 @@ export namespace Prisma {
     LessonId?: BigIntFieldUpdateOperationsInput | bigint | number
     Year?: IntFieldUpdateOperationsInput | number
     Period?: EnumPeriodFieldUpdateOperationsInput | $Enums.Period
-    ExtraFee?: BigIntFieldUpdateOperationsInput | bigint | number
+    ExtraFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9991,7 +10010,7 @@ export namespace Prisma {
     LessonId: bigint | number
     Year: number
     Period: $Enums.Period
-    ExtraFee?: bigint | number
+    ExtraFee?: bigint | number | null
     Created_at?: Date | string
     Updated_at?: Date | string
   }
@@ -9999,7 +10018,7 @@ export namespace Prisma {
   export type SelectUnitUpdateManyMutationInput = {
     Year?: IntFieldUpdateOperationsInput | number
     Period?: EnumPeriodFieldUpdateOperationsInput | $Enums.Period
-    ExtraFee?: BigIntFieldUpdateOperationsInput | bigint | number
+    ExtraFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10009,7 +10028,7 @@ export namespace Prisma {
     LessonId?: BigIntFieldUpdateOperationsInput | bigint | number
     Year?: IntFieldUpdateOperationsInput | number
     Period?: EnumPeriodFieldUpdateOperationsInput | $Enums.Period
-    ExtraFee?: BigIntFieldUpdateOperationsInput | bigint | number
+    ExtraFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10017,7 +10036,7 @@ export namespace Prisma {
   export type FieldCreateInput = {
     id?: bigint | number
     Name: string
-    FixedFee?: bigint | number
+    FixedFee?: bigint | number | null
     Created_at?: Date | string
     students?: StudentCreateNestedManyWithoutFieldInput
     lessons?: LessonCreateNestedManyWithoutFieldInput
@@ -10027,7 +10046,7 @@ export namespace Prisma {
   export type FieldUncheckedCreateInput = {
     id?: bigint | number
     Name: string
-    FixedFee?: bigint | number
+    FixedFee?: bigint | number | null
     Created_at?: Date | string
     students?: StudentUncheckedCreateNestedManyWithoutFieldInput
     lessons?: LessonUncheckedCreateNestedManyWithoutFieldInput
@@ -10037,7 +10056,7 @@ export namespace Prisma {
   export type FieldUpdateInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     Name?: StringFieldUpdateOperationsInput | string
-    FixedFee?: BigIntFieldUpdateOperationsInput | bigint | number
+    FixedFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     students?: StudentUpdateManyWithoutFieldNestedInput
     lessons?: LessonUpdateManyWithoutFieldNestedInput
@@ -10047,7 +10066,7 @@ export namespace Prisma {
   export type FieldUncheckedUpdateInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     Name?: StringFieldUpdateOperationsInput | string
-    FixedFee?: BigIntFieldUpdateOperationsInput | bigint | number
+    FixedFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     students?: StudentUncheckedUpdateManyWithoutFieldNestedInput
     lessons?: LessonUncheckedUpdateManyWithoutFieldNestedInput
@@ -10057,21 +10076,21 @@ export namespace Prisma {
   export type FieldCreateManyInput = {
     id?: bigint | number
     Name: string
-    FixedFee?: bigint | number
+    FixedFee?: bigint | number | null
     Created_at?: Date | string
   }
 
   export type FieldUpdateManyMutationInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     Name?: StringFieldUpdateOperationsInput | string
-    FixedFee?: BigIntFieldUpdateOperationsInput | bigint | number
+    FixedFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type FieldUncheckedUpdateManyInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     Name?: StringFieldUpdateOperationsInput | string
-    FixedFee?: BigIntFieldUpdateOperationsInput | bigint | number
+    FixedFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -10533,6 +10552,17 @@ export namespace Prisma {
     _max?: NestedEnumUserTypeNullableFilter<$PrismaModel>
   }
 
+  export type BigIntNullableFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel> | null
+    in?: bigint[] | number[] | null
+    notIn?: bigint[] | number[] | null
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntNullableFilter<$PrismaModel> | bigint | number | null
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[]
@@ -10544,22 +10574,11 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
-  export type EnumLessonGradeFilter<$PrismaModel = never> = {
-    equals?: $Enums.LessonGrade | EnumLessonGradeFieldRefInput<$PrismaModel>
-    in?: $Enums.LessonGrade[]
-    notIn?: $Enums.LessonGrade[]
-    not?: NestedEnumLessonGradeFilter<$PrismaModel> | $Enums.LessonGrade
-  }
-
-  export type BigIntNullableFilter<$PrismaModel = never> = {
-    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel> | null
-    in?: bigint[] | number[] | null
-    notIn?: bigint[] | number[] | null
-    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    not?: NestedBigIntNullableFilter<$PrismaModel> | bigint | number | null
+  export type EnumLessonGradeNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.LessonGrade | EnumLessonGradeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.LessonGrade[] | null
+    notIn?: $Enums.LessonGrade[] | null
+    not?: NestedEnumLessonGradeNullableFilter<$PrismaModel> | $Enums.LessonGrade | null
   }
 
   export type IntNullableFilter<$PrismaModel = never> = {
@@ -10578,9 +10597,9 @@ export namespace Prisma {
     isNot?: FieldWhereInput | null
   }
 
-  export type TeacherScalarRelationFilter = {
-    is?: TeacherWhereInput
-    isNot?: TeacherWhereInput
+  export type TeacherNullableScalarRelationFilter = {
+    is?: TeacherWhereInput | null
+    isNot?: TeacherWhereInput | null
   }
 
   export type LessonListRelationFilter = {
@@ -10692,6 +10711,22 @@ export namespace Prisma {
     PricePerUnit?: SortOrder
   }
 
+  export type BigIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel> | null
+    in?: bigint[] | number[] | null
+    notIn?: bigint[] | number[] | null
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntNullableWithAggregatesFilter<$PrismaModel> | bigint | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedBigIntNullableFilter<$PrismaModel>
+    _min?: NestedBigIntNullableFilter<$PrismaModel>
+    _max?: NestedBigIntNullableFilter<$PrismaModel>
+  }
+
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[]
@@ -10708,30 +10743,14 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
-  export type EnumLessonGradeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.LessonGrade | EnumLessonGradeFieldRefInput<$PrismaModel>
-    in?: $Enums.LessonGrade[]
-    notIn?: $Enums.LessonGrade[]
-    not?: NestedEnumLessonGradeWithAggregatesFilter<$PrismaModel> | $Enums.LessonGrade
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumLessonGradeFilter<$PrismaModel>
-    _max?: NestedEnumLessonGradeFilter<$PrismaModel>
-  }
-
-  export type BigIntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel> | null
-    in?: bigint[] | number[] | null
-    notIn?: bigint[] | number[] | null
-    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    not?: NestedBigIntNullableWithAggregatesFilter<$PrismaModel> | bigint | number | null
+  export type EnumLessonGradeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.LessonGrade | EnumLessonGradeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.LessonGrade[] | null
+    notIn?: $Enums.LessonGrade[] | null
+    not?: NestedEnumLessonGradeNullableWithAggregatesFilter<$PrismaModel> | $Enums.LessonGrade | null
     _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedBigIntNullableFilter<$PrismaModel>
-    _min?: NestedBigIntNullableFilter<$PrismaModel>
-    _max?: NestedBigIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumLessonGradeNullableFilter<$PrismaModel>
+    _max?: NestedEnumLessonGradeNullableFilter<$PrismaModel>
   }
 
   export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -11113,8 +11132,8 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type EnumLessonGradeFieldUpdateOperationsInput = {
-    set?: $Enums.LessonGrade
+  export type NullableEnumLessonGradeFieldUpdateOperationsInput = {
+    set?: $Enums.LessonGrade | null
   }
 
   export type NullableIntFieldUpdateOperationsInput = {
@@ -11143,10 +11162,12 @@ export namespace Prisma {
     update?: XOR<XOR<FieldUpdateToOneWithWhereWithoutLessonsInput, FieldUpdateWithoutLessonsInput>, FieldUncheckedUpdateWithoutLessonsInput>
   }
 
-  export type TeacherUpdateOneRequiredWithoutLessonsNestedInput = {
+  export type TeacherUpdateOneWithoutLessonsNestedInput = {
     create?: XOR<TeacherCreateWithoutLessonsInput, TeacherUncheckedCreateWithoutLessonsInput>
     connectOrCreate?: TeacherCreateOrConnectWithoutLessonsInput
     upsert?: TeacherUpsertWithoutLessonsInput
+    disconnect?: TeacherWhereInput | boolean
+    delete?: TeacherWhereInput | boolean
     connect?: TeacherWhereUniqueInput
     update?: XOR<XOR<TeacherUpdateToOneWithWhereWithoutLessonsInput, TeacherUpdateWithoutLessonsInput>, TeacherUncheckedUpdateWithoutLessonsInput>
   }
@@ -11656,13 +11677,6 @@ export namespace Prisma {
     _max?: NestedEnumUserTypeNullableFilter<$PrismaModel>
   }
 
-  export type NestedEnumLessonGradeFilter<$PrismaModel = never> = {
-    equals?: $Enums.LessonGrade | EnumLessonGradeFieldRefInput<$PrismaModel>
-    in?: $Enums.LessonGrade[]
-    notIn?: $Enums.LessonGrade[]
-    not?: NestedEnumLessonGradeFilter<$PrismaModel> | $Enums.LessonGrade
-  }
-
   export type NestedBigIntNullableFilter<$PrismaModel = never> = {
     equals?: bigint | number | BigIntFieldRefInput<$PrismaModel> | null
     in?: bigint[] | number[] | null
@@ -11674,30 +11688,11 @@ export namespace Prisma {
     not?: NestedBigIntNullableFilter<$PrismaModel> | bigint | number | null
   }
 
-  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
-  }
-
-  export type NestedEnumLessonGradeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.LessonGrade | EnumLessonGradeFieldRefInput<$PrismaModel>
-    in?: $Enums.LessonGrade[]
-    notIn?: $Enums.LessonGrade[]
-    not?: NestedEnumLessonGradeWithAggregatesFilter<$PrismaModel> | $Enums.LessonGrade
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumLessonGradeFilter<$PrismaModel>
-    _max?: NestedEnumLessonGradeFilter<$PrismaModel>
+  export type NestedEnumLessonGradeNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.LessonGrade | EnumLessonGradeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.LessonGrade[] | null
+    notIn?: $Enums.LessonGrade[] | null
+    not?: NestedEnumLessonGradeNullableFilter<$PrismaModel> | $Enums.LessonGrade | null
   }
 
   export type NestedBigIntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -11725,6 +11720,32 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedEnumLessonGradeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.LessonGrade | EnumLessonGradeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.LessonGrade[] | null
+    notIn?: $Enums.LessonGrade[] | null
+    not?: NestedEnumLessonGradeNullableWithAggregatesFilter<$PrismaModel> | $Enums.LessonGrade | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumLessonGradeNullableFilter<$PrismaModel>
+    _max?: NestedEnumLessonGradeNullableFilter<$PrismaModel>
   }
 
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -11763,7 +11784,7 @@ export namespace Prisma {
   export type FieldCreateWithoutStudentsInput = {
     id?: bigint | number
     Name: string
-    FixedFee?: bigint | number
+    FixedFee?: bigint | number | null
     Created_at?: Date | string
     lessons?: LessonCreateNestedManyWithoutFieldInput
     teachers?: TeacherCreateNestedManyWithoutFieldInput
@@ -11772,7 +11793,7 @@ export namespace Prisma {
   export type FieldUncheckedCreateWithoutStudentsInput = {
     id?: bigint | number
     Name: string
-    FixedFee?: bigint | number
+    FixedFee?: bigint | number | null
     Created_at?: Date | string
     lessons?: LessonUncheckedCreateNestedManyWithoutFieldInput
     teachers?: TeacherUncheckedCreateNestedManyWithoutFieldInput
@@ -11786,7 +11807,7 @@ export namespace Prisma {
   export type SelectUnitCreateWithoutStudentInput = {
     Year: number
     Period: $Enums.Period
-    ExtraFee?: bigint | number
+    ExtraFee?: bigint | number | null
     Created_at?: Date | string
     Updated_at?: Date | string
     lesson: LessonCreateNestedOneWithoutSelectUnitsInput
@@ -11796,7 +11817,7 @@ export namespace Prisma {
     LessonId: bigint | number
     Year: number
     Period: $Enums.Period
-    ExtraFee?: bigint | number
+    ExtraFee?: bigint | number | null
     Created_at?: Date | string
     Updated_at?: Date | string
   }
@@ -11825,7 +11846,7 @@ export namespace Prisma {
   export type FieldUpdateWithoutStudentsInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     Name?: StringFieldUpdateOperationsInput | string
-    FixedFee?: BigIntFieldUpdateOperationsInput | bigint | number
+    FixedFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     lessons?: LessonUpdateManyWithoutFieldNestedInput
     teachers?: TeacherUpdateManyWithoutFieldNestedInput
@@ -11834,7 +11855,7 @@ export namespace Prisma {
   export type FieldUncheckedUpdateWithoutStudentsInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     Name?: StringFieldUpdateOperationsInput | string
-    FixedFee?: BigIntFieldUpdateOperationsInput | bigint | number
+    FixedFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     lessons?: LessonUncheckedUpdateManyWithoutFieldNestedInput
     teachers?: TeacherUncheckedUpdateManyWithoutFieldNestedInput
@@ -11864,7 +11885,7 @@ export namespace Prisma {
     LessonId?: BigIntFilter<"SelectUnit"> | bigint | number
     Year?: IntFilter<"SelectUnit"> | number
     Period?: EnumPeriodFilter<"SelectUnit"> | $Enums.Period
-    ExtraFee?: BigIntFilter<"SelectUnit"> | bigint | number
+    ExtraFee?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
     Created_at?: DateTimeFilter<"SelectUnit"> | Date | string
     Updated_at?: DateTimeFilter<"SelectUnit"> | Date | string
   }
@@ -11872,7 +11893,7 @@ export namespace Prisma {
   export type FieldCreateWithoutLessonsInput = {
     id?: bigint | number
     Name: string
-    FixedFee?: bigint | number
+    FixedFee?: bigint | number | null
     Created_at?: Date | string
     students?: StudentCreateNestedManyWithoutFieldInput
     teachers?: TeacherCreateNestedManyWithoutFieldInput
@@ -11881,7 +11902,7 @@ export namespace Prisma {
   export type FieldUncheckedCreateWithoutLessonsInput = {
     id?: bigint | number
     Name: string
-    FixedFee?: bigint | number
+    FixedFee?: bigint | number | null
     Created_at?: Date | string
     students?: StudentUncheckedCreateNestedManyWithoutFieldInput
     teachers?: TeacherUncheckedCreateNestedManyWithoutFieldInput
@@ -11927,36 +11948,36 @@ export namespace Prisma {
     id?: bigint | number
     LessonName: string
     Unit: number
-    Grade: $Enums.LessonGrade
+    Grade?: $Enums.LessonGrade | null
     PassCondition?: number | null
     TheoriHours?: number | null
     PracticalHours?: number | null
     RequireUnit?: number | null
-    NotifCode: bigint | number
-    ValidFrom: Date | string
+    NotifCode?: bigint | number | null
+    ValidFrom?: Date | string | null
     ValidTill?: Date | string | null
     PricePerUnit?: bigint | number | null
     Created_at?: Date | string
     Updated_at?: Date | string
     field?: FieldCreateNestedOneWithoutLessonsInput
-    teacher: TeacherCreateNestedOneWithoutLessonsInput
+    teacher?: TeacherCreateNestedOneWithoutLessonsInput
     requiredForLesson?: LessonCreateNestedManyWithoutRequiresLessonInput
     selectUnits?: SelectUnitCreateNestedManyWithoutLessonInput
   }
 
   export type LessonUncheckedCreateWithoutRequiresLessonInput = {
     id?: bigint | number
-    TeacherId: bigint | number
+    TeacherId?: bigint | number | null
     LessonName: string
     Unit: number
-    Grade: $Enums.LessonGrade
+    Grade?: $Enums.LessonGrade | null
     fieldId?: bigint | number | null
     PassCondition?: number | null
     TheoriHours?: number | null
     PracticalHours?: number | null
     RequireUnit?: number | null
-    NotifCode: bigint | number
-    ValidFrom: Date | string
+    NotifCode?: bigint | number | null
+    ValidFrom?: Date | string | null
     ValidTill?: Date | string | null
     PricePerUnit?: bigint | number | null
     Created_at?: Date | string
@@ -11979,37 +12000,37 @@ export namespace Prisma {
     id?: bigint | number
     LessonName: string
     Unit: number
-    Grade: $Enums.LessonGrade
+    Grade?: $Enums.LessonGrade | null
     PassCondition?: number | null
     TheoriHours?: number | null
     PracticalHours?: number | null
     RequireUnit?: number | null
-    NotifCode: bigint | number
-    ValidFrom: Date | string
+    NotifCode?: bigint | number | null
+    ValidFrom?: Date | string | null
     ValidTill?: Date | string | null
     PricePerUnit?: bigint | number | null
     Created_at?: Date | string
     Updated_at?: Date | string
     field?: FieldCreateNestedOneWithoutLessonsInput
-    teacher: TeacherCreateNestedOneWithoutLessonsInput
+    teacher?: TeacherCreateNestedOneWithoutLessonsInput
     requiresLesson?: LessonCreateNestedOneWithoutRequiredForLessonInput
     selectUnits?: SelectUnitCreateNestedManyWithoutLessonInput
   }
 
   export type LessonUncheckedCreateWithoutRequiredForLessonInput = {
     id?: bigint | number
-    TeacherId: bigint | number
+    TeacherId?: bigint | number | null
     LessonName: string
     Unit: number
-    Grade: $Enums.LessonGrade
+    Grade?: $Enums.LessonGrade | null
     fieldId?: bigint | number | null
     PassCondition?: number | null
     TheoriHours?: number | null
     PracticalHours?: number | null
     RequireLesson?: bigint | number | null
     RequireUnit?: number | null
-    NotifCode: bigint | number
-    ValidFrom: Date | string
+    NotifCode?: bigint | number | null
+    ValidFrom?: Date | string | null
     ValidTill?: Date | string | null
     PricePerUnit?: bigint | number | null
     Created_at?: Date | string
@@ -12025,7 +12046,7 @@ export namespace Prisma {
   export type SelectUnitCreateWithoutLessonInput = {
     Year: number
     Period: $Enums.Period
-    ExtraFee?: bigint | number
+    ExtraFee?: bigint | number | null
     Created_at?: Date | string
     Updated_at?: Date | string
     student: StudentCreateNestedOneWithoutSelectUnitsInput
@@ -12035,7 +12056,7 @@ export namespace Prisma {
     StudentId: bigint | number
     Year: number
     Period: $Enums.Period
-    ExtraFee?: bigint | number
+    ExtraFee?: bigint | number | null
     Created_at?: Date | string
     Updated_at?: Date | string
   }
@@ -12064,7 +12085,7 @@ export namespace Prisma {
   export type FieldUpdateWithoutLessonsInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     Name?: StringFieldUpdateOperationsInput | string
-    FixedFee?: BigIntFieldUpdateOperationsInput | bigint | number
+    FixedFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     students?: StudentUpdateManyWithoutFieldNestedInput
     teachers?: TeacherUpdateManyWithoutFieldNestedInput
@@ -12073,7 +12094,7 @@ export namespace Prisma {
   export type FieldUncheckedUpdateWithoutLessonsInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     Name?: StringFieldUpdateOperationsInput | string
-    FixedFee?: BigIntFieldUpdateOperationsInput | bigint | number
+    FixedFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     students?: StudentUncheckedUpdateManyWithoutFieldNestedInput
     teachers?: TeacherUncheckedUpdateManyWithoutFieldNestedInput
@@ -12137,18 +12158,18 @@ export namespace Prisma {
     OR?: LessonScalarWhereInput[]
     NOT?: LessonScalarWhereInput | LessonScalarWhereInput[]
     id?: BigIntFilter<"Lesson"> | bigint | number
-    TeacherId?: BigIntFilter<"Lesson"> | bigint | number
+    TeacherId?: BigIntNullableFilter<"Lesson"> | bigint | number | null
     LessonName?: StringFilter<"Lesson"> | string
     Unit?: IntFilter<"Lesson"> | number
-    Grade?: EnumLessonGradeFilter<"Lesson"> | $Enums.LessonGrade
+    Grade?: EnumLessonGradeNullableFilter<"Lesson"> | $Enums.LessonGrade | null
     fieldId?: BigIntNullableFilter<"Lesson"> | bigint | number | null
     PassCondition?: IntNullableFilter<"Lesson"> | number | null
     TheoriHours?: IntNullableFilter<"Lesson"> | number | null
     PracticalHours?: IntNullableFilter<"Lesson"> | number | null
     RequireLesson?: BigIntNullableFilter<"Lesson"> | bigint | number | null
     RequireUnit?: IntNullableFilter<"Lesson"> | number | null
-    NotifCode?: BigIntFilter<"Lesson"> | bigint | number
-    ValidFrom?: DateTimeFilter<"Lesson"> | Date | string
+    NotifCode?: BigIntNullableFilter<"Lesson"> | bigint | number | null
+    ValidFrom?: DateTimeNullableFilter<"Lesson"> | Date | string | null
     ValidTill?: DateTimeNullableFilter<"Lesson"> | Date | string | null
     PricePerUnit?: BigIntNullableFilter<"Lesson"> | bigint | number | null
     Created_at?: DateTimeFilter<"Lesson"> | Date | string
@@ -12170,37 +12191,37 @@ export namespace Prisma {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     LessonName?: StringFieldUpdateOperationsInput | string
     Unit?: IntFieldUpdateOperationsInput | number
-    Grade?: EnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade
+    Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
     PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
     RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
-    NotifCode?: BigIntFieldUpdateOperationsInput | bigint | number
-    ValidFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    NotifCode?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ValidFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     PricePerUnit?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     field?: FieldUpdateOneWithoutLessonsNestedInput
-    teacher?: TeacherUpdateOneRequiredWithoutLessonsNestedInput
+    teacher?: TeacherUpdateOneWithoutLessonsNestedInput
     requiresLesson?: LessonUpdateOneWithoutRequiredForLessonNestedInput
     selectUnits?: SelectUnitUpdateManyWithoutLessonNestedInput
   }
 
   export type LessonUncheckedUpdateWithoutRequiredForLessonInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
-    TeacherId?: BigIntFieldUpdateOperationsInput | bigint | number
+    TeacherId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     LessonName?: StringFieldUpdateOperationsInput | string
     Unit?: IntFieldUpdateOperationsInput | number
-    Grade?: EnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade
+    Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
     fieldId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
     PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
     RequireLesson?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
-    NotifCode?: BigIntFieldUpdateOperationsInput | bigint | number
-    ValidFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    NotifCode?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ValidFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     PricePerUnit?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12234,7 +12255,7 @@ export namespace Prisma {
     Address?: string | null
     HomeNumber?: string | null
     PhoneNumber?: string | null
-    Grade: $Enums.Grade
+    Grade?: $Enums.Grade
     Gender?: boolean
     Updated_at?: Date | string
     Created_at?: Date | string
@@ -12252,7 +12273,7 @@ export namespace Prisma {
     HomeNumber?: string | null
     PhoneNumber?: string | null
     fieldId: bigint | number
-    Grade: $Enums.Grade
+    Grade?: $Enums.Grade
     Gender?: boolean
     Updated_at?: Date | string
     Created_at?: Date | string
@@ -12267,37 +12288,37 @@ export namespace Prisma {
     id?: bigint | number
     LessonName: string
     Unit: number
-    Grade: $Enums.LessonGrade
+    Grade?: $Enums.LessonGrade | null
     PassCondition?: number | null
     TheoriHours?: number | null
     PracticalHours?: number | null
     RequireUnit?: number | null
-    NotifCode: bigint | number
-    ValidFrom: Date | string
+    NotifCode?: bigint | number | null
+    ValidFrom?: Date | string | null
     ValidTill?: Date | string | null
     PricePerUnit?: bigint | number | null
     Created_at?: Date | string
     Updated_at?: Date | string
     field?: FieldCreateNestedOneWithoutLessonsInput
-    teacher: TeacherCreateNestedOneWithoutLessonsInput
+    teacher?: TeacherCreateNestedOneWithoutLessonsInput
     requiredForLesson?: LessonCreateNestedManyWithoutRequiresLessonInput
     requiresLesson?: LessonCreateNestedOneWithoutRequiredForLessonInput
   }
 
   export type LessonUncheckedCreateWithoutSelectUnitsInput = {
     id?: bigint | number
-    TeacherId: bigint | number
+    TeacherId?: bigint | number | null
     LessonName: string
     Unit: number
-    Grade: $Enums.LessonGrade
+    Grade?: $Enums.LessonGrade | null
     fieldId?: bigint | number | null
     PassCondition?: number | null
     TheoriHours?: number | null
     PracticalHours?: number | null
     RequireLesson?: bigint | number | null
     RequireUnit?: number | null
-    NotifCode: bigint | number
-    ValidFrom: Date | string
+    NotifCode?: bigint | number | null
+    ValidFrom?: Date | string | null
     ValidTill?: Date | string | null
     PricePerUnit?: bigint | number | null
     Created_at?: Date | string
@@ -12370,37 +12391,37 @@ export namespace Prisma {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     LessonName?: StringFieldUpdateOperationsInput | string
     Unit?: IntFieldUpdateOperationsInput | number
-    Grade?: EnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade
+    Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
     PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
     RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
-    NotifCode?: BigIntFieldUpdateOperationsInput | bigint | number
-    ValidFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    NotifCode?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ValidFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     PricePerUnit?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     field?: FieldUpdateOneWithoutLessonsNestedInput
-    teacher?: TeacherUpdateOneRequiredWithoutLessonsNestedInput
+    teacher?: TeacherUpdateOneWithoutLessonsNestedInput
     requiredForLesson?: LessonUpdateManyWithoutRequiresLessonNestedInput
     requiresLesson?: LessonUpdateOneWithoutRequiredForLessonNestedInput
   }
 
   export type LessonUncheckedUpdateWithoutSelectUnitsInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
-    TeacherId?: BigIntFieldUpdateOperationsInput | bigint | number
+    TeacherId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     LessonName?: StringFieldUpdateOperationsInput | string
     Unit?: IntFieldUpdateOperationsInput | number
-    Grade?: EnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade
+    Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
     fieldId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
     PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
     RequireLesson?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
-    NotifCode?: BigIntFieldUpdateOperationsInput | bigint | number
-    ValidFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    NotifCode?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ValidFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     PricePerUnit?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12418,7 +12439,7 @@ export namespace Prisma {
     Address?: string | null
     HomeNumber?: string | null
     PhoneNumber?: string | null
-    Grade: $Enums.Grade
+    Grade?: $Enums.Grade
     Gender?: boolean
     Updated_at?: Date | string
     Created_at?: Date | string
@@ -12435,7 +12456,7 @@ export namespace Prisma {
     Address?: string | null
     HomeNumber?: string | null
     PhoneNumber?: string | null
-    Grade: $Enums.Grade
+    Grade?: $Enums.Grade
     Gender?: boolean
     Updated_at?: Date | string
     Created_at?: Date | string
@@ -12456,18 +12477,18 @@ export namespace Prisma {
     id?: bigint | number
     LessonName: string
     Unit: number
-    Grade: $Enums.LessonGrade
+    Grade?: $Enums.LessonGrade | null
     PassCondition?: number | null
     TheoriHours?: number | null
     PracticalHours?: number | null
     RequireUnit?: number | null
-    NotifCode: bigint | number
-    ValidFrom: Date | string
+    NotifCode?: bigint | number | null
+    ValidFrom?: Date | string | null
     ValidTill?: Date | string | null
     PricePerUnit?: bigint | number | null
     Created_at?: Date | string
     Updated_at?: Date | string
-    teacher: TeacherCreateNestedOneWithoutLessonsInput
+    teacher?: TeacherCreateNestedOneWithoutLessonsInput
     requiredForLesson?: LessonCreateNestedManyWithoutRequiresLessonInput
     requiresLesson?: LessonCreateNestedOneWithoutRequiredForLessonInput
     selectUnits?: SelectUnitCreateNestedManyWithoutLessonInput
@@ -12475,17 +12496,17 @@ export namespace Prisma {
 
   export type LessonUncheckedCreateWithoutFieldInput = {
     id?: bigint | number
-    TeacherId: bigint | number
+    TeacherId?: bigint | number | null
     LessonName: string
     Unit: number
-    Grade: $Enums.LessonGrade
+    Grade?: $Enums.LessonGrade | null
     PassCondition?: number | null
     TheoriHours?: number | null
     PracticalHours?: number | null
     RequireLesson?: bigint | number | null
     RequireUnit?: number | null
-    NotifCode: bigint | number
-    ValidFrom: Date | string
+    NotifCode?: bigint | number | null
+    ValidFrom?: Date | string | null
     ValidTill?: Date | string | null
     PricePerUnit?: bigint | number | null
     Created_at?: Date | string
@@ -12627,7 +12648,7 @@ export namespace Prisma {
   export type FieldCreateWithoutTeachersInput = {
     id?: bigint | number
     Name: string
-    FixedFee?: bigint | number
+    FixedFee?: bigint | number | null
     Created_at?: Date | string
     students?: StudentCreateNestedManyWithoutFieldInput
     lessons?: LessonCreateNestedManyWithoutFieldInput
@@ -12636,7 +12657,7 @@ export namespace Prisma {
   export type FieldUncheckedCreateWithoutTeachersInput = {
     id?: bigint | number
     Name: string
-    FixedFee?: bigint | number
+    FixedFee?: bigint | number | null
     Created_at?: Date | string
     students?: StudentUncheckedCreateNestedManyWithoutFieldInput
     lessons?: LessonUncheckedCreateNestedManyWithoutFieldInput
@@ -12651,13 +12672,13 @@ export namespace Prisma {
     id?: bigint | number
     LessonName: string
     Unit: number
-    Grade: $Enums.LessonGrade
+    Grade?: $Enums.LessonGrade | null
     PassCondition?: number | null
     TheoriHours?: number | null
     PracticalHours?: number | null
     RequireUnit?: number | null
-    NotifCode: bigint | number
-    ValidFrom: Date | string
+    NotifCode?: bigint | number | null
+    ValidFrom?: Date | string | null
     ValidTill?: Date | string | null
     PricePerUnit?: bigint | number | null
     Created_at?: Date | string
@@ -12672,15 +12693,15 @@ export namespace Prisma {
     id?: bigint | number
     LessonName: string
     Unit: number
-    Grade: $Enums.LessonGrade
+    Grade?: $Enums.LessonGrade | null
     fieldId?: bigint | number | null
     PassCondition?: number | null
     TheoriHours?: number | null
     PracticalHours?: number | null
     RequireLesson?: bigint | number | null
     RequireUnit?: number | null
-    NotifCode: bigint | number
-    ValidFrom: Date | string
+    NotifCode?: bigint | number | null
+    ValidFrom?: Date | string | null
     ValidTill?: Date | string | null
     PricePerUnit?: bigint | number | null
     Created_at?: Date | string
@@ -12713,7 +12734,7 @@ export namespace Prisma {
   export type FieldUpdateWithoutTeachersInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     Name?: StringFieldUpdateOperationsInput | string
-    FixedFee?: BigIntFieldUpdateOperationsInput | bigint | number
+    FixedFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     students?: StudentUpdateManyWithoutFieldNestedInput
     lessons?: LessonUpdateManyWithoutFieldNestedInput
@@ -12722,7 +12743,7 @@ export namespace Prisma {
   export type FieldUncheckedUpdateWithoutTeachersInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     Name?: StringFieldUpdateOperationsInput | string
-    FixedFee?: BigIntFieldUpdateOperationsInput | bigint | number
+    FixedFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     students?: StudentUncheckedUpdateManyWithoutFieldNestedInput
     lessons?: LessonUncheckedUpdateManyWithoutFieldNestedInput
@@ -12748,7 +12769,7 @@ export namespace Prisma {
     LessonId: bigint | number
     Year: number
     Period: $Enums.Period
-    ExtraFee?: bigint | number
+    ExtraFee?: bigint | number | null
     Created_at?: Date | string
     Updated_at?: Date | string
   }
@@ -12756,7 +12777,7 @@ export namespace Prisma {
   export type SelectUnitUpdateWithoutStudentInput = {
     Year?: IntFieldUpdateOperationsInput | number
     Period?: EnumPeriodFieldUpdateOperationsInput | $Enums.Period
-    ExtraFee?: BigIntFieldUpdateOperationsInput | bigint | number
+    ExtraFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     lesson?: LessonUpdateOneRequiredWithoutSelectUnitsNestedInput
@@ -12766,7 +12787,7 @@ export namespace Prisma {
     LessonId?: BigIntFieldUpdateOperationsInput | bigint | number
     Year?: IntFieldUpdateOperationsInput | number
     Period?: EnumPeriodFieldUpdateOperationsInput | $Enums.Period
-    ExtraFee?: BigIntFieldUpdateOperationsInput | bigint | number
+    ExtraFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -12775,24 +12796,24 @@ export namespace Prisma {
     LessonId?: BigIntFieldUpdateOperationsInput | bigint | number
     Year?: IntFieldUpdateOperationsInput | number
     Period?: EnumPeriodFieldUpdateOperationsInput | $Enums.Period
-    ExtraFee?: BigIntFieldUpdateOperationsInput | bigint | number
+    ExtraFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type LessonCreateManyRequiresLessonInput = {
     id?: bigint | number
-    TeacherId: bigint | number
+    TeacherId?: bigint | number | null
     LessonName: string
     Unit: number
-    Grade: $Enums.LessonGrade
+    Grade?: $Enums.LessonGrade | null
     fieldId?: bigint | number | null
     PassCondition?: number | null
     TheoriHours?: number | null
     PracticalHours?: number | null
     RequireUnit?: number | null
-    NotifCode: bigint | number
-    ValidFrom: Date | string
+    NotifCode?: bigint | number | null
+    ValidFrom?: Date | string | null
     ValidTill?: Date | string | null
     PricePerUnit?: bigint | number | null
     Created_at?: Date | string
@@ -12803,7 +12824,7 @@ export namespace Prisma {
     StudentId: bigint | number
     Year: number
     Period: $Enums.Period
-    ExtraFee?: bigint | number
+    ExtraFee?: bigint | number | null
     Created_at?: Date | string
     Updated_at?: Date | string
   }
@@ -12812,36 +12833,36 @@ export namespace Prisma {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     LessonName?: StringFieldUpdateOperationsInput | string
     Unit?: IntFieldUpdateOperationsInput | number
-    Grade?: EnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade
+    Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
     PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
     RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
-    NotifCode?: BigIntFieldUpdateOperationsInput | bigint | number
-    ValidFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    NotifCode?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ValidFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     PricePerUnit?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     field?: FieldUpdateOneWithoutLessonsNestedInput
-    teacher?: TeacherUpdateOneRequiredWithoutLessonsNestedInput
+    teacher?: TeacherUpdateOneWithoutLessonsNestedInput
     requiredForLesson?: LessonUpdateManyWithoutRequiresLessonNestedInput
     selectUnits?: SelectUnitUpdateManyWithoutLessonNestedInput
   }
 
   export type LessonUncheckedUpdateWithoutRequiresLessonInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
-    TeacherId?: BigIntFieldUpdateOperationsInput | bigint | number
+    TeacherId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     LessonName?: StringFieldUpdateOperationsInput | string
     Unit?: IntFieldUpdateOperationsInput | number
-    Grade?: EnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade
+    Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
     fieldId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
     PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
     RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
-    NotifCode?: BigIntFieldUpdateOperationsInput | bigint | number
-    ValidFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    NotifCode?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ValidFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     PricePerUnit?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12852,17 +12873,17 @@ export namespace Prisma {
 
   export type LessonUncheckedUpdateManyWithoutRequiresLessonInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
-    TeacherId?: BigIntFieldUpdateOperationsInput | bigint | number
+    TeacherId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     LessonName?: StringFieldUpdateOperationsInput | string
     Unit?: IntFieldUpdateOperationsInput | number
-    Grade?: EnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade
+    Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
     fieldId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
     PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
     RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
-    NotifCode?: BigIntFieldUpdateOperationsInput | bigint | number
-    ValidFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    NotifCode?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ValidFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     PricePerUnit?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12872,7 +12893,7 @@ export namespace Prisma {
   export type SelectUnitUpdateWithoutLessonInput = {
     Year?: IntFieldUpdateOperationsInput | number
     Period?: EnumPeriodFieldUpdateOperationsInput | $Enums.Period
-    ExtraFee?: BigIntFieldUpdateOperationsInput | bigint | number
+    ExtraFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     student?: StudentUpdateOneRequiredWithoutSelectUnitsNestedInput
@@ -12882,7 +12903,7 @@ export namespace Prisma {
     StudentId?: BigIntFieldUpdateOperationsInput | bigint | number
     Year?: IntFieldUpdateOperationsInput | number
     Period?: EnumPeriodFieldUpdateOperationsInput | $Enums.Period
-    ExtraFee?: BigIntFieldUpdateOperationsInput | bigint | number
+    ExtraFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -12891,7 +12912,7 @@ export namespace Prisma {
     StudentId?: BigIntFieldUpdateOperationsInput | bigint | number
     Year?: IntFieldUpdateOperationsInput | number
     Period?: EnumPeriodFieldUpdateOperationsInput | $Enums.Period
-    ExtraFee?: BigIntFieldUpdateOperationsInput | bigint | number
+    ExtraFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -12906,7 +12927,7 @@ export namespace Prisma {
     Address?: string | null
     HomeNumber?: string | null
     PhoneNumber?: string | null
-    Grade: $Enums.Grade
+    Grade?: $Enums.Grade
     Gender?: boolean
     Updated_at?: Date | string
     Created_at?: Date | string
@@ -12914,17 +12935,17 @@ export namespace Prisma {
 
   export type LessonCreateManyFieldInput = {
     id?: bigint | number
-    TeacherId: bigint | number
+    TeacherId?: bigint | number | null
     LessonName: string
     Unit: number
-    Grade: $Enums.LessonGrade
+    Grade?: $Enums.LessonGrade | null
     PassCondition?: number | null
     TheoriHours?: number | null
     PracticalHours?: number | null
     RequireLesson?: bigint | number | null
     RequireUnit?: number | null
-    NotifCode: bigint | number
-    ValidFrom: Date | string
+    NotifCode?: bigint | number | null
+    ValidFrom?: Date | string | null
     ValidTill?: Date | string | null
     PricePerUnit?: bigint | number | null
     Created_at?: Date | string
@@ -12997,18 +13018,18 @@ export namespace Prisma {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     LessonName?: StringFieldUpdateOperationsInput | string
     Unit?: IntFieldUpdateOperationsInput | number
-    Grade?: EnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade
+    Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
     PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
     RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
-    NotifCode?: BigIntFieldUpdateOperationsInput | bigint | number
-    ValidFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    NotifCode?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ValidFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     PricePerUnit?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    teacher?: TeacherUpdateOneRequiredWithoutLessonsNestedInput
+    teacher?: TeacherUpdateOneWithoutLessonsNestedInput
     requiredForLesson?: LessonUpdateManyWithoutRequiresLessonNestedInput
     requiresLesson?: LessonUpdateOneWithoutRequiredForLessonNestedInput
     selectUnits?: SelectUnitUpdateManyWithoutLessonNestedInput
@@ -13016,17 +13037,17 @@ export namespace Prisma {
 
   export type LessonUncheckedUpdateWithoutFieldInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
-    TeacherId?: BigIntFieldUpdateOperationsInput | bigint | number
+    TeacherId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     LessonName?: StringFieldUpdateOperationsInput | string
     Unit?: IntFieldUpdateOperationsInput | number
-    Grade?: EnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade
+    Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
     PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
     RequireLesson?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
-    NotifCode?: BigIntFieldUpdateOperationsInput | bigint | number
-    ValidFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    NotifCode?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ValidFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     PricePerUnit?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13037,17 +13058,17 @@ export namespace Prisma {
 
   export type LessonUncheckedUpdateManyWithoutFieldInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
-    TeacherId?: BigIntFieldUpdateOperationsInput | bigint | number
+    TeacherId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     LessonName?: StringFieldUpdateOperationsInput | string
     Unit?: IntFieldUpdateOperationsInput | number
-    Grade?: EnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade
+    Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
     PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
     RequireLesson?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
-    NotifCode?: BigIntFieldUpdateOperationsInput | bigint | number
-    ValidFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    NotifCode?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ValidFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     PricePerUnit?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13096,15 +13117,15 @@ export namespace Prisma {
     id?: bigint | number
     LessonName: string
     Unit: number
-    Grade: $Enums.LessonGrade
+    Grade?: $Enums.LessonGrade | null
     fieldId?: bigint | number | null
     PassCondition?: number | null
     TheoriHours?: number | null
     PracticalHours?: number | null
     RequireLesson?: bigint | number | null
     RequireUnit?: number | null
-    NotifCode: bigint | number
-    ValidFrom: Date | string
+    NotifCode?: bigint | number | null
+    ValidFrom?: Date | string | null
     ValidTill?: Date | string | null
     PricePerUnit?: bigint | number | null
     Created_at?: Date | string
@@ -13115,13 +13136,13 @@ export namespace Prisma {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     LessonName?: StringFieldUpdateOperationsInput | string
     Unit?: IntFieldUpdateOperationsInput | number
-    Grade?: EnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade
+    Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
     PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
     RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
-    NotifCode?: BigIntFieldUpdateOperationsInput | bigint | number
-    ValidFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    NotifCode?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ValidFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     PricePerUnit?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13136,15 +13157,15 @@ export namespace Prisma {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     LessonName?: StringFieldUpdateOperationsInput | string
     Unit?: IntFieldUpdateOperationsInput | number
-    Grade?: EnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade
+    Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
     fieldId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
     PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
     RequireLesson?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
-    NotifCode?: BigIntFieldUpdateOperationsInput | bigint | number
-    ValidFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    NotifCode?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ValidFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     PricePerUnit?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13157,15 +13178,15 @@ export namespace Prisma {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     LessonName?: StringFieldUpdateOperationsInput | string
     Unit?: IntFieldUpdateOperationsInput | number
-    Grade?: EnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade
+    Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
     fieldId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
     PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
     RequireLesson?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
-    NotifCode?: BigIntFieldUpdateOperationsInput | bigint | number
-    ValidFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    NotifCode?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ValidFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     PricePerUnit?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
