@@ -16,6 +16,8 @@ export async function getTeachers(params?: BaseListFilterParams) {
     const from = params?.from;
     const to = params?.to;
 
+    // await new Promise((resolve) => setTimeout(resolve, 10000));
+
     // Build where condition for search
     let where: any = query
       ? {

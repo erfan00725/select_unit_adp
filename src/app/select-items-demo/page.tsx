@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import SelectItems from "@/components/ui/SelectItems";
 import PageHeader from "@/components/ui/PageHeader";
+import { ModalWrapper } from "@/components/ui/ModalWrapper";
 
 // Sample data for demonstration
 const sampleItems = [
@@ -23,6 +24,7 @@ const sampleItems = [
 export default function SelectItemsDemo() {
   const [selectedItems, setSelectedItems] = useState<any[]>([]);
   const [savedSelection, setSavedSelection] = useState<any[]>([]);
+  const [isSelectShown, setIsSelectShown] = useState<boolean>(false);
 
   const handleSelectionChange = (items: any[]) => {
     setSelectedItems(items);
@@ -42,14 +44,21 @@ export default function SelectItemsDemo() {
 
       <div className="mb-8">
         <h2 className="text-xl font-bold mb-4">Component Demo</h2>
-        <SelectItems
-          items={sampleItems}
-          onSelectionChange={handleSelectionChange}
-          onSave={handleSaveSelection}
-          title="Select Products"
-          searchPlaceholder="Search products..."
-        />
+        <ModalWrapper
+          isShown={isSelectShown}
+          onClose={() => setIsSelectShown(false)}
+        >
+          <SelectItems
+            items={sampleItems}
+            onSelectionChange={handleSelectionChange}
+            onSave={handleSaveSelection}
+            title="Select Products"
+            searchPlaceholder="Search products..."
+          />
+        </ModalWrapper>
       </div>
+
+      <button onClick={() => setIsSelectShown(true)}>Show Modal</button>
 
       {savedSelection.length > 0 && (
         <div className="bg-white rounded-lg shadow-lg p-6">

@@ -4,7 +4,87 @@ import React, { useEffect, useState } from "react";
 import Input from "./Input";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FormProps } from "@/types/Props";
+import { FormInputProps, FormProps } from "@/types/Props";
+import { SelectButton } from "./SelectButton";
+import { Calendar, CalendarProvider } from "zaman";
+import { CalenderFarsi } from "./CalenderFarsi";
+
+const FormInput = ({
+  name,
+  type,
+  defaultValue,
+  icon,
+  placeholder,
+  required,
+  title,
+  onChange,
+  value,
+  SelectButtonProps,
+}: FormInputProps) => {
+  if (type === "select") {
+    if (!SelectButtonProps) return;
+    return (
+      <SelectButton
+        {...SelectButtonProps}
+        onSave={(i) => {
+          const data = SelectButtonProps.singleSelect
+            ? i[0].id
+            : i.map((i) => i.id);
+          onChange && onChange(data);
+        }}
+      />
+    );
+  }
+
+  switch (type) {
+    case "select":
+      if (!SelectButtonProps) return;
+      return (
+        <SelectButton
+          {...SelectButtonProps}
+          onSave={(i) => {
+            console.log(i);
+            const data = SelectButtonProps.singleSelect
+              ? i[0].id
+              : i.map((i) => i.id);
+            onChange && onChange(data);
+          }}
+        />
+      );
+    case "textarea":
+      return (
+        <textarea
+          id={name}
+          name={name}
+          placeholder={placeholder || ""}
+          value={value || ""}
+          onChange={(e) => onChange && onChange(e.target.value)}
+          className="input min-h-[100px]"
+          required={required}
+        />
+      );
+    case "date":
+      return (
+        <CalenderFarsi
+          name={name}
+          defaultValue={defaultValue}
+          onChange={onChange}
+        />
+      );
+    default:
+      return (
+        <Input
+          type={type}
+          placeholder={placeholder || ""}
+          value={value?.toString() || ""}
+          onChange={(e) => onChange && onChange(e.target.value)}
+          icon={icon}
+          id={name}
+          required={required}
+        />
+      );
+  }
+};
 
 const Form: React.FC<FormProps> = ({
   inputs = [],
@@ -19,10 +99,35 @@ const Form: React.FC<FormProps> = ({
   const [formData, setFormData] = useState<Record<string, any>>({});
 
   // Handle input changes
-  const handleInputChange = (name: string, value: any) => {
+  const handleInputChange = (
+    name: string,
+    value: any,
+    dataType: "string" | "number" | "bool" | "date" = "string"
+  ) => {
+    let convertedValue = value;
+
+    // Convert value based on dataType if specified
+    if (dataType) {
+      switch (dataType) {
+        case "number":
+          convertedValue = value === "" ? null : Number(value);
+          break;
+        case "bool":
+          convertedValue = Boolean(value);
+          break;
+        case "date":
+          convertedValue = value ? new Date(value) : null;
+          break;
+        // Add more type conversions as needed
+        default:
+          // Keep as string or original type
+          break;
+      }
+    }
+
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: convertedValue,
     }));
   };
 
@@ -46,6 +151,7 @@ const Form: React.FC<FormProps> = ({
   // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log(formData);
     if (onSubmit) {
       onSubmit(formData);
     }
@@ -71,31 +177,13 @@ const Form: React.FC<FormProps> = ({
                 {input.title}
                 {input.required && <span className="text-red-500">*</span>}
               </label>
-              {input.type === "textarea" ? (
-                <textarea
-                  id={input.name}
-                  name={input.name}
-                  placeholder={input.placeholder || ""}
-                  value={formData[input.name] || ""}
-                  onChange={(e) =>
-                    handleInputChange(input.name, e.target.value)
-                  }
-                  className="input min-h-[100px]"
-                  required={input.required}
+              {
+                <FormInput
+                  {...input}
+                  value={formData[input.name]}
+                  onChange={(value) => handleInputChange(input.name, value)}
                 />
-              ) : (
-                <Input
-                  type={input.type}
-                  placeholder={input.placeholder || ""}
-                  value={formData[input.name] || ""}
-                  onChange={(e) =>
-                    handleInputChange(input.name, e.target.value)
-                  }
-                  icon={input.icon}
-                  id={input.name}
-                  required={input.required}
-                />
-              )}
+              }
             </div>
           ))}
         </div>

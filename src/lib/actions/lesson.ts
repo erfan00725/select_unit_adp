@@ -111,14 +111,17 @@ export async function getLessonById(id: bigint) {
 
 // Create a new lesson
 export async function createLesson(data: LessonDataType) {
+  console.log("data ", data);
   try {
     // Check if teacher exists
-    const teacher = await prisma.teacher.findUnique({
-      where: { id: data.TeacherId },
-    });
+    if (data.TeacherId) {
+      const teacher = await prisma.teacher.findUnique({
+        where: { id: data.TeacherId },
+      });
 
-    if (!teacher) {
-      return { error: "Teacher not found" };
+      if (!teacher) {
+        return { error: "Teacher not found" };
+      }
     }
 
     // Check if field exists if provided
@@ -167,15 +170,27 @@ export async function createLesson(data: LessonDataType) {
 
 // Update a lesson
 export async function updateLesson(id: bigint, data: Partial<LessonDataType>) {
+  console.log("data ", data);
   try {
     // Check if lesson exists
     const existingLesson = await prisma.lesson.findUnique({
       where: { id },
     });
+    console.log("existingLesson ", existingLesson); // Add this line to log the value of existingLesson t
 
     if (!existingLesson) {
       return { error: "Lesson not found" };
     }
+
+    // Object.keys(data).forEach((key) => {
+    //   if (
+    //     data[key as keyof typeof data] == "" ||
+    //     data[key as keyof typeof data] == null ||
+    //     data[key as keyof typeof data] == 0
+    //   ) {
+    //     data[key as keyof typeof data] = undefined;
+    //   }
+    // });
 
     // Check if teacher exists if provided
     if (data.TeacherId) {
@@ -200,9 +215,9 @@ export async function updateLesson(id: bigint, data: Partial<LessonDataType>) {
     }
 
     // Check if required lesson exists if provided
-    if (data.RequireUnit) {
+    if (data.RequireLesson) {
       const requiredLesson = await prisma.lesson.findUnique({
-        where: { id: data.RequireUnit },
+        where: { id: data.RequireLesson },
       });
 
       if (!requiredLesson) {

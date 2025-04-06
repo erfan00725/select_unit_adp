@@ -5,7 +5,7 @@ import { Grade, LessonGrade, UserType, Period } from "@/generated/prisma";
 import { Orders } from "./General";
 
 export type DataBaseType = {
-  id: string | bigint;
+  id?: string | bigint;
 };
 
 export interface CourseDataType extends DataBaseType {
@@ -43,18 +43,18 @@ export interface TeacherDataType extends DataBaseType {
 }
 
 export interface LessonDataType extends DataBaseType {
-  TeacherId: bigint;
+  TeacherId?: bigint;
   LessonName: string;
   Unit: number;
-  Grade: LessonGrade;
+  Grade?: LessonGrade;
   fieldId?: bigint;
   PassCondition?: number;
   TheoriHours?: number;
   PracticalHours?: number;
   RequireLesson?: number;
   RequireUnit?: bigint;
-  NotifCode: bigint;
-  ValidFrom: Date;
+  NotifCode?: bigint;
+  ValidFrom?: Date;
   ValidTill?: Date;
   PricePerUnit?: bigint;
 }

@@ -34,3 +34,12 @@ body {
 .filterNoBorder input {
   @apply border-none p-0;
 }
+
+.button,
+.button_black {
+  @apply inline-flex items-center px-4 py-2 border cursor-pointer hover:bg-gray-200 border-gray-200 text-sm font-medium rounded-md text-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500;
+}
+
+.button_black {
+  @apply text-white bg-black hover:bg-gray-800 border-transparent;
+}

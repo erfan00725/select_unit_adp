@@ -1,19 +1,34 @@
+import { SelectButtonProps } from "@/components/ui/SelectButton";
+
 export interface PageHeaderProps {
   title: string;
   description?: string;
 }
 
+export enum InpueValueType {
+  string,
+  number,
+  date,
+  bool,
+}
+
+export type FormInputProps = {
+  type: string;
+  name: string;
+  title?: string;
+  placeholder?: string;
+  icon?: React.ReactNode;
+  required?: boolean;
+  defaultValue?: string;
+  value?: string | number | readonly string[];
+  onChange?: (value: string | number | readonly string[] | undefined) => void;
+  SelectButtonProps?: SelectButtonProps;
+  valueType?: InpueValueType;
+};
+
 export type FormProps = {
   Header?: React.ReactNode;
-  inputs: {
-    type: string;
-    name: string;
-    title?: string;
-    placeholder?: string;
-    icon?: React.ReactNode;
-    required?: boolean;
-    defaultValue?: string;
-  }[];
+  inputs: FormInputProps[];
   children?: React.ReactNode;
   className?: string;
   addText?: string;
@@ -35,19 +50,4 @@ export interface SearchFilterBarProps {
   onSortChange?: (sortOption: string) => void;
   onFilterRemove?: (filterId: string) => void;
   onClearAllFilters?: () => void;
-}
-
-export interface SelectItemsProps {
-  items: {
-    id: string;
-    name: string;
-    [key: string]: any; // Allow for additional properties
-  }[];
-  onSelectionChange?: (selectedItems: any[]) => void;
-  onSave?: (selectedItems: any[]) => void;
-  onCancel?: () => void;
-  title?: string;
-  searchPlaceholder?: string;
-  className?: string;
-  initialSelectedItems?: any[];
 }

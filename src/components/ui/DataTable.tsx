@@ -96,10 +96,7 @@ const DataTable = <T extends DataBaseType>({
 
       {addUrl && (
         <div className="mt-6">
-          <Link
-            href={addUrl}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
+          <Link href={addUrl} className="button_black">
             {addButtonLabel || "Add"}
           </Link>
         </div>

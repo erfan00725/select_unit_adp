@@ -5,7 +5,6 @@ import { deleteLesson, getLessonById } from "@/lib/actions";
 import { notFound } from "next/navigation";
 import { LessonInfoPage } from "@/components/ui/pages/Lessons/LessonInfoPage";
 import DeleteConfirm from "@/components/ui/DeleteConfirm";
-import { toast } from "react-toastify";
 import { urls } from "@/constants/urls";
 
 const LessonDetailPage = async ({

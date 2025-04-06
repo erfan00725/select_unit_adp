@@ -4,6 +4,7 @@ import StatusBadge from "./StatusBadge";
 import Link from "next/link";
 import DisplayLessonHours from "./DisplayLessonHours";
 import { DeleteButton } from "./DeleteButton";
+import getFarsiDate from "@/lib/getFarsiDate";
 
 export interface ProductInfoProps {
   id: string;
@@ -57,17 +58,14 @@ const ProductInfoCard: React.FC<ProductInfoProps> = ({
           <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
           <p className="text-sm text-gray-500 mt-1">
             ID: {id}
-            {createdAt && ` • Created: ${createdAt}`}
-            {modifiedAt && ` • Modified: ${modifiedAt}`}
+            {createdAt && ` • Created: ${getFarsiDate(createdAt)}`}
+            {modifiedAt && ` • Modified: ${getFarsiDate(modifiedAt)}`}
           </p>
         </div>
         {baseUrl && (
           <div className="flex space-x-2">
             {actions}
-            <Link
-              href={`${formBaseUrl}/edit`}
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
+            <Link href={`${formBaseUrl}/edit`} className="button_black">
               Edit
             </Link>
             <DeleteButton />

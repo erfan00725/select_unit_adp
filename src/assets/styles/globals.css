@@ -43,3 +43,7 @@ body {
   animation: 0.5s spinner linear infinite;
   margin: 0 auto;
 }
+
+.rtl {
+  direction: rtl;
+}

@@ -20,7 +20,9 @@ const LessonsPageTable = async ({
     id: lesson.id,
     Name: lesson.LessonName,
     Unit: lesson.Unit,
-    Teacher: `${lesson.teacher.FirstName} ${lesson.teacher.LastName}`,
+    Teacher: lesson.teacher
+      ? `${lesson.teacher.FirstName} ${lesson.teacher.LastName}`
+      : "_",
   }));
 
   const headers = ["ID", "Name", "Unit", "Teacher"];

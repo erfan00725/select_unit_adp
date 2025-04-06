@@ -1,4 +1,10 @@
-import { getLessonById } from "@/lib/actions";
+import { LessonGrade } from "@/generated/prisma";
+import {
+  getFields,
+  getLessonById,
+  getLessons,
+  getTeachers,
+} from "@/lib/actions";
 import { FormPageProps } from "@/types/Props";
 
 export const NavBarConfigs = [
@@ -20,10 +26,39 @@ export const NavBarConfigs = [
   },
 ];
 
-export const lessonFormConfigGenerator = (
+export const lessonFormConfigGenerator = async (
   lessonData?: Awaited<ReturnType<typeof getLessonById>>
-): FormPageProps => {
+): Promise<FormPageProps> => {
   const lesson = lessonData?.lesson;
+
+  const currentTachersId = lesson?.teacher?.id;
+  const currentRequireLessonsId = lesson?.requiresLesson?.id;
+
+  const teachers = await getTeachers();
+  const lessons = await getLessons();
+  const fields = await getFields();
+
+  const teacherOptions = teachers?.teachers?.map((teacher) => ({
+    id: teacher.id.toString(),
+    name: `${teacher.FirstName} ${teacher.LastName}`,
+  }));
+
+  const lessonOptions = lessons?.lessons
+    ?.filter((l) => l?.id !== lesson?.id)
+    .map((lesson) => ({
+      id: lesson.id.toString(),
+      name: lesson.LessonName,
+    }));
+
+  const fieldOptions = fields?.fields?.map((field) => ({
+    id: field.id.toString(),
+    name: field.Name,
+  }));
+
+  const gradeOptions = Object.entries(LessonGrade).map(([key, value]) => ({
+    id: key,
+    name: value,
+  }));
 
   return {
     title: "Add New Course",
@@ -34,7 +69,7 @@ export const lessonFormConfigGenerator = (
     inputs: [
       {
         title: "Lesson Name",
-        name: "lessonName",
+        name: "LessonName",
         type: "text",
         placeholder: "Enter lesson name",
         required: true,
@@ -42,7 +77,7 @@ export const lessonFormConfigGenerator = (
       },
       {
         title: "Lesson Unit",
-        name: "lessonUnit",
+        name: "Unit",
         type: "number",
         placeholder: "Enter lesson unit",
         defaultValue: lesson?.Unit.toString(),
@@ -50,85 +85,109 @@ export const lessonFormConfigGenerator = (
       },
       {
         title: "Lesson Grade",
-        name: "lessonGrade",
-        type: "text",
+        name: "Grade",
+        type: "select",
         placeholder: "Enter lesson grade",
         defaultValue: (lesson?.Grade || "").toString(),
+        SelectButtonProps: {
+          items: gradeOptions || [],
+          singleSelect: true,
+          initialSelectedItemId: lesson?.Grade?.toString(),
+          title: "Select Grade",
+        },
       },
       {
         title: "Lesson Field",
-        name: "lessonField",
-        type: "text",
+        name: "fieldId",
+        type: "select",
         placeholder: "Enter lesson field",
-        defaultValue: (lesson?.fieldId || "").toString(),
+        defaultValue: lesson?.fieldId?.toString(),
+        SelectButtonProps: {
+          items: fieldOptions || [],
+          singleSelect: true,
+          initialSelectedItemId: currentTachersId?.toString(),
+          title: "Select Field",
+        },
       },
       {
-        title: "Teacher Name",
-        name: "teacherName",
-        type: "text",
+        title: "Teacher",
+        name: "TeacherId",
+        type: "select",
         placeholder: "Enter teacher name",
-        defaultValue: `${lesson?.teacher?.FirstName} ${lesson?.teacher?.LastName}`,
+        defaultValue: lesson?.TeacherId?.toString(),
+        SelectButtonProps: {
+          items: teacherOptions || [],
+          singleSelect: true,
+          initialSelectedItemId: lesson?.TeacherId?.toString(),
+          title: "Select Field",
+        },
       },
       {
         title: "Lesson Pass Condition",
-        name: "lessonPassCondition",
-        type: "text",
+        name: "PassCondition",
+        type: "number",
         placeholder: "Enter lesson pass condition",
         defaultValue: (lesson?.PassCondition || "").toString(),
       },
       {
         title: "Lesson Theori Hours",
-        name: "lessonTheoriHours",
-        type: "text",
+        name: "TheoriHours",
+        type: "number",
         placeholder: "Enter lesson theori hours",
         defaultValue: (lesson?.TheoriHours || "").toString(),
       },
       {
         title: "Lesson Practical Hours",
-        name: "lessonPracticalHours",
-        type: "text",
+        name: "PracticalHours",
+        type: "number",
         placeholder: "Enter lesson practical hours",
         defaultValue: (lesson?.PracticalHours || "").toString(),
       },
       {
         title: "Required Lesson",
-        name: "requiredLesson",
-        type: "text",
+        name: "RequireLesson",
+        type: "select",
         placeholder: "Enter required lesson",
         defaultValue: (lesson?.requiresLesson?.id || "").toString(),
+        SelectButtonProps: {
+          items: lessonOptions || [],
+          singleSelect: true,
+          initialSelectedItemId: currentRequireLessonsId?.toString(),
+          title: "Select Lesson",
+        },
       },
       {
         title: "Required Unit",
-        name: "requiredUnit",
-        type: "text",
+        name: "RequireUnit",
+        type: "number",
         placeholder: "Enter required unit",
         defaultValue: (lesson?.RequireUnit || "").toString(),
       },
       {
         title: "Notif Code",
-        name: "notifCode",
-        type: "text",
+        name: "NotifCode",
+        type: "number",
         placeholder: "Enter notif code",
         defaultValue: (lesson?.NotifCode || "").toString(),
       },
       {
         title: "Valid From",
-        name: "validFrom",
+        name: "ValidFrom",
         type: "date",
         placeholder: "Enter valid from",
-        defaultValue: lesson?.ValidFrom?.toISOString().split("T")[0],
+        defaultValue: lesson?.ValidFrom?.toISOString(),
       },
       {
         title: "Valid Until",
-        name: "validUntil",
+        name: "ValidTill",
         type: "date",
         placeholder: "Enter valid until",
-        defaultValue: lesson?.ValidFrom?.toISOString().split("T")[0],
+        defaultValue: lesson?.ValidTill?.toISOString(),
       },
       {
         title: "Price Per Unit",
-        name: "pricePerUnit",
-        type: "text",
+        name: "PricePerUnit",
+        type: "number",
         placeholder: "Enter price per unit",
         defaultValue: (lesson?.PricePerUnit || "").toString(),
       },

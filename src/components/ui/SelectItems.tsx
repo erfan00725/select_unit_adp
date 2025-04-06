@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faX } from "@fortawesome/free-solid-svg-icons";
 import Checkbox from "./Checkbox";
@@ -12,7 +12,7 @@ export interface Item {
   [key: string]: any; // Allow for additional properties
 }
 
-interface SelectItemsProps {
+export interface SelectItemsProps {
   items: Item[];
   onSelectionChange?: (selectedItems: Item[]) => void;
   onSave?: (selectedItems: Item[]) => void;
@@ -21,6 +21,10 @@ interface SelectItemsProps {
   searchPlaceholder?: string;
   className?: string;
   initialSelectedItems?: Item[];
+  singleSelect?: boolean;
+  initialSelectedItemId?: string;
+  required?: boolean;
+  searchShowLimit?: number;
 }
 
 const SelectItems: React.FC<SelectItemsProps> = ({
@@ -32,22 +36,66 @@ const SelectItems: React.FC<SelectItemsProps> = ({
   searchPlaceholder = "Search items...",
   className = "",
   initialSelectedItems = [],
+  singleSelect = true,
+  initialSelectedItemId,
+  searchShowLimit = 0,
+  required = false,
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedItems, setSelectedItems] =
     useState<Item[]>(initialSelectedItems);
 
-  // Filter items based on search query
-  const filteredItems = items.filter((item) =>
-    item.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const selectItems = [...items]; // Create a copy of the item
+  if (!required) {
+    selectItems.unshift({
+      id: "none",
+      name: "None",
+    });
+  }
+
+  const [filteredItems, setFilteredItems] = useState<Item[]>(selectItems);
+
+  useEffect(() => {
+    let initialSelectedItems = selectItems.filter(
+      (item) => item.id == initialSelectedItemId?.toString()
+    );
+
+    if (!(initialSelectedItems.length > 0) && !required) {
+      initialSelectedItems = [selectItems[0]];
+    }
+
+    if (initialSelectedItems.length > 0) {
+      setSelectedItems(initialSelectedItems);
+    }
+  }, []);
+
+  useEffect(() => {
+    const filtered = selectItems.filter((item) => {
+      const nameMatch = item.name
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
+      const idMatch = item.id.toLowerCase().includes(searchQuery.toLowerCase());
+      return nameMatch || idMatch;
+    });
+
+    setFilteredItems(filtered);
+  }, [searchQuery]);
+
+  // Might need to change this
+  useEffect(() => {
+    onSave && selectedItems.length > 0 && onSave(selectedItems);
+  }, [selectedItems]);
 
   // Handle item selection
   const handleItemSelect = (item: Item, isChecked: boolean) => {
     let newSelectedItems: Item[];
 
     if (isChecked) {
-      newSelectedItems = [...selectedItems, item];
+      if (singleSelect) {
+        newSelectedItems = [item];
+      } else {
+        newSelectedItems = [...selectedItems, item];
+      }
     } else {
       newSelectedItems = selectedItems.filter(
         (selectedItem) => selectedItem.id !== item.id
@@ -92,15 +140,17 @@ const SelectItems: React.FC<SelectItemsProps> = ({
       </div>
 
       {/* Search input */}
-      <div className="relative mb-6 w-full">
-        <Input
-          type="text"
-          placeholder={searchPlaceholder || "Search items..."}
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          icon={<FontAwesomeIcon icon={faMagnifyingGlass} />}
-        />
-      </div>
+      {items.length > searchShowLimit && (
+        <div className="relative mb-6 w-full">
+          <Input
+            type="text"
+            placeholder={searchPlaceholder || "Search items..."}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            icon={<FontAwesomeIcon icon={faMagnifyingGlass} />}
+          />
+        </div>
+      )}
 
       {/* Items list */}
       <div className="max-h-[400px] overflow-y-auto border border-gray-200 rounded-md">
@@ -127,7 +177,7 @@ const SelectItems: React.FC<SelectItemsProps> = ({
       <div className="flex justify-between mt-6">
         <button
           onClick={clearSelection}
-          className="flex items-center text-sm text-gray-600 hover:text-gray-900"
+          className="flex items-center  cursor-pointer text-sm text-gray-600 hover:text-gray-900"
           type="button"
         >
           <FontAwesomeIcon icon={faX} className="mr-2" />
@@ -138,7 +188,7 @@ const SelectItems: React.FC<SelectItemsProps> = ({
           {onCancel && (
             <button
               onClick={onCancel}
-              className="px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="px-4 py-2 border cursor-pointer border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               type="button"
             >
               Cancel
@@ -147,7 +197,7 @@ const SelectItems: React.FC<SelectItemsProps> = ({
 
           <button
             onClick={handleSave}
-            className="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            className="px-4 py-2 border cursor-pointer border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             type="button"
           >
             Save Selection
