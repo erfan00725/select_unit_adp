@@ -12,8 +12,17 @@ export enum InpueValueType {
   bool,
 }
 
+export enum InputDataType {
+  string,
+  number,
+  bool,
+  date,
+  bigint,
+}
+
 export type FormInputProps = {
   type: string;
+  dataType?: InputDataType;
   name: string;
   title?: string;
   placeholder?: string;

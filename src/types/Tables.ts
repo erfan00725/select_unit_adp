@@ -30,7 +30,7 @@ export interface StudentDataType extends DataBaseType {
   HomeNumber?: string;
   PhoneNumber?: string;
   fieldId: bigint;
-  Grade: Grade;
+  Grade?: Grade;
 }
 
 export interface TeacherDataType extends DataBaseType {

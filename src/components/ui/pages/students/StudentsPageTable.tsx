@@ -1,13 +1,19 @@
 import React from "react";
-import DataTable from "../../DataTable";
 import { urls } from "@/constants/urls";
 import { getStudents } from "@/lib/actions";
 import { PageTableProps } from "@/types/Props";
 import { errorCheck } from "@/lib/errorCheck";
+import DataTable from "@/components/ui/DataTable";
 
-const StudentsPageTable = async ({ limit }: PageTableProps) => {
-  const studentsData = await getStudents();
-  errorCheck(studentsData.error);
+type Props = {
+  studentsData: Awaited<ReturnType<typeof getStudents>>;
+};
+
+const StudentsPageTable = async ({
+  limit,
+  studentsData,
+}: Props & PageTableProps) => {
+  errorCheck(studentsData?.error);
 
   const students = studentsData.students;
   const tableData = (students || []).map((student) => ({

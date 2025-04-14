@@ -1,11 +1,12 @@
-import { LessonGrade } from "@/generated/prisma";
+import { Grade, LessonGrade } from "@/generated/prisma";
 import {
   getFields,
   getLessonById,
   getLessons,
+  getStudentById,
   getTeachers,
 } from "@/lib/actions";
-import { FormPageProps } from "@/types/Props";
+import { FormPageProps, InputDataType } from "@/types/Props";
 
 export const NavBarConfigs = [
   {
@@ -27,9 +28,9 @@ export const NavBarConfigs = [
 ];
 
 export const lessonFormConfigGenerator = async (
-  lessonData?: Awaited<ReturnType<typeof getLessonById>>
+  data?: Awaited<ReturnType<typeof getLessonById>>
 ): Promise<FormPageProps> => {
-  const lesson = lessonData?.lesson;
+  const lesson = data?.lesson;
 
   const currentTachersId = lesson?.teacher?.id;
   const currentRequireLessonsId = lesson?.requiresLesson?.id;
@@ -102,6 +103,7 @@ export const lessonFormConfigGenerator = async (
         type: "select",
         placeholder: "Enter lesson field",
         defaultValue: lesson?.fieldId?.toString(),
+        dataType: InputDataType.bigint,
         SelectButtonProps: {
           items: fieldOptions || [],
           singleSelect: true,
@@ -114,6 +116,7 @@ export const lessonFormConfigGenerator = async (
         name: "TeacherId",
         type: "select",
         placeholder: "Enter teacher name",
+        dataType: InputDataType.bigint,
         defaultValue: lesson?.TeacherId?.toString(),
         SelectButtonProps: {
           items: teacherOptions || [],
@@ -162,6 +165,7 @@ export const lessonFormConfigGenerator = async (
         type: "number",
         placeholder: "Enter required unit",
         defaultValue: (lesson?.RequireUnit || "").toString(),
+        dataType: InputDataType.bigint,
       },
       {
         title: "Notif Code",
@@ -169,6 +173,7 @@ export const lessonFormConfigGenerator = async (
         type: "number",
         placeholder: "Enter notif code",
         defaultValue: (lesson?.NotifCode || "").toString(),
+        dataType: InputDataType.bigint,
       },
       {
         title: "Valid From",
@@ -188,8 +193,146 @@ export const lessonFormConfigGenerator = async (
         title: "Price Per Unit",
         name: "PricePerUnit",
         type: "number",
+        dataType: InputDataType.bigint,
         placeholder: "Enter price per unit",
         defaultValue: (lesson?.PricePerUnit || "").toString(),
+      },
+    ],
+  };
+};
+
+export const studentFormConfigGenerator = async (
+  data?: Awaited<ReturnType<typeof getStudentById>>
+): Promise<FormPageProps> => {
+  const student = data?.student;
+
+  const fields = await getFields();
+
+  const fieldOptions = fields?.fields?.map((field) => ({
+    id: field.id.toString(),
+    name: field.Name,
+  }));
+
+  const gradeOptions = Object.entries(Grade).map(([key, value]) => ({
+    id: key,
+    name: value,
+  }));
+
+  return {
+    title: "Add New Student",
+    description: "Please fill in the student details below",
+    useDefaultValues: true,
+    addText: student ? "Update Student" : "Add Student",
+    inputs: [
+      {
+        title: "First Name",
+        name: "FirstName",
+        type: "text",
+        placeholder: "Enter first name",
+        required: true,
+        defaultValue: student?.FirstName,
+      },
+      {
+        title: "Last Name",
+        name: "LastName",
+        type: "text",
+        placeholder: "Enter last name",
+        required: true,
+        defaultValue: student?.LastName,
+      },
+      {
+        title: "National Code",
+        name: "NationalCode",
+        type: "text",
+        placeholder: "Enter national code",
+        required: true,
+        defaultValue: student?.NationalCode,
+      },
+      {
+        title: "Father's Name",
+        name: "Father",
+        type: "text",
+        placeholder: "Enter father's name",
+        defaultValue: student?.Father || "",
+      },
+      {
+        title: "Birth Date",
+        name: "Birth",
+        type: "date",
+        placeholder: "Enter birth date",
+        defaultValue: student?.Birth?.toISOString(),
+      },
+      {
+        title: "Address",
+        name: "Address",
+        type: "text",
+        placeholder: "Enter address",
+        defaultValue: student?.Address || "",
+      },
+      {
+        title: "Home Number",
+        name: "HomeNumber",
+        type: "text",
+        placeholder: "Enter home number",
+        defaultValue: student?.HomeNumber || "",
+      },
+      {
+        title: "Phone Number",
+        name: "PhoneNumber",
+        type: "text",
+        placeholder: "Enter phone number",
+        defaultValue: student?.PhoneNumber || "",
+      },
+      {
+        title: "Field",
+        name: "fieldId",
+        type: "select",
+        dataType: InputDataType.bigint,
+        placeholder: "Select field",
+        required: true,
+        defaultValue: student?.fieldId?.toString(),
+        SelectButtonProps: {
+          items: fieldOptions || [],
+          singleSelect: true,
+          initialSelectedItemId: student?.fieldId?.toString(),
+          title: "Select Field",
+          required: true,
+        },
+      },
+      {
+        title: "Grade",
+        name: "Grade",
+        type: "select",
+        placeholder: "Select grade",
+        required: true,
+        defaultValue: student?.Grade?.toString(),
+        SelectButtonProps: {
+          items: gradeOptions || [],
+          singleSelect: true,
+          initialSelectedItemId: student?.Grade?.toString(),
+          title: "Select Grade",
+          required: true,
+        },
+      },
+      {
+        title: "Gender",
+        name: "Gender",
+        type: "select",
+        placeholder: "Select gender",
+        required: true,
+        defaultValue:
+          student?.Gender !== undefined ? student.Gender.toString() : "true",
+        SelectButtonProps: {
+          items: [
+            { id: "true", name: "Male" },
+            { id: "false", name: "Female" },
+          ],
+          singleSelect: true,
+          initialSelectedItemId:
+            student?.Gender !== undefined ? student.Gender.toString() : "true",
+          title: "Select Gender",
+          required: true,
+        },
       },
     ],
   };

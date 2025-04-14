@@ -4,8 +4,8 @@ import ProductInfoCard from "../../ProductInfoCard";
 import { getLessonById } from "@/lib/actions";
 import { errorCheck } from "@/lib/errorCheck";
 import { InfoPageConfig } from "@/types/General";
-import { getGender } from "@/lib/getGender";
 import { urls } from "@/constants/urls";
+import getFarsiDate from "@/lib/getFarsiDate";
 
 type Props = {
   lessonData: Awaited<ReturnType<typeof getLessonById>>;
@@ -29,12 +29,10 @@ export const LessonInfoPage = ({ lessonData }: Props) => {
       {
         label: "Name",
         value: lesson?.LessonName,
-        type: "text",
       },
       {
         label: "Unit",
         value: lesson?.Unit,
-        type: "text",
       },
       {
         label: "Grade",
@@ -43,26 +41,49 @@ export const LessonInfoPage = ({ lessonData }: Props) => {
       {
         label: "Field",
         value: lesson?.field?.Name,
-        type: "text",
       },
       {
         label: "Pass Score",
         value: lesson?.PassCondition,
-        type: "text",
       },
       {
         label: "Hours",
         value: `${lesson?.TheoriHours}.${lesson?.PracticalHours}`,
-        type: "text",
       },
       {
         label: "Require Lesson",
-        value: lesson?.RequireLesson,
-        type: "text",
+        value: lesson?.requiresLesson?.LessonName,
       },
       {
         label: "Require Unit",
         value: lesson?.RequireUnit,
+        type: "text",
+      },
+      {
+        label: "Teacher",
+        value: lesson?.teacher
+          ? `${lesson?.teacher?.FirstName} ${lesson?.teacher?.LastName}`
+          : null,
+        type: "text",
+      },
+      {
+        label: "Price Per Unit",
+        value: lesson?.PricePerUnit?.toString(),
+        type: "price",
+      },
+      {
+        label: "Notification Code",
+        value: lesson?.NotifCode?.toString(),
+        type: "text",
+      },
+      {
+        label: "Valid From",
+        value: getFarsiDate(lesson?.ValidFrom?.toDateString()),
+        type: "text",
+      },
+      {
+        label: "Valid Till",
+        value: getFarsiDate(lesson?.ValidTill?.toDateString()),
         type: "text",
       },
     ],

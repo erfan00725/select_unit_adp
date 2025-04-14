@@ -1,34 +1,19 @@
 "use client";
+import CreateEditPage from "@/components/ui/pages/CreateEditPage";
 import FormPage from "@/components/ui/pages/FormPage";
 import { lessonFormConfigGenerator } from "@/constants/configs";
+import { urls } from "@/constants/urls";
 import { createLesson } from "@/lib/actions";
 import { validateLessonSafe } from "@/lib/validations";
-import { useFormSubmit } from "@/lib/hooks/useFormSubmit";
-import { FormPageProps } from "@/types/Props";
-import { useEffect, useState } from "react";
 
 export default function AddCoursePage() {
-  const [formConfig, setFormConfig] = useState<FormPageProps | null>(null);
-  const { submitForm } = useFormSubmit();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const config = await lessonFormConfigGenerator();
-      setFormConfig(config);
-    };
-
-    fetchData();
-  }, []);
-
-  const onSubmit = (formData: Record<string, any>) => {
-    submitForm({
-      formData,
-      validateFn: validateLessonSafe,
-      submitFn: createLesson,
-      entityName: "lesson",
-      redirectUrl: "/dashboard/lessons",
-    });
-  };
-
-  return formConfig && <FormPage {...formConfig} onSubmit={onSubmit} />;
+  return (
+    <CreateEditPage
+      entityName="Lesson"
+      formGenerator={lessonFormConfigGenerator}
+      submitFunction={createLesson}
+      validateFunction={validateLessonSafe}
+      redirectUrl={urls.lessons}
+    />
+  );
 }

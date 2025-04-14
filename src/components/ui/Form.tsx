@@ -4,9 +4,8 @@ import React, { useEffect, useState } from "react";
 import Input from "./Input";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FormInputProps, FormProps } from "@/types/Props";
+import { FormInputProps, FormProps, InputDataType } from "@/types/Props";
 import { SelectButton } from "./SelectButton";
-import { Calendar, CalendarProvider } from "zaman";
 import { CalenderFarsi } from "./CalenderFarsi";
 
 const FormInput = ({
@@ -102,21 +101,24 @@ const Form: React.FC<FormProps> = ({
   const handleInputChange = (
     name: string,
     value: any,
-    dataType: "string" | "number" | "bool" | "date" = "string"
+    dataType: InputDataType = InputDataType.string
   ) => {
     let convertedValue = value;
 
     // Convert value based on dataType if specified
     if (dataType) {
       switch (dataType) {
-        case "number":
+        case InputDataType.number:
           convertedValue = value === "" ? null : Number(value);
           break;
-        case "bool":
+        case InputDataType.bool:
           convertedValue = Boolean(value);
           break;
-        case "date":
+        case InputDataType.date:
           convertedValue = value ? new Date(value) : null;
+          break;
+        case InputDataType.bigint:
+          convertedValue = BigInt(value);
           break;
         // Add more type conversions as needed
         default:
@@ -181,7 +183,9 @@ const Form: React.FC<FormProps> = ({
                 <FormInput
                   {...input}
                   value={formData[input.name]}
-                  onChange={(value) => handleInputChange(input.name, value)}
+                  onChange={(value) =>
+                    handleInputChange(input.name, value, input.dataType)
+                  }
                 />
               }
             </div>

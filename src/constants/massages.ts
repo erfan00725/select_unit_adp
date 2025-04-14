@@ -20,6 +20,8 @@ const errorMassages = {
   minLength: (fieldName: string, minLength: number) =>
     `${fieldName} must be at least ${minLength} characters.`,
   baseErrorMassage: (error: string) => `Something went wrong: ${error}`,
+  lengthError: (fieldName: string, length: number) =>
+    `${fieldName} must be exactly ${length} characters.`,
 };
 
 export const successMassages = {

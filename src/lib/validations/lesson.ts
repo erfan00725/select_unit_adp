@@ -1,18 +1,7 @@
 import { z } from "zod";
 import { LessonGrade } from "@/generated/prisma";
 import errorMassages from "@/constants/massages";
-
-/**
- * Helper function to transform empty strings to undefined
- */
-const emptyStringToUndefined = <T extends z.ZodType>(schema: T) =>
-  z.union([
-    z.string().transform((val) => (val === "" ? undefined : val)),
-    schema,
-  ]);
-
-const returnNullIfEmpty = (val: any) =>
-  val === "" || val == "none" ? undefined : val;
+import { returnNullIfEmpty } from "../utils/validationUtilds";
 
 /**
  * Zod validation schema for the Lesson model

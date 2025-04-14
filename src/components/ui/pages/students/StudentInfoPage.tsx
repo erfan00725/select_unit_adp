@@ -5,6 +5,7 @@ import { getStudentById } from "@/lib/actions";
 import { errorCheck } from "@/lib/errorCheck";
 import { InfoPageConfig } from "@/types/General";
 import { getGender } from "@/lib/getGender";
+import { urls } from "@/constants/urls";
 
 type Props = {
   studentData: Awaited<ReturnType<typeof getStudentById>>;
@@ -79,6 +80,7 @@ export const StudentInfoPage = ({ studentData }: Props) => {
       createdAt={StudentConfig.createdAt}
       modifiedAt={StudentConfig.modifiedAt}
       InfoRows={StudentConfig.rows || []}
+      baseUrl={urls.students}
     />
   );
 };

@@ -2,22 +2,12 @@ import { toast } from "react-toastify";
 import { ZodError } from "zod";
 import errorMassages, { successMassages } from "@/constants/massages";
 import { useRouter } from "next/navigation";
-
-type ValidationResult<T> = {
-  success: boolean;
-  data?: T;
-  error?: unknown;
-};
-
-type UpdateFunction<T> = (
-  id: bigint,
-  data: T
-) => Promise<{ error?: string; [key: string]: any }>;
-type AddFunction<T> = (
-  data: T
-) => Promise<{ error?: string; [key: string]: any }>;
-
-type SubmitFunction<T> = UpdateFunction<T> | AddFunction<T>;
+import {
+  AddFunction,
+  SubmitFunction,
+  UpdateFunction,
+  ValidateFunction,
+} from "@/types/Form";
 
 type SubmitOptions<T> = {
   /** The ID of the entity being updated (optional, for update operations) */
@@ -25,7 +15,7 @@ type SubmitOptions<T> = {
   /** The form data to be validated and submitted */
   formData: Record<string, any>;
   /** The validation function to use */
-  validateFn: (data: Record<string, any>) => ValidationResult<T>;
+  validateFn: ValidateFunction<T>;
   /** The function to call for submitting the data */
   submitFn: SubmitFunction<T>;
   /** The entity type name (for error and success messages) */
@@ -62,12 +52,13 @@ export function useFormSubmit<T>() {
     // Handle validation errors
     if (!success || !data || (error as ZodError)) {
       if ((error as ZodError)?.errors?.length > 0)
-        toast.error(
-          errorMassages.invalidDate(
-            entityName,
-            (error as ZodError).errors[0].message || "Validation failed"
-          )
-        );
+        console.log((error as ZodError).errors);
+      toast.error(
+        errorMassages.invalidDate(
+          entityName,
+          (error as ZodError).errors[0].message || "Validation failed"
+        )
+      );
       return false;
     }
 
