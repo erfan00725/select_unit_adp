@@ -105,8 +105,14 @@ const Form: React.FC<FormProps> = ({
   ) => {
     let convertedValue = value;
 
+    const isValueEmpty =
+      value === null ||
+      value === undefined ||
+      (typeof value === "string" && value.trim() === "") ||
+      value === "none";
+
     // Convert value based on dataType if specified
-    if (dataType) {
+    if (dataType && !isValueEmpty) {
       switch (dataType) {
         case InputDataType.number:
           convertedValue = value === "" ? null : Number(value);
@@ -129,7 +135,7 @@ const Form: React.FC<FormProps> = ({
 
     setFormData((prevData) => ({
       ...prevData,
-      [name]: convertedValue,
+      [name]: !isValueEmpty ? convertedValue : null,
     }));
   };
 
