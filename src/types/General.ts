@@ -1,11 +1,11 @@
-import { ProductInfoRow } from "@/components/ui/ProductInfoCard";
+import { DetailPageRow } from "@/components/ui/ProductInfoCard";
 
 export type InfoPageConfig = {
   id: string;
   title: string;
   createdAt?: string;
   modifiedAt?: string;
-  rows?: ProductInfoRow[];
+  rows?: DetailPageRow[];
 };
 
 export interface FilterOptionType {
@@ -18,3 +18,8 @@ export interface FilterOptionType {
 }
 
 export type Orders = "asc" | "desc";
+
+export enum PageType {
+  Lesson = "lessons",
+  Student = "students",
+}

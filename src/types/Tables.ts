@@ -8,6 +8,13 @@ export type DataBaseType = {
   id?: string | bigint;
 };
 
+export type pagination = {
+  total: number;
+  totalPages: number;
+  currentPage: number;
+  limit: number;
+};
+
 export interface CourseDataType extends DataBaseType {
   courseName: string;
   description: string;

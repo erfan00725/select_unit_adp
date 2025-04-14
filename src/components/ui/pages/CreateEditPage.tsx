@@ -3,19 +3,8 @@
 import Loading from "@/components/common/Loading";
 import FormPage from "@/components/ui/pages/FormPage";
 import { useFormSubmit } from "@/lib/hooks/useFormSubmit";
-import { FormPageProps } from "@/types/Props";
+import { CreateEditProps, FormPageProps } from "@/types/Props";
 import React, { useEffect, useState } from "react";
-import { SubmitFunction, ValidateFunction } from "@/types/Form";
-
-type Props<T extends (...args: any) => any, S> = {
-  id?: string;
-  formGenerator: (data?: Awaited<ReturnType<T>>) => Promise<FormPageProps>;
-  getDataById?: (id: bigint) => ReturnType<T>;
-  entityName: string;
-  redirectUrl?: string;
-  submitFunction: SubmitFunction<S>;
-  validateFunction: ValidateFunction<S>;
-};
 
 export default function CreateEditPage<T extends (...args: any) => any, S>({
   id,
@@ -25,7 +14,7 @@ export default function CreateEditPage<T extends (...args: any) => any, S>({
   redirectUrl,
   submitFunction,
   validateFunction,
-}: Props<T, S>) {
+}: CreateEditProps<T, S>) {
   const [formConfig, setFormConfig] = useState<FormPageProps | null>(null);
   const { submitForm } = useFormSubmit();
 

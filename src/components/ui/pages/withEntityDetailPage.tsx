@@ -1,11 +1,11 @@
 import React from "react";
-import ProductInfoCard, { ProductInfoProps } from "../ProductInfoCard";
+import DetailInfoCard, { DetailPageProps } from "../ProductInfoCard";
 import { DataBaseType } from "@/types/Tables";
 import { notFound } from "next/navigation";
 import { toast } from "react-toastify";
 
 export const withEntityDetailPage = <T extends DataBaseType>(
-  productInfoProps: ProductInfoProps,
+  productInfoProps: DetailPageProps,
   rows: { [key: string]: string }[],
   error?: { massage: string; code?: number }
 ) => {
@@ -16,5 +16,5 @@ export const withEntityDetailPage = <T extends DataBaseType>(
     toast(`Somthing went wrong: ${error.massage}`, { type: "error" });
   }
 
-  return <ProductInfoCard {...productInfoProps} />;
+  return <DetailInfoCard {...productInfoProps} />;
 };

@@ -33,7 +33,6 @@ const LessonsPageTable = async ({
       headers={headers}
       title="Lessons Management"
       addButtonLabel="Add New Lesson"
-      addUrl={urls.lessons + "/add"}
       baseUrl={urls.lessons}
       limit={limit}
     />

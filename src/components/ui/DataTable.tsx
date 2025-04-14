@@ -1,32 +1,22 @@
+import { urls } from "@/constants/urls";
+import { DataTableProps } from "@/types/Props";
 import { DataBaseType } from "@/types/Tables";
 import clsx from "clsx";
 import Link from "next/link";
 import React from "react";
-
-type Props<T extends DataBaseType> = {
-  title: string;
-  description?: string;
-  tableData: T[];
-  headers: string[];
-  addUrl?: string;
-  addButtonLabel?: string;
-  baseUrl?: string;
-  limit?: number;
-  scrollable?: boolean;
-};
 
 const DataTable = <T extends DataBaseType>({
   tableData,
   headers,
   title,
   addButtonLabel,
-  addUrl,
-  description,
   baseUrl,
   limit = 50,
   scrollable = false,
-}: Props<T>) => {
+}: DataTableProps<T>) => {
   const rows = tableData.filter((_, index) => index < limit);
+
+  const addUrl = baseUrl ? `${baseUrl}/add` : null;
 
   return (
     <div className="card mb-8">

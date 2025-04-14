@@ -2,11 +2,11 @@ import React from "react";
 import PageHeader from "@/components/ui/PageHeader";
 import StudentsPageTable from "@/components/ui/pages/students/StudentsPageTable";
 import LessonsPageTable from "@/components/ui/pages/Lessons/LessonsPageTable";
-import { getLessons } from "@/lib/actions";
+import { getLessons, getStudents } from "@/lib/actions";
 
 export default async function DashboardPage() {
   const lessonsData = await getLessons({ limit: 5, order: "desc" });
-  const studentsData = await getLessons({ limit: 5, order: "desc" });
+  const studentsData = await getStudents({ limit: 5, order: "desc" });
 
   return (
     <div>
@@ -16,7 +16,7 @@ export default async function DashboardPage() {
       />
 
       <LessonsPageTable limit={5} lessonsData={lessonsData} />
-      <StudentsPageTable limit={5} />
+      <StudentsPageTable limit={5} studentsData={studentsData} />
     </div>
   );
 }

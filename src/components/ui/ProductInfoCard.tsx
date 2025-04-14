@@ -5,24 +5,9 @@ import Link from "next/link";
 import DisplayLessonHours from "./DisplayLessonHours";
 import { DeleteButton } from "./DeleteButton";
 import getFarsiDate from "@/lib/getFarsiDate";
+import { DetailPageProps, DetailPageRow } from "@/types/Props";
 
-export interface ProductInfoProps {
-  id: string;
-  title: string;
-  createdAt?: string;
-  modifiedAt?: string;
-  InfoRows: ProductInfoRow[];
-  actions?: React.ReactNode;
-  baseUrl?: string;
-}
-
-export interface ProductInfoRow {
-  label: string;
-  value?: React.ReactNode;
-  type?: "text" | "status" | "category" | "price" | "number" | "hours";
-}
-
-const ProductInfoCard: React.FC<ProductInfoProps> = ({
+const DetailInfoCard: React.FC<DetailPageProps> = ({
   id,
   title,
   createdAt,
@@ -31,7 +16,7 @@ const ProductInfoCard: React.FC<ProductInfoProps> = ({
   actions,
   baseUrl,
 }) => {
-  const formatValue = (row: ProductInfoRow) => {
+  const formatValue = (row: DetailPageRow) => {
     if (!row.value) return null;
 
     switch (row.type) {
@@ -83,4 +68,4 @@ const ProductInfoCard: React.FC<ProductInfoProps> = ({
   );
 };
 
-export default ProductInfoCard;
+export default DetailInfoCard;

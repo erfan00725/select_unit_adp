@@ -1,6 +1,5 @@
-"use client";
 import React from "react";
-import ProductInfoCard from "../../ProductInfoCard";
+import DetailInfoCard from "../../ProductInfoCard";
 import { getLessonById } from "@/lib/actions";
 import { errorCheck } from "@/lib/errorCheck";
 import { InfoPageConfig } from "@/types/General";
@@ -92,7 +91,7 @@ export const LessonInfoPage = ({ lessonData }: Props) => {
   // Since we've already handled the error cases above with early returns,
   // we can simplify this to just return the component
   return (
-    <ProductInfoCard
+    <DetailInfoCard
       id={StudentConfig.id}
       title={StudentConfig.title}
       createdAt={StudentConfig.createdAt}

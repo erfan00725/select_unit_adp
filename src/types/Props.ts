@@ -1,4 +1,7 @@
 import { SelectButtonProps } from "@/components/ui/SelectButton";
+import { DataBaseType } from "./Tables";
+import { PageType } from "./General";
+import { SubmitFunction, ValidateFunction } from "./Form";
 
 export interface PageHeaderProps {
   title: string;
@@ -59,4 +62,41 @@ export interface SearchFilterBarProps {
   onSortChange?: (sortOption: string) => void;
   onFilterRemove?: (filterId: string) => void;
   onClearAllFilters?: () => void;
+}
+
+export type DataTableProps<T extends DataBaseType> = {
+  title: string;
+  description?: string;
+  tableData: T[];
+  headers: string[];
+  addButtonLabel?: string;
+  baseUrl?: string;
+  limit?: number;
+  scrollable?: boolean;
+};
+
+export type CreateEditProps<T extends (...args: any) => any, S> = {
+  id?: string;
+  formGenerator: (data?: Awaited<ReturnType<T>>) => Promise<FormPageProps>;
+  getDataById?: (id: bigint) => ReturnType<T>;
+  entityName: string;
+  redirectUrl?: string;
+  submitFunction: SubmitFunction<S>;
+  validateFunction: ValidateFunction<S>;
+};
+
+export interface DetailPageProps {
+  id: string;
+  title: string;
+  createdAt?: string;
+  modifiedAt?: string;
+  InfoRows: DetailPageRow[];
+  actions?: React.ReactNode;
+  baseUrl?: string;
+}
+
+export interface DetailPageRow {
+  label: string;
+  value?: React.ReactNode;
+  type?: "text" | "status" | "category" | "price" | "number" | "hours";
 }

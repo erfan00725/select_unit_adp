@@ -42,7 +42,6 @@ const StudentsPageTable = async ({
       headers={headers}
       title="Student Management"
       addButtonLabel="Add New Student"
-      addUrl={urls.students + "/add"}
       baseUrl={urls.students}
       limit={limit}
     />
