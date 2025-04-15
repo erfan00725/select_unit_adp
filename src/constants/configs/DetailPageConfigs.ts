@@ -1,7 +1,13 @@
-import { getLessonById, getStudentById } from "@/lib/actions";
+import {
+  getLessonById,
+  getStudentById,
+  getFieldById,
+  getTeacherById,
+  deleteLesson,
+} from "@/lib/actions";
 import getFarsiDate from "@/lib/getFarsiDate";
 import { getGender } from "@/lib/getGender";
-import { InfoPageConfig } from "@/types/General";
+import { InfoPageConfig, PageType } from "@/types/General";
 import { DetailPageProps } from "@/types/Props";
 import { urls } from "../urls";
 
@@ -9,6 +15,19 @@ export type DetailPageConfigtReturnType = {
   error?: string;
   config?: DetailPageProps;
 };
+
+interface ConfigFunction<T> {
+  (data: T): DetailPageConfigtReturnType;
+}
+
+interface DataFunction<T> {
+  (id: bigint): Promise<T>;
+}
+
+interface PageConfig<T> {
+  config: ConfigFunction<T>;
+  data: DataFunction<T>;
+}
 
 export const LessonsDetailConfig = (
   lessonData: Awaited<ReturnType<typeof getLessonById>>
@@ -166,4 +185,167 @@ export const StudentsDetailConfig = (
       baseUrl: urls.students,
     },
   };
+};
+
+export const FieldsDetailConfig = (
+  fieldData: Awaited<ReturnType<typeof getFieldById>>
+): DetailPageConfigtReturnType => {
+  if (!fieldData.field || fieldData.error) return { error: fieldData.error };
+
+  const field = fieldData.field;
+
+  const FieldConfig: InfoPageConfig = {
+    id: field?.id.toString() || "",
+    title: field?.Name || "",
+    createdAt: field?.Created_at.toDateString(),
+    rows: [
+      {
+        label: "Name",
+        value: field?.Name,
+        type: "text",
+      },
+      {
+        label: "Fixed Fee",
+        value: field?.FixedFee?.toString(),
+        type: "price",
+      },
+    ],
+  };
+  return {
+    config: {
+      id: FieldConfig.id,
+      title: FieldConfig.title,
+      createdAt: FieldConfig.createdAt,
+      modifiedAt: FieldConfig.modifiedAt,
+      InfoRows: FieldConfig.rows || [],
+      baseUrl: urls.fields,
+    },
+  };
+};
+
+export const TeachersDetailConfig = (
+  teacherData: Awaited<ReturnType<typeof getTeacherById>>
+): DetailPageConfigtReturnType => {
+  if (!teacherData.teacher || teacherData.error)
+    return { error: teacherData.error };
+
+  const teacher = teacherData.teacher;
+
+  const TeacherConfig: InfoPageConfig = {
+    id: teacher?.id.toString() || "",
+    title: `${teacher?.FirstName} ${teacher?.LastName}`,
+    createdAt: teacher?.Created_at.toDateString(),
+    modifiedAt: teacher?.Updated_at.toDateString(),
+    rows: [
+      {
+        label: "Name",
+        value: `${teacher?.FirstName} ${teacher?.LastName}`,
+        type: "text",
+      },
+      {
+        label: "National Code",
+        value: teacher?.NationalCode,
+        type: "text",
+      },
+      {
+        label: "Phone",
+        value: teacher?.PhoneNumber,
+        type: "text",
+      },
+      {
+        label: "Date of Birth",
+        value: teacher?.Birth?.toDateString(),
+        type: "text",
+      },
+      {
+        label: "Gender",
+        value: teacher?.Gender ? getGender(teacher?.Gender) : null,
+        type: "text",
+      },
+      {
+        label: "Field",
+        value: teacher?.field?.Name,
+        type: "text",
+      },
+    ],
+  };
+  return {
+    config: {
+      id: TeacherConfig.id,
+      title: TeacherConfig.title,
+      createdAt: TeacherConfig.createdAt,
+      modifiedAt: TeacherConfig.modifiedAt,
+      InfoRows: TeacherConfig.rows || [],
+      baseUrl: urls.teachers,
+    },
+  };
+};
+
+export const DetailPageConfigs: Record<PageType, PageConfig<any>> = {
+  lessons: {
+    config: LessonsDetailConfig,
+    data: getLessonById,
+  },
+  students: {
+    config: StudentsDetailConfig,
+    data: getStudentById,
+  },
+  fields: {
+    config: FieldsDetailConfig,
+    data: getFieldById,
+  },
+  teachers: {
+    config: TeachersDetailConfig,
+    data: getTeacherById,
+  },
+};
+
+// _________ State Page Config _________
+
+interface s_PageConfig {
+  title: string;
+  deleteConfig: {
+    deleteFounction: (id: bigint) => Promise<
+      | {
+          error: string;
+          success?: undefined;
+        }
+      | {
+          success: boolean;
+          error?: undefined;
+        }
+    >;
+    backUrl: string;
+  };
+}
+
+export const s_DetailPageConfigs: Record<PageType, s_PageConfig> = {
+  lessons: {
+    title: "Lesson Info",
+    deleteConfig: {
+      deleteFounction: deleteLesson,
+      backUrl: urls.lessons,
+    },
+  },
+  students: {
+    title: "Student Info",
+    deleteConfig: {
+      deleteFounction: deleteLesson,
+      backUrl: urls.students,
+    },
+  },
+  fields: {
+    title: "Field Info",
+    deleteConfig: {
+      deleteFounction: deleteLesson,
+      backUrl: urls.fields,
+    },
+  },
+  teachers: {
+    title: "Teacher Info",
+    deleteConfig: {
+      deleteFounction: deleteLesson,
+      backUrl: urls.teachers,
+    },
+  },
 };

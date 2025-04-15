@@ -1,4 +1,4 @@
-import { DetailPageRow } from "@/components/ui/ProductInfoCard";
+import { DetailPageRow } from "./Props";
 
 export type InfoPageConfig = {
   id: string;
@@ -22,4 +22,6 @@ export type Orders = "asc" | "desc";
 export enum PageType {
   Lesson = "lessons",
   Student = "students",
+  Field = "fields",
+  Teacher = "teachers",
 }

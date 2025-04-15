@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import clsx from "clsx";
 import { usePathname } from "next/navigation";
-import { NavBarConfigs } from "@/constants/configs";
+import { NavBarConfigs } from "@/constants/configs/GeneralConfigs";
 
 function MainHeader() {
   const pathName = usePathname();

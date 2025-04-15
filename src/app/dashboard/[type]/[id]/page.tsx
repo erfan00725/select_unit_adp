@@ -1,11 +1,10 @@
 import React, { Suspense } from "react";
 import PageHeader from "@/components/ui/PageHeader";
 import Loading from "@/components/common/Loading";
-import { deleteLesson, deleteStudent } from "@/lib/actions";
 import DeleteConfirm from "@/components/ui/DeleteConfirm";
-import { urls } from "@/constants/urls";
 import { PageType } from "@/types/General";
 import { DetailPage } from "@/components/ui/pages/common/DetailPage";
+import { s_DetailPageConfigs } from "@/constants/configs/DetailPageConfigs";
 
 const LessonDetailPage = async ({
   params,
@@ -16,29 +15,8 @@ const LessonDetailPage = async ({
   const id = paramsRes.id;
   const type = paramsRes.type;
 
-  let deleteConfig;
-  let title;
-
-  switch (type) {
-    case PageType.Lesson:
-      title = "Lesson Info";
-      deleteConfig = {
-        deleteFounction: deleteLesson,
-        backUrl: urls.lessons,
-      };
-      break;
-    case PageType.Student:
-      title = "Student Info";
-      deleteConfig = {
-        deleteFounction: deleteStudent,
-        backUrl: urls.students,
-      };
-      break;
-    default:
-      deleteConfig = null;
-      title = null;
-      break;
-  }
+  const deleteConfig = s_DetailPageConfigs[type].deleteConfig || null;
+  const title = s_DetailPageConfigs[type].title || null;
 
   return (
     <div>

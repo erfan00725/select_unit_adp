@@ -1,7 +1,7 @@
 import { pagination } from "../../types/Tables";
 import { DataTableProps } from "@/types/Props";
 import { urls } from "../urls";
-import { getLessons, getStudents } from "@/lib/actions";
+import { getLessons, getStudents, getFields, getTeachers } from "@/lib/actions";
 import { FilterOptionType, Orders, PageType } from "@/types/General";
 
 type GeneralParamsType = {
@@ -48,6 +48,18 @@ export const s_ListConfig: StaticConfigsType = {
     description: "Manage your students",
     addButtonLabel: "Add New Student",
     searchPlaceholder: "Search students, units...",
+  },
+  fields: {
+    title: "Fields Management",
+    description: "Manage your fields",
+    addButtonLabel: "Add New Field",
+    searchPlaceholder: "Search fields...",
+  },
+  teachers: {
+    title: "Teachers Management",
+    description: "Manage your teachers",
+    addButtonLabel: "Add New Teacher",
+    searchPlaceholder: "Search teachers, fields...",
   },
 };
 
@@ -137,7 +149,93 @@ const StudentsList = async ({
   };
 };
 
+const FieldsList = async ({
+  searchParams,
+}: GeneralParamsType): Promise<ListGeneralReturnType> => {
+  const { page, q, from, to, order, limit } = searchParams;
+
+  const fieldsData = await getFields({
+    page: page ? Number(page) : 1,
+    limit: limit ? Number(limit) : defaultListLimit,
+    query: q,
+    from: from ? new Date(from) : undefined,
+    to: to ? new Date(to) : undefined,
+    order: order ? (order as Orders) : "asc",
+  });
+  const pageLimit = fieldsData.pagination?.limit || defaultListLimit;
+
+  const fields = fieldsData?.fields;
+  const tableData = (fields || []).map((field) => ({
+    id: field.id,
+    Name: field.Name,
+    FixedFee: field.FixedFee ? `${field.FixedFee}` : "_",
+    Students: field.students?.length || 0,
+    Lessons: field.lessons?.length || 0,
+  }));
+
+  const headers = ["ID", "Name", "Fixed Fee", "Students", "Lessons"];
+
+  return {
+    tableData: tableData,
+    headers: headers,
+    title: "Fields Management",
+    addButtonLabel: "Add New Field",
+    baseUrl: urls.fields,
+    limit: pageLimit,
+    error: fieldsData?.error,
+    pagination: fieldsData?.pagination,
+  };
+};
+
+const TeachersList = async ({
+  searchParams,
+}: GeneralParamsType): Promise<ListGeneralReturnType> => {
+  const { page, q, from, to, order, limit } = searchParams;
+
+  const teachersData = await getTeachers({
+    page: page ? Number(page) : 1,
+    limit: limit ? Number(limit) : defaultListLimit,
+    query: q,
+    from: from ? new Date(from) : undefined,
+    to: to ? new Date(to) : undefined,
+    order: order ? (order as Orders) : "asc",
+  });
+  const pageLimit = teachersData.pagination?.limit || defaultListLimit;
+
+  const teachers = teachersData?.teachers;
+  const tableData = (teachers || []).map((teacher) => ({
+    id: teacher.id,
+    Name: `${teacher.FirstName} ${teacher.LastName}`,
+    NationalCode: teacher.NationalCode || "_",
+    PhoneNumber: teacher.PhoneNumber || "_",
+    Field: teacher.field?.Name || "_",
+    Lessons: teacher.lessons?.length || 0,
+  }));
+
+  const headers = [
+    "ID",
+    "Name",
+    "National Code",
+    "Phone Number",
+    "Field",
+    "Lessons",
+  ];
+
+  return {
+    tableData: tableData,
+    headers: headers,
+    title: "Teachers Management",
+    addButtonLabel: "Add New Teacher",
+    baseUrl: urls.teachers,
+    limit: pageLimit,
+    error: teachersData?.error,
+    pagination: teachersData?.pagination,
+  };
+};
+
 export const d_ListConfig: DynamicConfigsType = {
   lessons: LessonsList,
   students: StudentsList,
+  fields: FieldsList,
+  teachers: TeachersList,
 };

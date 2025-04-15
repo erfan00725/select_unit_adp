@@ -8,4 +8,6 @@ export const urls = {
   dashboard: homeUrl,
   [PageType.Student]: homeUrl + `/${PageType.Student}`,
   [PageType.Lesson]: homeUrl + `/${PageType.Lesson}`,
+  [PageType.Field]: homeUrl + `/${PageType.Field}`,
+  [PageType.Teacher]: homeUrl + `/${PageType.Teacher}`,
 };

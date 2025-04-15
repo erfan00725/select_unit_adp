@@ -4,9 +4,16 @@ import {
   getLessonById,
   getLessons,
   getStudentById,
+  getTeacherById,
   getTeachers,
 } from "@/lib/actions";
 import { FormPageProps, InputDataType } from "@/types/Props";
+import {
+  formTitle,
+  formDescription,
+  formButton,
+  inputDefaultPlaceholder,
+} from "@/constants/commonTexts";
 
 export const lessonFormConfigGenerator = async (
   data?: Awaited<ReturnType<typeof getLessonById>>
@@ -43,17 +50,17 @@ export const lessonFormConfigGenerator = async (
   }));
 
   return {
-    title: "Add New Course",
-    description: "Please fill in the course details below",
+    title: formTitle("Course", !!lesson),
+    description: formDescription("Course", !!lesson),
     useDefaultValues: true,
-    addText: "Edit Lesson",
+    addText: formButton("Lesson", !!lesson),
 
     inputs: [
       {
         title: "Lesson Name",
         name: "LessonName",
         type: "text",
-        placeholder: "Enter lesson name",
+        placeholder: inputDefaultPlaceholder("lesson name"),
         required: true,
         defaultValue: lesson?.LessonName,
       },
@@ -61,7 +68,7 @@ export const lessonFormConfigGenerator = async (
         title: "Lesson Unit",
         name: "Unit",
         type: "number",
-        placeholder: "Enter lesson unit",
+        placeholder: inputDefaultPlaceholder("lesson unit"),
         defaultValue: lesson?.Unit.toString(),
         required: true,
       },
@@ -69,7 +76,7 @@ export const lessonFormConfigGenerator = async (
         title: "Lesson Grade",
         name: "Grade",
         type: "select",
-        placeholder: "Enter lesson grade",
+        placeholder: inputDefaultPlaceholder("lesson grade"),
         defaultValue: (lesson?.Grade || "").toString(),
         SelectButtonProps: {
           items: gradeOptions || [],
@@ -82,7 +89,7 @@ export const lessonFormConfigGenerator = async (
         title: "Lesson Field",
         name: "fieldId",
         type: "select",
-        placeholder: "Enter lesson field",
+        placeholder: inputDefaultPlaceholder("lesson field"),
         defaultValue: lesson?.fieldId?.toString(),
         dataType: InputDataType.bigint,
         SelectButtonProps: {
@@ -96,7 +103,7 @@ export const lessonFormConfigGenerator = async (
         title: "Teacher",
         name: "TeacherId",
         type: "select",
-        placeholder: "Enter teacher name",
+        placeholder: inputDefaultPlaceholder("teacher name"),
         dataType: InputDataType.bigint,
         defaultValue: lesson?.TeacherId?.toString(),
         SelectButtonProps: {
@@ -110,28 +117,28 @@ export const lessonFormConfigGenerator = async (
         title: "Lesson Pass Condition",
         name: "PassCondition",
         type: "number",
-        placeholder: "Enter lesson pass condition",
+        placeholder: inputDefaultPlaceholder("lesson pass condition"),
         defaultValue: (lesson?.PassCondition || "").toString(),
       },
       {
         title: "Lesson Theori Hours",
         name: "TheoriHours",
         type: "number",
-        placeholder: "Enter lesson theori hours",
+        placeholder: inputDefaultPlaceholder("lesson theori hours"),
         defaultValue: (lesson?.TheoriHours || "").toString(),
       },
       {
         title: "Lesson Practical Hours",
         name: "PracticalHours",
         type: "number",
-        placeholder: "Enter lesson practical hours",
+        placeholder: inputDefaultPlaceholder("lesson practical hours"),
         defaultValue: (lesson?.PracticalHours || "").toString(),
       },
       {
         title: "Required Lesson",
         name: "RequireLesson",
         type: "select",
-        placeholder: "Enter required lesson",
+        placeholder: inputDefaultPlaceholder("required lesson"),
         defaultValue: (lesson?.requiresLesson?.id || "").toString(),
         SelectButtonProps: {
           items: lessonOptions || [],
@@ -144,7 +151,7 @@ export const lessonFormConfigGenerator = async (
         title: "Required Unit",
         name: "RequireUnit",
         type: "number",
-        placeholder: "Enter required unit",
+        placeholder: inputDefaultPlaceholder("required unit"),
         defaultValue: (lesson?.RequireUnit || "").toString(),
         dataType: InputDataType.bigint,
       },
@@ -152,7 +159,7 @@ export const lessonFormConfigGenerator = async (
         title: "Notif Code",
         name: "NotifCode",
         type: "number",
-        placeholder: "Enter notif code",
+        placeholder: inputDefaultPlaceholder("notif code"),
         defaultValue: (lesson?.NotifCode || "").toString(),
         dataType: InputDataType.bigint,
       },
@@ -160,14 +167,14 @@ export const lessonFormConfigGenerator = async (
         title: "Valid From",
         name: "ValidFrom",
         type: "date",
-        placeholder: "Enter valid from",
+        placeholder: inputDefaultPlaceholder("valid from"),
         defaultValue: lesson?.ValidFrom?.toISOString(),
       },
       {
         title: "Valid Until",
         name: "ValidTill",
         type: "date",
-        placeholder: "Enter valid until",
+        placeholder: inputDefaultPlaceholder("valid until"),
         defaultValue: lesson?.ValidTill?.toISOString(),
       },
       {
@@ -175,7 +182,7 @@ export const lessonFormConfigGenerator = async (
         name: "PricePerUnit",
         type: "number",
         dataType: InputDataType.bigint,
-        placeholder: "Enter price per unit",
+        placeholder: inputDefaultPlaceholder("price per unit"),
         defaultValue: (lesson?.PricePerUnit || "").toString(),
       },
     ],
@@ -200,16 +207,16 @@ export const studentFormConfigGenerator = async (
   }));
 
   return {
-    title: "Add New Student",
-    description: "Please fill in the student details below",
+    title: formTitle("Student", !!student),
+    description: formDescription("Student", !!student),
     useDefaultValues: true,
-    addText: student ? "Update Student" : "Add Student",
+    addText: formButton("Student", !!student),
     inputs: [
       {
         title: "First Name",
         name: "FirstName",
         type: "text",
-        placeholder: "Enter first name",
+        placeholder: inputDefaultPlaceholder("first name"),
         required: true,
         defaultValue: student?.FirstName,
       },
@@ -217,7 +224,7 @@ export const studentFormConfigGenerator = async (
         title: "Last Name",
         name: "LastName",
         type: "text",
-        placeholder: "Enter last name",
+        placeholder: inputDefaultPlaceholder("last name"),
         required: true,
         defaultValue: student?.LastName,
       },
@@ -225,7 +232,7 @@ export const studentFormConfigGenerator = async (
         title: "National Code",
         name: "NationalCode",
         type: "text",
-        placeholder: "Enter national code",
+        placeholder: inputDefaultPlaceholder("national code"),
         required: true,
         defaultValue: student?.NationalCode,
       },
@@ -233,35 +240,35 @@ export const studentFormConfigGenerator = async (
         title: "Father's Name",
         name: "Father",
         type: "text",
-        placeholder: "Enter father's name",
+        placeholder: inputDefaultPlaceholder("father's name"),
         defaultValue: student?.Father || "",
       },
       {
         title: "Birth Date",
         name: "Birth",
         type: "date",
-        placeholder: "Enter birth date",
+        placeholder: inputDefaultPlaceholder("birth date"),
         defaultValue: student?.Birth?.toISOString(),
       },
       {
         title: "Address",
         name: "Address",
         type: "text",
-        placeholder: "Enter address",
+        placeholder: inputDefaultPlaceholder("address"),
         defaultValue: student?.Address || "",
       },
       {
         title: "Home Number",
         name: "HomeNumber",
         type: "text",
-        placeholder: "Enter home number",
+        placeholder: inputDefaultPlaceholder("home number"),
         defaultValue: student?.HomeNumber || "",
       },
       {
         title: "Phone Number",
         name: "PhoneNumber",
         type: "text",
-        placeholder: "Enter phone number",
+        placeholder: inputDefaultPlaceholder("phone number"),
         defaultValue: student?.PhoneNumber || "",
       },
       {
@@ -269,7 +276,7 @@ export const studentFormConfigGenerator = async (
         name: "fieldId",
         type: "select",
         dataType: InputDataType.bigint,
-        placeholder: "Select field",
+        placeholder: inputDefaultPlaceholder("field"),
         required: true,
         defaultValue: student?.fieldId?.toString(),
         SelectButtonProps: {
@@ -284,7 +291,7 @@ export const studentFormConfigGenerator = async (
         title: "Grade",
         name: "Grade",
         type: "select",
-        placeholder: "Select grade",
+        placeholder: inputDefaultPlaceholder("grade"),
         required: true,
         defaultValue: student?.Grade?.toString(),
         SelectButtonProps: {
@@ -299,7 +306,7 @@ export const studentFormConfigGenerator = async (
         title: "Gender",
         name: "Gender",
         type: "select",
-        placeholder: "Select gender",
+        placeholder: inputDefaultPlaceholder("gender"),
         required: true,
         defaultValue:
           student?.Gender !== undefined ? student.Gender.toString() : "true",
@@ -311,6 +318,134 @@ export const studentFormConfigGenerator = async (
           singleSelect: true,
           initialSelectedItemId:
             student?.Gender !== undefined ? student.Gender.toString() : "true",
+          title: "Select Gender",
+          required: true,
+        },
+      },
+    ],
+  };
+};
+
+export const fieldFormConfigGenerator = async (data?: {
+  field?: { id?: bigint; Name?: string; FixedFee?: bigint | null };
+}): Promise<FormPageProps> => {
+  const field = data?.field;
+  return {
+    title: formTitle("Field", !!field),
+    description: formDescription("Field", !!field),
+    useDefaultValues: true,
+    addText: formButton("Field", !!field),
+    inputs: [
+      {
+        title: "Field Name",
+        name: "Name",
+        type: "text",
+        placeholder: inputDefaultPlaceholder("field name"),
+        required: true,
+        defaultValue: field?.Name || "",
+      },
+      {
+        title: "Fixed Fee",
+        name: "FixedFee",
+        type: "number",
+        dataType: InputDataType.bigint,
+        placeholder: inputDefaultPlaceholder("fixed fee"),
+        defaultValue:
+          field?.FixedFee !== undefined && field?.FixedFee !== null
+            ? field.FixedFee.toString()
+            : "0",
+      },
+    ],
+  };
+};
+
+export const teacherFormConfigGenerator = async (
+  data?: Awaited<ReturnType<typeof getTeacherById>>
+): Promise<FormPageProps> => {
+  const teacher = data?.teacher;
+
+  const fields = await getFields();
+
+  const fieldOptions = fields?.fields?.map((field) => ({
+    id: field.id.toString(),
+    name: field.Name,
+  }));
+
+  return {
+    title: formTitle("Teacher", !!teacher),
+    description: formDescription("Teacher", !!teacher),
+    useDefaultValues: true,
+    addText: formButton("Teacher", !!teacher),
+    inputs: [
+      {
+        title: "First Name",
+        name: "FirstName",
+        type: "text",
+        placeholder: inputDefaultPlaceholder("first name"),
+        required: true,
+        defaultValue: teacher?.FirstName,
+      },
+      {
+        title: "Last Name",
+        name: "LastName",
+        type: "text",
+        placeholder: inputDefaultPlaceholder("last name"),
+        required: true,
+        defaultValue: teacher?.LastName,
+      },
+      {
+        title: "National Code",
+        name: "NationalCode",
+        type: "text",
+        placeholder: inputDefaultPlaceholder("national code"),
+        required: true,
+        defaultValue: teacher?.NationalCode,
+      },
+      {
+        title: "Phone Number",
+        name: "PhoneNumber",
+        type: "text",
+        placeholder: inputDefaultPlaceholder("phone number"),
+        required: true,
+        defaultValue: teacher?.PhoneNumber || "",
+      },
+      {
+        title: "Field",
+        name: "fieldId",
+        type: "select",
+        dataType: InputDataType.bigint,
+        placeholder: inputDefaultPlaceholder("field"),
+        defaultValue: teacher?.fieldId?.toString(),
+        SelectButtonProps: {
+          items: fieldOptions || [],
+          singleSelect: true,
+          initialSelectedItemId: teacher?.fieldId?.toString(),
+          title: "Select Field",
+        },
+      },
+      {
+        title: "Birth Date",
+        name: "Birth",
+        type: "date",
+        placeholder: inputDefaultPlaceholder("birth date"),
+        defaultValue: teacher?.Birth?.toISOString(),
+      },
+      {
+        title: "Gender",
+        name: "Gender",
+        type: "select",
+        placeholder: inputDefaultPlaceholder("gender"),
+        required: true,
+        defaultValue:
+          teacher?.Gender !== undefined ? teacher.Gender.toString() : "true",
+        SelectButtonProps: {
+          items: [
+            { id: "true", name: "Male" },
+            { id: "false", name: "Female" },
+          ],
+          singleSelect: true,
+          initialSelectedItemId:
+            teacher?.Gender !== undefined ? teacher.Gender.toString() : "true",
           title: "Select Gender",
           required: true,
         },

@@ -1,6 +1,6 @@
 "use client";
 import CreateEditPage from "@/components/ui/pages/CreateEditPage";
-import { studentFormConfigGenerator } from "@/constants/configs";
+import { studentFormConfigGenerator } from "@/constants/configs/GeneralConfigs";
 import { urls } from "@/constants/urls";
 import { getStudentById, updateStudent } from "@/lib/actions";
 import { validateStudentSafe } from "@/lib/validations";
