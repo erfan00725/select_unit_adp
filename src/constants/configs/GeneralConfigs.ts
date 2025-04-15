@@ -1,4 +1,5 @@
 import { PageType } from "@/types/General";
+import { urls } from "../urls";
 
 export const NavBarConfigs = [
   {
@@ -11,18 +12,18 @@ export const NavBarConfigs = [
   },
   {
     label: "Student Management",
-    href: "/dashboard/" + PageType.Student,
+    href: urls.students,
   },
   {
     label: "Lessons Management",
-    href: "/dashboard/" + PageType.Lesson,
+    href: urls.lessons,
   },
   {
     label: "Teachers Management",
-    href: "/dashboard/" + PageType.Teacher,
+    href: urls.teachers,
   },
   {
     label: "Fields Management",
-    href: "/dashboard/" + PageType.Field,
+    href: urls.fields,
   },
 ];
