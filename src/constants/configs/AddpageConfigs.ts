@@ -1,11 +1,11 @@
 import { CreateEditProps } from "@/types/Props";
-import {
-  lessonFormConfigGenerator,
-  studentFormConfigGenerator,
-} from "../configs";
 import { createLesson, createStudent } from "@/lib/actions";
 import { validateLessonSafe, validateStudentSafe } from "@/lib/validations";
 import { urls } from "../urls";
+import {
+  lessonFormConfigGenerator,
+  studentFormConfigGenerator,
+} from "./FormConfigs";
 
 export const LessonAddConfigs: CreateEditProps<any, any> = {
   entityName: "Lesson",

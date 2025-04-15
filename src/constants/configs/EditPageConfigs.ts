@@ -5,12 +5,12 @@ import {
   updateStudent,
 } from "@/lib/actions";
 import { validateLessonSafe, validateStudentSafe } from "@/lib/validations";
+import { urls } from "../urls";
+import { CreateEditProps } from "@/types/Props";
 import {
   lessonFormConfigGenerator,
   studentFormConfigGenerator,
-} from "../configs";
-import { urls } from "../urls";
-import { CreateEditProps } from "@/types/Props";
+} from "./FormConfigs";
 
 export const LessonEditConfig: CreateEditProps<any, any> = {
   submitFunction: updateLesson,
