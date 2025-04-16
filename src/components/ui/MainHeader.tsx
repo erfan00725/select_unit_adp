@@ -18,14 +18,14 @@ function MainHeader() {
           <div className="flex items-center">
             <Logo className="text-2xl" />
           </div>
-          <nav className="flex justify-items-center space-x-8">
+          <nav className="flex justify-center items-center space-x-8 overflow-x-auto px-5 mx-5 h-full">
             {NavBarConfigs.map((config, index) => {
               return (
                 <Link
                   key={index}
                   href={config.href}
                   className={clsx(
-                    "text-gray-900 font-light hover:text-indigo-600  ",
+                    "text-gray-900 font-light hover:text-indigo-600 text-center",
                     { "font-bold! ": pathName === config.href }
                   )}
                 >

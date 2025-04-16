@@ -1,4 +1,3 @@
-import { PageType } from "@/types/General";
 import { urls } from "../urls";
 
 export const NavBarConfigs = [
