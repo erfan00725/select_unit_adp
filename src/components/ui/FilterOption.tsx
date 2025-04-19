@@ -1,5 +1,5 @@
 "use client";
-import { useSeachParams } from "@/lib/hooks/useSeachParams";
+import { useSearchParams } from "@/lib/hooks/useSeachParams";
 import { FilterOptionType } from "@/types/General";
 import clsx from "clsx";
 import React from "react";
@@ -14,7 +14,7 @@ type Props = {
 };
 
 export default function FilterOption({ option, onChange }: Props) {
-  const { getSearchParam } = useSeachParams();
+  const { getSearchParam } = useSearchParams();
 
   let Input: React.ReactElement | undefined = (
     <input

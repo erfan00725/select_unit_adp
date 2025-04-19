@@ -3,9 +3,12 @@
 import { prisma } from "../prisma";
 import { revalidatePath } from "next/cache";
 import { BaseListFilterParams, LessonDataType } from "@/types/Tables";
+import { LessonGrade } from "@/generated/prisma";
 
 type LessonsParams = {
   unit?: string;
+  grade?: LessonGrade;
+  field?: string;
 };
 
 // Get all lessons
@@ -21,6 +24,8 @@ export async function getLessons(
       from,
       to,
       unit,
+      field,
+      grade,
     } = params || {};
 
     await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -49,6 +54,18 @@ export async function getLessons(
 
     if (unit) {
       where.Unit = Number(unit);
+    }
+
+    if (grade) {
+      where.Grade = grade || LessonGrade.GENERAL;
+    }
+
+    if (field) {
+      where.OR = [
+        ...where.OR,
+        { field: { Name: { contains: field && query } } },
+        { fieldId: null },
+      ];
     }
 
     // Get total count for pagination
@@ -282,5 +299,34 @@ export async function deleteLesson(id: bigint) {
   } catch (error) {
     console.error("Failed to delete lesson:", error);
     return { error: "Failed to delete lesson" };
+  }
+}
+
+// Get multiple lessons by their IDs
+export async function getLessonsByIds(ids: (bigint | string | number)[]) {
+  try {
+    if (!ids.length) {
+      return { lessons: [], error: null };
+    }
+
+    const newIds = ids.map((id) => BigInt(id));
+
+    const lessons = await prisma.lesson.findMany({
+      where: {
+        id: { in: newIds },
+      },
+      include: {
+        field: true,
+        teacher: true,
+        selectUnits: true,
+        requiredForLesson: true,
+        requiresLesson: true,
+      },
+    });
+
+    return { lessons };
+  } catch (error) {
+    console.error("Failed to fetch lessons by IDs:", error);
+    return { error: "Failed to fetch lessons by IDs", lessons: [] };
   }
 }

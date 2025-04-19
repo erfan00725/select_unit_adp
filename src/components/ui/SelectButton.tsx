@@ -1,35 +1,55 @@
 "use client";
-import React, { Suspense, useState } from "react";
-import SelectItems, { Item, SelectItemsProps } from "./SelectItems";
+import React, { useState } from "react";
+import SelectItems, { SelectItem, SelectItemsProps } from "./SelectItems";
 import { ModalWrapper } from "./ModalWrapper";
 
 export type Props = {
-  items: Item[];
+  items: SelectItem[];
   buttunTitle?: string;
   singleSelect?: boolean;
   onClose?: () => void;
+  children?: React.ReactNode;
+  buttnClassName?: string;
+  showSelectOnButton?: boolean;
 };
 
 export type SelectButtonProps = Props & SelectItemsProps;
 
-export const SelectButton = (props: SelectButtonProps) => {
-  const [selectedItems, setSelectedItems] = useState<Item[]>([]);
+export const SelectButton = ({
+  onClose,
+  onSave,
+  buttunTitle,
+  buttnClassName,
+  showSelectOnButton = false,
+  children,
+  ...rest
+}: SelectButtonProps) => {
+  const [selectedItems, setSelectedItems] = useState<SelectItem[]>([]);
   const [isSelectShown, setIsSelectShown] = useState(false);
 
   const handleCloseModal = () => {
     setIsSelectShown(false);
-    if (props.onClose) props.onClose();
+    if (onClose) onClose();
   };
 
-  const onSave = (selectedItems: Item[]) => {
+  const onSelectSave = (selectedItems: SelectItem[]) => {
     setSelectedItems(selectedItems);
+    if (rest.singleSelect && selectedItems.length > 0) {
+    }
     setIsSelectShown(false);
-    props.onSave && props.onSave(selectedItems);
+    onSave && onSave(selectedItems);
+  };
+
+  const onSelectionChange = (item: SelectItem[]) => {
+    if (rest.singleSelect && selectedItems.length > 0) {
+      setIsSelectShown(false);
+    }
+    rest.onSelectionChange && rest.onSelectionChange(item);
   };
 
   const buttonTitle = () => {
-    let title = props.buttunTitle || "Select";
-    if (selectedItems.length > 0) {
+    let title = buttunTitle || "Select";
+    if (selectedItems.length > 0 && showSelectOnButton) {
       title = selectedItems[0].name;
       if (selectedItems.length > 1) title += "...";
     }
@@ -42,12 +62,17 @@ export const SelectButton = (props: SelectButtonProps) => {
       <button
         type="button"
         onClick={() => setIsSelectShown(true)}
-        className="button w-f"
+        className={`button w-f ${buttnClassName}`}
       >
         {buttonTitle()}
+        {children}
       </button>
       <ModalWrapper isShown={isSelectShown} onClose={handleCloseModal}>
-        <SelectItems {...props} onSave={onSave} />
+        <SelectItems
+          {...rest}
+          onSave={onSelectSave}
+          onSelectionChange={onSelectionChange}
+        />
       </ModalWrapper>
     </>
   );

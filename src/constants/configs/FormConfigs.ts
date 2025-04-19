@@ -7,7 +7,7 @@ import {
   getTeacherById,
   getTeachers,
 } from "@/lib/actions";
-import { FormPageProps, InputDataType } from "@/types/Props";
+import { FormInputProps, FormPageProps, InputDataType } from "@/types/Props";
 import {
   formTitle,
   formDescription,
@@ -451,5 +451,22 @@ export const teacherFormConfigGenerator = async (
         },
       },
     ],
+  };
+};
+
+export const unitSelectFormConfigGenerator = (): FormPageProps => {
+  const inputs: FormInputProps[] = [
+    {
+      title: "Unit",
+      name: "Unit",
+      type: "number",
+      placeholder: inputDefaultPlaceholder("unit"),
+      required: true,
+    },
+  ];
+
+  return {
+    title: formTitle("Unit Select"),
+    inputs,
   };
 };

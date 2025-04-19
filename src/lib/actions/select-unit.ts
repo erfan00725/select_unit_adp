@@ -4,6 +4,8 @@ import { Period } from "@/generated/prisma";
 import { prisma } from "../prisma";
 import { revalidatePath } from "next/cache";
 import { BaseListFilterParams, SelectUnitDataType } from "@/types/Tables";
+import { error } from "console";
+import { urls } from "@/constants/urls";
 
 // Get all select units
 export async function getSelectUnits(params?: BaseListFilterParams) {
@@ -384,30 +386,35 @@ export async function deleteSelectUnit(
 }
 
 // Bulk create select units for a student
-export async function bulkCreateSelectUnits(data: SelectUnitDataType[]) {
+export async function bulkCreateSelectUnits(
+  baseData: SelectUnitDataType,
+  lessonIds: bigint[]
+) {
   try {
     const createdUnits = [];
-    const errors = [];
 
-    for (const unit of data) {
+    for (const lessonId of lessonIds) {
       try {
-        const result = await createSelectUnit(unit);
+        const unitData = {
+          ...baseData,
+          LessonId: lessonId,
+        };
+
+        const result = await createSelectUnit(unitData);
         if (result.error) {
-          errors.push({ unit, error: result.error });
+          return { error: result.error };
         } else {
           createdUnits.push(result.selectUnit);
         }
       } catch (error) {
-        errors.push({ unit, error: "Failed to create select unit" });
+        return { error: error };
       }
     }
 
-    if (data.length > 0) {
-      revalidatePath("/dashboard/select-unit");
-      revalidatePath(`/dashboard/students/${data[0].StudentId}`);
-    }
+    // revalidatePath(`${urls.selectUnit}/${baseData.StudentId}`);
+    // revalidatePath(`${urls.students}/${baseData.StudentId}`);
 
-    return { createdUnits, errors };
+    return { createdUnits };
   } catch (error) {
     console.error("Failed to bulk create select units:", error);
     return { error: "Failed to bulk create select units" };

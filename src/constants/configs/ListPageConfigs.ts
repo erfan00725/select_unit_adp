@@ -1,10 +1,10 @@
 import { pagination } from "../../types/Tables";
-import { DataTableProps } from "@/types/Props";
+import { DataTableAction, DataTableProps } from "@/types/Props";
 import { urls } from "../urls";
 import { getLessons, getStudents, getFields, getTeachers } from "@/lib/actions";
 import { FilterOptionType, Orders, PageType } from "@/types/General";
 
-type GeneralParamsType = {
+type ListGeneralParamsType = {
   searchParams: { [key: string]: string | undefined };
 };
 
@@ -67,13 +67,13 @@ export const s_ListConfig: StaticConfigsType = {
 
 type DynamicConfigsType = {
   [key in PageType]: (
-    params: GeneralParamsType
+    params: ListGeneralParamsType
   ) => Promise<ListGeneralReturnType>;
 };
 
 const LessonsList = async ({
   searchParams,
-}: GeneralParamsType): Promise<ListGeneralReturnType> => {
+}: ListGeneralParamsType): Promise<ListGeneralReturnType> => {
   const { page, q, from, to, order, unit, limit } = searchParams;
 
   const lessonsData = await getLessons({
@@ -113,7 +113,7 @@ const LessonsList = async ({
 
 const StudentsList = async ({
   searchParams,
-}: GeneralParamsType): Promise<ListGeneralReturnType> => {
+}: ListGeneralParamsType): Promise<ListGeneralReturnType> => {
   const { page, q, from, to, order, limit } = searchParams;
 
   const studentsData = await getStudents({
@@ -137,6 +137,13 @@ const StudentsList = async ({
 
   const headers = ["ID", "Name", "National Code", "Phone Number", "Field"];
 
+  const actions: DataTableAction[] = [
+    {
+      label: "Select_Unit",
+      href: urls.selectUnit + "/$?",
+    },
+  ];
+
   return {
     tableData: tableData,
     headers: headers,
@@ -146,12 +153,13 @@ const StudentsList = async ({
     limit: pageLimit,
     error: studentsData?.error,
     pagination: studentsData?.pagination,
+    actions,
   };
 };
 
 const FieldsList = async ({
   searchParams,
-}: GeneralParamsType): Promise<ListGeneralReturnType> => {
+}: ListGeneralParamsType): Promise<ListGeneralReturnType> => {
   const { page, q, from, to, order, limit } = searchParams;
 
   const fieldsData = await getFields({
@@ -189,7 +197,7 @@ const FieldsList = async ({
 
 const TeachersList = async ({
   searchParams,
-}: GeneralParamsType): Promise<ListGeneralReturnType> => {
+}: ListGeneralParamsType): Promise<ListGeneralReturnType> => {
   const { page, q, from, to, order, limit } = searchParams;
 
   const teachersData = await getTeachers({

@@ -64,6 +64,15 @@ export interface SearchFilterBarProps {
   onClearAllFilters?: () => void;
 }
 
+// in href "$?" will replace with data id
+export type DataTableAction = {
+  label: string;
+  href?: string;
+  onClick?: (id: string) => void;
+  className?: string;
+  icon?: React.ReactNode;
+};
+
 export type DataTableProps<T extends DataBaseType> = {
   title: string;
   description?: string;
@@ -73,6 +82,7 @@ export type DataTableProps<T extends DataBaseType> = {
   baseUrl?: string;
   limit?: number;
   scrollable?: boolean;
+  actions?: DataTableAction[];
 };
 
 export type CreateEditProps<T extends (...args: any) => any, S> = {

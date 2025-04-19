@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { urls } from "@/constants/urls";
-import { useSeachParams } from "@/lib/hooks/useSeachParams";
+import { useSearchParams } from "@/lib/hooks/useSeachParams";
 import { PageType } from "@/types/General";
 
 type Props = {
@@ -32,7 +32,7 @@ export default function DeleteConfirm({
   backUrl,
 }: Props) {
   const router = useRouter();
-  const { getSearchParam, clearSearchParams } = useSeachParams();
+  const { getSearchParam, clearSearchParams } = useSearchParams();
   if (!getSearchParam("delete")) {
     return null;
   }

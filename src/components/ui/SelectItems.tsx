@@ -6,25 +6,26 @@ import { faMagnifyingGlass, faX } from "@fortawesome/free-solid-svg-icons";
 import Checkbox from "./Checkbox";
 import Input from "./Input";
 
-export interface Item {
+export interface SelectItem {
   id: string;
   name: string;
   [key: string]: any; // Allow for additional properties
 }
 
 export interface SelectItemsProps {
-  items: Item[];
-  onSelectionChange?: (selectedItems: Item[]) => void;
-  onSave?: (selectedItems: Item[]) => void;
+  items: SelectItem[];
+  onSelectionChange?: (selectedItems: SelectItem[]) => void;
+  onSave?: (selectedItems: SelectItem[]) => void;
   onCancel?: () => void;
   title?: string;
   searchPlaceholder?: string;
   className?: string;
-  initialSelectedItems?: Item[];
+  initialSelectedItems?: SelectItem[];
   singleSelect?: boolean;
   initialSelectedItemId?: string;
   required?: boolean;
   searchShowLimit?: number;
+  clearOnSave?: boolean;
 }
 
 const SelectItems: React.FC<SelectItemsProps> = ({
@@ -40,10 +41,11 @@ const SelectItems: React.FC<SelectItemsProps> = ({
   initialSelectedItemId,
   searchShowLimit = 0,
   required = false,
+  clearOnSave = false,
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedItems, setSelectedItems] =
-    useState<Item[]>(initialSelectedItems);
+    useState<SelectItem[]>(initialSelectedItems);
 
   const selectItems = [...items]; // Create a copy of the item
   if (!required) {
@@ -53,7 +55,7 @@ const SelectItems: React.FC<SelectItemsProps> = ({
     });
   }
 
-  const [filteredItems, setFilteredItems] = useState<Item[]>(selectItems);
+  const [filteredItems, setFilteredItems] = useState<SelectItem[]>(selectItems);
 
   useEffect(() => {
     let initialSelectedItems = selectItems.filter(
@@ -81,14 +83,9 @@ const SelectItems: React.FC<SelectItemsProps> = ({
     setFilteredItems(filtered);
   }, [searchQuery]);
 
-  // Might need to change this
-  useEffect(() => {
-    onSave && selectedItems.length > 0 && onSave(selectedItems);
-  }, [selectedItems]);
-
   // Handle item selection
-  const handleItemSelect = (item: Item, isChecked: boolean) => {
-    let newSelectedItems: Item[];
+  const handleItemSelect = (item: SelectItem, isChecked: boolean) => {
+    let newSelectedItems: SelectItem[];
 
     if (isChecked) {
       if (singleSelect) {
@@ -104,9 +101,7 @@ const SelectItems: React.FC<SelectItemsProps> = ({
 
     setSelectedItems(newSelectedItems);
 
-    if (onSelectionChange) {
-      onSelectionChange(newSelectedItems);
-    }
+    onSelectionChange && onSelectionChange(newSelectedItems);
   };
 
   // Check if an item is selected
@@ -125,9 +120,10 @@ const SelectItems: React.FC<SelectItemsProps> = ({
 
   // Handle save button click
   const handleSave = () => {
-    if (onSave) {
-      onSave(selectedItems);
+    if (clearOnSave) {
+      clearSelection();
     }
+    onSave && onSave(selectedItems);
   };
 
   return (

@@ -43,3 +43,7 @@ body {
 .button_black {
   @apply text-white bg-black hover:bg-gray-800 border-transparent;
 }
+
+.tableAction {
+  @apply text-indigo-600 hover:text-indigo-900 text-center mr-3;
+}

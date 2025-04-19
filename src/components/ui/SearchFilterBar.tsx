@@ -2,7 +2,7 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faX } from "@fortawesome/free-solid-svg-icons";
-import { useSeachParams } from "@/lib/hooks/useSeachParams";
+import { useSearchParams } from "@/lib/hooks/useSeachParams";
 import { useDebouncedCallback } from "use-debounce";
 import { FilterOptionType } from "@/types/General";
 import FilterOption from "./FilterOption";
@@ -26,7 +26,7 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
     setSearchParam,
     getAllSearchParams,
     removeSearchParam,
-  } = useSeachParams();
+  } = useSearchParams();
 
   const debounce = useDebouncedCallback((value) => {
     onChange(value);

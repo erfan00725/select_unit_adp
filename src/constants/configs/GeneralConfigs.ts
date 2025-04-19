@@ -6,10 +6,6 @@ export const NavBarConfigs = [
     href: "/dashboard",
   },
   {
-    label: "Course Selection",
-    href: "/dashboard/select-unit",
-  },
-  {
     label: "Student Management",
     href: urls.students,
   },

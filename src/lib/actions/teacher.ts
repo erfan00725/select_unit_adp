@@ -54,8 +54,13 @@ export async function getTeachers(params?: BaseListFilterParams) {
       take: limit,
     });
 
+    const modifiedTeahcers = teachers.map((teacher) => ({
+      ...teacher,
+      FullName: `${teacher.FirstName} ${teacher.LastName}`,
+    }));
+
     return {
-      teachers,
+      teachers: modifiedTeahcers,
       pagination: {
         total: totalCount,
         totalPages: Math.ceil(totalCount / limit),
@@ -84,7 +89,12 @@ export async function getTeacherById(id: bigint) {
       return { error: "Teacher not found" };
     }
 
-    return { teacher };
+    const modifiedTeahcer = {
+      ...teacher,
+      FullName: `${teacher.FirstName} ${teacher.LastName}`,
+    };
+
+    return { teacher: modifiedTeahcer };
   } catch (error) {
     console.error("Failed to fetch teacher:", error);
     return { error: "Failed to fetch teacher" };

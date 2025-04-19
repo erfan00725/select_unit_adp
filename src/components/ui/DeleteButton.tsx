@@ -1,9 +1,9 @@
 "use client";
-import { useSeachParams } from "@/lib/hooks/useSeachParams";
+import { useSearchParams } from "@/lib/hooks/useSeachParams";
 import React from "react";
 
 export const DeleteButton = () => {
-  const { setSearchParam } = useSeachParams();
+  const { setSearchParam } = useSearchParams();
 
   return (
     <button

@@ -1,9 +1,9 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams as useParams } from "next/navigation";
 
-export const useSeachParams = () => {
-  const searchParams = useSearchParams();
+export const useSearchParams = () => {
+  const searchParams = useParams();
   const router = useRouter();
 
   const getSearchParam = (param: string) => {
@@ -21,17 +21,17 @@ export const useSeachParams = () => {
   const setSearchParam = (param: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set(param, value);
-    router.push(`${window.location.pathname}?${params.toString()}`);
+    router.push(`?${params.toString()}`);
   };
 
   const removeSearchParam = (param: string) => {
     const params = new URLSearchParams(searchParams.toString());
     params.delete(param);
-    router.push(`${window.location.pathname}?${params.toString()}`);
+    router.push(`?${params.toString()}`);
   };
 
   const clearSearchParams = () => {
-    router.push(window.location.pathname);
+    router.push("");
   };
 
   return {

@@ -5,7 +5,7 @@ import { Grade, LessonGrade, UserType, Period } from "@/generated/prisma";
 import { Orders } from "./General";
 
 export type DataBaseType = {
-  id?: string | bigint;
+  id: string | bigint;
 };
 
 export type pagination = {
