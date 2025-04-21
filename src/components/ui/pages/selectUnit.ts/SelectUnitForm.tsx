@@ -1,17 +1,23 @@
 "use client";
 import { Period } from "@/generated/prisma";
 import { getDateJ } from "@/lib/utils/getCurrentDataJ";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import SelectUnitTable from "./SelectUnitTable";
 import { LessonSelect } from "./LessonSelect";
 import Link from "next/link";
 import { urls } from "@/constants/urls";
 import { SelectItem } from "../../SelectItems";
 import { ActionReturnType } from "@/types/General";
-import { getLessons, getLessonsByIds } from "@/lib/actions";
-import { FormInputs } from "../../FomInputs";
+import {
+  bulkCreateSelectUnits,
+  getLessons,
+  getLessonsByIds,
+} from "@/lib/actions";
+import { FormInputs, InputValueType } from "../../FomInputs";
 import Loading from "@/components/common/Loading";
 import { toast } from "react-toastify";
+import { validateSelectUnitSafe } from "@/lib/validations/selectUnit";
+import { ZodError } from "zod";
 
 type Props = {
   studnetId: string;
@@ -26,10 +32,7 @@ export const SelectUnitForm = ({
   defaultPrice = 10,
   defaultFixedFee,
 }: Props) => {
-  const [selectedYear, setSelectedYear] = React.useState(
-    new Date().getFullYear().toString()
-  );
-  const [period, setPeriod] = React.useState<Period>(Period.first);
+  let inputValues = useRef<InputValueType>({});
   const [seLectedLessonsIds, setSelectedLessonsIds] = useState<string[]>([]);
   const [selectedLessons, setSelectedLessons] = useState<
     ActionReturnType<typeof getLessonsByIds> | undefined
@@ -90,7 +93,58 @@ export const SelectUnitForm = ({
     setSelectedLessons(undefined);
   };
 
-  const handleSubmit = () => {};
+  const handleSubmit = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+
+    if (!selectedLessons || selectedLessons.lessons.length < 0) {
+      toast.error("Please select courses or fill the form");
+      return;
+    }
+
+    const lessons = seLectedLessonsIds.map((id) => BigInt(id));
+
+    console.log("selectedLessons", selectedLessons);
+    console.log("inputValues", inputValues.current);
+
+    const {
+      success,
+      data: validateData,
+      error,
+    } = validateSelectUnitSafe({
+      Lesson: BigInt(seLectedLessonsIds[0]),
+      Lessons: lessons,
+      StudentId: BigInt(studnetId),
+      Period: inputValues.current.period?.value,
+      Year: inputValues.current.year?.value,
+    });
+    if (!success || error || !validateData) {
+      console.log("error", (error as ZodError).errors);
+      toast.error((error as ZodError).errors[0].message);
+      return;
+    }
+
+    bulkCreateSelectUnits(
+      {
+        LessonId: validateData.Lesson,
+        StudentId: validateData.StudentId,
+        Period: validateData.Period,
+        Year: validateData.Year,
+      },
+      validateData.Lessons
+    )
+      .then((res) => {
+        if (res.error) {
+          toast.error((res.error as string) || "Something went wrong");
+          return;
+        }
+
+        toast.success("Courses selected successfully");
+        handleReset();
+      })
+      .catch((err) => toast.error(err.message));
+  };
 
   const showTable = () => {
     return selectedLessons && selectedLessons.lessons.length > 0 ? (
@@ -107,27 +161,23 @@ export const SelectUnitForm = ({
 
   const formConfigs = [
     {
+      id: "SU_Year",
+      label: "Year",
+      type: "select" as const,
+      name: "year",
+      options: periodOptions,
+      required: true,
+    },
+    {
       id: "SU_Period",
       label: "Period",
       type: "select" as const,
       name: "period",
-      value: period,
-      onChange: (value: string) => setPeriod(value as Period),
       options: [
         { value: Period.first, label: "First Half" },
         { value: Period.second, label: "Second Half" },
         { value: Period.summer, label: "Summer" },
       ],
-      required: true,
-    },
-    {
-      id: "SU_Year",
-      label: "Year",
-      type: "select" as const,
-      name: "year",
-      value: selectedYear,
-      onChange: (value: string) => setSelectedYear(value),
-      options: periodOptions,
       required: true,
     },
     {
@@ -157,7 +207,12 @@ export const SelectUnitForm = ({
     <form>
       {/* Course Selection Table */}
       <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-        {<FormInputs configs={formConfigs} />}
+        <FormInputs
+          configs={formConfigs}
+          onInputsChange={(inputs) => {
+            inputValues.current = { ...inputValues.current, ...inputs };
+          }}
+        />
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-bold text-gray-900">Selected Courses</h2>
           <LessonSelect
@@ -187,6 +242,7 @@ export const SelectUnitForm = ({
         </Link>
         <button
           type="submit"
+          onClick={handleSubmit}
           className="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
           Confirm Selection

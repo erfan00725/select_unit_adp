@@ -2,8 +2,6 @@
 import React from "react";
 import { SelectItem } from "../../SelectItems";
 import { SelectButton } from "../../SelectButton";
-import { useSearchParams } from "@/lib/hooks/useSeachParams";
-import { string } from "zod";
 
 type Props = {
   items: SelectItem[];
@@ -16,8 +14,6 @@ export const LessonSelect = ({
   selectedLessons,
   setSelectedLessons,
 }: Props) => {
-  const { setSearchParam, getSearchParam } = useSearchParams();
-
   const onSelectSave = (selectedItems: SelectItem[]) => {
     const noneDuplicate = selectedItems.filter(
       (item) => !selectedLessons.includes(item.id)

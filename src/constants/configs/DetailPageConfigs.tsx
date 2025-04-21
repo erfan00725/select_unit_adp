@@ -1,3 +1,4 @@
+import DataTable from "@/components/ui/DataTable";
 import {
   getLessonById,
   getStudentById,
@@ -10,10 +11,12 @@ import { getGender } from "@/lib/getGender";
 import { InfoPageConfig, PageType } from "@/types/General";
 import { DetailPageProps } from "@/types/Props";
 import { urls } from "../urls";
+import { UserSelectUnitList } from "@/components/ui/pages/selectUnit.ts/UserSelectUnitList";
 
 export type DetailPageConfigtReturnType = {
   error?: string;
   config?: DetailPageProps;
+  chidlren?: React.ReactNode;
 };
 
 interface ConfigFunction<T> {
@@ -184,6 +187,7 @@ export const StudentsDetailConfig = (
       InfoRows: StudentConfig.rows || [],
       baseUrl: urls.students,
     },
+    chidlren: <UserSelectUnitList />,
   };
 };
 

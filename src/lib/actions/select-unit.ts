@@ -198,6 +198,44 @@ export async function getSelectUnitsByLesson(
   }
 }
 
+// Get a specific select unit by its composite key
+export async function getSpecificSelectUnit(
+  studentId: bigint,
+  lessonId: bigint,
+  year: number,
+  period: Period
+) {
+  try {
+    const selectUnit = await prisma.selectUnit.findUnique({
+      where: {
+        StudentId_LessonId_Year_Period: {
+          StudentId: studentId,
+          LessonId: lessonId,
+          Year: year,
+          Period: period,
+        },
+      },
+      include: {
+        student: true,
+        lesson: {
+          include: {
+            teacher: true,
+          },
+        },
+      },
+    });
+
+    if (!selectUnit) {
+      return { error: "Select unit not found" };
+    }
+
+    return { selectUnit };
+  } catch (error) {
+    console.error("Failed to fetch specific select unit:", error);
+    return { error: "Failed to fetch specific select unit" };
+  }
+}
+
 // Get select units by year and period
 export async function getSelectUnitsByYearPeriod(
   year: number,
@@ -392,6 +430,18 @@ export async function bulkCreateSelectUnits(
 ) {
   try {
     const createdUnits = [];
+
+    // for (const lessonId of lessonIds) {
+    //   const selectUnit = await getSpecificSelectUnit(
+    //     baseData.StudentId,
+    //     lessonId,
+    //     baseData.Year,
+    //     baseData.Period
+    //   );
+    //   if (selectUnit.selectUnit) {
+    //     return { error: "This course selection already exists" };
+    //   }
+    // }
 
     for (const lessonId of lessonIds) {
       try {

@@ -25,5 +25,10 @@ export const DetailPage = async ({ type, id }: Props) => {
     return <NotFound />;
   }
 
-  return <DetailInfoCard {...detailConfig.config} />;
+  return (
+    <>
+      <DetailInfoCard {...detailConfig.config} />
+      {detailConfig.chidlren}
+    </>
+  );
 };

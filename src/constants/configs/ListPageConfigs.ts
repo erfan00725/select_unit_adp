@@ -1,7 +1,14 @@
 import { pagination } from "../../types/Tables";
 import { DataTableAction, DataTableProps } from "@/types/Props";
 import { urls } from "../urls";
-import { getLessons, getStudents, getFields, getTeachers } from "@/lib/actions";
+import {
+  getLessons,
+  getStudents,
+  getFields,
+  getTeachers,
+  getSelectUnits,
+  getSelectUnitsByStudent,
+} from "@/lib/actions";
 import { FilterOptionType, Orders, PageType } from "@/types/General";
 
 type ListGeneralParamsType = {
@@ -246,4 +253,72 @@ export const d_ListConfig: DynamicConfigsType = {
   students: StudentsList,
   fields: FieldsList,
   teachers: TeachersList,
+};
+
+//  ________Other Configs________
+
+export const d_SelectUnitList = async ({
+  searchParams,
+  studentId,
+}: ListGeneralParamsType & {
+  studentId: bigint;
+}): Promise<ListGeneralReturnType> => {
+  const { page, q, from, to, order, year, period, limit } = searchParams;
+
+  const selectUnitsData = await getSelectUnitsByStudent(studentId, {
+    page: page ? Number(page) : 1,
+    limit: limit ? Number(limit) : defaultListLimit,
+    query: q,
+    from: from ? new Date(from) : undefined,
+    to: to ? new Date(to) : undefined,
+    order: order ? (order as Orders) : "asc",
+  });
+  const pageLimit = selectUnitsData.pagination?.limit || defaultListLimit;
+
+  const selectUnits = selectUnitsData?.selectUnits;
+  const tableData = (selectUnits || []).map((unit) => ({
+    id: `${unit.StudentId}-${unit.LessonId}-${unit.Year}-${unit.Period}`,
+    Lesson: unit.lesson ? unit.lesson.LessonName : "_",
+    Year: unit.Year,
+    Period: unit.Period,
+    Units: unit.lesson ? unit.lesson.Unit : "_",
+    ExtraFee: unit.ExtraFee ? `${unit.ExtraFee}` : "0",
+  }));
+
+  const headers = ["ID", "Lesson", "Year", "Period", "Units", "Extra Fee"];
+
+  return {
+    tableData: tableData,
+    headers: headers,
+    title: "Select Unit Management",
+    addButtonLabel: "Add New Selection",
+    baseUrl: urls.selectUnit,
+    limit: pageLimit,
+    error: selectUnitsData?.error,
+    pagination: selectUnitsData?.pagination,
+  };
+};
+
+export const s_SelectUnitList = {
+  title: "Select Unit Management",
+  description: "Manage student course selections",
+  addButtonLabel: "Add New Selection",
+  searchPlaceholder: "Search students, lessons...",
+  filterOptions: [
+    {
+      name: "year",
+      type: "number",
+      placeholder: "Enter year",
+    },
+    {
+      name: "period",
+      type: "select",
+      placeholder: "Select period",
+      options: [
+        { label: "First", value: "first" },
+        { label: "Second", value: "second" },
+        { label: "Summer", value: "summer" },
+      ],
+    },
+  ],
 };

@@ -1,6 +1,7 @@
 import { z } from "zod";
 import errorMassages from "@/constants/massages";
 import { Period } from "@/generated/prisma";
+import { SelectUnitDataType } from "@/types/Tables";
 
 /**
  * Zod validation schema for the SelectUnit form
@@ -8,13 +9,13 @@ import { Period } from "@/generated/prisma";
  */
 export const selectUnitSchema = z.object({
   // Required fields
-  period: z
+  Period: z
     .nativeEnum(Period, {
       errorMap: () => ({ message: errorMassages.requiredField("Period") }),
     })
     .describe("Academic period (first half, second half, or summer)"),
 
-  year: z
+  Year: z
     .number()
     .or(z.string().transform((val) => Number(val)))
     .pipe(
@@ -26,19 +27,23 @@ export const selectUnitSchema = z.object({
     )
     .describe("Academic year"),
 
-  lessons: z
+  Lesson: z
+    .bigint()
+    .or(z.string().transform((val) => BigInt(val)))
+    .describe("Lesson ID"),
+
+  StudentId: z
+    .bigint()
+    .or(z.string().transform((val) => BigInt(val)))
+    .describe("Student ID if applicable"),
+
+  // Optional fields
+  Lessons: z
     .array(z.bigint().or(z.string().transform((val) => BigInt(val))))
     .min(1, { message: "At least one lesson must be selected" })
     .describe("Array of selected lesson IDs"),
 
-  // Optional fields
-  studentId: z
-    .bigint()
-    .or(z.string().transform((val) => BigInt(val)))
-    .optional()
-    .describe("Student ID if applicable"),
-
-  extraFee: z
+  ExtraFee: z
     .bigint()
     .or(z.string().transform((val) => BigInt(val)))
     .optional()

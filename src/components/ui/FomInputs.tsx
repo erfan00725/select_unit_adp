@@ -1,42 +1,66 @@
 import { useEffect, useState } from "react";
 
+export type InputValueType = Record<string, { active: boolean; value: any }>;
+
 type Props = {
   configs: Array<{
     id: string;
     label: string;
     type: "select" | "number";
     name: string;
-    value?: string | number;
-    onChange?: (value: any) => void;
     options?: Array<{ value: any; label: string }>;
     required?: boolean;
     className?: string;
-    canBeDisabled?: boolean; // New property to indicate if input can be disabled
+    canBeDisabled?: boolean;
   }>;
+  onInputsChange?: (inputsValue: InputValueType) => void;
 };
 
 // Function to generate form inputs based on configuration
-export const FormInputs = ({ configs }: Props) => {
-  const [activeInputs, setActiveInputs] = useState<Record<string, boolean>>({});
+export const FormInputs = ({ configs, onInputsChange }: Props) => {
+  const [inputsValue, setInputsValue] = useState<InputValueType>({});
 
-  // Initialize active state for inputs that can be disabled
+  // Initialize input values and active states
   useEffect(() => {
-    const initialActiveState: Record<string, boolean> = {};
+    const initialValues: InputValueType = {};
+
     configs.forEach((config) => {
-      if (config.canBeDisabled && !(config.id in activeInputs)) {
-        initialActiveState[config.id] = true; // Default to active
+      initialValues[config.name] = {
+        active: true,
+        value: "",
+      };
+      // Initialize active state for inputs that can be disabled
+      if (config.canBeDisabled) {
+        initialValues[`${config.name}`].active = false; // Default to active
       }
     });
-    if (Object.keys(initialActiveState).length > 0) {
-      setActiveInputs((prev) => ({ ...prev, ...initialActiveState }));
-    }
-  }, [configs]);
+
+    setInputsValue((prev) => ({ ...prev, ...initialValues }));
+  }, []);
+
+  useEffect(() => {
+    onInputsChange && onInputsChange(inputsValue);
+  }, [inputsValue]);
 
   // Toggle input active state
-  const toggleInputActive = (id: string) => {
-    setActiveInputs((prev) => ({
+  const toggleInputActive = (name: string) => {
+    setInputsValue((prev) => ({
       ...prev,
-      [id]: !prev[id],
+      [`${name}`]: {
+        ...prev[name],
+        active: !prev[name].active,
+      },
+    }));
+  };
+
+  // Handle input value change
+  const handleInputChange = (name: string, value: any) => {
+    setInputsValue((prev) => ({
+      ...prev,
+      [name]: {
+        ...prev[name],
+        value: value,
+      },
     }));
   };
 
@@ -44,14 +68,18 @@ export const FormInputs = ({ configs }: Props) => {
     <div className="flex flex-wrap flex-row justify-start items-center space-x-15 my-10 mx-5 space-y-5">
       {configs.map((config) => {
         const isActive = config.canBeDisabled
-          ? activeInputs[config.id] ?? true
+          ? inputsValue[`${config.name}`]?.active ?? false
           : true;
 
         return (
           <div key={config.id} className="flex items-center">
             <div className="flex items-center">
               <label className="text-lg" htmlFor={config.id}>
-                {config.label} :
+                {config.label}
+                {config.required && isActive && (
+                  <span className="text-red-500">*</span>
+                )}{" "}
+                :
               </label>
               {config.type === "select" ? (
                 <select
@@ -61,12 +89,15 @@ export const FormInputs = ({ configs }: Props) => {
                   id={config.id}
                   name={config.name}
                   required={config.required && isActive}
-                  value={config.value as string}
+                  value={(inputsValue[config.name]?.value as string) || ""}
                   onChange={(e) =>
-                    config.onChange && config.onChange(e.target.value)
+                    handleInputChange(config.name, e.target.value)
                   }
                   disabled={!isActive}
                 >
+                  <option value="" disabled>
+                    Select
+                  </option>
                   {config.options?.map((option) => (
                     <option key={option.value} value={option.value}>
                       {option.label}
@@ -82,29 +113,23 @@ export const FormInputs = ({ configs }: Props) => {
                   id={config.id}
                   name={config.name}
                   required={config.required && isActive}
-                  value={config.value}
+                  value={inputsValue[config.name]?.value || ""}
                   onChange={(e) =>
-                    config.onChange && config.onChange(e.target.value)
+                    handleInputChange(config.name, e.target.value)
                   }
                   disabled={!isActive}
                 />
               )}
             </div>
-            {config.canBeDisabled && (
+            {config.canBeDisabled && !config.required && (
               <div className="ml-2 flex items-center">
                 <input
                   type="checkbox"
                   id={`${config.id}_toggle`}
                   checked={isActive}
-                  onChange={() => toggleInputActive(config.id)}
-                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                  onChange={() => toggleInputActive(config.name)}
+                  className="h-5 w-5 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
                 />
-                <label
-                  htmlFor={`${config.id}_toggle`}
-                  className="ml-1 text-sm text-gray-600"
-                >
-                  Active
-                </label>
               </div>
             )}
           </div>
