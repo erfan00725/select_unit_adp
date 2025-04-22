@@ -34,6 +34,16 @@ export type Lesson = $Result.DefaultSelection<Prisma.$LessonPayload>
  */
 export type SelectUnit = $Result.DefaultSelection<Prisma.$SelectUnitPayload>
 /**
+ * Model SelectedLesson
+ * 
+ */
+export type SelectedLesson = $Result.DefaultSelection<Prisma.$SelectedLessonPayload>
+/**
+ * Model Payments
+ * 
+ */
+export type Payments = $Result.DefaultSelection<Prisma.$PaymentsPayload>
+/**
  * Model Field
  * 
  */
@@ -276,6 +286,26 @@ export class PrismaClient<
     * ```
     */
   get selectUnit(): Prisma.SelectUnitDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.selectedLesson`: Exposes CRUD operations for the **SelectedLesson** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SelectedLessons
+    * const selectedLessons = await prisma.selectedLesson.findMany()
+    * ```
+    */
+  get selectedLesson(): Prisma.SelectedLessonDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.payments`: Exposes CRUD operations for the **Payments** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Payments
+    * const payments = await prisma.payments.findMany()
+    * ```
+    */
+  get payments(): Prisma.PaymentsDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.field`: Exposes CRUD operations for the **Field** model.
@@ -750,6 +780,8 @@ export namespace Prisma {
     User: 'User',
     Lesson: 'Lesson',
     SelectUnit: 'SelectUnit',
+    SelectedLesson: 'SelectedLesson',
+    Payments: 'Payments',
     Field: 'Field',
     General: 'General',
     Teacher: 'Teacher'
@@ -771,7 +803,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "student" | "user" | "lesson" | "selectUnit" | "field" | "general" | "teacher"
+      modelProps: "student" | "user" | "lesson" | "selectUnit" | "selectedLesson" | "payments" | "field" | "general" | "teacher"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1036,6 +1068,138 @@ export namespace Prisma {
           count: {
             args: Prisma.SelectUnitCountArgs<ExtArgs>
             result: $Utils.Optional<SelectUnitCountAggregateOutputType> | number
+          }
+        }
+      }
+      SelectedLesson: {
+        payload: Prisma.$SelectedLessonPayload<ExtArgs>
+        fields: Prisma.SelectedLessonFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SelectedLessonFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SelectedLessonPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SelectedLessonFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SelectedLessonPayload>
+          }
+          findFirst: {
+            args: Prisma.SelectedLessonFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SelectedLessonPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SelectedLessonFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SelectedLessonPayload>
+          }
+          findMany: {
+            args: Prisma.SelectedLessonFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SelectedLessonPayload>[]
+          }
+          create: {
+            args: Prisma.SelectedLessonCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SelectedLessonPayload>
+          }
+          createMany: {
+            args: Prisma.SelectedLessonCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.SelectedLessonDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SelectedLessonPayload>
+          }
+          update: {
+            args: Prisma.SelectedLessonUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SelectedLessonPayload>
+          }
+          deleteMany: {
+            args: Prisma.SelectedLessonDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SelectedLessonUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.SelectedLessonUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SelectedLessonPayload>
+          }
+          aggregate: {
+            args: Prisma.SelectedLessonAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSelectedLesson>
+          }
+          groupBy: {
+            args: Prisma.SelectedLessonGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SelectedLessonGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SelectedLessonCountArgs<ExtArgs>
+            result: $Utils.Optional<SelectedLessonCountAggregateOutputType> | number
+          }
+        }
+      }
+      Payments: {
+        payload: Prisma.$PaymentsPayload<ExtArgs>
+        fields: Prisma.PaymentsFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PaymentsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentsPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PaymentsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentsPayload>
+          }
+          findFirst: {
+            args: Prisma.PaymentsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentsPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PaymentsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentsPayload>
+          }
+          findMany: {
+            args: Prisma.PaymentsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentsPayload>[]
+          }
+          create: {
+            args: Prisma.PaymentsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentsPayload>
+          }
+          createMany: {
+            args: Prisma.PaymentsCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.PaymentsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentsPayload>
+          }
+          update: {
+            args: Prisma.PaymentsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentsPayload>
+          }
+          deleteMany: {
+            args: Prisma.PaymentsDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PaymentsUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.PaymentsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentsPayload>
+          }
+          aggregate: {
+            args: Prisma.PaymentsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePayments>
+          }
+          groupBy: {
+            args: Prisma.PaymentsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PaymentsGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PaymentsCountArgs<ExtArgs>
+            result: $Utils.Optional<PaymentsCountAggregateOutputType> | number
           }
         }
       }
@@ -1325,6 +1489,8 @@ export namespace Prisma {
     user?: UserOmit
     lesson?: LessonOmit
     selectUnit?: SelectUnitOmit
+    selectedLesson?: SelectedLessonOmit
+    payments?: PaymentsOmit
     field?: FieldOmit
     general?: GeneralOmit
     teacher?: TeacherOmit
@@ -1455,11 +1621,13 @@ export namespace Prisma {
   export type LessonCountOutputType = {
     requiredForLesson: number
     selectUnits: number
+    SelectedLesson: number
   }
 
   export type LessonCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     requiredForLesson?: boolean | LessonCountOutputTypeCountRequiredForLessonArgs
     selectUnits?: boolean | LessonCountOutputTypeCountSelectUnitsArgs
+    SelectedLesson?: boolean | LessonCountOutputTypeCountSelectedLessonArgs
   }
 
   // Custom InputTypes
@@ -1485,6 +1653,53 @@ export namespace Prisma {
    */
   export type LessonCountOutputTypeCountSelectUnitsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SelectUnitWhereInput
+  }
+
+  /**
+   * LessonCountOutputType without action
+   */
+  export type LessonCountOutputTypeCountSelectedLessonArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SelectedLessonWhereInput
+  }
+
+
+  /**
+   * Count Type SelectUnitCountOutputType
+   */
+
+  export type SelectUnitCountOutputType = {
+    selectedLessons: number
+    Payments: number
+  }
+
+  export type SelectUnitCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    selectedLessons?: boolean | SelectUnitCountOutputTypeCountSelectedLessonsArgs
+    Payments?: boolean | SelectUnitCountOutputTypeCountPaymentsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * SelectUnitCountOutputType without action
+   */
+  export type SelectUnitCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SelectUnitCountOutputType
+     */
+    select?: SelectUnitCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * SelectUnitCountOutputType without action
+   */
+  export type SelectUnitCountOutputTypeCountSelectedLessonsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SelectedLessonWhereInput
+  }
+
+  /**
+   * SelectUnitCountOutputType without action
+   */
+  export type SelectUnitCountOutputTypeCountPaymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PaymentsWhereInput
   }
 
 
@@ -3599,7 +3814,8 @@ export namespace Prisma {
   export type LessonAvgAggregateOutputType = {
     id: number | null
     TeacherId: number | null
-    Unit: number | null
+    PracticalUnit: number | null
+    TheoriUnit: number | null
     fieldId: number | null
     PassCondition: number | null
     TheoriHours: number | null
@@ -3613,7 +3829,8 @@ export namespace Prisma {
   export type LessonSumAggregateOutputType = {
     id: bigint | null
     TeacherId: bigint | null
-    Unit: number | null
+    PracticalUnit: number | null
+    TheoriUnit: number | null
     fieldId: bigint | null
     PassCondition: number | null
     TheoriHours: number | null
@@ -3628,7 +3845,8 @@ export namespace Prisma {
     id: bigint | null
     TeacherId: bigint | null
     LessonName: string | null
-    Unit: number | null
+    PracticalUnit: number | null
+    TheoriUnit: number | null
     Grade: $Enums.LessonGrade | null
     fieldId: bigint | null
     PassCondition: number | null
@@ -3648,7 +3866,8 @@ export namespace Prisma {
     id: bigint | null
     TeacherId: bigint | null
     LessonName: string | null
-    Unit: number | null
+    PracticalUnit: number | null
+    TheoriUnit: number | null
     Grade: $Enums.LessonGrade | null
     fieldId: bigint | null
     PassCondition: number | null
@@ -3668,7 +3887,8 @@ export namespace Prisma {
     id: number
     TeacherId: number
     LessonName: number
-    Unit: number
+    PracticalUnit: number
+    TheoriUnit: number
     Grade: number
     fieldId: number
     PassCondition: number
@@ -3689,7 +3909,8 @@ export namespace Prisma {
   export type LessonAvgAggregateInputType = {
     id?: true
     TeacherId?: true
-    Unit?: true
+    PracticalUnit?: true
+    TheoriUnit?: true
     fieldId?: true
     PassCondition?: true
     TheoriHours?: true
@@ -3703,7 +3924,8 @@ export namespace Prisma {
   export type LessonSumAggregateInputType = {
     id?: true
     TeacherId?: true
-    Unit?: true
+    PracticalUnit?: true
+    TheoriUnit?: true
     fieldId?: true
     PassCondition?: true
     TheoriHours?: true
@@ -3718,7 +3940,8 @@ export namespace Prisma {
     id?: true
     TeacherId?: true
     LessonName?: true
-    Unit?: true
+    PracticalUnit?: true
+    TheoriUnit?: true
     Grade?: true
     fieldId?: true
     PassCondition?: true
@@ -3738,7 +3961,8 @@ export namespace Prisma {
     id?: true
     TeacherId?: true
     LessonName?: true
-    Unit?: true
+    PracticalUnit?: true
+    TheoriUnit?: true
     Grade?: true
     fieldId?: true
     PassCondition?: true
@@ -3758,7 +3982,8 @@ export namespace Prisma {
     id?: true
     TeacherId?: true
     LessonName?: true
-    Unit?: true
+    PracticalUnit?: true
+    TheoriUnit?: true
     Grade?: true
     fieldId?: true
     PassCondition?: true
@@ -3865,7 +4090,8 @@ export namespace Prisma {
     id: bigint
     TeacherId: bigint | null
     LessonName: string
-    Unit: number
+    PracticalUnit: number
+    TheoriUnit: number
     Grade: $Enums.LessonGrade | null
     fieldId: bigint | null
     PassCondition: number | null
@@ -3904,7 +4130,8 @@ export namespace Prisma {
     id?: boolean
     TeacherId?: boolean
     LessonName?: boolean
-    Unit?: boolean
+    PracticalUnit?: boolean
+    TheoriUnit?: boolean
     Grade?: boolean
     fieldId?: boolean
     PassCondition?: boolean
@@ -3923,6 +4150,7 @@ export namespace Prisma {
     requiredForLesson?: boolean | Lesson$requiredForLessonArgs<ExtArgs>
     requiresLesson?: boolean | Lesson$requiresLessonArgs<ExtArgs>
     selectUnits?: boolean | Lesson$selectUnitsArgs<ExtArgs>
+    SelectedLesson?: boolean | Lesson$SelectedLessonArgs<ExtArgs>
     _count?: boolean | LessonCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["lesson"]>
 
@@ -3932,7 +4160,8 @@ export namespace Prisma {
     id?: boolean
     TeacherId?: boolean
     LessonName?: boolean
-    Unit?: boolean
+    PracticalUnit?: boolean
+    TheoriUnit?: boolean
     Grade?: boolean
     fieldId?: boolean
     PassCondition?: boolean
@@ -3948,13 +4177,14 @@ export namespace Prisma {
     Updated_at?: boolean
   }
 
-  export type LessonOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "TeacherId" | "LessonName" | "Unit" | "Grade" | "fieldId" | "PassCondition" | "TheoriHours" | "PracticalHours" | "RequireLesson" | "RequireUnit" | "NotifCode" | "ValidFrom" | "ValidTill" | "PricePerUnit" | "Created_at" | "Updated_at", ExtArgs["result"]["lesson"]>
+  export type LessonOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "TeacherId" | "LessonName" | "PracticalUnit" | "TheoriUnit" | "Grade" | "fieldId" | "PassCondition" | "TheoriHours" | "PracticalHours" | "RequireLesson" | "RequireUnit" | "NotifCode" | "ValidFrom" | "ValidTill" | "PricePerUnit" | "Created_at" | "Updated_at", ExtArgs["result"]["lesson"]>
   export type LessonInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     field?: boolean | Lesson$fieldArgs<ExtArgs>
     teacher?: boolean | Lesson$teacherArgs<ExtArgs>
     requiredForLesson?: boolean | Lesson$requiredForLessonArgs<ExtArgs>
     requiresLesson?: boolean | Lesson$requiresLessonArgs<ExtArgs>
     selectUnits?: boolean | Lesson$selectUnitsArgs<ExtArgs>
+    SelectedLesson?: boolean | Lesson$SelectedLessonArgs<ExtArgs>
     _count?: boolean | LessonCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -3966,12 +4196,14 @@ export namespace Prisma {
       requiredForLesson: Prisma.$LessonPayload<ExtArgs>[]
       requiresLesson: Prisma.$LessonPayload<ExtArgs> | null
       selectUnits: Prisma.$SelectUnitPayload<ExtArgs>[]
+      SelectedLesson: Prisma.$SelectedLessonPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: bigint
       TeacherId: bigint | null
       LessonName: string
-      Unit: number
+      PracticalUnit: number
+      TheoriUnit: number
       Grade: $Enums.LessonGrade | null
       fieldId: bigint | null
       PassCondition: number | null
@@ -4330,6 +4562,7 @@ export namespace Prisma {
     requiredForLesson<T extends Lesson$requiredForLessonArgs<ExtArgs> = {}>(args?: Subset<T, Lesson$requiredForLessonArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LessonPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     requiresLesson<T extends Lesson$requiresLessonArgs<ExtArgs> = {}>(args?: Subset<T, Lesson$requiresLessonArgs<ExtArgs>>): Prisma__LessonClient<$Result.GetResult<Prisma.$LessonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     selectUnits<T extends Lesson$selectUnitsArgs<ExtArgs> = {}>(args?: Subset<T, Lesson$selectUnitsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SelectUnitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    SelectedLesson<T extends Lesson$SelectedLessonArgs<ExtArgs> = {}>(args?: Subset<T, Lesson$SelectedLessonArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SelectedLessonPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4362,7 +4595,8 @@ export namespace Prisma {
     readonly id: FieldRef<"Lesson", 'BigInt'>
     readonly TeacherId: FieldRef<"Lesson", 'BigInt'>
     readonly LessonName: FieldRef<"Lesson", 'String'>
-    readonly Unit: FieldRef<"Lesson", 'Int'>
+    readonly PracticalUnit: FieldRef<"Lesson", 'Int'>
+    readonly TheoriUnit: FieldRef<"Lesson", 'Int'>
     readonly Grade: FieldRef<"Lesson", 'LessonGrade'>
     readonly fieldId: FieldRef<"Lesson", 'BigInt'>
     readonly PassCondition: FieldRef<"Lesson", 'Int'>
@@ -4824,6 +5058,30 @@ export namespace Prisma {
   }
 
   /**
+   * Lesson.SelectedLesson
+   */
+  export type Lesson$SelectedLessonArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SelectedLesson
+     */
+    select?: SelectedLessonSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SelectedLesson
+     */
+    omit?: SelectedLessonOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SelectedLessonInclude<ExtArgs> | null
+    where?: SelectedLessonWhereInput
+    orderBy?: SelectedLessonOrderByWithRelationInput | SelectedLessonOrderByWithRelationInput[]
+    cursor?: SelectedLessonWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SelectedLessonScalarFieldEnum | SelectedLessonScalarFieldEnum[]
+  }
+
+  /**
    * Lesson without action
    */
   export type LessonDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4855,93 +5113,143 @@ export namespace Prisma {
   }
 
   export type SelectUnitAvgAggregateOutputType = {
+    id: number | null
     StudentId: number | null
-    LessonId: number | null
     Year: number | null
     ExtraFee: number | null
+    FixedFee: number | null
+    CertificateFee: number | null
+    ExtraClassFee: number | null
+    BooksFee: number | null
+    lessonId: number | null
   }
 
   export type SelectUnitSumAggregateOutputType = {
+    id: bigint | null
     StudentId: bigint | null
-    LessonId: bigint | null
     Year: number | null
     ExtraFee: bigint | null
+    FixedFee: bigint | null
+    CertificateFee: bigint | null
+    ExtraClassFee: bigint | null
+    BooksFee: bigint | null
+    lessonId: bigint | null
   }
 
   export type SelectUnitMinAggregateOutputType = {
+    id: bigint | null
     StudentId: bigint | null
-    LessonId: bigint | null
     Year: number | null
     Period: $Enums.Period | null
     ExtraFee: bigint | null
+    FixedFee: bigint | null
+    CertificateFee: bigint | null
+    ExtraClassFee: bigint | null
+    BooksFee: bigint | null
     Created_at: Date | null
     Updated_at: Date | null
+    lessonId: bigint | null
   }
 
   export type SelectUnitMaxAggregateOutputType = {
+    id: bigint | null
     StudentId: bigint | null
-    LessonId: bigint | null
     Year: number | null
     Period: $Enums.Period | null
     ExtraFee: bigint | null
+    FixedFee: bigint | null
+    CertificateFee: bigint | null
+    ExtraClassFee: bigint | null
+    BooksFee: bigint | null
     Created_at: Date | null
     Updated_at: Date | null
+    lessonId: bigint | null
   }
 
   export type SelectUnitCountAggregateOutputType = {
+    id: number
     StudentId: number
-    LessonId: number
     Year: number
     Period: number
     ExtraFee: number
+    FixedFee: number
+    CertificateFee: number
+    ExtraClassFee: number
+    BooksFee: number
     Created_at: number
     Updated_at: number
+    lessonId: number
     _all: number
   }
 
 
   export type SelectUnitAvgAggregateInputType = {
+    id?: true
     StudentId?: true
-    LessonId?: true
     Year?: true
     ExtraFee?: true
+    FixedFee?: true
+    CertificateFee?: true
+    ExtraClassFee?: true
+    BooksFee?: true
+    lessonId?: true
   }
 
   export type SelectUnitSumAggregateInputType = {
+    id?: true
     StudentId?: true
-    LessonId?: true
     Year?: true
     ExtraFee?: true
+    FixedFee?: true
+    CertificateFee?: true
+    ExtraClassFee?: true
+    BooksFee?: true
+    lessonId?: true
   }
 
   export type SelectUnitMinAggregateInputType = {
+    id?: true
     StudentId?: true
-    LessonId?: true
     Year?: true
     Period?: true
     ExtraFee?: true
+    FixedFee?: true
+    CertificateFee?: true
+    ExtraClassFee?: true
+    BooksFee?: true
     Created_at?: true
     Updated_at?: true
+    lessonId?: true
   }
 
   export type SelectUnitMaxAggregateInputType = {
+    id?: true
     StudentId?: true
-    LessonId?: true
     Year?: true
     Period?: true
     ExtraFee?: true
+    FixedFee?: true
+    CertificateFee?: true
+    ExtraClassFee?: true
+    BooksFee?: true
     Created_at?: true
     Updated_at?: true
+    lessonId?: true
   }
 
   export type SelectUnitCountAggregateInputType = {
+    id?: true
     StudentId?: true
-    LessonId?: true
     Year?: true
     Period?: true
     ExtraFee?: true
+    FixedFee?: true
+    CertificateFee?: true
+    ExtraClassFee?: true
+    BooksFee?: true
     Created_at?: true
     Updated_at?: true
+    lessonId?: true
     _all?: true
   }
 
@@ -5032,13 +5340,18 @@ export namespace Prisma {
   }
 
   export type SelectUnitGroupByOutputType = {
+    id: bigint
     StudentId: bigint
-    LessonId: bigint
     Year: number
     Period: $Enums.Period
     ExtraFee: bigint | null
+    FixedFee: bigint | null
+    CertificateFee: bigint | null
+    ExtraClassFee: bigint | null
+    BooksFee: bigint | null
     Created_at: Date
     Updated_at: Date
+    lessonId: bigint | null
     _count: SelectUnitCountAggregateOutputType | null
     _avg: SelectUnitAvgAggregateOutputType | null
     _sum: SelectUnitSumAggregateOutputType | null
@@ -5061,49 +5374,72 @@ export namespace Prisma {
 
 
   export type SelectUnitSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
     StudentId?: boolean
-    LessonId?: boolean
     Year?: boolean
     Period?: boolean
     ExtraFee?: boolean
+    FixedFee?: boolean
+    CertificateFee?: boolean
+    ExtraClassFee?: boolean
+    BooksFee?: boolean
     Created_at?: boolean
     Updated_at?: boolean
+    lessonId?: boolean
     student?: boolean | StudentDefaultArgs<ExtArgs>
-    lesson?: boolean | LessonDefaultArgs<ExtArgs>
+    selectedLessons?: boolean | SelectUnit$selectedLessonsArgs<ExtArgs>
+    Lesson?: boolean | SelectUnit$LessonArgs<ExtArgs>
+    Payments?: boolean | SelectUnit$PaymentsArgs<ExtArgs>
+    _count?: boolean | SelectUnitCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["selectUnit"]>
 
 
 
   export type SelectUnitSelectScalar = {
+    id?: boolean
     StudentId?: boolean
-    LessonId?: boolean
     Year?: boolean
     Period?: boolean
     ExtraFee?: boolean
+    FixedFee?: boolean
+    CertificateFee?: boolean
+    ExtraClassFee?: boolean
+    BooksFee?: boolean
     Created_at?: boolean
     Updated_at?: boolean
+    lessonId?: boolean
   }
 
-  export type SelectUnitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"StudentId" | "LessonId" | "Year" | "Period" | "ExtraFee" | "Created_at" | "Updated_at", ExtArgs["result"]["selectUnit"]>
+  export type SelectUnitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "StudentId" | "Year" | "Period" | "ExtraFee" | "FixedFee" | "CertificateFee" | "ExtraClassFee" | "BooksFee" | "Created_at" | "Updated_at" | "lessonId", ExtArgs["result"]["selectUnit"]>
   export type SelectUnitInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     student?: boolean | StudentDefaultArgs<ExtArgs>
-    lesson?: boolean | LessonDefaultArgs<ExtArgs>
+    selectedLessons?: boolean | SelectUnit$selectedLessonsArgs<ExtArgs>
+    Lesson?: boolean | SelectUnit$LessonArgs<ExtArgs>
+    Payments?: boolean | SelectUnit$PaymentsArgs<ExtArgs>
+    _count?: boolean | SelectUnitCountOutputTypeDefaultArgs<ExtArgs>
   }
 
   export type $SelectUnitPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "SelectUnit"
     objects: {
       student: Prisma.$StudentPayload<ExtArgs>
-      lesson: Prisma.$LessonPayload<ExtArgs>
+      selectedLessons: Prisma.$SelectedLessonPayload<ExtArgs>[]
+      Lesson: Prisma.$LessonPayload<ExtArgs> | null
+      Payments: Prisma.$PaymentsPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
+      id: bigint
       StudentId: bigint
-      LessonId: bigint
       Year: number
       Period: $Enums.Period
       ExtraFee: bigint | null
+      FixedFee: bigint | null
+      CertificateFee: bigint | null
+      ExtraClassFee: bigint | null
+      BooksFee: bigint | null
       Created_at: Date
       Updated_at: Date
+      lessonId: bigint | null
     }, ExtArgs["result"]["selectUnit"]>
     composites: {}
   }
@@ -5187,8 +5523,8 @@ export namespace Prisma {
      * // Get first 10 SelectUnits
      * const selectUnits = await prisma.selectUnit.findMany({ take: 10 })
      * 
-     * // Only select the `StudentId`
-     * const selectUnitWithStudentIdOnly = await prisma.selectUnit.findMany({ select: { StudentId: true } })
+     * // Only select the `id`
+     * const selectUnitWithIdOnly = await prisma.selectUnit.findMany({ select: { id: true } })
      * 
      */
     findMany<T extends SelectUnitFindManyArgs>(args?: SelectSubset<T, SelectUnitFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SelectUnitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -5445,7 +5781,9 @@ export namespace Prisma {
   export interface Prisma__SelectUnitClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     student<T extends StudentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, StudentDefaultArgs<ExtArgs>>): Prisma__StudentClient<$Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    lesson<T extends LessonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LessonDefaultArgs<ExtArgs>>): Prisma__LessonClient<$Result.GetResult<Prisma.$LessonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    selectedLessons<T extends SelectUnit$selectedLessonsArgs<ExtArgs> = {}>(args?: Subset<T, SelectUnit$selectedLessonsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SelectedLessonPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    Lesson<T extends SelectUnit$LessonArgs<ExtArgs> = {}>(args?: Subset<T, SelectUnit$LessonArgs<ExtArgs>>): Prisma__LessonClient<$Result.GetResult<Prisma.$LessonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    Payments<T extends SelectUnit$PaymentsArgs<ExtArgs> = {}>(args?: Subset<T, SelectUnit$PaymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5475,13 +5813,18 @@ export namespace Prisma {
    * Fields of the SelectUnit model
    */ 
   interface SelectUnitFieldRefs {
+    readonly id: FieldRef<"SelectUnit", 'BigInt'>
     readonly StudentId: FieldRef<"SelectUnit", 'BigInt'>
-    readonly LessonId: FieldRef<"SelectUnit", 'BigInt'>
     readonly Year: FieldRef<"SelectUnit", 'Int'>
     readonly Period: FieldRef<"SelectUnit", 'Period'>
     readonly ExtraFee: FieldRef<"SelectUnit", 'BigInt'>
+    readonly FixedFee: FieldRef<"SelectUnit", 'BigInt'>
+    readonly CertificateFee: FieldRef<"SelectUnit", 'BigInt'>
+    readonly ExtraClassFee: FieldRef<"SelectUnit", 'BigInt'>
+    readonly BooksFee: FieldRef<"SelectUnit", 'BigInt'>
     readonly Created_at: FieldRef<"SelectUnit", 'DateTime'>
     readonly Updated_at: FieldRef<"SelectUnit", 'DateTime'>
+    readonly lessonId: FieldRef<"SelectUnit", 'BigInt'>
   }
     
 
@@ -5825,6 +6168,73 @@ export namespace Prisma {
   }
 
   /**
+   * SelectUnit.selectedLessons
+   */
+  export type SelectUnit$selectedLessonsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SelectedLesson
+     */
+    select?: SelectedLessonSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SelectedLesson
+     */
+    omit?: SelectedLessonOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SelectedLessonInclude<ExtArgs> | null
+    where?: SelectedLessonWhereInput
+    orderBy?: SelectedLessonOrderByWithRelationInput | SelectedLessonOrderByWithRelationInput[]
+    cursor?: SelectedLessonWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SelectedLessonScalarFieldEnum | SelectedLessonScalarFieldEnum[]
+  }
+
+  /**
+   * SelectUnit.Lesson
+   */
+  export type SelectUnit$LessonArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Lesson
+     */
+    select?: LessonSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Lesson
+     */
+    omit?: LessonOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LessonInclude<ExtArgs> | null
+    where?: LessonWhereInput
+  }
+
+  /**
+   * SelectUnit.Payments
+   */
+  export type SelectUnit$PaymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Payments
+     */
+    select?: PaymentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Payments
+     */
+    omit?: PaymentsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentsInclude<ExtArgs> | null
+    where?: PaymentsWhereInput
+    orderBy?: PaymentsOrderByWithRelationInput | PaymentsOrderByWithRelationInput[]
+    cursor?: PaymentsWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PaymentsScalarFieldEnum | PaymentsScalarFieldEnum[]
+  }
+
+  /**
    * SelectUnit without action
    */
   export type SelectUnitDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5840,6 +6250,1985 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: SelectUnitInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SelectedLesson
+   */
+
+  export type AggregateSelectedLesson = {
+    _count: SelectedLessonCountAggregateOutputType | null
+    _avg: SelectedLessonAvgAggregateOutputType | null
+    _sum: SelectedLessonSumAggregateOutputType | null
+    _min: SelectedLessonMinAggregateOutputType | null
+    _max: SelectedLessonMaxAggregateOutputType | null
+  }
+
+  export type SelectedLessonAvgAggregateOutputType = {
+    id: number | null
+    selectUnitId: number | null
+    lessonId: number | null
+  }
+
+  export type SelectedLessonSumAggregateOutputType = {
+    id: bigint | null
+    selectUnitId: bigint | null
+    lessonId: bigint | null
+  }
+
+  export type SelectedLessonMinAggregateOutputType = {
+    id: bigint | null
+    selectUnitId: bigint | null
+    lessonId: bigint | null
+  }
+
+  export type SelectedLessonMaxAggregateOutputType = {
+    id: bigint | null
+    selectUnitId: bigint | null
+    lessonId: bigint | null
+  }
+
+  export type SelectedLessonCountAggregateOutputType = {
+    id: number
+    selectUnitId: number
+    lessonId: number
+    _all: number
+  }
+
+
+  export type SelectedLessonAvgAggregateInputType = {
+    id?: true
+    selectUnitId?: true
+    lessonId?: true
+  }
+
+  export type SelectedLessonSumAggregateInputType = {
+    id?: true
+    selectUnitId?: true
+    lessonId?: true
+  }
+
+  export type SelectedLessonMinAggregateInputType = {
+    id?: true
+    selectUnitId?: true
+    lessonId?: true
+  }
+
+  export type SelectedLessonMaxAggregateInputType = {
+    id?: true
+    selectUnitId?: true
+    lessonId?: true
+  }
+
+  export type SelectedLessonCountAggregateInputType = {
+    id?: true
+    selectUnitId?: true
+    lessonId?: true
+    _all?: true
+  }
+
+  export type SelectedLessonAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SelectedLesson to aggregate.
+     */
+    where?: SelectedLessonWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SelectedLessons to fetch.
+     */
+    orderBy?: SelectedLessonOrderByWithRelationInput | SelectedLessonOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SelectedLessonWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SelectedLessons from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SelectedLessons.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SelectedLessons
+    **/
+    _count?: true | SelectedLessonCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SelectedLessonAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SelectedLessonSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SelectedLessonMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SelectedLessonMaxAggregateInputType
+  }
+
+  export type GetSelectedLessonAggregateType<T extends SelectedLessonAggregateArgs> = {
+        [P in keyof T & keyof AggregateSelectedLesson]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSelectedLesson[P]>
+      : GetScalarType<T[P], AggregateSelectedLesson[P]>
+  }
+
+
+
+
+  export type SelectedLessonGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SelectedLessonWhereInput
+    orderBy?: SelectedLessonOrderByWithAggregationInput | SelectedLessonOrderByWithAggregationInput[]
+    by: SelectedLessonScalarFieldEnum[] | SelectedLessonScalarFieldEnum
+    having?: SelectedLessonScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SelectedLessonCountAggregateInputType | true
+    _avg?: SelectedLessonAvgAggregateInputType
+    _sum?: SelectedLessonSumAggregateInputType
+    _min?: SelectedLessonMinAggregateInputType
+    _max?: SelectedLessonMaxAggregateInputType
+  }
+
+  export type SelectedLessonGroupByOutputType = {
+    id: bigint
+    selectUnitId: bigint
+    lessonId: bigint
+    _count: SelectedLessonCountAggregateOutputType | null
+    _avg: SelectedLessonAvgAggregateOutputType | null
+    _sum: SelectedLessonSumAggregateOutputType | null
+    _min: SelectedLessonMinAggregateOutputType | null
+    _max: SelectedLessonMaxAggregateOutputType | null
+  }
+
+  type GetSelectedLessonGroupByPayload<T extends SelectedLessonGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SelectedLessonGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SelectedLessonGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SelectedLessonGroupByOutputType[P]>
+            : GetScalarType<T[P], SelectedLessonGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SelectedLessonSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    selectUnitId?: boolean
+    lessonId?: boolean
+    selectUnit?: boolean | SelectUnitDefaultArgs<ExtArgs>
+    lesson?: boolean | LessonDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["selectedLesson"]>
+
+
+
+  export type SelectedLessonSelectScalar = {
+    id?: boolean
+    selectUnitId?: boolean
+    lessonId?: boolean
+  }
+
+  export type SelectedLessonOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "selectUnitId" | "lessonId", ExtArgs["result"]["selectedLesson"]>
+  export type SelectedLessonInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    selectUnit?: boolean | SelectUnitDefaultArgs<ExtArgs>
+    lesson?: boolean | LessonDefaultArgs<ExtArgs>
+  }
+
+  export type $SelectedLessonPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SelectedLesson"
+    objects: {
+      selectUnit: Prisma.$SelectUnitPayload<ExtArgs>
+      lesson: Prisma.$LessonPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: bigint
+      selectUnitId: bigint
+      lessonId: bigint
+    }, ExtArgs["result"]["selectedLesson"]>
+    composites: {}
+  }
+
+  type SelectedLessonGetPayload<S extends boolean | null | undefined | SelectedLessonDefaultArgs> = $Result.GetResult<Prisma.$SelectedLessonPayload, S>
+
+  type SelectedLessonCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SelectedLessonFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SelectedLessonCountAggregateInputType | true
+    }
+
+  export interface SelectedLessonDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SelectedLesson'], meta: { name: 'SelectedLesson' } }
+    /**
+     * Find zero or one SelectedLesson that matches the filter.
+     * @param {SelectedLessonFindUniqueArgs} args - Arguments to find a SelectedLesson
+     * @example
+     * // Get one SelectedLesson
+     * const selectedLesson = await prisma.selectedLesson.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SelectedLessonFindUniqueArgs>(args: SelectSubset<T, SelectedLessonFindUniqueArgs<ExtArgs>>): Prisma__SelectedLessonClient<$Result.GetResult<Prisma.$SelectedLessonPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SelectedLesson that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SelectedLessonFindUniqueOrThrowArgs} args - Arguments to find a SelectedLesson
+     * @example
+     * // Get one SelectedLesson
+     * const selectedLesson = await prisma.selectedLesson.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SelectedLessonFindUniqueOrThrowArgs>(args: SelectSubset<T, SelectedLessonFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SelectedLessonClient<$Result.GetResult<Prisma.$SelectedLessonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SelectedLesson that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SelectedLessonFindFirstArgs} args - Arguments to find a SelectedLesson
+     * @example
+     * // Get one SelectedLesson
+     * const selectedLesson = await prisma.selectedLesson.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SelectedLessonFindFirstArgs>(args?: SelectSubset<T, SelectedLessonFindFirstArgs<ExtArgs>>): Prisma__SelectedLessonClient<$Result.GetResult<Prisma.$SelectedLessonPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SelectedLesson that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SelectedLessonFindFirstOrThrowArgs} args - Arguments to find a SelectedLesson
+     * @example
+     * // Get one SelectedLesson
+     * const selectedLesson = await prisma.selectedLesson.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SelectedLessonFindFirstOrThrowArgs>(args?: SelectSubset<T, SelectedLessonFindFirstOrThrowArgs<ExtArgs>>): Prisma__SelectedLessonClient<$Result.GetResult<Prisma.$SelectedLessonPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SelectedLessons that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SelectedLessonFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SelectedLessons
+     * const selectedLessons = await prisma.selectedLesson.findMany()
+     * 
+     * // Get first 10 SelectedLessons
+     * const selectedLessons = await prisma.selectedLesson.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const selectedLessonWithIdOnly = await prisma.selectedLesson.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SelectedLessonFindManyArgs>(args?: SelectSubset<T, SelectedLessonFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SelectedLessonPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SelectedLesson.
+     * @param {SelectedLessonCreateArgs} args - Arguments to create a SelectedLesson.
+     * @example
+     * // Create one SelectedLesson
+     * const SelectedLesson = await prisma.selectedLesson.create({
+     *   data: {
+     *     // ... data to create a SelectedLesson
+     *   }
+     * })
+     * 
+     */
+    create<T extends SelectedLessonCreateArgs>(args: SelectSubset<T, SelectedLessonCreateArgs<ExtArgs>>): Prisma__SelectedLessonClient<$Result.GetResult<Prisma.$SelectedLessonPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SelectedLessons.
+     * @param {SelectedLessonCreateManyArgs} args - Arguments to create many SelectedLessons.
+     * @example
+     * // Create many SelectedLessons
+     * const selectedLesson = await prisma.selectedLesson.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SelectedLessonCreateManyArgs>(args?: SelectSubset<T, SelectedLessonCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a SelectedLesson.
+     * @param {SelectedLessonDeleteArgs} args - Arguments to delete one SelectedLesson.
+     * @example
+     * // Delete one SelectedLesson
+     * const SelectedLesson = await prisma.selectedLesson.delete({
+     *   where: {
+     *     // ... filter to delete one SelectedLesson
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SelectedLessonDeleteArgs>(args: SelectSubset<T, SelectedLessonDeleteArgs<ExtArgs>>): Prisma__SelectedLessonClient<$Result.GetResult<Prisma.$SelectedLessonPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SelectedLesson.
+     * @param {SelectedLessonUpdateArgs} args - Arguments to update one SelectedLesson.
+     * @example
+     * // Update one SelectedLesson
+     * const selectedLesson = await prisma.selectedLesson.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SelectedLessonUpdateArgs>(args: SelectSubset<T, SelectedLessonUpdateArgs<ExtArgs>>): Prisma__SelectedLessonClient<$Result.GetResult<Prisma.$SelectedLessonPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SelectedLessons.
+     * @param {SelectedLessonDeleteManyArgs} args - Arguments to filter SelectedLessons to delete.
+     * @example
+     * // Delete a few SelectedLessons
+     * const { count } = await prisma.selectedLesson.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SelectedLessonDeleteManyArgs>(args?: SelectSubset<T, SelectedLessonDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SelectedLessons.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SelectedLessonUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SelectedLessons
+     * const selectedLesson = await prisma.selectedLesson.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SelectedLessonUpdateManyArgs>(args: SelectSubset<T, SelectedLessonUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one SelectedLesson.
+     * @param {SelectedLessonUpsertArgs} args - Arguments to update or create a SelectedLesson.
+     * @example
+     * // Update or create a SelectedLesson
+     * const selectedLesson = await prisma.selectedLesson.upsert({
+     *   create: {
+     *     // ... data to create a SelectedLesson
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SelectedLesson we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SelectedLessonUpsertArgs>(args: SelectSubset<T, SelectedLessonUpsertArgs<ExtArgs>>): Prisma__SelectedLessonClient<$Result.GetResult<Prisma.$SelectedLessonPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SelectedLessons.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SelectedLessonCountArgs} args - Arguments to filter SelectedLessons to count.
+     * @example
+     * // Count the number of SelectedLessons
+     * const count = await prisma.selectedLesson.count({
+     *   where: {
+     *     // ... the filter for the SelectedLessons we want to count
+     *   }
+     * })
+    **/
+    count<T extends SelectedLessonCountArgs>(
+      args?: Subset<T, SelectedLessonCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SelectedLessonCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SelectedLesson.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SelectedLessonAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SelectedLessonAggregateArgs>(args: Subset<T, SelectedLessonAggregateArgs>): Prisma.PrismaPromise<GetSelectedLessonAggregateType<T>>
+
+    /**
+     * Group by SelectedLesson.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SelectedLessonGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SelectedLessonGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SelectedLessonGroupByArgs['orderBy'] }
+        : { orderBy?: SelectedLessonGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SelectedLessonGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSelectedLessonGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SelectedLesson model
+   */
+  readonly fields: SelectedLessonFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SelectedLesson.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SelectedLessonClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    selectUnit<T extends SelectUnitDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SelectUnitDefaultArgs<ExtArgs>>): Prisma__SelectUnitClient<$Result.GetResult<Prisma.$SelectUnitPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    lesson<T extends LessonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LessonDefaultArgs<ExtArgs>>): Prisma__LessonClient<$Result.GetResult<Prisma.$LessonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SelectedLesson model
+   */ 
+  interface SelectedLessonFieldRefs {
+    readonly id: FieldRef<"SelectedLesson", 'BigInt'>
+    readonly selectUnitId: FieldRef<"SelectedLesson", 'BigInt'>
+    readonly lessonId: FieldRef<"SelectedLesson", 'BigInt'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SelectedLesson findUnique
+   */
+  export type SelectedLessonFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SelectedLesson
+     */
+    select?: SelectedLessonSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SelectedLesson
+     */
+    omit?: SelectedLessonOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SelectedLessonInclude<ExtArgs> | null
+    /**
+     * Filter, which SelectedLesson to fetch.
+     */
+    where: SelectedLessonWhereUniqueInput
+  }
+
+  /**
+   * SelectedLesson findUniqueOrThrow
+   */
+  export type SelectedLessonFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SelectedLesson
+     */
+    select?: SelectedLessonSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SelectedLesson
+     */
+    omit?: SelectedLessonOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SelectedLessonInclude<ExtArgs> | null
+    /**
+     * Filter, which SelectedLesson to fetch.
+     */
+    where: SelectedLessonWhereUniqueInput
+  }
+
+  /**
+   * SelectedLesson findFirst
+   */
+  export type SelectedLessonFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SelectedLesson
+     */
+    select?: SelectedLessonSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SelectedLesson
+     */
+    omit?: SelectedLessonOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SelectedLessonInclude<ExtArgs> | null
+    /**
+     * Filter, which SelectedLesson to fetch.
+     */
+    where?: SelectedLessonWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SelectedLessons to fetch.
+     */
+    orderBy?: SelectedLessonOrderByWithRelationInput | SelectedLessonOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SelectedLessons.
+     */
+    cursor?: SelectedLessonWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SelectedLessons from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SelectedLessons.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SelectedLessons.
+     */
+    distinct?: SelectedLessonScalarFieldEnum | SelectedLessonScalarFieldEnum[]
+  }
+
+  /**
+   * SelectedLesson findFirstOrThrow
+   */
+  export type SelectedLessonFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SelectedLesson
+     */
+    select?: SelectedLessonSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SelectedLesson
+     */
+    omit?: SelectedLessonOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SelectedLessonInclude<ExtArgs> | null
+    /**
+     * Filter, which SelectedLesson to fetch.
+     */
+    where?: SelectedLessonWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SelectedLessons to fetch.
+     */
+    orderBy?: SelectedLessonOrderByWithRelationInput | SelectedLessonOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SelectedLessons.
+     */
+    cursor?: SelectedLessonWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SelectedLessons from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SelectedLessons.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SelectedLessons.
+     */
+    distinct?: SelectedLessonScalarFieldEnum | SelectedLessonScalarFieldEnum[]
+  }
+
+  /**
+   * SelectedLesson findMany
+   */
+  export type SelectedLessonFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SelectedLesson
+     */
+    select?: SelectedLessonSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SelectedLesson
+     */
+    omit?: SelectedLessonOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SelectedLessonInclude<ExtArgs> | null
+    /**
+     * Filter, which SelectedLessons to fetch.
+     */
+    where?: SelectedLessonWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SelectedLessons to fetch.
+     */
+    orderBy?: SelectedLessonOrderByWithRelationInput | SelectedLessonOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SelectedLessons.
+     */
+    cursor?: SelectedLessonWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SelectedLessons from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SelectedLessons.
+     */
+    skip?: number
+    distinct?: SelectedLessonScalarFieldEnum | SelectedLessonScalarFieldEnum[]
+  }
+
+  /**
+   * SelectedLesson create
+   */
+  export type SelectedLessonCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SelectedLesson
+     */
+    select?: SelectedLessonSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SelectedLesson
+     */
+    omit?: SelectedLessonOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SelectedLessonInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SelectedLesson.
+     */
+    data: XOR<SelectedLessonCreateInput, SelectedLessonUncheckedCreateInput>
+  }
+
+  /**
+   * SelectedLesson createMany
+   */
+  export type SelectedLessonCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SelectedLessons.
+     */
+    data: SelectedLessonCreateManyInput | SelectedLessonCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SelectedLesson update
+   */
+  export type SelectedLessonUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SelectedLesson
+     */
+    select?: SelectedLessonSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SelectedLesson
+     */
+    omit?: SelectedLessonOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SelectedLessonInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SelectedLesson.
+     */
+    data: XOR<SelectedLessonUpdateInput, SelectedLessonUncheckedUpdateInput>
+    /**
+     * Choose, which SelectedLesson to update.
+     */
+    where: SelectedLessonWhereUniqueInput
+  }
+
+  /**
+   * SelectedLesson updateMany
+   */
+  export type SelectedLessonUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SelectedLessons.
+     */
+    data: XOR<SelectedLessonUpdateManyMutationInput, SelectedLessonUncheckedUpdateManyInput>
+    /**
+     * Filter which SelectedLessons to update
+     */
+    where?: SelectedLessonWhereInput
+    /**
+     * Limit how many SelectedLessons to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SelectedLesson upsert
+   */
+  export type SelectedLessonUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SelectedLesson
+     */
+    select?: SelectedLessonSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SelectedLesson
+     */
+    omit?: SelectedLessonOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SelectedLessonInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SelectedLesson to update in case it exists.
+     */
+    where: SelectedLessonWhereUniqueInput
+    /**
+     * In case the SelectedLesson found by the `where` argument doesn't exist, create a new SelectedLesson with this data.
+     */
+    create: XOR<SelectedLessonCreateInput, SelectedLessonUncheckedCreateInput>
+    /**
+     * In case the SelectedLesson was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SelectedLessonUpdateInput, SelectedLessonUncheckedUpdateInput>
+  }
+
+  /**
+   * SelectedLesson delete
+   */
+  export type SelectedLessonDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SelectedLesson
+     */
+    select?: SelectedLessonSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SelectedLesson
+     */
+    omit?: SelectedLessonOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SelectedLessonInclude<ExtArgs> | null
+    /**
+     * Filter which SelectedLesson to delete.
+     */
+    where: SelectedLessonWhereUniqueInput
+  }
+
+  /**
+   * SelectedLesson deleteMany
+   */
+  export type SelectedLessonDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SelectedLessons to delete
+     */
+    where?: SelectedLessonWhereInput
+    /**
+     * Limit how many SelectedLessons to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SelectedLesson without action
+   */
+  export type SelectedLessonDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SelectedLesson
+     */
+    select?: SelectedLessonSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SelectedLesson
+     */
+    omit?: SelectedLessonOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SelectedLessonInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Payments
+   */
+
+  export type AggregatePayments = {
+    _count: PaymentsCountAggregateOutputType | null
+    _avg: PaymentsAvgAggregateOutputType | null
+    _sum: PaymentsSumAggregateOutputType | null
+    _min: PaymentsMinAggregateOutputType | null
+    _max: PaymentsMaxAggregateOutputType | null
+  }
+
+  export type PaymentsAvgAggregateOutputType = {
+    id: number | null
+    Amount: number | null
+    selectUnitId: number | null
+  }
+
+  export type PaymentsSumAggregateOutputType = {
+    id: bigint | null
+    Amount: bigint | null
+    selectUnitId: bigint | null
+  }
+
+  export type PaymentsMinAggregateOutputType = {
+    id: bigint | null
+    Check: string | null
+    BankName: string | null
+    BranchCode: string | null
+    Branch: string | null
+    Amount: bigint | null
+    selectUnitId: bigint | null
+    PaymentDate: Date | null
+    Created_at: Date | null
+    Updated_at: Date | null
+  }
+
+  export type PaymentsMaxAggregateOutputType = {
+    id: bigint | null
+    Check: string | null
+    BankName: string | null
+    BranchCode: string | null
+    Branch: string | null
+    Amount: bigint | null
+    selectUnitId: bigint | null
+    PaymentDate: Date | null
+    Created_at: Date | null
+    Updated_at: Date | null
+  }
+
+  export type PaymentsCountAggregateOutputType = {
+    id: number
+    Check: number
+    BankName: number
+    BranchCode: number
+    Branch: number
+    Amount: number
+    selectUnitId: number
+    PaymentDate: number
+    Created_at: number
+    Updated_at: number
+    _all: number
+  }
+
+
+  export type PaymentsAvgAggregateInputType = {
+    id?: true
+    Amount?: true
+    selectUnitId?: true
+  }
+
+  export type PaymentsSumAggregateInputType = {
+    id?: true
+    Amount?: true
+    selectUnitId?: true
+  }
+
+  export type PaymentsMinAggregateInputType = {
+    id?: true
+    Check?: true
+    BankName?: true
+    BranchCode?: true
+    Branch?: true
+    Amount?: true
+    selectUnitId?: true
+    PaymentDate?: true
+    Created_at?: true
+    Updated_at?: true
+  }
+
+  export type PaymentsMaxAggregateInputType = {
+    id?: true
+    Check?: true
+    BankName?: true
+    BranchCode?: true
+    Branch?: true
+    Amount?: true
+    selectUnitId?: true
+    PaymentDate?: true
+    Created_at?: true
+    Updated_at?: true
+  }
+
+  export type PaymentsCountAggregateInputType = {
+    id?: true
+    Check?: true
+    BankName?: true
+    BranchCode?: true
+    Branch?: true
+    Amount?: true
+    selectUnitId?: true
+    PaymentDate?: true
+    Created_at?: true
+    Updated_at?: true
+    _all?: true
+  }
+
+  export type PaymentsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Payments to aggregate.
+     */
+    where?: PaymentsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Payments to fetch.
+     */
+    orderBy?: PaymentsOrderByWithRelationInput | PaymentsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PaymentsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Payments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Payments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Payments
+    **/
+    _count?: true | PaymentsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PaymentsAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PaymentsSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PaymentsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PaymentsMaxAggregateInputType
+  }
+
+  export type GetPaymentsAggregateType<T extends PaymentsAggregateArgs> = {
+        [P in keyof T & keyof AggregatePayments]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePayments[P]>
+      : GetScalarType<T[P], AggregatePayments[P]>
+  }
+
+
+
+
+  export type PaymentsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PaymentsWhereInput
+    orderBy?: PaymentsOrderByWithAggregationInput | PaymentsOrderByWithAggregationInput[]
+    by: PaymentsScalarFieldEnum[] | PaymentsScalarFieldEnum
+    having?: PaymentsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PaymentsCountAggregateInputType | true
+    _avg?: PaymentsAvgAggregateInputType
+    _sum?: PaymentsSumAggregateInputType
+    _min?: PaymentsMinAggregateInputType
+    _max?: PaymentsMaxAggregateInputType
+  }
+
+  export type PaymentsGroupByOutputType = {
+    id: bigint
+    Check: string | null
+    BankName: string | null
+    BranchCode: string | null
+    Branch: string | null
+    Amount: bigint
+    selectUnitId: bigint
+    PaymentDate: Date | null
+    Created_at: Date
+    Updated_at: Date
+    _count: PaymentsCountAggregateOutputType | null
+    _avg: PaymentsAvgAggregateOutputType | null
+    _sum: PaymentsSumAggregateOutputType | null
+    _min: PaymentsMinAggregateOutputType | null
+    _max: PaymentsMaxAggregateOutputType | null
+  }
+
+  type GetPaymentsGroupByPayload<T extends PaymentsGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PaymentsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PaymentsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PaymentsGroupByOutputType[P]>
+            : GetScalarType<T[P], PaymentsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PaymentsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    Check?: boolean
+    BankName?: boolean
+    BranchCode?: boolean
+    Branch?: boolean
+    Amount?: boolean
+    selectUnitId?: boolean
+    PaymentDate?: boolean
+    Created_at?: boolean
+    Updated_at?: boolean
+    selectUnit?: boolean | SelectUnitDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["payments"]>
+
+
+
+  export type PaymentsSelectScalar = {
+    id?: boolean
+    Check?: boolean
+    BankName?: boolean
+    BranchCode?: boolean
+    Branch?: boolean
+    Amount?: boolean
+    selectUnitId?: boolean
+    PaymentDate?: boolean
+    Created_at?: boolean
+    Updated_at?: boolean
+  }
+
+  export type PaymentsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "Check" | "BankName" | "BranchCode" | "Branch" | "Amount" | "selectUnitId" | "PaymentDate" | "Created_at" | "Updated_at", ExtArgs["result"]["payments"]>
+  export type PaymentsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    selectUnit?: boolean | SelectUnitDefaultArgs<ExtArgs>
+  }
+
+  export type $PaymentsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Payments"
+    objects: {
+      selectUnit: Prisma.$SelectUnitPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: bigint
+      Check: string | null
+      BankName: string | null
+      BranchCode: string | null
+      Branch: string | null
+      Amount: bigint
+      selectUnitId: bigint
+      PaymentDate: Date | null
+      Created_at: Date
+      Updated_at: Date
+    }, ExtArgs["result"]["payments"]>
+    composites: {}
+  }
+
+  type PaymentsGetPayload<S extends boolean | null | undefined | PaymentsDefaultArgs> = $Result.GetResult<Prisma.$PaymentsPayload, S>
+
+  type PaymentsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PaymentsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PaymentsCountAggregateInputType | true
+    }
+
+  export interface PaymentsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Payments'], meta: { name: 'Payments' } }
+    /**
+     * Find zero or one Payments that matches the filter.
+     * @param {PaymentsFindUniqueArgs} args - Arguments to find a Payments
+     * @example
+     * // Get one Payments
+     * const payments = await prisma.payments.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PaymentsFindUniqueArgs>(args: SelectSubset<T, PaymentsFindUniqueArgs<ExtArgs>>): Prisma__PaymentsClient<$Result.GetResult<Prisma.$PaymentsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Payments that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PaymentsFindUniqueOrThrowArgs} args - Arguments to find a Payments
+     * @example
+     * // Get one Payments
+     * const payments = await prisma.payments.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PaymentsFindUniqueOrThrowArgs>(args: SelectSubset<T, PaymentsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PaymentsClient<$Result.GetResult<Prisma.$PaymentsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Payments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentsFindFirstArgs} args - Arguments to find a Payments
+     * @example
+     * // Get one Payments
+     * const payments = await prisma.payments.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PaymentsFindFirstArgs>(args?: SelectSubset<T, PaymentsFindFirstArgs<ExtArgs>>): Prisma__PaymentsClient<$Result.GetResult<Prisma.$PaymentsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Payments that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentsFindFirstOrThrowArgs} args - Arguments to find a Payments
+     * @example
+     * // Get one Payments
+     * const payments = await prisma.payments.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PaymentsFindFirstOrThrowArgs>(args?: SelectSubset<T, PaymentsFindFirstOrThrowArgs<ExtArgs>>): Prisma__PaymentsClient<$Result.GetResult<Prisma.$PaymentsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Payments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Payments
+     * const payments = await prisma.payments.findMany()
+     * 
+     * // Get first 10 Payments
+     * const payments = await prisma.payments.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const paymentsWithIdOnly = await prisma.payments.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PaymentsFindManyArgs>(args?: SelectSubset<T, PaymentsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Payments.
+     * @param {PaymentsCreateArgs} args - Arguments to create a Payments.
+     * @example
+     * // Create one Payments
+     * const Payments = await prisma.payments.create({
+     *   data: {
+     *     // ... data to create a Payments
+     *   }
+     * })
+     * 
+     */
+    create<T extends PaymentsCreateArgs>(args: SelectSubset<T, PaymentsCreateArgs<ExtArgs>>): Prisma__PaymentsClient<$Result.GetResult<Prisma.$PaymentsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Payments.
+     * @param {PaymentsCreateManyArgs} args - Arguments to create many Payments.
+     * @example
+     * // Create many Payments
+     * const payments = await prisma.payments.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PaymentsCreateManyArgs>(args?: SelectSubset<T, PaymentsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Payments.
+     * @param {PaymentsDeleteArgs} args - Arguments to delete one Payments.
+     * @example
+     * // Delete one Payments
+     * const Payments = await prisma.payments.delete({
+     *   where: {
+     *     // ... filter to delete one Payments
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PaymentsDeleteArgs>(args: SelectSubset<T, PaymentsDeleteArgs<ExtArgs>>): Prisma__PaymentsClient<$Result.GetResult<Prisma.$PaymentsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Payments.
+     * @param {PaymentsUpdateArgs} args - Arguments to update one Payments.
+     * @example
+     * // Update one Payments
+     * const payments = await prisma.payments.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PaymentsUpdateArgs>(args: SelectSubset<T, PaymentsUpdateArgs<ExtArgs>>): Prisma__PaymentsClient<$Result.GetResult<Prisma.$PaymentsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Payments.
+     * @param {PaymentsDeleteManyArgs} args - Arguments to filter Payments to delete.
+     * @example
+     * // Delete a few Payments
+     * const { count } = await prisma.payments.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PaymentsDeleteManyArgs>(args?: SelectSubset<T, PaymentsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Payments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Payments
+     * const payments = await prisma.payments.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PaymentsUpdateManyArgs>(args: SelectSubset<T, PaymentsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Payments.
+     * @param {PaymentsUpsertArgs} args - Arguments to update or create a Payments.
+     * @example
+     * // Update or create a Payments
+     * const payments = await prisma.payments.upsert({
+     *   create: {
+     *     // ... data to create a Payments
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Payments we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PaymentsUpsertArgs>(args: SelectSubset<T, PaymentsUpsertArgs<ExtArgs>>): Prisma__PaymentsClient<$Result.GetResult<Prisma.$PaymentsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Payments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentsCountArgs} args - Arguments to filter Payments to count.
+     * @example
+     * // Count the number of Payments
+     * const count = await prisma.payments.count({
+     *   where: {
+     *     // ... the filter for the Payments we want to count
+     *   }
+     * })
+    **/
+    count<T extends PaymentsCountArgs>(
+      args?: Subset<T, PaymentsCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PaymentsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Payments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PaymentsAggregateArgs>(args: Subset<T, PaymentsAggregateArgs>): Prisma.PrismaPromise<GetPaymentsAggregateType<T>>
+
+    /**
+     * Group by Payments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PaymentsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PaymentsGroupByArgs['orderBy'] }
+        : { orderBy?: PaymentsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PaymentsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPaymentsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Payments model
+   */
+  readonly fields: PaymentsFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Payments.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PaymentsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    selectUnit<T extends SelectUnitDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SelectUnitDefaultArgs<ExtArgs>>): Prisma__SelectUnitClient<$Result.GetResult<Prisma.$SelectUnitPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Payments model
+   */ 
+  interface PaymentsFieldRefs {
+    readonly id: FieldRef<"Payments", 'BigInt'>
+    readonly Check: FieldRef<"Payments", 'String'>
+    readonly BankName: FieldRef<"Payments", 'String'>
+    readonly BranchCode: FieldRef<"Payments", 'String'>
+    readonly Branch: FieldRef<"Payments", 'String'>
+    readonly Amount: FieldRef<"Payments", 'BigInt'>
+    readonly selectUnitId: FieldRef<"Payments", 'BigInt'>
+    readonly PaymentDate: FieldRef<"Payments", 'DateTime'>
+    readonly Created_at: FieldRef<"Payments", 'DateTime'>
+    readonly Updated_at: FieldRef<"Payments", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Payments findUnique
+   */
+  export type PaymentsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Payments
+     */
+    select?: PaymentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Payments
+     */
+    omit?: PaymentsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentsInclude<ExtArgs> | null
+    /**
+     * Filter, which Payments to fetch.
+     */
+    where: PaymentsWhereUniqueInput
+  }
+
+  /**
+   * Payments findUniqueOrThrow
+   */
+  export type PaymentsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Payments
+     */
+    select?: PaymentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Payments
+     */
+    omit?: PaymentsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentsInclude<ExtArgs> | null
+    /**
+     * Filter, which Payments to fetch.
+     */
+    where: PaymentsWhereUniqueInput
+  }
+
+  /**
+   * Payments findFirst
+   */
+  export type PaymentsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Payments
+     */
+    select?: PaymentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Payments
+     */
+    omit?: PaymentsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentsInclude<ExtArgs> | null
+    /**
+     * Filter, which Payments to fetch.
+     */
+    where?: PaymentsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Payments to fetch.
+     */
+    orderBy?: PaymentsOrderByWithRelationInput | PaymentsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Payments.
+     */
+    cursor?: PaymentsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Payments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Payments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Payments.
+     */
+    distinct?: PaymentsScalarFieldEnum | PaymentsScalarFieldEnum[]
+  }
+
+  /**
+   * Payments findFirstOrThrow
+   */
+  export type PaymentsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Payments
+     */
+    select?: PaymentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Payments
+     */
+    omit?: PaymentsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentsInclude<ExtArgs> | null
+    /**
+     * Filter, which Payments to fetch.
+     */
+    where?: PaymentsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Payments to fetch.
+     */
+    orderBy?: PaymentsOrderByWithRelationInput | PaymentsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Payments.
+     */
+    cursor?: PaymentsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Payments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Payments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Payments.
+     */
+    distinct?: PaymentsScalarFieldEnum | PaymentsScalarFieldEnum[]
+  }
+
+  /**
+   * Payments findMany
+   */
+  export type PaymentsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Payments
+     */
+    select?: PaymentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Payments
+     */
+    omit?: PaymentsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentsInclude<ExtArgs> | null
+    /**
+     * Filter, which Payments to fetch.
+     */
+    where?: PaymentsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Payments to fetch.
+     */
+    orderBy?: PaymentsOrderByWithRelationInput | PaymentsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Payments.
+     */
+    cursor?: PaymentsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Payments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Payments.
+     */
+    skip?: number
+    distinct?: PaymentsScalarFieldEnum | PaymentsScalarFieldEnum[]
+  }
+
+  /**
+   * Payments create
+   */
+  export type PaymentsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Payments
+     */
+    select?: PaymentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Payments
+     */
+    omit?: PaymentsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentsInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Payments.
+     */
+    data: XOR<PaymentsCreateInput, PaymentsUncheckedCreateInput>
+  }
+
+  /**
+   * Payments createMany
+   */
+  export type PaymentsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Payments.
+     */
+    data: PaymentsCreateManyInput | PaymentsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Payments update
+   */
+  export type PaymentsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Payments
+     */
+    select?: PaymentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Payments
+     */
+    omit?: PaymentsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentsInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Payments.
+     */
+    data: XOR<PaymentsUpdateInput, PaymentsUncheckedUpdateInput>
+    /**
+     * Choose, which Payments to update.
+     */
+    where: PaymentsWhereUniqueInput
+  }
+
+  /**
+   * Payments updateMany
+   */
+  export type PaymentsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Payments.
+     */
+    data: XOR<PaymentsUpdateManyMutationInput, PaymentsUncheckedUpdateManyInput>
+    /**
+     * Filter which Payments to update
+     */
+    where?: PaymentsWhereInput
+    /**
+     * Limit how many Payments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Payments upsert
+   */
+  export type PaymentsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Payments
+     */
+    select?: PaymentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Payments
+     */
+    omit?: PaymentsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentsInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Payments to update in case it exists.
+     */
+    where: PaymentsWhereUniqueInput
+    /**
+     * In case the Payments found by the `where` argument doesn't exist, create a new Payments with this data.
+     */
+    create: XOR<PaymentsCreateInput, PaymentsUncheckedCreateInput>
+    /**
+     * In case the Payments was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PaymentsUpdateInput, PaymentsUncheckedUpdateInput>
+  }
+
+  /**
+   * Payments delete
+   */
+  export type PaymentsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Payments
+     */
+    select?: PaymentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Payments
+     */
+    omit?: PaymentsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentsInclude<ExtArgs> | null
+    /**
+     * Filter which Payments to delete.
+     */
+    where: PaymentsWhereUniqueInput
+  }
+
+  /**
+   * Payments deleteMany
+   */
+  export type PaymentsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Payments to delete
+     */
+    where?: PaymentsWhereInput
+    /**
+     * Limit how many Payments to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Payments without action
+   */
+  export type PaymentsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Payments
+     */
+    select?: PaymentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Payments
+     */
+    omit?: PaymentsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentsInclude<ExtArgs> | null
   }
 
 
@@ -5870,6 +8259,7 @@ export namespace Prisma {
     Name: string | null
     FixedFee: bigint | null
     Created_at: Date | null
+    Updated_at: Date | null
   }
 
   export type FieldMaxAggregateOutputType = {
@@ -5877,6 +8267,7 @@ export namespace Prisma {
     Name: string | null
     FixedFee: bigint | null
     Created_at: Date | null
+    Updated_at: Date | null
   }
 
   export type FieldCountAggregateOutputType = {
@@ -5884,6 +8275,7 @@ export namespace Prisma {
     Name: number
     FixedFee: number
     Created_at: number
+    Updated_at: number
     _all: number
   }
 
@@ -5903,6 +8295,7 @@ export namespace Prisma {
     Name?: true
     FixedFee?: true
     Created_at?: true
+    Updated_at?: true
   }
 
   export type FieldMaxAggregateInputType = {
@@ -5910,6 +8303,7 @@ export namespace Prisma {
     Name?: true
     FixedFee?: true
     Created_at?: true
+    Updated_at?: true
   }
 
   export type FieldCountAggregateInputType = {
@@ -5917,6 +8311,7 @@ export namespace Prisma {
     Name?: true
     FixedFee?: true
     Created_at?: true
+    Updated_at?: true
     _all?: true
   }
 
@@ -6011,6 +8406,7 @@ export namespace Prisma {
     Name: string
     FixedFee: bigint | null
     Created_at: Date
+    Updated_at: Date
     _count: FieldCountAggregateOutputType | null
     _avg: FieldAvgAggregateOutputType | null
     _sum: FieldSumAggregateOutputType | null
@@ -6037,6 +8433,7 @@ export namespace Prisma {
     Name?: boolean
     FixedFee?: boolean
     Created_at?: boolean
+    Updated_at?: boolean
     students?: boolean | Field$studentsArgs<ExtArgs>
     lessons?: boolean | Field$lessonsArgs<ExtArgs>
     teachers?: boolean | Field$teachersArgs<ExtArgs>
@@ -6050,9 +8447,10 @@ export namespace Prisma {
     Name?: boolean
     FixedFee?: boolean
     Created_at?: boolean
+    Updated_at?: boolean
   }
 
-  export type FieldOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "Name" | "FixedFee" | "Created_at", ExtArgs["result"]["field"]>
+  export type FieldOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "Name" | "FixedFee" | "Created_at" | "Updated_at", ExtArgs["result"]["field"]>
   export type FieldInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     students?: boolean | Field$studentsArgs<ExtArgs>
     lessons?: boolean | Field$lessonsArgs<ExtArgs>
@@ -6072,6 +8470,7 @@ export namespace Prisma {
       Name: string
       FixedFee: bigint | null
       Created_at: Date
+      Updated_at: Date
     }, ExtArgs["result"]["field"]>
     composites: {}
   }
@@ -6448,6 +8847,7 @@ export namespace Prisma {
     readonly Name: FieldRef<"Field", 'String'>
     readonly FixedFee: FieldRef<"Field", 'BigInt'>
     readonly Created_at: FieldRef<"Field", 'DateTime'>
+    readonly Updated_at: FieldRef<"Field", 'DateTime'>
   }
     
 
@@ -8872,7 +11272,8 @@ export namespace Prisma {
     id: 'id',
     TeacherId: 'TeacherId',
     LessonName: 'LessonName',
-    Unit: 'Unit',
+    PracticalUnit: 'PracticalUnit',
+    TheoriUnit: 'TheoriUnit',
     Grade: 'Grade',
     fieldId: 'fieldId',
     PassCondition: 'PassCondition',
@@ -8892,23 +11293,54 @@ export namespace Prisma {
 
 
   export const SelectUnitScalarFieldEnum: {
+    id: 'id',
     StudentId: 'StudentId',
-    LessonId: 'LessonId',
     Year: 'Year',
     Period: 'Period',
     ExtraFee: 'ExtraFee',
+    FixedFee: 'FixedFee',
+    CertificateFee: 'CertificateFee',
+    ExtraClassFee: 'ExtraClassFee',
+    BooksFee: 'BooksFee',
+    Created_at: 'Created_at',
+    Updated_at: 'Updated_at',
+    lessonId: 'lessonId'
+  };
+
+  export type SelectUnitScalarFieldEnum = (typeof SelectUnitScalarFieldEnum)[keyof typeof SelectUnitScalarFieldEnum]
+
+
+  export const SelectedLessonScalarFieldEnum: {
+    id: 'id',
+    selectUnitId: 'selectUnitId',
+    lessonId: 'lessonId'
+  };
+
+  export type SelectedLessonScalarFieldEnum = (typeof SelectedLessonScalarFieldEnum)[keyof typeof SelectedLessonScalarFieldEnum]
+
+
+  export const PaymentsScalarFieldEnum: {
+    id: 'id',
+    Check: 'Check',
+    BankName: 'BankName',
+    BranchCode: 'BranchCode',
+    Branch: 'Branch',
+    Amount: 'Amount',
+    selectUnitId: 'selectUnitId',
+    PaymentDate: 'PaymentDate',
     Created_at: 'Created_at',
     Updated_at: 'Updated_at'
   };
 
-  export type SelectUnitScalarFieldEnum = (typeof SelectUnitScalarFieldEnum)[keyof typeof SelectUnitScalarFieldEnum]
+  export type PaymentsScalarFieldEnum = (typeof PaymentsScalarFieldEnum)[keyof typeof PaymentsScalarFieldEnum]
 
 
   export const FieldScalarFieldEnum: {
     id: 'id',
     Name: 'Name',
     FixedFee: 'FixedFee',
-    Created_at: 'Created_at'
+    Created_at: 'Created_at',
+    Updated_at: 'Updated_at'
   };
 
   export type FieldScalarFieldEnum = (typeof FieldScalarFieldEnum)[keyof typeof FieldScalarFieldEnum]
@@ -8982,6 +11414,16 @@ export namespace Prisma {
   };
 
   export type LessonOrderByRelevanceFieldEnum = (typeof LessonOrderByRelevanceFieldEnum)[keyof typeof LessonOrderByRelevanceFieldEnum]
+
+
+  export const PaymentsOrderByRelevanceFieldEnum: {
+    Check: 'Check',
+    BankName: 'BankName',
+    BranchCode: 'BranchCode',
+    Branch: 'Branch'
+  };
+
+  export type PaymentsOrderByRelevanceFieldEnum = (typeof PaymentsOrderByRelevanceFieldEnum)[keyof typeof PaymentsOrderByRelevanceFieldEnum]
 
 
   export const FieldOrderByRelevanceFieldEnum: {
@@ -9255,7 +11697,8 @@ export namespace Prisma {
     id?: BigIntFilter<"Lesson"> | bigint | number
     TeacherId?: BigIntNullableFilter<"Lesson"> | bigint | number | null
     LessonName?: StringFilter<"Lesson"> | string
-    Unit?: IntFilter<"Lesson"> | number
+    PracticalUnit?: IntFilter<"Lesson"> | number
+    TheoriUnit?: IntFilter<"Lesson"> | number
     Grade?: EnumLessonGradeNullableFilter<"Lesson"> | $Enums.LessonGrade | null
     fieldId?: BigIntNullableFilter<"Lesson"> | bigint | number | null
     PassCondition?: IntNullableFilter<"Lesson"> | number | null
@@ -9274,13 +11717,15 @@ export namespace Prisma {
     requiredForLesson?: LessonListRelationFilter
     requiresLesson?: XOR<LessonNullableScalarRelationFilter, LessonWhereInput> | null
     selectUnits?: SelectUnitListRelationFilter
+    SelectedLesson?: SelectedLessonListRelationFilter
   }
 
   export type LessonOrderByWithRelationInput = {
     id?: SortOrder
     TeacherId?: SortOrderInput | SortOrder
     LessonName?: SortOrder
-    Unit?: SortOrder
+    PracticalUnit?: SortOrder
+    TheoriUnit?: SortOrder
     Grade?: SortOrderInput | SortOrder
     fieldId?: SortOrderInput | SortOrder
     PassCondition?: SortOrderInput | SortOrder
@@ -9299,6 +11744,7 @@ export namespace Prisma {
     requiredForLesson?: LessonOrderByRelationAggregateInput
     requiresLesson?: LessonOrderByWithRelationInput
     selectUnits?: SelectUnitOrderByRelationAggregateInput
+    SelectedLesson?: SelectedLessonOrderByRelationAggregateInput
     _relevance?: LessonOrderByRelevanceInput
   }
 
@@ -9309,7 +11755,8 @@ export namespace Prisma {
     NOT?: LessonWhereInput | LessonWhereInput[]
     TeacherId?: BigIntNullableFilter<"Lesson"> | bigint | number | null
     LessonName?: StringFilter<"Lesson"> | string
-    Unit?: IntFilter<"Lesson"> | number
+    PracticalUnit?: IntFilter<"Lesson"> | number
+    TheoriUnit?: IntFilter<"Lesson"> | number
     Grade?: EnumLessonGradeNullableFilter<"Lesson"> | $Enums.LessonGrade | null
     fieldId?: BigIntNullableFilter<"Lesson"> | bigint | number | null
     PassCondition?: IntNullableFilter<"Lesson"> | number | null
@@ -9328,13 +11775,15 @@ export namespace Prisma {
     requiredForLesson?: LessonListRelationFilter
     requiresLesson?: XOR<LessonNullableScalarRelationFilter, LessonWhereInput> | null
     selectUnits?: SelectUnitListRelationFilter
+    SelectedLesson?: SelectedLessonListRelationFilter
   }, "id">
 
   export type LessonOrderByWithAggregationInput = {
     id?: SortOrder
     TeacherId?: SortOrderInput | SortOrder
     LessonName?: SortOrder
-    Unit?: SortOrder
+    PracticalUnit?: SortOrder
+    TheoriUnit?: SortOrder
     Grade?: SortOrderInput | SortOrder
     fieldId?: SortOrderInput | SortOrder
     PassCondition?: SortOrderInput | SortOrder
@@ -9362,7 +11811,8 @@ export namespace Prisma {
     id?: BigIntWithAggregatesFilter<"Lesson"> | bigint | number
     TeacherId?: BigIntNullableWithAggregatesFilter<"Lesson"> | bigint | number | null
     LessonName?: StringWithAggregatesFilter<"Lesson"> | string
-    Unit?: IntWithAggregatesFilter<"Lesson"> | number
+    PracticalUnit?: IntWithAggregatesFilter<"Lesson"> | number
+    TheoriUnit?: IntWithAggregatesFilter<"Lesson"> | number
     Grade?: EnumLessonGradeNullableWithAggregatesFilter<"Lesson"> | $Enums.LessonGrade | null
     fieldId?: BigIntNullableWithAggregatesFilter<"Lesson"> | bigint | number | null
     PassCondition?: IntNullableWithAggregatesFilter<"Lesson"> | number | null
@@ -9382,53 +11832,79 @@ export namespace Prisma {
     AND?: SelectUnitWhereInput | SelectUnitWhereInput[]
     OR?: SelectUnitWhereInput[]
     NOT?: SelectUnitWhereInput | SelectUnitWhereInput[]
+    id?: BigIntFilter<"SelectUnit"> | bigint | number
     StudentId?: BigIntFilter<"SelectUnit"> | bigint | number
-    LessonId?: BigIntFilter<"SelectUnit"> | bigint | number
     Year?: IntFilter<"SelectUnit"> | number
     Period?: EnumPeriodFilter<"SelectUnit"> | $Enums.Period
     ExtraFee?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
+    FixedFee?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
+    CertificateFee?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
+    ExtraClassFee?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
+    BooksFee?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
     Created_at?: DateTimeFilter<"SelectUnit"> | Date | string
     Updated_at?: DateTimeFilter<"SelectUnit"> | Date | string
+    lessonId?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
     student?: XOR<StudentScalarRelationFilter, StudentWhereInput>
-    lesson?: XOR<LessonScalarRelationFilter, LessonWhereInput>
+    selectedLessons?: SelectedLessonListRelationFilter
+    Lesson?: XOR<LessonNullableScalarRelationFilter, LessonWhereInput> | null
+    Payments?: PaymentsListRelationFilter
   }
 
   export type SelectUnitOrderByWithRelationInput = {
+    id?: SortOrder
     StudentId?: SortOrder
-    LessonId?: SortOrder
     Year?: SortOrder
     Period?: SortOrder
     ExtraFee?: SortOrderInput | SortOrder
+    FixedFee?: SortOrderInput | SortOrder
+    CertificateFee?: SortOrderInput | SortOrder
+    ExtraClassFee?: SortOrderInput | SortOrder
+    BooksFee?: SortOrderInput | SortOrder
     Created_at?: SortOrder
     Updated_at?: SortOrder
+    lessonId?: SortOrderInput | SortOrder
     student?: StudentOrderByWithRelationInput
-    lesson?: LessonOrderByWithRelationInput
+    selectedLessons?: SelectedLessonOrderByRelationAggregateInput
+    Lesson?: LessonOrderByWithRelationInput
+    Payments?: PaymentsOrderByRelationAggregateInput
   }
 
   export type SelectUnitWhereUniqueInput = Prisma.AtLeast<{
-    StudentId_LessonId_Year_Period?: SelectUnitStudentIdLessonIdYearPeriodCompoundUniqueInput
+    id?: bigint | number
+    StudentId_Year_Period?: SelectUnitStudentIdYearPeriodCompoundUniqueInput
     AND?: SelectUnitWhereInput | SelectUnitWhereInput[]
     OR?: SelectUnitWhereInput[]
     NOT?: SelectUnitWhereInput | SelectUnitWhereInput[]
     StudentId?: BigIntFilter<"SelectUnit"> | bigint | number
-    LessonId?: BigIntFilter<"SelectUnit"> | bigint | number
     Year?: IntFilter<"SelectUnit"> | number
     Period?: EnumPeriodFilter<"SelectUnit"> | $Enums.Period
     ExtraFee?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
+    FixedFee?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
+    CertificateFee?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
+    ExtraClassFee?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
+    BooksFee?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
     Created_at?: DateTimeFilter<"SelectUnit"> | Date | string
     Updated_at?: DateTimeFilter<"SelectUnit"> | Date | string
+    lessonId?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
     student?: XOR<StudentScalarRelationFilter, StudentWhereInput>
-    lesson?: XOR<LessonScalarRelationFilter, LessonWhereInput>
-  }, "StudentId_LessonId_Year_Period">
+    selectedLessons?: SelectedLessonListRelationFilter
+    Lesson?: XOR<LessonNullableScalarRelationFilter, LessonWhereInput> | null
+    Payments?: PaymentsListRelationFilter
+  }, "id" | "StudentId_Year_Period">
 
   export type SelectUnitOrderByWithAggregationInput = {
+    id?: SortOrder
     StudentId?: SortOrder
-    LessonId?: SortOrder
     Year?: SortOrder
     Period?: SortOrder
     ExtraFee?: SortOrderInput | SortOrder
+    FixedFee?: SortOrderInput | SortOrder
+    CertificateFee?: SortOrderInput | SortOrder
+    ExtraClassFee?: SortOrderInput | SortOrder
+    BooksFee?: SortOrderInput | SortOrder
     Created_at?: SortOrder
     Updated_at?: SortOrder
+    lessonId?: SortOrderInput | SortOrder
     _count?: SelectUnitCountOrderByAggregateInput
     _avg?: SelectUnitAvgOrderByAggregateInput
     _max?: SelectUnitMaxOrderByAggregateInput
@@ -9440,13 +11916,152 @@ export namespace Prisma {
     AND?: SelectUnitScalarWhereWithAggregatesInput | SelectUnitScalarWhereWithAggregatesInput[]
     OR?: SelectUnitScalarWhereWithAggregatesInput[]
     NOT?: SelectUnitScalarWhereWithAggregatesInput | SelectUnitScalarWhereWithAggregatesInput[]
+    id?: BigIntWithAggregatesFilter<"SelectUnit"> | bigint | number
     StudentId?: BigIntWithAggregatesFilter<"SelectUnit"> | bigint | number
-    LessonId?: BigIntWithAggregatesFilter<"SelectUnit"> | bigint | number
     Year?: IntWithAggregatesFilter<"SelectUnit"> | number
     Period?: EnumPeriodWithAggregatesFilter<"SelectUnit"> | $Enums.Period
     ExtraFee?: BigIntNullableWithAggregatesFilter<"SelectUnit"> | bigint | number | null
+    FixedFee?: BigIntNullableWithAggregatesFilter<"SelectUnit"> | bigint | number | null
+    CertificateFee?: BigIntNullableWithAggregatesFilter<"SelectUnit"> | bigint | number | null
+    ExtraClassFee?: BigIntNullableWithAggregatesFilter<"SelectUnit"> | bigint | number | null
+    BooksFee?: BigIntNullableWithAggregatesFilter<"SelectUnit"> | bigint | number | null
     Created_at?: DateTimeWithAggregatesFilter<"SelectUnit"> | Date | string
     Updated_at?: DateTimeWithAggregatesFilter<"SelectUnit"> | Date | string
+    lessonId?: BigIntNullableWithAggregatesFilter<"SelectUnit"> | bigint | number | null
+  }
+
+  export type SelectedLessonWhereInput = {
+    AND?: SelectedLessonWhereInput | SelectedLessonWhereInput[]
+    OR?: SelectedLessonWhereInput[]
+    NOT?: SelectedLessonWhereInput | SelectedLessonWhereInput[]
+    id?: BigIntFilter<"SelectedLesson"> | bigint | number
+    selectUnitId?: BigIntFilter<"SelectedLesson"> | bigint | number
+    lessonId?: BigIntFilter<"SelectedLesson"> | bigint | number
+    selectUnit?: XOR<SelectUnitScalarRelationFilter, SelectUnitWhereInput>
+    lesson?: XOR<LessonScalarRelationFilter, LessonWhereInput>
+  }
+
+  export type SelectedLessonOrderByWithRelationInput = {
+    id?: SortOrder
+    selectUnitId?: SortOrder
+    lessonId?: SortOrder
+    selectUnit?: SelectUnitOrderByWithRelationInput
+    lesson?: LessonOrderByWithRelationInput
+  }
+
+  export type SelectedLessonWhereUniqueInput = Prisma.AtLeast<{
+    id?: bigint | number
+    selectUnitId_lessonId?: SelectedLessonSelectUnitIdLessonIdCompoundUniqueInput
+    AND?: SelectedLessonWhereInput | SelectedLessonWhereInput[]
+    OR?: SelectedLessonWhereInput[]
+    NOT?: SelectedLessonWhereInput | SelectedLessonWhereInput[]
+    selectUnitId?: BigIntFilter<"SelectedLesson"> | bigint | number
+    lessonId?: BigIntFilter<"SelectedLesson"> | bigint | number
+    selectUnit?: XOR<SelectUnitScalarRelationFilter, SelectUnitWhereInput>
+    lesson?: XOR<LessonScalarRelationFilter, LessonWhereInput>
+  }, "id" | "selectUnitId_lessonId">
+
+  export type SelectedLessonOrderByWithAggregationInput = {
+    id?: SortOrder
+    selectUnitId?: SortOrder
+    lessonId?: SortOrder
+    _count?: SelectedLessonCountOrderByAggregateInput
+    _avg?: SelectedLessonAvgOrderByAggregateInput
+    _max?: SelectedLessonMaxOrderByAggregateInput
+    _min?: SelectedLessonMinOrderByAggregateInput
+    _sum?: SelectedLessonSumOrderByAggregateInput
+  }
+
+  export type SelectedLessonScalarWhereWithAggregatesInput = {
+    AND?: SelectedLessonScalarWhereWithAggregatesInput | SelectedLessonScalarWhereWithAggregatesInput[]
+    OR?: SelectedLessonScalarWhereWithAggregatesInput[]
+    NOT?: SelectedLessonScalarWhereWithAggregatesInput | SelectedLessonScalarWhereWithAggregatesInput[]
+    id?: BigIntWithAggregatesFilter<"SelectedLesson"> | bigint | number
+    selectUnitId?: BigIntWithAggregatesFilter<"SelectedLesson"> | bigint | number
+    lessonId?: BigIntWithAggregatesFilter<"SelectedLesson"> | bigint | number
+  }
+
+  export type PaymentsWhereInput = {
+    AND?: PaymentsWhereInput | PaymentsWhereInput[]
+    OR?: PaymentsWhereInput[]
+    NOT?: PaymentsWhereInput | PaymentsWhereInput[]
+    id?: BigIntFilter<"Payments"> | bigint | number
+    Check?: StringNullableFilter<"Payments"> | string | null
+    BankName?: StringNullableFilter<"Payments"> | string | null
+    BranchCode?: StringNullableFilter<"Payments"> | string | null
+    Branch?: StringNullableFilter<"Payments"> | string | null
+    Amount?: BigIntFilter<"Payments"> | bigint | number
+    selectUnitId?: BigIntFilter<"Payments"> | bigint | number
+    PaymentDate?: DateTimeNullableFilter<"Payments"> | Date | string | null
+    Created_at?: DateTimeFilter<"Payments"> | Date | string
+    Updated_at?: DateTimeFilter<"Payments"> | Date | string
+    selectUnit?: XOR<SelectUnitScalarRelationFilter, SelectUnitWhereInput>
+  }
+
+  export type PaymentsOrderByWithRelationInput = {
+    id?: SortOrder
+    Check?: SortOrderInput | SortOrder
+    BankName?: SortOrderInput | SortOrder
+    BranchCode?: SortOrderInput | SortOrder
+    Branch?: SortOrderInput | SortOrder
+    Amount?: SortOrder
+    selectUnitId?: SortOrder
+    PaymentDate?: SortOrderInput | SortOrder
+    Created_at?: SortOrder
+    Updated_at?: SortOrder
+    selectUnit?: SelectUnitOrderByWithRelationInput
+    _relevance?: PaymentsOrderByRelevanceInput
+  }
+
+  export type PaymentsWhereUniqueInput = Prisma.AtLeast<{
+    id?: bigint | number
+    AND?: PaymentsWhereInput | PaymentsWhereInput[]
+    OR?: PaymentsWhereInput[]
+    NOT?: PaymentsWhereInput | PaymentsWhereInput[]
+    Check?: StringNullableFilter<"Payments"> | string | null
+    BankName?: StringNullableFilter<"Payments"> | string | null
+    BranchCode?: StringNullableFilter<"Payments"> | string | null
+    Branch?: StringNullableFilter<"Payments"> | string | null
+    Amount?: BigIntFilter<"Payments"> | bigint | number
+    selectUnitId?: BigIntFilter<"Payments"> | bigint | number
+    PaymentDate?: DateTimeNullableFilter<"Payments"> | Date | string | null
+    Created_at?: DateTimeFilter<"Payments"> | Date | string
+    Updated_at?: DateTimeFilter<"Payments"> | Date | string
+    selectUnit?: XOR<SelectUnitScalarRelationFilter, SelectUnitWhereInput>
+  }, "id">
+
+  export type PaymentsOrderByWithAggregationInput = {
+    id?: SortOrder
+    Check?: SortOrderInput | SortOrder
+    BankName?: SortOrderInput | SortOrder
+    BranchCode?: SortOrderInput | SortOrder
+    Branch?: SortOrderInput | SortOrder
+    Amount?: SortOrder
+    selectUnitId?: SortOrder
+    PaymentDate?: SortOrderInput | SortOrder
+    Created_at?: SortOrder
+    Updated_at?: SortOrder
+    _count?: PaymentsCountOrderByAggregateInput
+    _avg?: PaymentsAvgOrderByAggregateInput
+    _max?: PaymentsMaxOrderByAggregateInput
+    _min?: PaymentsMinOrderByAggregateInput
+    _sum?: PaymentsSumOrderByAggregateInput
+  }
+
+  export type PaymentsScalarWhereWithAggregatesInput = {
+    AND?: PaymentsScalarWhereWithAggregatesInput | PaymentsScalarWhereWithAggregatesInput[]
+    OR?: PaymentsScalarWhereWithAggregatesInput[]
+    NOT?: PaymentsScalarWhereWithAggregatesInput | PaymentsScalarWhereWithAggregatesInput[]
+    id?: BigIntWithAggregatesFilter<"Payments"> | bigint | number
+    Check?: StringNullableWithAggregatesFilter<"Payments"> | string | null
+    BankName?: StringNullableWithAggregatesFilter<"Payments"> | string | null
+    BranchCode?: StringNullableWithAggregatesFilter<"Payments"> | string | null
+    Branch?: StringNullableWithAggregatesFilter<"Payments"> | string | null
+    Amount?: BigIntWithAggregatesFilter<"Payments"> | bigint | number
+    selectUnitId?: BigIntWithAggregatesFilter<"Payments"> | bigint | number
+    PaymentDate?: DateTimeNullableWithAggregatesFilter<"Payments"> | Date | string | null
+    Created_at?: DateTimeWithAggregatesFilter<"Payments"> | Date | string
+    Updated_at?: DateTimeWithAggregatesFilter<"Payments"> | Date | string
   }
 
   export type FieldWhereInput = {
@@ -9457,6 +12072,7 @@ export namespace Prisma {
     Name?: StringFilter<"Field"> | string
     FixedFee?: BigIntNullableFilter<"Field"> | bigint | number | null
     Created_at?: DateTimeFilter<"Field"> | Date | string
+    Updated_at?: DateTimeFilter<"Field"> | Date | string
     students?: StudentListRelationFilter
     lessons?: LessonListRelationFilter
     teachers?: TeacherListRelationFilter
@@ -9467,6 +12083,7 @@ export namespace Prisma {
     Name?: SortOrder
     FixedFee?: SortOrderInput | SortOrder
     Created_at?: SortOrder
+    Updated_at?: SortOrder
     students?: StudentOrderByRelationAggregateInput
     lessons?: LessonOrderByRelationAggregateInput
     teachers?: TeacherOrderByRelationAggregateInput
@@ -9481,6 +12098,7 @@ export namespace Prisma {
     Name?: StringFilter<"Field"> | string
     FixedFee?: BigIntNullableFilter<"Field"> | bigint | number | null
     Created_at?: DateTimeFilter<"Field"> | Date | string
+    Updated_at?: DateTimeFilter<"Field"> | Date | string
     students?: StudentListRelationFilter
     lessons?: LessonListRelationFilter
     teachers?: TeacherListRelationFilter
@@ -9491,6 +12109,7 @@ export namespace Prisma {
     Name?: SortOrder
     FixedFee?: SortOrderInput | SortOrder
     Created_at?: SortOrder
+    Updated_at?: SortOrder
     _count?: FieldCountOrderByAggregateInput
     _avg?: FieldAvgOrderByAggregateInput
     _max?: FieldMaxOrderByAggregateInput
@@ -9506,6 +12125,7 @@ export namespace Prisma {
     Name?: StringWithAggregatesFilter<"Field"> | string
     FixedFee?: BigIntNullableWithAggregatesFilter<"Field"> | bigint | number | null
     Created_at?: DateTimeWithAggregatesFilter<"Field"> | Date | string
+    Updated_at?: DateTimeWithAggregatesFilter<"Field"> | Date | string
   }
 
   export type GeneralWhereInput = {
@@ -9823,7 +12443,8 @@ export namespace Prisma {
   export type LessonCreateInput = {
     id?: bigint | number
     LessonName: string
-    Unit: number
+    PracticalUnit: number
+    TheoriUnit: number
     Grade?: $Enums.LessonGrade | null
     PassCondition?: number | null
     TheoriHours?: number | null
@@ -9840,13 +12461,15 @@ export namespace Prisma {
     requiredForLesson?: LessonCreateNestedManyWithoutRequiresLessonInput
     requiresLesson?: LessonCreateNestedOneWithoutRequiredForLessonInput
     selectUnits?: SelectUnitCreateNestedManyWithoutLessonInput
+    SelectedLesson?: SelectedLessonCreateNestedManyWithoutLessonInput
   }
 
   export type LessonUncheckedCreateInput = {
     id?: bigint | number
     TeacherId?: bigint | number | null
     LessonName: string
-    Unit: number
+    PracticalUnit: number
+    TheoriUnit: number
     Grade?: $Enums.LessonGrade | null
     fieldId?: bigint | number | null
     PassCondition?: number | null
@@ -9862,12 +12485,14 @@ export namespace Prisma {
     Updated_at?: Date | string
     requiredForLesson?: LessonUncheckedCreateNestedManyWithoutRequiresLessonInput
     selectUnits?: SelectUnitUncheckedCreateNestedManyWithoutLessonInput
+    SelectedLesson?: SelectedLessonUncheckedCreateNestedManyWithoutLessonInput
   }
 
   export type LessonUpdateInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     LessonName?: StringFieldUpdateOperationsInput | string
-    Unit?: IntFieldUpdateOperationsInput | number
+    PracticalUnit?: IntFieldUpdateOperationsInput | number
+    TheoriUnit?: IntFieldUpdateOperationsInput | number
     Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -9884,13 +12509,15 @@ export namespace Prisma {
     requiredForLesson?: LessonUpdateManyWithoutRequiresLessonNestedInput
     requiresLesson?: LessonUpdateOneWithoutRequiredForLessonNestedInput
     selectUnits?: SelectUnitUpdateManyWithoutLessonNestedInput
+    SelectedLesson?: SelectedLessonUpdateManyWithoutLessonNestedInput
   }
 
   export type LessonUncheckedUpdateInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     TeacherId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     LessonName?: StringFieldUpdateOperationsInput | string
-    Unit?: IntFieldUpdateOperationsInput | number
+    PracticalUnit?: IntFieldUpdateOperationsInput | number
+    TheoriUnit?: IntFieldUpdateOperationsInput | number
     Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
     fieldId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
@@ -9906,13 +12533,15 @@ export namespace Prisma {
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     requiredForLesson?: LessonUncheckedUpdateManyWithoutRequiresLessonNestedInput
     selectUnits?: SelectUnitUncheckedUpdateManyWithoutLessonNestedInput
+    SelectedLesson?: SelectedLessonUncheckedUpdateManyWithoutLessonNestedInput
   }
 
   export type LessonCreateManyInput = {
     id?: bigint | number
     TeacherId?: bigint | number | null
     LessonName: string
-    Unit: number
+    PracticalUnit: number
+    TheoriUnit: number
     Grade?: $Enums.LessonGrade | null
     fieldId?: bigint | number | null
     PassCondition?: number | null
@@ -9931,7 +12560,8 @@ export namespace Prisma {
   export type LessonUpdateManyMutationInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     LessonName?: StringFieldUpdateOperationsInput | string
-    Unit?: IntFieldUpdateOperationsInput | number
+    PracticalUnit?: IntFieldUpdateOperationsInput | number
+    TheoriUnit?: IntFieldUpdateOperationsInput | number
     Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -9949,7 +12579,8 @@ export namespace Prisma {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     TeacherId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     LessonName?: StringFieldUpdateOperationsInput | string
-    Unit?: IntFieldUpdateOperationsInput | number
+    PracticalUnit?: IntFieldUpdateOperationsInput | number
+    TheoriUnit?: IntFieldUpdateOperationsInput | number
     Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
     fieldId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
@@ -9966,69 +12597,242 @@ export namespace Prisma {
   }
 
   export type SelectUnitCreateInput = {
+    id?: bigint | number
     Year: number
     Period: $Enums.Period
     ExtraFee?: bigint | number | null
+    FixedFee?: bigint | number | null
+    CertificateFee?: bigint | number | null
+    ExtraClassFee?: bigint | number | null
+    BooksFee?: bigint | number | null
     Created_at?: Date | string
     Updated_at?: Date | string
     student: StudentCreateNestedOneWithoutSelectUnitsInput
-    lesson: LessonCreateNestedOneWithoutSelectUnitsInput
+    selectedLessons?: SelectedLessonCreateNestedManyWithoutSelectUnitInput
+    Lesson?: LessonCreateNestedOneWithoutSelectUnitsInput
+    Payments?: PaymentsCreateNestedManyWithoutSelectUnitInput
   }
 
   export type SelectUnitUncheckedCreateInput = {
+    id?: bigint | number
     StudentId: bigint | number
-    LessonId: bigint | number
     Year: number
     Period: $Enums.Period
     ExtraFee?: bigint | number | null
+    FixedFee?: bigint | number | null
+    CertificateFee?: bigint | number | null
+    ExtraClassFee?: bigint | number | null
+    BooksFee?: bigint | number | null
     Created_at?: Date | string
     Updated_at?: Date | string
+    lessonId?: bigint | number | null
+    selectedLessons?: SelectedLessonUncheckedCreateNestedManyWithoutSelectUnitInput
+    Payments?: PaymentsUncheckedCreateNestedManyWithoutSelectUnitInput
   }
 
   export type SelectUnitUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
     Year?: IntFieldUpdateOperationsInput | number
     Period?: EnumPeriodFieldUpdateOperationsInput | $Enums.Period
     ExtraFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    FixedFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    CertificateFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ExtraClassFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    BooksFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     student?: StudentUpdateOneRequiredWithoutSelectUnitsNestedInput
-    lesson?: LessonUpdateOneRequiredWithoutSelectUnitsNestedInput
+    selectedLessons?: SelectedLessonUpdateManyWithoutSelectUnitNestedInput
+    Lesson?: LessonUpdateOneWithoutSelectUnitsNestedInput
+    Payments?: PaymentsUpdateManyWithoutSelectUnitNestedInput
   }
 
   export type SelectUnitUncheckedUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
     StudentId?: BigIntFieldUpdateOperationsInput | bigint | number
-    LessonId?: BigIntFieldUpdateOperationsInput | bigint | number
     Year?: IntFieldUpdateOperationsInput | number
     Period?: EnumPeriodFieldUpdateOperationsInput | $Enums.Period
     ExtraFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    FixedFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    CertificateFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ExtraClassFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    BooksFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    lessonId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    selectedLessons?: SelectedLessonUncheckedUpdateManyWithoutSelectUnitNestedInput
+    Payments?: PaymentsUncheckedUpdateManyWithoutSelectUnitNestedInput
   }
 
   export type SelectUnitCreateManyInput = {
+    id?: bigint | number
     StudentId: bigint | number
-    LessonId: bigint | number
     Year: number
     Period: $Enums.Period
     ExtraFee?: bigint | number | null
+    FixedFee?: bigint | number | null
+    CertificateFee?: bigint | number | null
+    ExtraClassFee?: bigint | number | null
+    BooksFee?: bigint | number | null
     Created_at?: Date | string
     Updated_at?: Date | string
+    lessonId?: bigint | number | null
   }
 
   export type SelectUnitUpdateManyMutationInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
     Year?: IntFieldUpdateOperationsInput | number
     Period?: EnumPeriodFieldUpdateOperationsInput | $Enums.Period
     ExtraFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    FixedFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    CertificateFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ExtraClassFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    BooksFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SelectUnitUncheckedUpdateManyInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
     StudentId?: BigIntFieldUpdateOperationsInput | bigint | number
-    LessonId?: BigIntFieldUpdateOperationsInput | bigint | number
     Year?: IntFieldUpdateOperationsInput | number
     Period?: EnumPeriodFieldUpdateOperationsInput | $Enums.Period
     ExtraFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    FixedFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    CertificateFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ExtraClassFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    BooksFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    lessonId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  }
+
+  export type SelectedLessonCreateInput = {
+    id?: bigint | number
+    selectUnit: SelectUnitCreateNestedOneWithoutSelectedLessonsInput
+    lesson: LessonCreateNestedOneWithoutSelectedLessonInput
+  }
+
+  export type SelectedLessonUncheckedCreateInput = {
+    id?: bigint | number
+    selectUnitId: bigint | number
+    lessonId: bigint | number
+  }
+
+  export type SelectedLessonUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    selectUnit?: SelectUnitUpdateOneRequiredWithoutSelectedLessonsNestedInput
+    lesson?: LessonUpdateOneRequiredWithoutSelectedLessonNestedInput
+  }
+
+  export type SelectedLessonUncheckedUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    selectUnitId?: BigIntFieldUpdateOperationsInput | bigint | number
+    lessonId?: BigIntFieldUpdateOperationsInput | bigint | number
+  }
+
+  export type SelectedLessonCreateManyInput = {
+    id?: bigint | number
+    selectUnitId: bigint | number
+    lessonId: bigint | number
+  }
+
+  export type SelectedLessonUpdateManyMutationInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+  }
+
+  export type SelectedLessonUncheckedUpdateManyInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    selectUnitId?: BigIntFieldUpdateOperationsInput | bigint | number
+    lessonId?: BigIntFieldUpdateOperationsInput | bigint | number
+  }
+
+  export type PaymentsCreateInput = {
+    id?: bigint | number
+    Check?: string | null
+    BankName?: string | null
+    BranchCode?: string | null
+    Branch?: string | null
+    Amount: bigint | number
+    PaymentDate?: Date | string | null
+    Created_at?: Date | string
+    Updated_at?: Date | string
+    selectUnit: SelectUnitCreateNestedOneWithoutPaymentsInput
+  }
+
+  export type PaymentsUncheckedCreateInput = {
+    id?: bigint | number
+    Check?: string | null
+    BankName?: string | null
+    BranchCode?: string | null
+    Branch?: string | null
+    Amount: bigint | number
+    selectUnitId: bigint | number
+    PaymentDate?: Date | string | null
+    Created_at?: Date | string
+    Updated_at?: Date | string
+  }
+
+  export type PaymentsUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    Check?: NullableStringFieldUpdateOperationsInput | string | null
+    BankName?: NullableStringFieldUpdateOperationsInput | string | null
+    BranchCode?: NullableStringFieldUpdateOperationsInput | string | null
+    Branch?: NullableStringFieldUpdateOperationsInput | string | null
+    Amount?: BigIntFieldUpdateOperationsInput | bigint | number
+    PaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    selectUnit?: SelectUnitUpdateOneRequiredWithoutPaymentsNestedInput
+  }
+
+  export type PaymentsUncheckedUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    Check?: NullableStringFieldUpdateOperationsInput | string | null
+    BankName?: NullableStringFieldUpdateOperationsInput | string | null
+    BranchCode?: NullableStringFieldUpdateOperationsInput | string | null
+    Branch?: NullableStringFieldUpdateOperationsInput | string | null
+    Amount?: BigIntFieldUpdateOperationsInput | bigint | number
+    selectUnitId?: BigIntFieldUpdateOperationsInput | bigint | number
+    PaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentsCreateManyInput = {
+    id?: bigint | number
+    Check?: string | null
+    BankName?: string | null
+    BranchCode?: string | null
+    Branch?: string | null
+    Amount: bigint | number
+    selectUnitId: bigint | number
+    PaymentDate?: Date | string | null
+    Created_at?: Date | string
+    Updated_at?: Date | string
+  }
+
+  export type PaymentsUpdateManyMutationInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    Check?: NullableStringFieldUpdateOperationsInput | string | null
+    BankName?: NullableStringFieldUpdateOperationsInput | string | null
+    BranchCode?: NullableStringFieldUpdateOperationsInput | string | null
+    Branch?: NullableStringFieldUpdateOperationsInput | string | null
+    Amount?: BigIntFieldUpdateOperationsInput | bigint | number
+    PaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentsUncheckedUpdateManyInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    Check?: NullableStringFieldUpdateOperationsInput | string | null
+    BankName?: NullableStringFieldUpdateOperationsInput | string | null
+    BranchCode?: NullableStringFieldUpdateOperationsInput | string | null
+    Branch?: NullableStringFieldUpdateOperationsInput | string | null
+    Amount?: BigIntFieldUpdateOperationsInput | bigint | number
+    selectUnitId?: BigIntFieldUpdateOperationsInput | bigint | number
+    PaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10038,6 +12842,7 @@ export namespace Prisma {
     Name: string
     FixedFee?: bigint | number | null
     Created_at?: Date | string
+    Updated_at?: Date | string
     students?: StudentCreateNestedManyWithoutFieldInput
     lessons?: LessonCreateNestedManyWithoutFieldInput
     teachers?: TeacherCreateNestedManyWithoutFieldInput
@@ -10048,6 +12853,7 @@ export namespace Prisma {
     Name: string
     FixedFee?: bigint | number | null
     Created_at?: Date | string
+    Updated_at?: Date | string
     students?: StudentUncheckedCreateNestedManyWithoutFieldInput
     lessons?: LessonUncheckedCreateNestedManyWithoutFieldInput
     teachers?: TeacherUncheckedCreateNestedManyWithoutFieldInput
@@ -10058,6 +12864,7 @@ export namespace Prisma {
     Name?: StringFieldUpdateOperationsInput | string
     FixedFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     students?: StudentUpdateManyWithoutFieldNestedInput
     lessons?: LessonUpdateManyWithoutFieldNestedInput
     teachers?: TeacherUpdateManyWithoutFieldNestedInput
@@ -10068,6 +12875,7 @@ export namespace Prisma {
     Name?: StringFieldUpdateOperationsInput | string
     FixedFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     students?: StudentUncheckedUpdateManyWithoutFieldNestedInput
     lessons?: LessonUncheckedUpdateManyWithoutFieldNestedInput
     teachers?: TeacherUncheckedUpdateManyWithoutFieldNestedInput
@@ -10078,6 +12886,7 @@ export namespace Prisma {
     Name: string
     FixedFee?: bigint | number | null
     Created_at?: Date | string
+    Updated_at?: Date | string
   }
 
   export type FieldUpdateManyMutationInput = {
@@ -10085,6 +12894,7 @@ export namespace Prisma {
     Name?: StringFieldUpdateOperationsInput | string
     FixedFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type FieldUncheckedUpdateManyInput = {
@@ -10092,6 +12902,7 @@ export namespace Prisma {
     Name?: StringFieldUpdateOperationsInput | string
     FixedFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type GeneralCreateInput = {
@@ -10613,7 +13424,17 @@ export namespace Prisma {
     isNot?: LessonWhereInput | null
   }
 
+  export type SelectedLessonListRelationFilter = {
+    every?: SelectedLessonWhereInput
+    some?: SelectedLessonWhereInput
+    none?: SelectedLessonWhereInput
+  }
+
   export type LessonOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SelectedLessonOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -10627,7 +13448,8 @@ export namespace Prisma {
     id?: SortOrder
     TeacherId?: SortOrder
     LessonName?: SortOrder
-    Unit?: SortOrder
+    PracticalUnit?: SortOrder
+    TheoriUnit?: SortOrder
     Grade?: SortOrder
     fieldId?: SortOrder
     PassCondition?: SortOrder
@@ -10646,7 +13468,8 @@ export namespace Prisma {
   export type LessonAvgOrderByAggregateInput = {
     id?: SortOrder
     TeacherId?: SortOrder
-    Unit?: SortOrder
+    PracticalUnit?: SortOrder
+    TheoriUnit?: SortOrder
     fieldId?: SortOrder
     PassCondition?: SortOrder
     TheoriHours?: SortOrder
@@ -10661,7 +13484,8 @@ export namespace Prisma {
     id?: SortOrder
     TeacherId?: SortOrder
     LessonName?: SortOrder
-    Unit?: SortOrder
+    PracticalUnit?: SortOrder
+    TheoriUnit?: SortOrder
     Grade?: SortOrder
     fieldId?: SortOrder
     PassCondition?: SortOrder
@@ -10681,7 +13505,8 @@ export namespace Prisma {
     id?: SortOrder
     TeacherId?: SortOrder
     LessonName?: SortOrder
-    Unit?: SortOrder
+    PracticalUnit?: SortOrder
+    TheoriUnit?: SortOrder
     Grade?: SortOrder
     fieldId?: SortOrder
     PassCondition?: SortOrder
@@ -10700,7 +13525,8 @@ export namespace Prisma {
   export type LessonSumOrderByAggregateInput = {
     id?: SortOrder
     TeacherId?: SortOrder
-    Unit?: SortOrder
+    PracticalUnit?: SortOrder
+    TheoriUnit?: SortOrder
     fieldId?: SortOrder
     PassCondition?: SortOrder
     TheoriHours?: SortOrder
@@ -10781,60 +13607,89 @@ export namespace Prisma {
     isNot?: StudentWhereInput
   }
 
-  export type LessonScalarRelationFilter = {
-    is?: LessonWhereInput
-    isNot?: LessonWhereInput
+  export type PaymentsListRelationFilter = {
+    every?: PaymentsWhereInput
+    some?: PaymentsWhereInput
+    none?: PaymentsWhereInput
   }
 
-  export type SelectUnitStudentIdLessonIdYearPeriodCompoundUniqueInput = {
+  export type PaymentsOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SelectUnitStudentIdYearPeriodCompoundUniqueInput = {
     StudentId: bigint | number
-    LessonId: bigint | number
     Year: number
     Period: $Enums.Period
   }
 
   export type SelectUnitCountOrderByAggregateInput = {
+    id?: SortOrder
     StudentId?: SortOrder
-    LessonId?: SortOrder
     Year?: SortOrder
     Period?: SortOrder
     ExtraFee?: SortOrder
+    FixedFee?: SortOrder
+    CertificateFee?: SortOrder
+    ExtraClassFee?: SortOrder
+    BooksFee?: SortOrder
     Created_at?: SortOrder
     Updated_at?: SortOrder
+    lessonId?: SortOrder
   }
 
   export type SelectUnitAvgOrderByAggregateInput = {
+    id?: SortOrder
     StudentId?: SortOrder
-    LessonId?: SortOrder
     Year?: SortOrder
     ExtraFee?: SortOrder
+    FixedFee?: SortOrder
+    CertificateFee?: SortOrder
+    ExtraClassFee?: SortOrder
+    BooksFee?: SortOrder
+    lessonId?: SortOrder
   }
 
   export type SelectUnitMaxOrderByAggregateInput = {
+    id?: SortOrder
     StudentId?: SortOrder
-    LessonId?: SortOrder
     Year?: SortOrder
     Period?: SortOrder
     ExtraFee?: SortOrder
+    FixedFee?: SortOrder
+    CertificateFee?: SortOrder
+    ExtraClassFee?: SortOrder
+    BooksFee?: SortOrder
     Created_at?: SortOrder
     Updated_at?: SortOrder
+    lessonId?: SortOrder
   }
 
   export type SelectUnitMinOrderByAggregateInput = {
+    id?: SortOrder
     StudentId?: SortOrder
-    LessonId?: SortOrder
     Year?: SortOrder
     Period?: SortOrder
     ExtraFee?: SortOrder
+    FixedFee?: SortOrder
+    CertificateFee?: SortOrder
+    ExtraClassFee?: SortOrder
+    BooksFee?: SortOrder
     Created_at?: SortOrder
     Updated_at?: SortOrder
+    lessonId?: SortOrder
   }
 
   export type SelectUnitSumOrderByAggregateInput = {
+    id?: SortOrder
     StudentId?: SortOrder
-    LessonId?: SortOrder
     Year?: SortOrder
     ExtraFee?: SortOrder
+    FixedFee?: SortOrder
+    CertificateFee?: SortOrder
+    ExtraClassFee?: SortOrder
+    BooksFee?: SortOrder
+    lessonId?: SortOrder
   }
 
   export type EnumPeriodWithAggregatesFilter<$PrismaModel = never> = {
@@ -10845,6 +13700,108 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumPeriodFilter<$PrismaModel>
     _max?: NestedEnumPeriodFilter<$PrismaModel>
+  }
+
+  export type SelectUnitScalarRelationFilter = {
+    is?: SelectUnitWhereInput
+    isNot?: SelectUnitWhereInput
+  }
+
+  export type LessonScalarRelationFilter = {
+    is?: LessonWhereInput
+    isNot?: LessonWhereInput
+  }
+
+  export type SelectedLessonSelectUnitIdLessonIdCompoundUniqueInput = {
+    selectUnitId: bigint | number
+    lessonId: bigint | number
+  }
+
+  export type SelectedLessonCountOrderByAggregateInput = {
+    id?: SortOrder
+    selectUnitId?: SortOrder
+    lessonId?: SortOrder
+  }
+
+  export type SelectedLessonAvgOrderByAggregateInput = {
+    id?: SortOrder
+    selectUnitId?: SortOrder
+    lessonId?: SortOrder
+  }
+
+  export type SelectedLessonMaxOrderByAggregateInput = {
+    id?: SortOrder
+    selectUnitId?: SortOrder
+    lessonId?: SortOrder
+  }
+
+  export type SelectedLessonMinOrderByAggregateInput = {
+    id?: SortOrder
+    selectUnitId?: SortOrder
+    lessonId?: SortOrder
+  }
+
+  export type SelectedLessonSumOrderByAggregateInput = {
+    id?: SortOrder
+    selectUnitId?: SortOrder
+    lessonId?: SortOrder
+  }
+
+  export type PaymentsOrderByRelevanceInput = {
+    fields: PaymentsOrderByRelevanceFieldEnum | PaymentsOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type PaymentsCountOrderByAggregateInput = {
+    id?: SortOrder
+    Check?: SortOrder
+    BankName?: SortOrder
+    BranchCode?: SortOrder
+    Branch?: SortOrder
+    Amount?: SortOrder
+    selectUnitId?: SortOrder
+    PaymentDate?: SortOrder
+    Created_at?: SortOrder
+    Updated_at?: SortOrder
+  }
+
+  export type PaymentsAvgOrderByAggregateInput = {
+    id?: SortOrder
+    Amount?: SortOrder
+    selectUnitId?: SortOrder
+  }
+
+  export type PaymentsMaxOrderByAggregateInput = {
+    id?: SortOrder
+    Check?: SortOrder
+    BankName?: SortOrder
+    BranchCode?: SortOrder
+    Branch?: SortOrder
+    Amount?: SortOrder
+    selectUnitId?: SortOrder
+    PaymentDate?: SortOrder
+    Created_at?: SortOrder
+    Updated_at?: SortOrder
+  }
+
+  export type PaymentsMinOrderByAggregateInput = {
+    id?: SortOrder
+    Check?: SortOrder
+    BankName?: SortOrder
+    BranchCode?: SortOrder
+    Branch?: SortOrder
+    Amount?: SortOrder
+    selectUnitId?: SortOrder
+    PaymentDate?: SortOrder
+    Created_at?: SortOrder
+    Updated_at?: SortOrder
+  }
+
+  export type PaymentsSumOrderByAggregateInput = {
+    id?: SortOrder
+    Amount?: SortOrder
+    selectUnitId?: SortOrder
   }
 
   export type StudentListRelationFilter = {
@@ -10878,6 +13835,7 @@ export namespace Prisma {
     Name?: SortOrder
     FixedFee?: SortOrder
     Created_at?: SortOrder
+    Updated_at?: SortOrder
   }
 
   export type FieldAvgOrderByAggregateInput = {
@@ -10890,6 +13848,7 @@ export namespace Prisma {
     Name?: SortOrder
     FixedFee?: SortOrder
     Created_at?: SortOrder
+    Updated_at?: SortOrder
   }
 
   export type FieldMinOrderByAggregateInput = {
@@ -10897,6 +13856,7 @@ export namespace Prisma {
     Name?: SortOrder
     FixedFee?: SortOrder
     Created_at?: SortOrder
+    Updated_at?: SortOrder
   }
 
   export type FieldSumOrderByAggregateInput = {
@@ -11110,6 +14070,13 @@ export namespace Prisma {
     connect?: SelectUnitWhereUniqueInput | SelectUnitWhereUniqueInput[]
   }
 
+  export type SelectedLessonCreateNestedManyWithoutLessonInput = {
+    create?: XOR<SelectedLessonCreateWithoutLessonInput, SelectedLessonUncheckedCreateWithoutLessonInput> | SelectedLessonCreateWithoutLessonInput[] | SelectedLessonUncheckedCreateWithoutLessonInput[]
+    connectOrCreate?: SelectedLessonCreateOrConnectWithoutLessonInput | SelectedLessonCreateOrConnectWithoutLessonInput[]
+    createMany?: SelectedLessonCreateManyLessonInputEnvelope
+    connect?: SelectedLessonWhereUniqueInput | SelectedLessonWhereUniqueInput[]
+  }
+
   export type LessonUncheckedCreateNestedManyWithoutRequiresLessonInput = {
     create?: XOR<LessonCreateWithoutRequiresLessonInput, LessonUncheckedCreateWithoutRequiresLessonInput> | LessonCreateWithoutRequiresLessonInput[] | LessonUncheckedCreateWithoutRequiresLessonInput[]
     connectOrCreate?: LessonCreateOrConnectWithoutRequiresLessonInput | LessonCreateOrConnectWithoutRequiresLessonInput[]
@@ -11122,6 +14089,13 @@ export namespace Prisma {
     connectOrCreate?: SelectUnitCreateOrConnectWithoutLessonInput | SelectUnitCreateOrConnectWithoutLessonInput[]
     createMany?: SelectUnitCreateManyLessonInputEnvelope
     connect?: SelectUnitWhereUniqueInput | SelectUnitWhereUniqueInput[]
+  }
+
+  export type SelectedLessonUncheckedCreateNestedManyWithoutLessonInput = {
+    create?: XOR<SelectedLessonCreateWithoutLessonInput, SelectedLessonUncheckedCreateWithoutLessonInput> | SelectedLessonCreateWithoutLessonInput[] | SelectedLessonUncheckedCreateWithoutLessonInput[]
+    connectOrCreate?: SelectedLessonCreateOrConnectWithoutLessonInput | SelectedLessonCreateOrConnectWithoutLessonInput[]
+    createMany?: SelectedLessonCreateManyLessonInputEnvelope
+    connect?: SelectedLessonWhereUniqueInput | SelectedLessonWhereUniqueInput[]
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -11210,6 +14184,20 @@ export namespace Prisma {
     deleteMany?: SelectUnitScalarWhereInput | SelectUnitScalarWhereInput[]
   }
 
+  export type SelectedLessonUpdateManyWithoutLessonNestedInput = {
+    create?: XOR<SelectedLessonCreateWithoutLessonInput, SelectedLessonUncheckedCreateWithoutLessonInput> | SelectedLessonCreateWithoutLessonInput[] | SelectedLessonUncheckedCreateWithoutLessonInput[]
+    connectOrCreate?: SelectedLessonCreateOrConnectWithoutLessonInput | SelectedLessonCreateOrConnectWithoutLessonInput[]
+    upsert?: SelectedLessonUpsertWithWhereUniqueWithoutLessonInput | SelectedLessonUpsertWithWhereUniqueWithoutLessonInput[]
+    createMany?: SelectedLessonCreateManyLessonInputEnvelope
+    set?: SelectedLessonWhereUniqueInput | SelectedLessonWhereUniqueInput[]
+    disconnect?: SelectedLessonWhereUniqueInput | SelectedLessonWhereUniqueInput[]
+    delete?: SelectedLessonWhereUniqueInput | SelectedLessonWhereUniqueInput[]
+    connect?: SelectedLessonWhereUniqueInput | SelectedLessonWhereUniqueInput[]
+    update?: SelectedLessonUpdateWithWhereUniqueWithoutLessonInput | SelectedLessonUpdateWithWhereUniqueWithoutLessonInput[]
+    updateMany?: SelectedLessonUpdateManyWithWhereWithoutLessonInput | SelectedLessonUpdateManyWithWhereWithoutLessonInput[]
+    deleteMany?: SelectedLessonScalarWhereInput | SelectedLessonScalarWhereInput[]
+  }
+
   export type LessonUncheckedUpdateManyWithoutRequiresLessonNestedInput = {
     create?: XOR<LessonCreateWithoutRequiresLessonInput, LessonUncheckedCreateWithoutRequiresLessonInput> | LessonCreateWithoutRequiresLessonInput[] | LessonUncheckedCreateWithoutRequiresLessonInput[]
     connectOrCreate?: LessonCreateOrConnectWithoutRequiresLessonInput | LessonCreateOrConnectWithoutRequiresLessonInput[]
@@ -11238,16 +14226,58 @@ export namespace Prisma {
     deleteMany?: SelectUnitScalarWhereInput | SelectUnitScalarWhereInput[]
   }
 
+  export type SelectedLessonUncheckedUpdateManyWithoutLessonNestedInput = {
+    create?: XOR<SelectedLessonCreateWithoutLessonInput, SelectedLessonUncheckedCreateWithoutLessonInput> | SelectedLessonCreateWithoutLessonInput[] | SelectedLessonUncheckedCreateWithoutLessonInput[]
+    connectOrCreate?: SelectedLessonCreateOrConnectWithoutLessonInput | SelectedLessonCreateOrConnectWithoutLessonInput[]
+    upsert?: SelectedLessonUpsertWithWhereUniqueWithoutLessonInput | SelectedLessonUpsertWithWhereUniqueWithoutLessonInput[]
+    createMany?: SelectedLessonCreateManyLessonInputEnvelope
+    set?: SelectedLessonWhereUniqueInput | SelectedLessonWhereUniqueInput[]
+    disconnect?: SelectedLessonWhereUniqueInput | SelectedLessonWhereUniqueInput[]
+    delete?: SelectedLessonWhereUniqueInput | SelectedLessonWhereUniqueInput[]
+    connect?: SelectedLessonWhereUniqueInput | SelectedLessonWhereUniqueInput[]
+    update?: SelectedLessonUpdateWithWhereUniqueWithoutLessonInput | SelectedLessonUpdateWithWhereUniqueWithoutLessonInput[]
+    updateMany?: SelectedLessonUpdateManyWithWhereWithoutLessonInput | SelectedLessonUpdateManyWithWhereWithoutLessonInput[]
+    deleteMany?: SelectedLessonScalarWhereInput | SelectedLessonScalarWhereInput[]
+  }
+
   export type StudentCreateNestedOneWithoutSelectUnitsInput = {
     create?: XOR<StudentCreateWithoutSelectUnitsInput, StudentUncheckedCreateWithoutSelectUnitsInput>
     connectOrCreate?: StudentCreateOrConnectWithoutSelectUnitsInput
     connect?: StudentWhereUniqueInput
   }
 
+  export type SelectedLessonCreateNestedManyWithoutSelectUnitInput = {
+    create?: XOR<SelectedLessonCreateWithoutSelectUnitInput, SelectedLessonUncheckedCreateWithoutSelectUnitInput> | SelectedLessonCreateWithoutSelectUnitInput[] | SelectedLessonUncheckedCreateWithoutSelectUnitInput[]
+    connectOrCreate?: SelectedLessonCreateOrConnectWithoutSelectUnitInput | SelectedLessonCreateOrConnectWithoutSelectUnitInput[]
+    createMany?: SelectedLessonCreateManySelectUnitInputEnvelope
+    connect?: SelectedLessonWhereUniqueInput | SelectedLessonWhereUniqueInput[]
+  }
+
   export type LessonCreateNestedOneWithoutSelectUnitsInput = {
     create?: XOR<LessonCreateWithoutSelectUnitsInput, LessonUncheckedCreateWithoutSelectUnitsInput>
     connectOrCreate?: LessonCreateOrConnectWithoutSelectUnitsInput
     connect?: LessonWhereUniqueInput
+  }
+
+  export type PaymentsCreateNestedManyWithoutSelectUnitInput = {
+    create?: XOR<PaymentsCreateWithoutSelectUnitInput, PaymentsUncheckedCreateWithoutSelectUnitInput> | PaymentsCreateWithoutSelectUnitInput[] | PaymentsUncheckedCreateWithoutSelectUnitInput[]
+    connectOrCreate?: PaymentsCreateOrConnectWithoutSelectUnitInput | PaymentsCreateOrConnectWithoutSelectUnitInput[]
+    createMany?: PaymentsCreateManySelectUnitInputEnvelope
+    connect?: PaymentsWhereUniqueInput | PaymentsWhereUniqueInput[]
+  }
+
+  export type SelectedLessonUncheckedCreateNestedManyWithoutSelectUnitInput = {
+    create?: XOR<SelectedLessonCreateWithoutSelectUnitInput, SelectedLessonUncheckedCreateWithoutSelectUnitInput> | SelectedLessonCreateWithoutSelectUnitInput[] | SelectedLessonUncheckedCreateWithoutSelectUnitInput[]
+    connectOrCreate?: SelectedLessonCreateOrConnectWithoutSelectUnitInput | SelectedLessonCreateOrConnectWithoutSelectUnitInput[]
+    createMany?: SelectedLessonCreateManySelectUnitInputEnvelope
+    connect?: SelectedLessonWhereUniqueInput | SelectedLessonWhereUniqueInput[]
+  }
+
+  export type PaymentsUncheckedCreateNestedManyWithoutSelectUnitInput = {
+    create?: XOR<PaymentsCreateWithoutSelectUnitInput, PaymentsUncheckedCreateWithoutSelectUnitInput> | PaymentsCreateWithoutSelectUnitInput[] | PaymentsUncheckedCreateWithoutSelectUnitInput[]
+    connectOrCreate?: PaymentsCreateOrConnectWithoutSelectUnitInput | PaymentsCreateOrConnectWithoutSelectUnitInput[]
+    createMany?: PaymentsCreateManySelectUnitInputEnvelope
+    connect?: PaymentsWhereUniqueInput | PaymentsWhereUniqueInput[]
   }
 
   export type EnumPeriodFieldUpdateOperationsInput = {
@@ -11262,12 +14292,112 @@ export namespace Prisma {
     update?: XOR<XOR<StudentUpdateToOneWithWhereWithoutSelectUnitsInput, StudentUpdateWithoutSelectUnitsInput>, StudentUncheckedUpdateWithoutSelectUnitsInput>
   }
 
-  export type LessonUpdateOneRequiredWithoutSelectUnitsNestedInput = {
+  export type SelectedLessonUpdateManyWithoutSelectUnitNestedInput = {
+    create?: XOR<SelectedLessonCreateWithoutSelectUnitInput, SelectedLessonUncheckedCreateWithoutSelectUnitInput> | SelectedLessonCreateWithoutSelectUnitInput[] | SelectedLessonUncheckedCreateWithoutSelectUnitInput[]
+    connectOrCreate?: SelectedLessonCreateOrConnectWithoutSelectUnitInput | SelectedLessonCreateOrConnectWithoutSelectUnitInput[]
+    upsert?: SelectedLessonUpsertWithWhereUniqueWithoutSelectUnitInput | SelectedLessonUpsertWithWhereUniqueWithoutSelectUnitInput[]
+    createMany?: SelectedLessonCreateManySelectUnitInputEnvelope
+    set?: SelectedLessonWhereUniqueInput | SelectedLessonWhereUniqueInput[]
+    disconnect?: SelectedLessonWhereUniqueInput | SelectedLessonWhereUniqueInput[]
+    delete?: SelectedLessonWhereUniqueInput | SelectedLessonWhereUniqueInput[]
+    connect?: SelectedLessonWhereUniqueInput | SelectedLessonWhereUniqueInput[]
+    update?: SelectedLessonUpdateWithWhereUniqueWithoutSelectUnitInput | SelectedLessonUpdateWithWhereUniqueWithoutSelectUnitInput[]
+    updateMany?: SelectedLessonUpdateManyWithWhereWithoutSelectUnitInput | SelectedLessonUpdateManyWithWhereWithoutSelectUnitInput[]
+    deleteMany?: SelectedLessonScalarWhereInput | SelectedLessonScalarWhereInput[]
+  }
+
+  export type LessonUpdateOneWithoutSelectUnitsNestedInput = {
     create?: XOR<LessonCreateWithoutSelectUnitsInput, LessonUncheckedCreateWithoutSelectUnitsInput>
     connectOrCreate?: LessonCreateOrConnectWithoutSelectUnitsInput
     upsert?: LessonUpsertWithoutSelectUnitsInput
+    disconnect?: LessonWhereInput | boolean
+    delete?: LessonWhereInput | boolean
     connect?: LessonWhereUniqueInput
     update?: XOR<XOR<LessonUpdateToOneWithWhereWithoutSelectUnitsInput, LessonUpdateWithoutSelectUnitsInput>, LessonUncheckedUpdateWithoutSelectUnitsInput>
+  }
+
+  export type PaymentsUpdateManyWithoutSelectUnitNestedInput = {
+    create?: XOR<PaymentsCreateWithoutSelectUnitInput, PaymentsUncheckedCreateWithoutSelectUnitInput> | PaymentsCreateWithoutSelectUnitInput[] | PaymentsUncheckedCreateWithoutSelectUnitInput[]
+    connectOrCreate?: PaymentsCreateOrConnectWithoutSelectUnitInput | PaymentsCreateOrConnectWithoutSelectUnitInput[]
+    upsert?: PaymentsUpsertWithWhereUniqueWithoutSelectUnitInput | PaymentsUpsertWithWhereUniqueWithoutSelectUnitInput[]
+    createMany?: PaymentsCreateManySelectUnitInputEnvelope
+    set?: PaymentsWhereUniqueInput | PaymentsWhereUniqueInput[]
+    disconnect?: PaymentsWhereUniqueInput | PaymentsWhereUniqueInput[]
+    delete?: PaymentsWhereUniqueInput | PaymentsWhereUniqueInput[]
+    connect?: PaymentsWhereUniqueInput | PaymentsWhereUniqueInput[]
+    update?: PaymentsUpdateWithWhereUniqueWithoutSelectUnitInput | PaymentsUpdateWithWhereUniqueWithoutSelectUnitInput[]
+    updateMany?: PaymentsUpdateManyWithWhereWithoutSelectUnitInput | PaymentsUpdateManyWithWhereWithoutSelectUnitInput[]
+    deleteMany?: PaymentsScalarWhereInput | PaymentsScalarWhereInput[]
+  }
+
+  export type SelectedLessonUncheckedUpdateManyWithoutSelectUnitNestedInput = {
+    create?: XOR<SelectedLessonCreateWithoutSelectUnitInput, SelectedLessonUncheckedCreateWithoutSelectUnitInput> | SelectedLessonCreateWithoutSelectUnitInput[] | SelectedLessonUncheckedCreateWithoutSelectUnitInput[]
+    connectOrCreate?: SelectedLessonCreateOrConnectWithoutSelectUnitInput | SelectedLessonCreateOrConnectWithoutSelectUnitInput[]
+    upsert?: SelectedLessonUpsertWithWhereUniqueWithoutSelectUnitInput | SelectedLessonUpsertWithWhereUniqueWithoutSelectUnitInput[]
+    createMany?: SelectedLessonCreateManySelectUnitInputEnvelope
+    set?: SelectedLessonWhereUniqueInput | SelectedLessonWhereUniqueInput[]
+    disconnect?: SelectedLessonWhereUniqueInput | SelectedLessonWhereUniqueInput[]
+    delete?: SelectedLessonWhereUniqueInput | SelectedLessonWhereUniqueInput[]
+    connect?: SelectedLessonWhereUniqueInput | SelectedLessonWhereUniqueInput[]
+    update?: SelectedLessonUpdateWithWhereUniqueWithoutSelectUnitInput | SelectedLessonUpdateWithWhereUniqueWithoutSelectUnitInput[]
+    updateMany?: SelectedLessonUpdateManyWithWhereWithoutSelectUnitInput | SelectedLessonUpdateManyWithWhereWithoutSelectUnitInput[]
+    deleteMany?: SelectedLessonScalarWhereInput | SelectedLessonScalarWhereInput[]
+  }
+
+  export type PaymentsUncheckedUpdateManyWithoutSelectUnitNestedInput = {
+    create?: XOR<PaymentsCreateWithoutSelectUnitInput, PaymentsUncheckedCreateWithoutSelectUnitInput> | PaymentsCreateWithoutSelectUnitInput[] | PaymentsUncheckedCreateWithoutSelectUnitInput[]
+    connectOrCreate?: PaymentsCreateOrConnectWithoutSelectUnitInput | PaymentsCreateOrConnectWithoutSelectUnitInput[]
+    upsert?: PaymentsUpsertWithWhereUniqueWithoutSelectUnitInput | PaymentsUpsertWithWhereUniqueWithoutSelectUnitInput[]
+    createMany?: PaymentsCreateManySelectUnitInputEnvelope
+    set?: PaymentsWhereUniqueInput | PaymentsWhereUniqueInput[]
+    disconnect?: PaymentsWhereUniqueInput | PaymentsWhereUniqueInput[]
+    delete?: PaymentsWhereUniqueInput | PaymentsWhereUniqueInput[]
+    connect?: PaymentsWhereUniqueInput | PaymentsWhereUniqueInput[]
+    update?: PaymentsUpdateWithWhereUniqueWithoutSelectUnitInput | PaymentsUpdateWithWhereUniqueWithoutSelectUnitInput[]
+    updateMany?: PaymentsUpdateManyWithWhereWithoutSelectUnitInput | PaymentsUpdateManyWithWhereWithoutSelectUnitInput[]
+    deleteMany?: PaymentsScalarWhereInput | PaymentsScalarWhereInput[]
+  }
+
+  export type SelectUnitCreateNestedOneWithoutSelectedLessonsInput = {
+    create?: XOR<SelectUnitCreateWithoutSelectedLessonsInput, SelectUnitUncheckedCreateWithoutSelectedLessonsInput>
+    connectOrCreate?: SelectUnitCreateOrConnectWithoutSelectedLessonsInput
+    connect?: SelectUnitWhereUniqueInput
+  }
+
+  export type LessonCreateNestedOneWithoutSelectedLessonInput = {
+    create?: XOR<LessonCreateWithoutSelectedLessonInput, LessonUncheckedCreateWithoutSelectedLessonInput>
+    connectOrCreate?: LessonCreateOrConnectWithoutSelectedLessonInput
+    connect?: LessonWhereUniqueInput
+  }
+
+  export type SelectUnitUpdateOneRequiredWithoutSelectedLessonsNestedInput = {
+    create?: XOR<SelectUnitCreateWithoutSelectedLessonsInput, SelectUnitUncheckedCreateWithoutSelectedLessonsInput>
+    connectOrCreate?: SelectUnitCreateOrConnectWithoutSelectedLessonsInput
+    upsert?: SelectUnitUpsertWithoutSelectedLessonsInput
+    connect?: SelectUnitWhereUniqueInput
+    update?: XOR<XOR<SelectUnitUpdateToOneWithWhereWithoutSelectedLessonsInput, SelectUnitUpdateWithoutSelectedLessonsInput>, SelectUnitUncheckedUpdateWithoutSelectedLessonsInput>
+  }
+
+  export type LessonUpdateOneRequiredWithoutSelectedLessonNestedInput = {
+    create?: XOR<LessonCreateWithoutSelectedLessonInput, LessonUncheckedCreateWithoutSelectedLessonInput>
+    connectOrCreate?: LessonCreateOrConnectWithoutSelectedLessonInput
+    upsert?: LessonUpsertWithoutSelectedLessonInput
+    connect?: LessonWhereUniqueInput
+    update?: XOR<XOR<LessonUpdateToOneWithWhereWithoutSelectedLessonInput, LessonUpdateWithoutSelectedLessonInput>, LessonUncheckedUpdateWithoutSelectedLessonInput>
+  }
+
+  export type SelectUnitCreateNestedOneWithoutPaymentsInput = {
+    create?: XOR<SelectUnitCreateWithoutPaymentsInput, SelectUnitUncheckedCreateWithoutPaymentsInput>
+    connectOrCreate?: SelectUnitCreateOrConnectWithoutPaymentsInput
+    connect?: SelectUnitWhereUniqueInput
+  }
+
+  export type SelectUnitUpdateOneRequiredWithoutPaymentsNestedInput = {
+    create?: XOR<SelectUnitCreateWithoutPaymentsInput, SelectUnitUncheckedCreateWithoutPaymentsInput>
+    connectOrCreate?: SelectUnitCreateOrConnectWithoutPaymentsInput
+    upsert?: SelectUnitUpsertWithoutPaymentsInput
+    connect?: SelectUnitWhereUniqueInput
+    update?: XOR<XOR<SelectUnitUpdateToOneWithWhereWithoutPaymentsInput, SelectUnitUpdateWithoutPaymentsInput>, SelectUnitUncheckedUpdateWithoutPaymentsInput>
   }
 
   export type StudentCreateNestedManyWithoutFieldInput = {
@@ -11786,6 +14916,7 @@ export namespace Prisma {
     Name: string
     FixedFee?: bigint | number | null
     Created_at?: Date | string
+    Updated_at?: Date | string
     lessons?: LessonCreateNestedManyWithoutFieldInput
     teachers?: TeacherCreateNestedManyWithoutFieldInput
   }
@@ -11795,6 +14926,7 @@ export namespace Prisma {
     Name: string
     FixedFee?: bigint | number | null
     Created_at?: Date | string
+    Updated_at?: Date | string
     lessons?: LessonUncheckedCreateNestedManyWithoutFieldInput
     teachers?: TeacherUncheckedCreateNestedManyWithoutFieldInput
   }
@@ -11805,21 +14937,35 @@ export namespace Prisma {
   }
 
   export type SelectUnitCreateWithoutStudentInput = {
+    id?: bigint | number
     Year: number
     Period: $Enums.Period
     ExtraFee?: bigint | number | null
+    FixedFee?: bigint | number | null
+    CertificateFee?: bigint | number | null
+    ExtraClassFee?: bigint | number | null
+    BooksFee?: bigint | number | null
     Created_at?: Date | string
     Updated_at?: Date | string
-    lesson: LessonCreateNestedOneWithoutSelectUnitsInput
+    selectedLessons?: SelectedLessonCreateNestedManyWithoutSelectUnitInput
+    Lesson?: LessonCreateNestedOneWithoutSelectUnitsInput
+    Payments?: PaymentsCreateNestedManyWithoutSelectUnitInput
   }
 
   export type SelectUnitUncheckedCreateWithoutStudentInput = {
-    LessonId: bigint | number
+    id?: bigint | number
     Year: number
     Period: $Enums.Period
     ExtraFee?: bigint | number | null
+    FixedFee?: bigint | number | null
+    CertificateFee?: bigint | number | null
+    ExtraClassFee?: bigint | number | null
+    BooksFee?: bigint | number | null
     Created_at?: Date | string
     Updated_at?: Date | string
+    lessonId?: bigint | number | null
+    selectedLessons?: SelectedLessonUncheckedCreateNestedManyWithoutSelectUnitInput
+    Payments?: PaymentsUncheckedCreateNestedManyWithoutSelectUnitInput
   }
 
   export type SelectUnitCreateOrConnectWithoutStudentInput = {
@@ -11848,6 +14994,7 @@ export namespace Prisma {
     Name?: StringFieldUpdateOperationsInput | string
     FixedFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     lessons?: LessonUpdateManyWithoutFieldNestedInput
     teachers?: TeacherUpdateManyWithoutFieldNestedInput
   }
@@ -11857,6 +15004,7 @@ export namespace Prisma {
     Name?: StringFieldUpdateOperationsInput | string
     FixedFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     lessons?: LessonUncheckedUpdateManyWithoutFieldNestedInput
     teachers?: TeacherUncheckedUpdateManyWithoutFieldNestedInput
   }
@@ -11881,13 +15029,18 @@ export namespace Prisma {
     AND?: SelectUnitScalarWhereInput | SelectUnitScalarWhereInput[]
     OR?: SelectUnitScalarWhereInput[]
     NOT?: SelectUnitScalarWhereInput | SelectUnitScalarWhereInput[]
+    id?: BigIntFilter<"SelectUnit"> | bigint | number
     StudentId?: BigIntFilter<"SelectUnit"> | bigint | number
-    LessonId?: BigIntFilter<"SelectUnit"> | bigint | number
     Year?: IntFilter<"SelectUnit"> | number
     Period?: EnumPeriodFilter<"SelectUnit"> | $Enums.Period
     ExtraFee?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
+    FixedFee?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
+    CertificateFee?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
+    ExtraClassFee?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
+    BooksFee?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
     Created_at?: DateTimeFilter<"SelectUnit"> | Date | string
     Updated_at?: DateTimeFilter<"SelectUnit"> | Date | string
+    lessonId?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
   }
 
   export type FieldCreateWithoutLessonsInput = {
@@ -11895,6 +15048,7 @@ export namespace Prisma {
     Name: string
     FixedFee?: bigint | number | null
     Created_at?: Date | string
+    Updated_at?: Date | string
     students?: StudentCreateNestedManyWithoutFieldInput
     teachers?: TeacherCreateNestedManyWithoutFieldInput
   }
@@ -11904,6 +15058,7 @@ export namespace Prisma {
     Name: string
     FixedFee?: bigint | number | null
     Created_at?: Date | string
+    Updated_at?: Date | string
     students?: StudentUncheckedCreateNestedManyWithoutFieldInput
     teachers?: TeacherUncheckedCreateNestedManyWithoutFieldInput
   }
@@ -11947,7 +15102,8 @@ export namespace Prisma {
   export type LessonCreateWithoutRequiresLessonInput = {
     id?: bigint | number
     LessonName: string
-    Unit: number
+    PracticalUnit: number
+    TheoriUnit: number
     Grade?: $Enums.LessonGrade | null
     PassCondition?: number | null
     TheoriHours?: number | null
@@ -11963,13 +15119,15 @@ export namespace Prisma {
     teacher?: TeacherCreateNestedOneWithoutLessonsInput
     requiredForLesson?: LessonCreateNestedManyWithoutRequiresLessonInput
     selectUnits?: SelectUnitCreateNestedManyWithoutLessonInput
+    SelectedLesson?: SelectedLessonCreateNestedManyWithoutLessonInput
   }
 
   export type LessonUncheckedCreateWithoutRequiresLessonInput = {
     id?: bigint | number
     TeacherId?: bigint | number | null
     LessonName: string
-    Unit: number
+    PracticalUnit: number
+    TheoriUnit: number
     Grade?: $Enums.LessonGrade | null
     fieldId?: bigint | number | null
     PassCondition?: number | null
@@ -11984,6 +15142,7 @@ export namespace Prisma {
     Updated_at?: Date | string
     requiredForLesson?: LessonUncheckedCreateNestedManyWithoutRequiresLessonInput
     selectUnits?: SelectUnitUncheckedCreateNestedManyWithoutLessonInput
+    SelectedLesson?: SelectedLessonUncheckedCreateNestedManyWithoutLessonInput
   }
 
   export type LessonCreateOrConnectWithoutRequiresLessonInput = {
@@ -11999,7 +15158,8 @@ export namespace Prisma {
   export type LessonCreateWithoutRequiredForLessonInput = {
     id?: bigint | number
     LessonName: string
-    Unit: number
+    PracticalUnit: number
+    TheoriUnit: number
     Grade?: $Enums.LessonGrade | null
     PassCondition?: number | null
     TheoriHours?: number | null
@@ -12015,13 +15175,15 @@ export namespace Prisma {
     teacher?: TeacherCreateNestedOneWithoutLessonsInput
     requiresLesson?: LessonCreateNestedOneWithoutRequiredForLessonInput
     selectUnits?: SelectUnitCreateNestedManyWithoutLessonInput
+    SelectedLesson?: SelectedLessonCreateNestedManyWithoutLessonInput
   }
 
   export type LessonUncheckedCreateWithoutRequiredForLessonInput = {
     id?: bigint | number
     TeacherId?: bigint | number | null
     LessonName: string
-    Unit: number
+    PracticalUnit: number
+    TheoriUnit: number
     Grade?: $Enums.LessonGrade | null
     fieldId?: bigint | number | null
     PassCondition?: number | null
@@ -12036,6 +15198,7 @@ export namespace Prisma {
     Created_at?: Date | string
     Updated_at?: Date | string
     selectUnits?: SelectUnitUncheckedCreateNestedManyWithoutLessonInput
+    SelectedLesson?: SelectedLessonUncheckedCreateNestedManyWithoutLessonInput
   }
 
   export type LessonCreateOrConnectWithoutRequiredForLessonInput = {
@@ -12044,21 +15207,35 @@ export namespace Prisma {
   }
 
   export type SelectUnitCreateWithoutLessonInput = {
+    id?: bigint | number
     Year: number
     Period: $Enums.Period
     ExtraFee?: bigint | number | null
+    FixedFee?: bigint | number | null
+    CertificateFee?: bigint | number | null
+    ExtraClassFee?: bigint | number | null
+    BooksFee?: bigint | number | null
     Created_at?: Date | string
     Updated_at?: Date | string
     student: StudentCreateNestedOneWithoutSelectUnitsInput
+    selectedLessons?: SelectedLessonCreateNestedManyWithoutSelectUnitInput
+    Payments?: PaymentsCreateNestedManyWithoutSelectUnitInput
   }
 
   export type SelectUnitUncheckedCreateWithoutLessonInput = {
+    id?: bigint | number
     StudentId: bigint | number
     Year: number
     Period: $Enums.Period
     ExtraFee?: bigint | number | null
+    FixedFee?: bigint | number | null
+    CertificateFee?: bigint | number | null
+    ExtraClassFee?: bigint | number | null
+    BooksFee?: bigint | number | null
     Created_at?: Date | string
     Updated_at?: Date | string
+    selectedLessons?: SelectedLessonUncheckedCreateNestedManyWithoutSelectUnitInput
+    Payments?: PaymentsUncheckedCreateNestedManyWithoutSelectUnitInput
   }
 
   export type SelectUnitCreateOrConnectWithoutLessonInput = {
@@ -12068,6 +15245,26 @@ export namespace Prisma {
 
   export type SelectUnitCreateManyLessonInputEnvelope = {
     data: SelectUnitCreateManyLessonInput | SelectUnitCreateManyLessonInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SelectedLessonCreateWithoutLessonInput = {
+    id?: bigint | number
+    selectUnit: SelectUnitCreateNestedOneWithoutSelectedLessonsInput
+  }
+
+  export type SelectedLessonUncheckedCreateWithoutLessonInput = {
+    id?: bigint | number
+    selectUnitId: bigint | number
+  }
+
+  export type SelectedLessonCreateOrConnectWithoutLessonInput = {
+    where: SelectedLessonWhereUniqueInput
+    create: XOR<SelectedLessonCreateWithoutLessonInput, SelectedLessonUncheckedCreateWithoutLessonInput>
+  }
+
+  export type SelectedLessonCreateManyLessonInputEnvelope = {
+    data: SelectedLessonCreateManyLessonInput | SelectedLessonCreateManyLessonInput[]
     skipDuplicates?: boolean
   }
 
@@ -12087,6 +15284,7 @@ export namespace Prisma {
     Name?: StringFieldUpdateOperationsInput | string
     FixedFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     students?: StudentUpdateManyWithoutFieldNestedInput
     teachers?: TeacherUpdateManyWithoutFieldNestedInput
   }
@@ -12096,6 +15294,7 @@ export namespace Prisma {
     Name?: StringFieldUpdateOperationsInput | string
     FixedFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     students?: StudentUncheckedUpdateManyWithoutFieldNestedInput
     teachers?: TeacherUncheckedUpdateManyWithoutFieldNestedInput
   }
@@ -12160,7 +15359,8 @@ export namespace Prisma {
     id?: BigIntFilter<"Lesson"> | bigint | number
     TeacherId?: BigIntNullableFilter<"Lesson"> | bigint | number | null
     LessonName?: StringFilter<"Lesson"> | string
-    Unit?: IntFilter<"Lesson"> | number
+    PracticalUnit?: IntFilter<"Lesson"> | number
+    TheoriUnit?: IntFilter<"Lesson"> | number
     Grade?: EnumLessonGradeNullableFilter<"Lesson"> | $Enums.LessonGrade | null
     fieldId?: BigIntNullableFilter<"Lesson"> | bigint | number | null
     PassCondition?: IntNullableFilter<"Lesson"> | number | null
@@ -12190,7 +15390,8 @@ export namespace Prisma {
   export type LessonUpdateWithoutRequiredForLessonInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     LessonName?: StringFieldUpdateOperationsInput | string
-    Unit?: IntFieldUpdateOperationsInput | number
+    PracticalUnit?: IntFieldUpdateOperationsInput | number
+    TheoriUnit?: IntFieldUpdateOperationsInput | number
     Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -12206,13 +15407,15 @@ export namespace Prisma {
     teacher?: TeacherUpdateOneWithoutLessonsNestedInput
     requiresLesson?: LessonUpdateOneWithoutRequiredForLessonNestedInput
     selectUnits?: SelectUnitUpdateManyWithoutLessonNestedInput
+    SelectedLesson?: SelectedLessonUpdateManyWithoutLessonNestedInput
   }
 
   export type LessonUncheckedUpdateWithoutRequiredForLessonInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     TeacherId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     LessonName?: StringFieldUpdateOperationsInput | string
-    Unit?: IntFieldUpdateOperationsInput | number
+    PracticalUnit?: IntFieldUpdateOperationsInput | number
+    TheoriUnit?: IntFieldUpdateOperationsInput | number
     Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
     fieldId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
@@ -12227,6 +15430,7 @@ export namespace Prisma {
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     selectUnits?: SelectUnitUncheckedUpdateManyWithoutLessonNestedInput
+    SelectedLesson?: SelectedLessonUncheckedUpdateManyWithoutLessonNestedInput
   }
 
   export type SelectUnitUpsertWithWhereUniqueWithoutLessonInput = {
@@ -12243,6 +15447,31 @@ export namespace Prisma {
   export type SelectUnitUpdateManyWithWhereWithoutLessonInput = {
     where: SelectUnitScalarWhereInput
     data: XOR<SelectUnitUpdateManyMutationInput, SelectUnitUncheckedUpdateManyWithoutLessonInput>
+  }
+
+  export type SelectedLessonUpsertWithWhereUniqueWithoutLessonInput = {
+    where: SelectedLessonWhereUniqueInput
+    update: XOR<SelectedLessonUpdateWithoutLessonInput, SelectedLessonUncheckedUpdateWithoutLessonInput>
+    create: XOR<SelectedLessonCreateWithoutLessonInput, SelectedLessonUncheckedCreateWithoutLessonInput>
+  }
+
+  export type SelectedLessonUpdateWithWhereUniqueWithoutLessonInput = {
+    where: SelectedLessonWhereUniqueInput
+    data: XOR<SelectedLessonUpdateWithoutLessonInput, SelectedLessonUncheckedUpdateWithoutLessonInput>
+  }
+
+  export type SelectedLessonUpdateManyWithWhereWithoutLessonInput = {
+    where: SelectedLessonScalarWhereInput
+    data: XOR<SelectedLessonUpdateManyMutationInput, SelectedLessonUncheckedUpdateManyWithoutLessonInput>
+  }
+
+  export type SelectedLessonScalarWhereInput = {
+    AND?: SelectedLessonScalarWhereInput | SelectedLessonScalarWhereInput[]
+    OR?: SelectedLessonScalarWhereInput[]
+    NOT?: SelectedLessonScalarWhereInput | SelectedLessonScalarWhereInput[]
+    id?: BigIntFilter<"SelectedLesson"> | bigint | number
+    selectUnitId?: BigIntFilter<"SelectedLesson"> | bigint | number
+    lessonId?: BigIntFilter<"SelectedLesson"> | bigint | number
   }
 
   export type StudentCreateWithoutSelectUnitsInput = {
@@ -12284,10 +15513,31 @@ export namespace Prisma {
     create: XOR<StudentCreateWithoutSelectUnitsInput, StudentUncheckedCreateWithoutSelectUnitsInput>
   }
 
+  export type SelectedLessonCreateWithoutSelectUnitInput = {
+    id?: bigint | number
+    lesson: LessonCreateNestedOneWithoutSelectedLessonInput
+  }
+
+  export type SelectedLessonUncheckedCreateWithoutSelectUnitInput = {
+    id?: bigint | number
+    lessonId: bigint | number
+  }
+
+  export type SelectedLessonCreateOrConnectWithoutSelectUnitInput = {
+    where: SelectedLessonWhereUniqueInput
+    create: XOR<SelectedLessonCreateWithoutSelectUnitInput, SelectedLessonUncheckedCreateWithoutSelectUnitInput>
+  }
+
+  export type SelectedLessonCreateManySelectUnitInputEnvelope = {
+    data: SelectedLessonCreateManySelectUnitInput | SelectedLessonCreateManySelectUnitInput[]
+    skipDuplicates?: boolean
+  }
+
   export type LessonCreateWithoutSelectUnitsInput = {
     id?: bigint | number
     LessonName: string
-    Unit: number
+    PracticalUnit: number
+    TheoriUnit: number
     Grade?: $Enums.LessonGrade | null
     PassCondition?: number | null
     TheoriHours?: number | null
@@ -12303,13 +15553,15 @@ export namespace Prisma {
     teacher?: TeacherCreateNestedOneWithoutLessonsInput
     requiredForLesson?: LessonCreateNestedManyWithoutRequiresLessonInput
     requiresLesson?: LessonCreateNestedOneWithoutRequiredForLessonInput
+    SelectedLesson?: SelectedLessonCreateNestedManyWithoutLessonInput
   }
 
   export type LessonUncheckedCreateWithoutSelectUnitsInput = {
     id?: bigint | number
     TeacherId?: bigint | number | null
     LessonName: string
-    Unit: number
+    PracticalUnit: number
+    TheoriUnit: number
     Grade?: $Enums.LessonGrade | null
     fieldId?: bigint | number | null
     PassCondition?: number | null
@@ -12324,11 +15576,46 @@ export namespace Prisma {
     Created_at?: Date | string
     Updated_at?: Date | string
     requiredForLesson?: LessonUncheckedCreateNestedManyWithoutRequiresLessonInput
+    SelectedLesson?: SelectedLessonUncheckedCreateNestedManyWithoutLessonInput
   }
 
   export type LessonCreateOrConnectWithoutSelectUnitsInput = {
     where: LessonWhereUniqueInput
     create: XOR<LessonCreateWithoutSelectUnitsInput, LessonUncheckedCreateWithoutSelectUnitsInput>
+  }
+
+  export type PaymentsCreateWithoutSelectUnitInput = {
+    id?: bigint | number
+    Check?: string | null
+    BankName?: string | null
+    BranchCode?: string | null
+    Branch?: string | null
+    Amount: bigint | number
+    PaymentDate?: Date | string | null
+    Created_at?: Date | string
+    Updated_at?: Date | string
+  }
+
+  export type PaymentsUncheckedCreateWithoutSelectUnitInput = {
+    id?: bigint | number
+    Check?: string | null
+    BankName?: string | null
+    BranchCode?: string | null
+    Branch?: string | null
+    Amount: bigint | number
+    PaymentDate?: Date | string | null
+    Created_at?: Date | string
+    Updated_at?: Date | string
+  }
+
+  export type PaymentsCreateOrConnectWithoutSelectUnitInput = {
+    where: PaymentsWhereUniqueInput
+    create: XOR<PaymentsCreateWithoutSelectUnitInput, PaymentsUncheckedCreateWithoutSelectUnitInput>
+  }
+
+  export type PaymentsCreateManySelectUnitInputEnvelope = {
+    data: PaymentsCreateManySelectUnitInput | PaymentsCreateManySelectUnitInput[]
+    skipDuplicates?: boolean
   }
 
   export type StudentUpsertWithoutSelectUnitsInput = {
@@ -12376,6 +15663,22 @@ export namespace Prisma {
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type SelectedLessonUpsertWithWhereUniqueWithoutSelectUnitInput = {
+    where: SelectedLessonWhereUniqueInput
+    update: XOR<SelectedLessonUpdateWithoutSelectUnitInput, SelectedLessonUncheckedUpdateWithoutSelectUnitInput>
+    create: XOR<SelectedLessonCreateWithoutSelectUnitInput, SelectedLessonUncheckedCreateWithoutSelectUnitInput>
+  }
+
+  export type SelectedLessonUpdateWithWhereUniqueWithoutSelectUnitInput = {
+    where: SelectedLessonWhereUniqueInput
+    data: XOR<SelectedLessonUpdateWithoutSelectUnitInput, SelectedLessonUncheckedUpdateWithoutSelectUnitInput>
+  }
+
+  export type SelectedLessonUpdateManyWithWhereWithoutSelectUnitInput = {
+    where: SelectedLessonScalarWhereInput
+    data: XOR<SelectedLessonUpdateManyMutationInput, SelectedLessonUncheckedUpdateManyWithoutSelectUnitInput>
+  }
+
   export type LessonUpsertWithoutSelectUnitsInput = {
     update: XOR<LessonUpdateWithoutSelectUnitsInput, LessonUncheckedUpdateWithoutSelectUnitsInput>
     create: XOR<LessonCreateWithoutSelectUnitsInput, LessonUncheckedCreateWithoutSelectUnitsInput>
@@ -12390,7 +15693,8 @@ export namespace Prisma {
   export type LessonUpdateWithoutSelectUnitsInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     LessonName?: StringFieldUpdateOperationsInput | string
-    Unit?: IntFieldUpdateOperationsInput | number
+    PracticalUnit?: IntFieldUpdateOperationsInput | number
+    TheoriUnit?: IntFieldUpdateOperationsInput | number
     Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -12406,13 +15710,15 @@ export namespace Prisma {
     teacher?: TeacherUpdateOneWithoutLessonsNestedInput
     requiredForLesson?: LessonUpdateManyWithoutRequiresLessonNestedInput
     requiresLesson?: LessonUpdateOneWithoutRequiredForLessonNestedInput
+    SelectedLesson?: SelectedLessonUpdateManyWithoutLessonNestedInput
   }
 
   export type LessonUncheckedUpdateWithoutSelectUnitsInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     TeacherId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     LessonName?: StringFieldUpdateOperationsInput | string
-    Unit?: IntFieldUpdateOperationsInput | number
+    PracticalUnit?: IntFieldUpdateOperationsInput | number
+    TheoriUnit?: IntFieldUpdateOperationsInput | number
     Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
     fieldId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
@@ -12427,6 +15733,307 @@ export namespace Prisma {
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     requiredForLesson?: LessonUncheckedUpdateManyWithoutRequiresLessonNestedInput
+    SelectedLesson?: SelectedLessonUncheckedUpdateManyWithoutLessonNestedInput
+  }
+
+  export type PaymentsUpsertWithWhereUniqueWithoutSelectUnitInput = {
+    where: PaymentsWhereUniqueInput
+    update: XOR<PaymentsUpdateWithoutSelectUnitInput, PaymentsUncheckedUpdateWithoutSelectUnitInput>
+    create: XOR<PaymentsCreateWithoutSelectUnitInput, PaymentsUncheckedCreateWithoutSelectUnitInput>
+  }
+
+  export type PaymentsUpdateWithWhereUniqueWithoutSelectUnitInput = {
+    where: PaymentsWhereUniqueInput
+    data: XOR<PaymentsUpdateWithoutSelectUnitInput, PaymentsUncheckedUpdateWithoutSelectUnitInput>
+  }
+
+  export type PaymentsUpdateManyWithWhereWithoutSelectUnitInput = {
+    where: PaymentsScalarWhereInput
+    data: XOR<PaymentsUpdateManyMutationInput, PaymentsUncheckedUpdateManyWithoutSelectUnitInput>
+  }
+
+  export type PaymentsScalarWhereInput = {
+    AND?: PaymentsScalarWhereInput | PaymentsScalarWhereInput[]
+    OR?: PaymentsScalarWhereInput[]
+    NOT?: PaymentsScalarWhereInput | PaymentsScalarWhereInput[]
+    id?: BigIntFilter<"Payments"> | bigint | number
+    Check?: StringNullableFilter<"Payments"> | string | null
+    BankName?: StringNullableFilter<"Payments"> | string | null
+    BranchCode?: StringNullableFilter<"Payments"> | string | null
+    Branch?: StringNullableFilter<"Payments"> | string | null
+    Amount?: BigIntFilter<"Payments"> | bigint | number
+    selectUnitId?: BigIntFilter<"Payments"> | bigint | number
+    PaymentDate?: DateTimeNullableFilter<"Payments"> | Date | string | null
+    Created_at?: DateTimeFilter<"Payments"> | Date | string
+    Updated_at?: DateTimeFilter<"Payments"> | Date | string
+  }
+
+  export type SelectUnitCreateWithoutSelectedLessonsInput = {
+    id?: bigint | number
+    Year: number
+    Period: $Enums.Period
+    ExtraFee?: bigint | number | null
+    FixedFee?: bigint | number | null
+    CertificateFee?: bigint | number | null
+    ExtraClassFee?: bigint | number | null
+    BooksFee?: bigint | number | null
+    Created_at?: Date | string
+    Updated_at?: Date | string
+    student: StudentCreateNestedOneWithoutSelectUnitsInput
+    Lesson?: LessonCreateNestedOneWithoutSelectUnitsInput
+    Payments?: PaymentsCreateNestedManyWithoutSelectUnitInput
+  }
+
+  export type SelectUnitUncheckedCreateWithoutSelectedLessonsInput = {
+    id?: bigint | number
+    StudentId: bigint | number
+    Year: number
+    Period: $Enums.Period
+    ExtraFee?: bigint | number | null
+    FixedFee?: bigint | number | null
+    CertificateFee?: bigint | number | null
+    ExtraClassFee?: bigint | number | null
+    BooksFee?: bigint | number | null
+    Created_at?: Date | string
+    Updated_at?: Date | string
+    lessonId?: bigint | number | null
+    Payments?: PaymentsUncheckedCreateNestedManyWithoutSelectUnitInput
+  }
+
+  export type SelectUnitCreateOrConnectWithoutSelectedLessonsInput = {
+    where: SelectUnitWhereUniqueInput
+    create: XOR<SelectUnitCreateWithoutSelectedLessonsInput, SelectUnitUncheckedCreateWithoutSelectedLessonsInput>
+  }
+
+  export type LessonCreateWithoutSelectedLessonInput = {
+    id?: bigint | number
+    LessonName: string
+    PracticalUnit: number
+    TheoriUnit: number
+    Grade?: $Enums.LessonGrade | null
+    PassCondition?: number | null
+    TheoriHours?: number | null
+    PracticalHours?: number | null
+    RequireUnit?: number | null
+    NotifCode?: bigint | number | null
+    ValidFrom?: Date | string | null
+    ValidTill?: Date | string | null
+    PricePerUnit?: bigint | number | null
+    Created_at?: Date | string
+    Updated_at?: Date | string
+    field?: FieldCreateNestedOneWithoutLessonsInput
+    teacher?: TeacherCreateNestedOneWithoutLessonsInput
+    requiredForLesson?: LessonCreateNestedManyWithoutRequiresLessonInput
+    requiresLesson?: LessonCreateNestedOneWithoutRequiredForLessonInput
+    selectUnits?: SelectUnitCreateNestedManyWithoutLessonInput
+  }
+
+  export type LessonUncheckedCreateWithoutSelectedLessonInput = {
+    id?: bigint | number
+    TeacherId?: bigint | number | null
+    LessonName: string
+    PracticalUnit: number
+    TheoriUnit: number
+    Grade?: $Enums.LessonGrade | null
+    fieldId?: bigint | number | null
+    PassCondition?: number | null
+    TheoriHours?: number | null
+    PracticalHours?: number | null
+    RequireLesson?: bigint | number | null
+    RequireUnit?: number | null
+    NotifCode?: bigint | number | null
+    ValidFrom?: Date | string | null
+    ValidTill?: Date | string | null
+    PricePerUnit?: bigint | number | null
+    Created_at?: Date | string
+    Updated_at?: Date | string
+    requiredForLesson?: LessonUncheckedCreateNestedManyWithoutRequiresLessonInput
+    selectUnits?: SelectUnitUncheckedCreateNestedManyWithoutLessonInput
+  }
+
+  export type LessonCreateOrConnectWithoutSelectedLessonInput = {
+    where: LessonWhereUniqueInput
+    create: XOR<LessonCreateWithoutSelectedLessonInput, LessonUncheckedCreateWithoutSelectedLessonInput>
+  }
+
+  export type SelectUnitUpsertWithoutSelectedLessonsInput = {
+    update: XOR<SelectUnitUpdateWithoutSelectedLessonsInput, SelectUnitUncheckedUpdateWithoutSelectedLessonsInput>
+    create: XOR<SelectUnitCreateWithoutSelectedLessonsInput, SelectUnitUncheckedCreateWithoutSelectedLessonsInput>
+    where?: SelectUnitWhereInput
+  }
+
+  export type SelectUnitUpdateToOneWithWhereWithoutSelectedLessonsInput = {
+    where?: SelectUnitWhereInput
+    data: XOR<SelectUnitUpdateWithoutSelectedLessonsInput, SelectUnitUncheckedUpdateWithoutSelectedLessonsInput>
+  }
+
+  export type SelectUnitUpdateWithoutSelectedLessonsInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    Year?: IntFieldUpdateOperationsInput | number
+    Period?: EnumPeriodFieldUpdateOperationsInput | $Enums.Period
+    ExtraFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    FixedFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    CertificateFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ExtraClassFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    BooksFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    student?: StudentUpdateOneRequiredWithoutSelectUnitsNestedInput
+    Lesson?: LessonUpdateOneWithoutSelectUnitsNestedInput
+    Payments?: PaymentsUpdateManyWithoutSelectUnitNestedInput
+  }
+
+  export type SelectUnitUncheckedUpdateWithoutSelectedLessonsInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    StudentId?: BigIntFieldUpdateOperationsInput | bigint | number
+    Year?: IntFieldUpdateOperationsInput | number
+    Period?: EnumPeriodFieldUpdateOperationsInput | $Enums.Period
+    ExtraFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    FixedFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    CertificateFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ExtraClassFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    BooksFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    lessonId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Payments?: PaymentsUncheckedUpdateManyWithoutSelectUnitNestedInput
+  }
+
+  export type LessonUpsertWithoutSelectedLessonInput = {
+    update: XOR<LessonUpdateWithoutSelectedLessonInput, LessonUncheckedUpdateWithoutSelectedLessonInput>
+    create: XOR<LessonCreateWithoutSelectedLessonInput, LessonUncheckedCreateWithoutSelectedLessonInput>
+    where?: LessonWhereInput
+  }
+
+  export type LessonUpdateToOneWithWhereWithoutSelectedLessonInput = {
+    where?: LessonWhereInput
+    data: XOR<LessonUpdateWithoutSelectedLessonInput, LessonUncheckedUpdateWithoutSelectedLessonInput>
+  }
+
+  export type LessonUpdateWithoutSelectedLessonInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    LessonName?: StringFieldUpdateOperationsInput | string
+    PracticalUnit?: IntFieldUpdateOperationsInput | number
+    TheoriUnit?: IntFieldUpdateOperationsInput | number
+    Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
+    PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
+    TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
+    PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
+    RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
+    NotifCode?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ValidFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    PricePerUnit?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    field?: FieldUpdateOneWithoutLessonsNestedInput
+    teacher?: TeacherUpdateOneWithoutLessonsNestedInput
+    requiredForLesson?: LessonUpdateManyWithoutRequiresLessonNestedInput
+    requiresLesson?: LessonUpdateOneWithoutRequiredForLessonNestedInput
+    selectUnits?: SelectUnitUpdateManyWithoutLessonNestedInput
+  }
+
+  export type LessonUncheckedUpdateWithoutSelectedLessonInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    TeacherId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    LessonName?: StringFieldUpdateOperationsInput | string
+    PracticalUnit?: IntFieldUpdateOperationsInput | number
+    TheoriUnit?: IntFieldUpdateOperationsInput | number
+    Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
+    fieldId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
+    TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
+    PracticalHours?: NullableIntFieldUpdateOperationsInput | number | null
+    RequireLesson?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    RequireUnit?: NullableIntFieldUpdateOperationsInput | number | null
+    NotifCode?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ValidFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    ValidTill?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    PricePerUnit?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    requiredForLesson?: LessonUncheckedUpdateManyWithoutRequiresLessonNestedInput
+    selectUnits?: SelectUnitUncheckedUpdateManyWithoutLessonNestedInput
+  }
+
+  export type SelectUnitCreateWithoutPaymentsInput = {
+    id?: bigint | number
+    Year: number
+    Period: $Enums.Period
+    ExtraFee?: bigint | number | null
+    FixedFee?: bigint | number | null
+    CertificateFee?: bigint | number | null
+    ExtraClassFee?: bigint | number | null
+    BooksFee?: bigint | number | null
+    Created_at?: Date | string
+    Updated_at?: Date | string
+    student: StudentCreateNestedOneWithoutSelectUnitsInput
+    selectedLessons?: SelectedLessonCreateNestedManyWithoutSelectUnitInput
+    Lesson?: LessonCreateNestedOneWithoutSelectUnitsInput
+  }
+
+  export type SelectUnitUncheckedCreateWithoutPaymentsInput = {
+    id?: bigint | number
+    StudentId: bigint | number
+    Year: number
+    Period: $Enums.Period
+    ExtraFee?: bigint | number | null
+    FixedFee?: bigint | number | null
+    CertificateFee?: bigint | number | null
+    ExtraClassFee?: bigint | number | null
+    BooksFee?: bigint | number | null
+    Created_at?: Date | string
+    Updated_at?: Date | string
+    lessonId?: bigint | number | null
+    selectedLessons?: SelectedLessonUncheckedCreateNestedManyWithoutSelectUnitInput
+  }
+
+  export type SelectUnitCreateOrConnectWithoutPaymentsInput = {
+    where: SelectUnitWhereUniqueInput
+    create: XOR<SelectUnitCreateWithoutPaymentsInput, SelectUnitUncheckedCreateWithoutPaymentsInput>
+  }
+
+  export type SelectUnitUpsertWithoutPaymentsInput = {
+    update: XOR<SelectUnitUpdateWithoutPaymentsInput, SelectUnitUncheckedUpdateWithoutPaymentsInput>
+    create: XOR<SelectUnitCreateWithoutPaymentsInput, SelectUnitUncheckedCreateWithoutPaymentsInput>
+    where?: SelectUnitWhereInput
+  }
+
+  export type SelectUnitUpdateToOneWithWhereWithoutPaymentsInput = {
+    where?: SelectUnitWhereInput
+    data: XOR<SelectUnitUpdateWithoutPaymentsInput, SelectUnitUncheckedUpdateWithoutPaymentsInput>
+  }
+
+  export type SelectUnitUpdateWithoutPaymentsInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    Year?: IntFieldUpdateOperationsInput | number
+    Period?: EnumPeriodFieldUpdateOperationsInput | $Enums.Period
+    ExtraFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    FixedFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    CertificateFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ExtraClassFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    BooksFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    student?: StudentUpdateOneRequiredWithoutSelectUnitsNestedInput
+    selectedLessons?: SelectedLessonUpdateManyWithoutSelectUnitNestedInput
+    Lesson?: LessonUpdateOneWithoutSelectUnitsNestedInput
+  }
+
+  export type SelectUnitUncheckedUpdateWithoutPaymentsInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    StudentId?: BigIntFieldUpdateOperationsInput | bigint | number
+    Year?: IntFieldUpdateOperationsInput | number
+    Period?: EnumPeriodFieldUpdateOperationsInput | $Enums.Period
+    ExtraFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    FixedFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    CertificateFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ExtraClassFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    BooksFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    lessonId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    selectedLessons?: SelectedLessonUncheckedUpdateManyWithoutSelectUnitNestedInput
   }
 
   export type StudentCreateWithoutFieldInput = {
@@ -12476,7 +16083,8 @@ export namespace Prisma {
   export type LessonCreateWithoutFieldInput = {
     id?: bigint | number
     LessonName: string
-    Unit: number
+    PracticalUnit: number
+    TheoriUnit: number
     Grade?: $Enums.LessonGrade | null
     PassCondition?: number | null
     TheoriHours?: number | null
@@ -12492,13 +16100,15 @@ export namespace Prisma {
     requiredForLesson?: LessonCreateNestedManyWithoutRequiresLessonInput
     requiresLesson?: LessonCreateNestedOneWithoutRequiredForLessonInput
     selectUnits?: SelectUnitCreateNestedManyWithoutLessonInput
+    SelectedLesson?: SelectedLessonCreateNestedManyWithoutLessonInput
   }
 
   export type LessonUncheckedCreateWithoutFieldInput = {
     id?: bigint | number
     TeacherId?: bigint | number | null
     LessonName: string
-    Unit: number
+    PracticalUnit: number
+    TheoriUnit: number
     Grade?: $Enums.LessonGrade | null
     PassCondition?: number | null
     TheoriHours?: number | null
@@ -12513,6 +16123,7 @@ export namespace Prisma {
     Updated_at?: Date | string
     requiredForLesson?: LessonUncheckedCreateNestedManyWithoutRequiresLessonInput
     selectUnits?: SelectUnitUncheckedCreateNestedManyWithoutLessonInput
+    SelectedLesson?: SelectedLessonUncheckedCreateNestedManyWithoutLessonInput
   }
 
   export type LessonCreateOrConnectWithoutFieldInput = {
@@ -12650,6 +16261,7 @@ export namespace Prisma {
     Name: string
     FixedFee?: bigint | number | null
     Created_at?: Date | string
+    Updated_at?: Date | string
     students?: StudentCreateNestedManyWithoutFieldInput
     lessons?: LessonCreateNestedManyWithoutFieldInput
   }
@@ -12659,6 +16271,7 @@ export namespace Prisma {
     Name: string
     FixedFee?: bigint | number | null
     Created_at?: Date | string
+    Updated_at?: Date | string
     students?: StudentUncheckedCreateNestedManyWithoutFieldInput
     lessons?: LessonUncheckedCreateNestedManyWithoutFieldInput
   }
@@ -12671,7 +16284,8 @@ export namespace Prisma {
   export type LessonCreateWithoutTeacherInput = {
     id?: bigint | number
     LessonName: string
-    Unit: number
+    PracticalUnit: number
+    TheoriUnit: number
     Grade?: $Enums.LessonGrade | null
     PassCondition?: number | null
     TheoriHours?: number | null
@@ -12687,12 +16301,14 @@ export namespace Prisma {
     requiredForLesson?: LessonCreateNestedManyWithoutRequiresLessonInput
     requiresLesson?: LessonCreateNestedOneWithoutRequiredForLessonInput
     selectUnits?: SelectUnitCreateNestedManyWithoutLessonInput
+    SelectedLesson?: SelectedLessonCreateNestedManyWithoutLessonInput
   }
 
   export type LessonUncheckedCreateWithoutTeacherInput = {
     id?: bigint | number
     LessonName: string
-    Unit: number
+    PracticalUnit: number
+    TheoriUnit: number
     Grade?: $Enums.LessonGrade | null
     fieldId?: bigint | number | null
     PassCondition?: number | null
@@ -12708,6 +16324,7 @@ export namespace Prisma {
     Updated_at?: Date | string
     requiredForLesson?: LessonUncheckedCreateNestedManyWithoutRequiresLessonInput
     selectUnits?: SelectUnitUncheckedCreateNestedManyWithoutLessonInput
+    SelectedLesson?: SelectedLessonUncheckedCreateNestedManyWithoutLessonInput
   }
 
   export type LessonCreateOrConnectWithoutTeacherInput = {
@@ -12736,6 +16353,7 @@ export namespace Prisma {
     Name?: StringFieldUpdateOperationsInput | string
     FixedFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     students?: StudentUpdateManyWithoutFieldNestedInput
     lessons?: LessonUpdateManyWithoutFieldNestedInput
   }
@@ -12745,6 +16363,7 @@ export namespace Prisma {
     Name?: StringFieldUpdateOperationsInput | string
     FixedFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     students?: StudentUncheckedUpdateManyWithoutFieldNestedInput
     lessons?: LessonUncheckedUpdateManyWithoutFieldNestedInput
   }
@@ -12766,46 +16385,71 @@ export namespace Prisma {
   }
 
   export type SelectUnitCreateManyStudentInput = {
-    LessonId: bigint | number
+    id?: bigint | number
     Year: number
     Period: $Enums.Period
     ExtraFee?: bigint | number | null
+    FixedFee?: bigint | number | null
+    CertificateFee?: bigint | number | null
+    ExtraClassFee?: bigint | number | null
+    BooksFee?: bigint | number | null
     Created_at?: Date | string
     Updated_at?: Date | string
+    lessonId?: bigint | number | null
   }
 
   export type SelectUnitUpdateWithoutStudentInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
     Year?: IntFieldUpdateOperationsInput | number
     Period?: EnumPeriodFieldUpdateOperationsInput | $Enums.Period
     ExtraFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    FixedFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    CertificateFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ExtraClassFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    BooksFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    lesson?: LessonUpdateOneRequiredWithoutSelectUnitsNestedInput
+    selectedLessons?: SelectedLessonUpdateManyWithoutSelectUnitNestedInput
+    Lesson?: LessonUpdateOneWithoutSelectUnitsNestedInput
+    Payments?: PaymentsUpdateManyWithoutSelectUnitNestedInput
   }
 
   export type SelectUnitUncheckedUpdateWithoutStudentInput = {
-    LessonId?: BigIntFieldUpdateOperationsInput | bigint | number
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
     Year?: IntFieldUpdateOperationsInput | number
     Period?: EnumPeriodFieldUpdateOperationsInput | $Enums.Period
     ExtraFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    FixedFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    CertificateFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ExtraClassFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    BooksFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    lessonId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    selectedLessons?: SelectedLessonUncheckedUpdateManyWithoutSelectUnitNestedInput
+    Payments?: PaymentsUncheckedUpdateManyWithoutSelectUnitNestedInput
   }
 
   export type SelectUnitUncheckedUpdateManyWithoutStudentInput = {
-    LessonId?: BigIntFieldUpdateOperationsInput | bigint | number
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
     Year?: IntFieldUpdateOperationsInput | number
     Period?: EnumPeriodFieldUpdateOperationsInput | $Enums.Period
     ExtraFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    FixedFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    CertificateFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ExtraClassFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    BooksFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    lessonId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   }
 
   export type LessonCreateManyRequiresLessonInput = {
     id?: bigint | number
     TeacherId?: bigint | number | null
     LessonName: string
-    Unit: number
+    PracticalUnit: number
+    TheoriUnit: number
     Grade?: $Enums.LessonGrade | null
     fieldId?: bigint | number | null
     PassCondition?: number | null
@@ -12821,18 +16465,29 @@ export namespace Prisma {
   }
 
   export type SelectUnitCreateManyLessonInput = {
+    id?: bigint | number
     StudentId: bigint | number
     Year: number
     Period: $Enums.Period
     ExtraFee?: bigint | number | null
+    FixedFee?: bigint | number | null
+    CertificateFee?: bigint | number | null
+    ExtraClassFee?: bigint | number | null
+    BooksFee?: bigint | number | null
     Created_at?: Date | string
     Updated_at?: Date | string
+  }
+
+  export type SelectedLessonCreateManyLessonInput = {
+    id?: bigint | number
+    selectUnitId: bigint | number
   }
 
   export type LessonUpdateWithoutRequiresLessonInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     LessonName?: StringFieldUpdateOperationsInput | string
-    Unit?: IntFieldUpdateOperationsInput | number
+    PracticalUnit?: IntFieldUpdateOperationsInput | number
+    TheoriUnit?: IntFieldUpdateOperationsInput | number
     Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -12848,13 +16503,15 @@ export namespace Prisma {
     teacher?: TeacherUpdateOneWithoutLessonsNestedInput
     requiredForLesson?: LessonUpdateManyWithoutRequiresLessonNestedInput
     selectUnits?: SelectUnitUpdateManyWithoutLessonNestedInput
+    SelectedLesson?: SelectedLessonUpdateManyWithoutLessonNestedInput
   }
 
   export type LessonUncheckedUpdateWithoutRequiresLessonInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     TeacherId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     LessonName?: StringFieldUpdateOperationsInput | string
-    Unit?: IntFieldUpdateOperationsInput | number
+    PracticalUnit?: IntFieldUpdateOperationsInput | number
+    TheoriUnit?: IntFieldUpdateOperationsInput | number
     Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
     fieldId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
@@ -12869,13 +16526,15 @@ export namespace Prisma {
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     requiredForLesson?: LessonUncheckedUpdateManyWithoutRequiresLessonNestedInput
     selectUnits?: SelectUnitUncheckedUpdateManyWithoutLessonNestedInput
+    SelectedLesson?: SelectedLessonUncheckedUpdateManyWithoutLessonNestedInput
   }
 
   export type LessonUncheckedUpdateManyWithoutRequiresLessonInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     TeacherId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     LessonName?: StringFieldUpdateOperationsInput | string
-    Unit?: IntFieldUpdateOperationsInput | number
+    PracticalUnit?: IntFieldUpdateOperationsInput | number
+    TheoriUnit?: IntFieldUpdateOperationsInput | number
     Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
     fieldId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
@@ -12891,28 +16550,130 @@ export namespace Prisma {
   }
 
   export type SelectUnitUpdateWithoutLessonInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
     Year?: IntFieldUpdateOperationsInput | number
     Period?: EnumPeriodFieldUpdateOperationsInput | $Enums.Period
     ExtraFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    FixedFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    CertificateFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ExtraClassFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    BooksFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     student?: StudentUpdateOneRequiredWithoutSelectUnitsNestedInput
+    selectedLessons?: SelectedLessonUpdateManyWithoutSelectUnitNestedInput
+    Payments?: PaymentsUpdateManyWithoutSelectUnitNestedInput
   }
 
   export type SelectUnitUncheckedUpdateWithoutLessonInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
     StudentId?: BigIntFieldUpdateOperationsInput | bigint | number
     Year?: IntFieldUpdateOperationsInput | number
     Period?: EnumPeriodFieldUpdateOperationsInput | $Enums.Period
     ExtraFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    FixedFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    CertificateFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ExtraClassFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    BooksFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    selectedLessons?: SelectedLessonUncheckedUpdateManyWithoutSelectUnitNestedInput
+    Payments?: PaymentsUncheckedUpdateManyWithoutSelectUnitNestedInput
+  }
+
+  export type SelectUnitUncheckedUpdateManyWithoutLessonInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    StudentId?: BigIntFieldUpdateOperationsInput | bigint | number
+    Year?: IntFieldUpdateOperationsInput | number
+    Period?: EnumPeriodFieldUpdateOperationsInput | $Enums.Period
+    ExtraFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    FixedFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    CertificateFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ExtraClassFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    BooksFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type SelectUnitUncheckedUpdateManyWithoutLessonInput = {
-    StudentId?: BigIntFieldUpdateOperationsInput | bigint | number
-    Year?: IntFieldUpdateOperationsInput | number
-    Period?: EnumPeriodFieldUpdateOperationsInput | $Enums.Period
-    ExtraFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  export type SelectedLessonUpdateWithoutLessonInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    selectUnit?: SelectUnitUpdateOneRequiredWithoutSelectedLessonsNestedInput
+  }
+
+  export type SelectedLessonUncheckedUpdateWithoutLessonInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    selectUnitId?: BigIntFieldUpdateOperationsInput | bigint | number
+  }
+
+  export type SelectedLessonUncheckedUpdateManyWithoutLessonInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    selectUnitId?: BigIntFieldUpdateOperationsInput | bigint | number
+  }
+
+  export type SelectedLessonCreateManySelectUnitInput = {
+    id?: bigint | number
+    lessonId: bigint | number
+  }
+
+  export type PaymentsCreateManySelectUnitInput = {
+    id?: bigint | number
+    Check?: string | null
+    BankName?: string | null
+    BranchCode?: string | null
+    Branch?: string | null
+    Amount: bigint | number
+    PaymentDate?: Date | string | null
+    Created_at?: Date | string
+    Updated_at?: Date | string
+  }
+
+  export type SelectedLessonUpdateWithoutSelectUnitInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    lesson?: LessonUpdateOneRequiredWithoutSelectedLessonNestedInput
+  }
+
+  export type SelectedLessonUncheckedUpdateWithoutSelectUnitInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    lessonId?: BigIntFieldUpdateOperationsInput | bigint | number
+  }
+
+  export type SelectedLessonUncheckedUpdateManyWithoutSelectUnitInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    lessonId?: BigIntFieldUpdateOperationsInput | bigint | number
+  }
+
+  export type PaymentsUpdateWithoutSelectUnitInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    Check?: NullableStringFieldUpdateOperationsInput | string | null
+    BankName?: NullableStringFieldUpdateOperationsInput | string | null
+    BranchCode?: NullableStringFieldUpdateOperationsInput | string | null
+    Branch?: NullableStringFieldUpdateOperationsInput | string | null
+    Amount?: BigIntFieldUpdateOperationsInput | bigint | number
+    PaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentsUncheckedUpdateWithoutSelectUnitInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    Check?: NullableStringFieldUpdateOperationsInput | string | null
+    BankName?: NullableStringFieldUpdateOperationsInput | string | null
+    BranchCode?: NullableStringFieldUpdateOperationsInput | string | null
+    Branch?: NullableStringFieldUpdateOperationsInput | string | null
+    Amount?: BigIntFieldUpdateOperationsInput | bigint | number
+    PaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentsUncheckedUpdateManyWithoutSelectUnitInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    Check?: NullableStringFieldUpdateOperationsInput | string | null
+    BankName?: NullableStringFieldUpdateOperationsInput | string | null
+    BranchCode?: NullableStringFieldUpdateOperationsInput | string | null
+    Branch?: NullableStringFieldUpdateOperationsInput | string | null
+    Amount?: BigIntFieldUpdateOperationsInput | bigint | number
+    PaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -12937,7 +16698,8 @@ export namespace Prisma {
     id?: bigint | number
     TeacherId?: bigint | number | null
     LessonName: string
-    Unit: number
+    PracticalUnit: number
+    TheoriUnit: number
     Grade?: $Enums.LessonGrade | null
     PassCondition?: number | null
     TheoriHours?: number | null
@@ -13017,7 +16779,8 @@ export namespace Prisma {
   export type LessonUpdateWithoutFieldInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     LessonName?: StringFieldUpdateOperationsInput | string
-    Unit?: IntFieldUpdateOperationsInput | number
+    PracticalUnit?: IntFieldUpdateOperationsInput | number
+    TheoriUnit?: IntFieldUpdateOperationsInput | number
     Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -13033,13 +16796,15 @@ export namespace Prisma {
     requiredForLesson?: LessonUpdateManyWithoutRequiresLessonNestedInput
     requiresLesson?: LessonUpdateOneWithoutRequiredForLessonNestedInput
     selectUnits?: SelectUnitUpdateManyWithoutLessonNestedInput
+    SelectedLesson?: SelectedLessonUpdateManyWithoutLessonNestedInput
   }
 
   export type LessonUncheckedUpdateWithoutFieldInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     TeacherId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     LessonName?: StringFieldUpdateOperationsInput | string
-    Unit?: IntFieldUpdateOperationsInput | number
+    PracticalUnit?: IntFieldUpdateOperationsInput | number
+    TheoriUnit?: IntFieldUpdateOperationsInput | number
     Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -13054,13 +16819,15 @@ export namespace Prisma {
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     requiredForLesson?: LessonUncheckedUpdateManyWithoutRequiresLessonNestedInput
     selectUnits?: SelectUnitUncheckedUpdateManyWithoutLessonNestedInput
+    SelectedLesson?: SelectedLessonUncheckedUpdateManyWithoutLessonNestedInput
   }
 
   export type LessonUncheckedUpdateManyWithoutFieldInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     TeacherId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     LessonName?: StringFieldUpdateOperationsInput | string
-    Unit?: IntFieldUpdateOperationsInput | number
+    PracticalUnit?: IntFieldUpdateOperationsInput | number
+    TheoriUnit?: IntFieldUpdateOperationsInput | number
     Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -13116,7 +16883,8 @@ export namespace Prisma {
   export type LessonCreateManyTeacherInput = {
     id?: bigint | number
     LessonName: string
-    Unit: number
+    PracticalUnit: number
+    TheoriUnit: number
     Grade?: $Enums.LessonGrade | null
     fieldId?: bigint | number | null
     PassCondition?: number | null
@@ -13135,7 +16903,8 @@ export namespace Prisma {
   export type LessonUpdateWithoutTeacherInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     LessonName?: StringFieldUpdateOperationsInput | string
-    Unit?: IntFieldUpdateOperationsInput | number
+    PracticalUnit?: IntFieldUpdateOperationsInput | number
+    TheoriUnit?: IntFieldUpdateOperationsInput | number
     Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
     TheoriHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -13151,12 +16920,14 @@ export namespace Prisma {
     requiredForLesson?: LessonUpdateManyWithoutRequiresLessonNestedInput
     requiresLesson?: LessonUpdateOneWithoutRequiredForLessonNestedInput
     selectUnits?: SelectUnitUpdateManyWithoutLessonNestedInput
+    SelectedLesson?: SelectedLessonUpdateManyWithoutLessonNestedInput
   }
 
   export type LessonUncheckedUpdateWithoutTeacherInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     LessonName?: StringFieldUpdateOperationsInput | string
-    Unit?: IntFieldUpdateOperationsInput | number
+    PracticalUnit?: IntFieldUpdateOperationsInput | number
+    TheoriUnit?: IntFieldUpdateOperationsInput | number
     Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
     fieldId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null
@@ -13172,12 +16943,14 @@ export namespace Prisma {
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     requiredForLesson?: LessonUncheckedUpdateManyWithoutRequiresLessonNestedInput
     selectUnits?: SelectUnitUncheckedUpdateManyWithoutLessonNestedInput
+    SelectedLesson?: SelectedLessonUncheckedUpdateManyWithoutLessonNestedInput
   }
 
   export type LessonUncheckedUpdateManyWithoutTeacherInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     LessonName?: StringFieldUpdateOperationsInput | string
-    Unit?: IntFieldUpdateOperationsInput | number
+    PracticalUnit?: IntFieldUpdateOperationsInput | number
+    TheoriUnit?: IntFieldUpdateOperationsInput | number
     Grade?: NullableEnumLessonGradeFieldUpdateOperationsInput | $Enums.LessonGrade | null
     fieldId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     PassCondition?: NullableIntFieldUpdateOperationsInput | number | null

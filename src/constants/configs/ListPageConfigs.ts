@@ -147,7 +147,7 @@ const StudentsList = async ({
   const actions: DataTableAction[] = [
     {
       label: "Select_Unit",
-      href: urls.selectUnit + "/$?",
+      href: urls.selectUnit + "/student/$?",
     },
   ];
 

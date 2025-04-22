@@ -4,8 +4,6 @@ import { Period } from "@/generated/prisma";
 import { prisma } from "../prisma";
 import { revalidatePath } from "next/cache";
 import { BaseListFilterParams, SelectUnitDataType } from "@/types/Tables";
-import { error } from "console";
-import { urls } from "@/constants/urls";
 
 // Get all select units
 export async function getSelectUnits(params?: BaseListFilterParams) {
@@ -49,7 +47,6 @@ export async function getSelectUnits(params?: BaseListFilterParams) {
       where,
       include: {
         student: true,
-        lesson: true,
       },
       orderBy: {
         Created_at: order === "asc" ? "asc" : "desc",
@@ -107,13 +104,7 @@ export async function getSelectUnitsByStudent(
     // Get paginated and filtered data
     const selectUnits = await prisma.selectUnit.findMany({
       where,
-      include: {
-        lesson: {
-          include: {
-            teacher: true,
-          },
-        },
-      },
+      include: {},
       orderBy: {
         Created_at: order === "asc" ? "asc" : "desc",
       },
@@ -198,29 +189,35 @@ export async function getSelectUnitsByLesson(
   }
 }
 
-// Get a specific select unit by its composite key
+// Get a specific select unit by student, year, and period
 export async function getSpecificSelectUnit(
   studentId: bigint,
-  lessonId: bigint,
   year: number,
-  period: Period
+  period: Period,
+  lessonId?: bigint
 ) {
   try {
+    // Find the select unit
     const selectUnit = await prisma.selectUnit.findUnique({
       where: {
-        StudentId_LessonId_Year_Period: {
+        StudentId_Year_Period: {
           StudentId: studentId,
-          LessonId: lessonId,
           Year: year,
           Period: period,
         },
       },
       include: {
         student: true,
-        lesson: {
+        selectedLessons: {
           include: {
-            teacher: true,
+            lesson: {
+              include: {
+                teacher: true,
+              },
+            },
           },
+          // If lessonId is provided, filter to only include that lesson
+          ...(lessonId ? { where: { lessonId } } : {}),
         },
       },
     });
@@ -261,9 +258,17 @@ export async function getSelectUnitsByYearPeriod(
           { student: { FirstName: { contains: query } } },
           { student: { LastName: { contains: query } } },
           { student: { NationalCode: { contains: query } } },
-          { lesson: { LessonName: { contains: query } } },
-          { lesson: { teacher: { FirstName: { contains: query } } } },
-          { lesson: { teacher: { LastName: { contains: query } } } },
+          { selectedLessons: { lesson: { LessonName: { contains: query } } } },
+          {
+            selectedLessons: {
+              lesson: { teacher: { FirstName: { contains: query } } },
+            },
+          },
+          {
+            selectedLessons: {
+              lesson: { teacher: { LastName: { contains: query } } },
+            },
+          },
         ],
       };
     }
@@ -276,9 +281,13 @@ export async function getSelectUnitsByYearPeriod(
       where,
       include: {
         student: true,
-        lesson: {
+        selectedLessons: {
           include: {
-            teacher: true,
+            lesson: {
+              include: {
+                teacher: true,
+              },
+            },
           },
         },
       },
@@ -307,8 +316,52 @@ export async function getSelectUnitsByYearPeriod(
   }
 }
 
+// Get select units by studentId, year, and period with all selected lessons
+export async function getSelectUnitLessons(
+  studentId: bigint,
+  year: number,
+  period: Period
+) {
+  try {
+    const selectUnit = await prisma.selectUnit.findUnique({
+      where: {
+        StudentId_Year_Period: {
+          StudentId: studentId,
+          Year: year,
+          Period: period,
+        },
+      },
+      include: {
+        student: true,
+        selectedLessons: {
+          include: {
+            lesson: true,
+          },
+        },
+      },
+    });
+
+    if (!selectUnit) {
+      return { error: "Select unit not found" };
+    }
+
+    return { selectUnit };
+  } catch (error) {
+    console.error(
+      "Failed to fetch select unit by student, year, and period:",
+      error
+    );
+    return {
+      error: "Failed to fetch select unit by student, year, and period",
+    };
+  }
+}
+
 // Create a new select unit
-export async function createSelectUnit(data: SelectUnitDataType) {
+export async function createSelectUnit(
+  data: SelectUnitDataType,
+  lessonId?: bigint
+) {
   try {
     // Check if the student exists
     const student = await prisma.student.findUnique({
@@ -319,21 +372,11 @@ export async function createSelectUnit(data: SelectUnitDataType) {
       return { error: "Student not found" };
     }
 
-    // Check if the lesson exists
-    const lesson = await prisma.lesson.findUnique({
-      where: { id: data.LessonId },
-    });
-
-    if (!lesson) {
-      return { error: "Lesson not found" };
-    }
-
-    // Check if the select unit already exists
+    // Check if the select unit already exists for this student, year, and period
     const existingSelectUnit = await prisma.selectUnit.findUnique({
       where: {
-        StudentId_LessonId_Year_Period: {
+        StudentId_Year_Period: {
           StudentId: data.StudentId,
-          LessonId: data.LessonId,
           Year: data.Year,
           Period: data.Period,
         },
@@ -341,20 +384,114 @@ export async function createSelectUnit(data: SelectUnitDataType) {
     });
 
     if (existingSelectUnit) {
-      return { error: "This course selection already exists" };
+      // If we're adding a lesson to an existing select unit
+      if (lessonId) {
+        // Check if the lesson exists
+        const lesson = await prisma.lesson.findUnique({
+          where: { id: lessonId },
+        });
+
+        if (!lesson) {
+          return { error: "Lesson not found" };
+        }
+
+        // Check if this lesson is already selected for this unit
+        const existingSelectedLesson = await prisma.selectedLesson.findUnique({
+          where: {
+            selectUnitId_lessonId: {
+              selectUnitId: existingSelectUnit.id,
+              lessonId: lessonId,
+            },
+          },
+        });
+
+        if (existingSelectedLesson) {
+          return { error: "This lesson is already selected for this unit" };
+        }
+
+        // Add the lesson to the existing select unit
+        const selectedLesson = await prisma.selectedLesson.create({
+          data: {
+            selectUnitId: existingSelectUnit.id,
+            lessonId: lessonId,
+          },
+          include: {
+            lesson: true,
+            selectUnit: true,
+          },
+        });
+
+        revalidatePath("/dashboard/select-unit");
+        revalidatePath(`/dashboard/students/${data.StudentId}`);
+        return {
+          selectUnit: existingSelectUnit,
+          selectedLesson,
+        };
+      }
+
+      return {
+        error:
+          "This course selection already exists for this student, year, and period",
+      };
     }
 
+    // Create a new select unit
     const selectUnit = await prisma.selectUnit.create({
-      data,
+      data: {
+        StudentId: data.StudentId,
+        Year: data.Year,
+        Period: data.Period,
+        ExtraFee: data.ExtraFee,
+        FixedFee: data.FixedFee,
+        CertificateFee: data.CertificateFee,
+        ExtraClassFee: data.ExtraClassFee,
+        BooksFee: data.BooksFee,
+      },
       include: {
         student: true,
-        lesson: true,
+      },
+    });
+
+    // If a lesson ID is provided, create a selected lesson entry
+    if (lessonId) {
+      // Check if the lesson exists
+      const lesson = await prisma.lesson.findUnique({
+        where: { id: lessonId },
+      });
+
+      if (!lesson) {
+        // Delete the created select unit since the lesson doesn't exist
+        await prisma.selectUnit.delete({
+          where: { id: selectUnit.id },
+        });
+        return { error: "Lesson not found" };
+      }
+
+      // Create the selected lesson entry
+      await prisma.selectedLesson.create({
+        data: {
+          selectUnitId: selectUnit.id,
+          lessonId: lessonId,
+        },
+      });
+    }
+
+    // Get the complete select unit with related data
+    const completeSelectUnit = await prisma.selectUnit.findUnique({
+      where: { id: selectUnit.id },
+      include: {
+        student: true,
+        selectedLessons: {
+          include: {
+            lesson: true,
+          },
+        },
       },
     });
 
     revalidatePath("/dashboard/select-unit");
     revalidatePath(`/dashboard/students/${data.StudentId}`);
-    return { selectUnit };
+    return { selectUnit: completeSelectUnit };
   } catch (error) {
     console.error("Failed to create select unit:", error);
     return { error: "Failed to create select unit" };
@@ -363,31 +500,30 @@ export async function createSelectUnit(data: SelectUnitDataType) {
 
 // Update a select unit
 export async function updateSelectUnit(
-  studentId: bigint,
-  lessonId: bigint,
-  year: number,
-  period: Period,
-  data: { ExtraFee: bigint }
+  selectUnitId: bigint,
+  data: Partial<SelectUnitDataType>
 ) {
   try {
+    // Remove id from data if it exists
+    const { id, ...updateData } = data;
+
     const selectUnit = await prisma.selectUnit.update({
       where: {
-        StudentId_LessonId_Year_Period: {
-          StudentId: studentId,
-          LessonId: lessonId,
-          Year: year,
-          Period: period,
-        },
+        id: selectUnitId,
       },
-      data,
+      data: updateData,
       include: {
         student: true,
-        lesson: true,
+        selectedLessons: {
+          include: {
+            lesson: true,
+          },
+        },
       },
     });
 
     revalidatePath("/dashboard/select-unit");
-    revalidatePath(`/dashboard/students/${studentId}`);
+    revalidatePath(`/dashboard/students/${selectUnit.StudentId}`);
     return { selectUnit };
   } catch (error) {
     console.error("Failed to update select unit:", error);
@@ -396,30 +532,76 @@ export async function updateSelectUnit(
 }
 
 // Delete a select unit
-export async function deleteSelectUnit(
-  studentId: bigint,
-  lessonId: bigint,
-  year: number,
-  period: Period
-) {
+export async function deleteSelectUnit(selectUnitId: bigint) {
   try {
+    // Get the student ID before deleting for revalidation
+    const selectUnit = await prisma.selectUnit.findUnique({
+      where: { id: selectUnitId },
+      select: { StudentId: true },
+    });
+
+    if (!selectUnit) {
+      return { error: "Select unit not found" };
+    }
+
+    // Delete the select unit (this will cascade delete all associated selectedLessons)
     await prisma.selectUnit.delete({
-      where: {
-        StudentId_LessonId_Year_Period: {
-          StudentId: studentId,
-          LessonId: lessonId,
-          Year: year,
-          Period: period,
-        },
-      },
+      where: { id: selectUnitId },
     });
 
     revalidatePath("/dashboard/select-unit");
-    revalidatePath(`/dashboard/students/${studentId}`);
+    revalidatePath(`/dashboard/students/${selectUnit.StudentId}`);
     return { success: true };
   } catch (error) {
     console.error("Failed to delete select unit:", error);
     return { error: "Failed to delete select unit" };
+  }
+}
+
+// Remove a specific lesson from a select unit
+export async function removeSelectedLesson(
+  selectUnitId: bigint,
+  lessonId: bigint
+) {
+  try {
+    // Get the student ID before deleting for revalidation
+    const selectUnit = await prisma.selectUnit.findUnique({
+      where: { id: selectUnitId },
+      select: { StudentId: true },
+    });
+
+    if (!selectUnit) {
+      return { error: "Select unit not found" };
+    }
+
+    // Delete the selected lesson
+    await prisma.selectedLesson.delete({
+      where: {
+        selectUnitId_lessonId: {
+          selectUnitId,
+          lessonId,
+        },
+      },
+    });
+
+    // Check if there are any lessons left in this select unit
+    const remainingLessons = await prisma.selectedLesson.count({
+      where: { selectUnitId },
+    });
+
+    // If no lessons remain, delete the select unit
+    if (remainingLessons === 0) {
+      await prisma.selectUnit.delete({
+        where: { id: selectUnitId },
+      });
+    }
+
+    revalidatePath("/dashboard/select-unit");
+    revalidatePath(`/dashboard/students/${selectUnit.StudentId}`);
+    return { success: true };
+  } catch (error) {
+    console.error("Failed to remove selected lesson:", error);
+    return { error: "Failed to remove selected lesson" };
   }
 }
 
@@ -429,44 +611,249 @@ export async function bulkCreateSelectUnits(
   lessonIds: bigint[]
 ) {
   try {
-    const createdUnits = [];
+    if (lessonIds.length === 0) {
+      return { error: "No lessons provided" };
+    }
 
-    // for (const lessonId of lessonIds) {
-    //   const selectUnit = await getSpecificSelectUnit(
-    //     baseData.StudentId,
-    //     lessonId,
-    //     baseData.Year,
-    //     baseData.Period
-    //   );
-    //   if (selectUnit.selectUnit) {
-    //     return { error: "This course selection already exists" };
-    //   }
-    // }
+    // Check if the student already has a select unit for this year and period
+    const existingSelectUnit = await prisma.selectUnit.findUnique({
+      where: {
+        StudentId_Year_Period: {
+          StudentId: baseData.StudentId,
+          Year: baseData.Year,
+          Period: baseData.Period,
+        },
+      },
+      include: {
+        selectedLessons: true,
+      },
+    });
 
+    // If a select unit already exists, add the lessons to it
+    if (existingSelectUnit) {
+      const createdLessons = [];
+      const existingLessonIds = existingSelectUnit.selectedLessons.map(
+        (sl) => sl.lessonId
+      );
+
+      // Filter out lessons that are already selected
+      const newLessonIds = lessonIds.filter(
+        (id) => !existingLessonIds.includes(id)
+      );
+
+      if (newLessonIds.length === 0) {
+        return { error: "All provided lessons are already selected" };
+      }
+
+      // Add each new lesson
+      for (const lessonId of newLessonIds) {
+        try {
+          // Check if the lesson exists
+          const lesson = await prisma.lesson.findUnique({
+            where: { id: lessonId },
+          });
+
+          if (!lesson) {
+            return { error: `Lesson with ID ${lessonId} not found` };
+          }
+
+          // Create the selected lesson
+          const selectedLesson = await prisma.selectedLesson.create({
+            data: {
+              selectUnitId: existingSelectUnit.id,
+              lessonId,
+            },
+            include: {
+              lesson: true,
+            },
+          });
+
+          createdLessons.push(selectedLesson);
+        } catch (error) {
+          console.error(`Failed to add lesson ${lessonId}:`, error);
+          return { error: `Failed to add lesson ${lessonId}` };
+        }
+      }
+
+      // Get the updated select unit with all lessons
+      const updatedSelectUnit = await prisma.selectUnit.findUnique({
+        where: { id: existingSelectUnit.id },
+        include: {
+          student: true,
+          selectedLessons: {
+            include: {
+              lesson: true,
+            },
+          },
+        },
+      });
+
+      revalidatePath("/dashboard/select-unit");
+      revalidatePath(`/dashboard/students/${baseData.StudentId}`);
+      return {
+        selectUnit: updatedSelectUnit,
+        addedLessons: createdLessons,
+      };
+    }
+
+    // Create a new select unit
+    const selectUnit = await prisma.selectUnit.create({
+      data: {
+        StudentId: baseData.StudentId,
+        Year: baseData.Year,
+        Period: baseData.Period,
+        ExtraFee: baseData.ExtraFee,
+        FixedFee: baseData.FixedFee,
+        CertificateFee: baseData.CertificateFee,
+        ExtraClassFee: baseData.ExtraClassFee,
+        BooksFee: baseData.BooksFee,
+      },
+    });
+
+    // Add each lesson to the select unit
     for (const lessonId of lessonIds) {
       try {
-        const unitData = {
-          ...baseData,
-          LessonId: lessonId,
-        };
+        // Check if the lesson exists
+        const lesson = await prisma.lesson.findUnique({
+          where: { id: lessonId },
+        });
 
-        const result = await createSelectUnit(unitData);
-        if (result.error) {
-          return { error: result.error };
-        } else {
-          createdUnits.push(result.selectUnit);
+        if (!lesson) {
+          // If a lesson doesn't exist, delete the select unit and return an error
+          await prisma.selectUnit.delete({
+            where: { id: selectUnit.id },
+          });
+          return { error: `Lesson with ID ${lessonId} not found` };
         }
+
+        // Create the selected lesson
+        await prisma.selectedLesson.create({
+          data: {
+            selectUnitId: selectUnit.id,
+            lessonId,
+          },
+        });
       } catch (error) {
-        return { error: error };
+        // If there's an error, delete the select unit and return an error
+        await prisma.selectUnit.delete({
+          where: { id: selectUnit.id },
+        });
+        console.error(`Failed to add lesson ${lessonId}:`, error);
+        return { error: `Failed to add lesson ${lessonId}` };
       }
     }
 
-    // revalidatePath(`${urls.selectUnit}/${baseData.StudentId}`);
-    // revalidatePath(`${urls.students}/${baseData.StudentId}`);
+    // Get the complete select unit with all lessons
+    const completeSelectUnit = await prisma.selectUnit.findUnique({
+      where: { id: selectUnit.id },
+      include: {
+        student: true,
+        selectedLessons: {
+          include: {
+            lesson: true,
+          },
+        },
+      },
+    });
 
-    return { createdUnits };
+    revalidatePath("/dashboard/select-unit");
+    revalidatePath(`/dashboard/students/${baseData.StudentId}`);
+    return { selectUnit: completeSelectUnit };
   } catch (error) {
     console.error("Failed to bulk create select units:", error);
     return { error: "Failed to bulk create select units" };
+  }
+}
+
+// Aggregate select units grouped by studentId, year, and period
+export async function getSelectUnitsGroupedByStudentYearPeriod() {
+  try {
+    const grouped = await prisma.selectUnit.groupBy({
+      by: ["StudentId", "Year", "Period"],
+      _count: true,
+      _sum: { ExtraFee: true },
+    });
+
+    // Fetch student names and lesson/unit info for each group
+    const results = await Promise.all(
+      grouped.map(async (group) => {
+        const student = await prisma.student.findUnique({
+          where: { id: group.StudentId },
+          select: { FirstName: true, LastName: true },
+        });
+
+        // Get the select unit with all selected lessons
+        const selectUnit = await prisma.selectUnit.findUnique({
+          where: {
+            StudentId_Year_Period: {
+              StudentId: group.StudentId,
+              Year: group.Year,
+              Period: group.Period,
+            },
+          },
+          include: {
+            selectedLessons: {
+              include: {
+                lesson: true,
+              },
+            },
+          },
+        });
+
+        // Count the number of lessons
+        const numberOfLessons = selectUnit?.selectedLessons.length || 0;
+
+        // Calculate total units from all selected lessons
+        const totalUnits =
+          selectUnit?.selectedLessons.reduce(
+            (sum, sl) =>
+              sum +
+              ((sl.lesson.TheoriUnit || 0) + (sl.lesson.PracticalUnit || 0)),
+            0
+          ) || 0;
+
+        // Calculate total price from all selected lessons plus extra fees
+        const totalPrice =
+          (selectUnit?.selectedLessons.reduce(
+            (sum, sl) =>
+              sum +
+              (Number(sl.lesson.PricePerUnit) || 0) *
+                ((sl.lesson.TheoriUnit || 0) + (sl.lesson.PracticalUnit || 0)),
+            0
+          ) || 0) +
+          (selectUnit?.ExtraFee ? Number(selectUnit.ExtraFee) : 0) +
+          (selectUnit?.FixedFee ? Number(selectUnit.FixedFee) : 0) +
+          (selectUnit?.CertificateFee ? Number(selectUnit.CertificateFee) : 0) +
+          (selectUnit?.ExtraClassFee ? Number(selectUnit.ExtraClassFee) : 0) +
+          (selectUnit?.BooksFee ? Number(selectUnit.BooksFee) : 0);
+
+        return {
+          studentId: group.StudentId,
+          studentName: student
+            ? `${student.FirstName} ${student.LastName}`
+            : "-",
+          numberOfLessons,
+          totalUnits,
+          year: group.Year,
+          period: group.Period,
+          totalPrice,
+          extraFees: {
+            extraFee: selectUnit?.ExtraFee ? Number(selectUnit.ExtraFee) : 0,
+            fixedFee: selectUnit?.FixedFee ? Number(selectUnit.FixedFee) : 0,
+            certificateFee: selectUnit?.CertificateFee
+              ? Number(selectUnit.CertificateFee)
+              : 0,
+            extraClassFee: selectUnit?.ExtraClassFee
+              ? Number(selectUnit.ExtraClassFee)
+              : 0,
+            booksFee: selectUnit?.BooksFee ? Number(selectUnit.BooksFee) : 0,
+          },
+        };
+      })
+    );
+    return { data: results };
+  } catch (error) {
+    console.error("Failed to group select units:", error);
+    return { error: "Failed to group select units" };
   }
 }

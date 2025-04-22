@@ -14,6 +14,8 @@ async function main() {
 
   // Clear existing data (optional - uncomment if needed)
   // Comment out these lines if you want to keep existing data
+  await prisma.payments.deleteMany();
+  await prisma.selectedLesson.deleteMany();
   await prisma.selectUnit.deleteMany();
   await prisma.lesson.deleteMany();
   await prisma.student.deleteMany();
@@ -98,46 +100,16 @@ async function main() {
     "Programming Fundamentals",
     "Data Structures",
     "Algorithms",
-    "Advanced Mathematics",
-    "Calculus",
-    "Physics I",
-    "Physics II",
-    "Organic Chemistry",
-    "Inorganic Chemistry",
-    "Cell Biology",
-    "Programming Fundamentals",
-    "Data Structures",
-    "Algorithms",
-    "Advanced Mathematics",
-    "Calculus",
-    "Physics I",
-    "Physics II",
-    "Organic Chemistry",
-    "Inorganic Chemistry",
-    "Cell Biology",
-    "Programming Fundamentals",
-    "Data Structures",
-    "Algorithms",
-    "Advanced Mathematics",
-    "Calculus",
-    "Physics I",
-    "Physics II",
-    "Organic Chemistry",
-    "Inorganic Chemistry",
-    "Cell Biology",
-    "Programming Fundamentals",
-    "Data Structures",
-    "Algorithms",
-    "Advanced Mathematics",
-    "Calculus",
-    "Physics I",
-    "Physics II",
-    "Organic Chemistry",
-    "Inorganic Chemistry",
-    "Cell Biology",
-    "Programming Fundamentals",
-    "Data Structures",
-    "Algorithms",
+    "World Literature",
+    "Ancient History",
+    "Modern History",
+    "Geography",
+    "Economics",
+    "Political Science",
+    "Psychology",
+    "Sociology",
+    "Art History",
+    "Music Theory",
   ];
 
   // Use the enum values directly from Prisma
@@ -164,7 +136,8 @@ async function main() {
       data: {
         TeacherId: teacher.id,
         LessonName: lessonNames[i],
-        Unit: faker.number.int({ min: 1, max: 4 }),
+        TheoriUnit: faker.number.int({ min: 1, max: 3 }),
+        PracticalUnit: faker.number.int({ min: 0, max: 2 }),
         Grade: faker.helpers.arrayElement(grades),
         fieldId: field.id,
         PassCondition: faker.number.int({ min: 10, max: 20 }),
@@ -185,7 +158,7 @@ async function main() {
 
   // Create some lesson requirements
   for (let i = 1; i < lessons.length; i++) {
-    if (faker.datatype.boolean()) {
+    if (faker.helpers.maybe(() => true, { probability: 0.5 })) {
       await prisma.lesson.update({
         where: { id: lessons[i].id },
         data: {
@@ -242,7 +215,7 @@ async function main() {
     console.log(`Created student: ${student.FirstName} ${student.LastName}`);
   }
 
-  // Create SelectUnits
+  // Create SelectUnits and SelectedLessons
   // Use the enum values directly from Prisma
   const periods: Period[] = ["first", "second", "summer"];
   const currentYear = new Date().getFullYear();
@@ -254,7 +227,7 @@ async function main() {
     );
     const appropriateLessons = lessons.filter((lesson) => {
       // If lesson is GENERAL grade or matches student's grade
-      const lessonGrade = lesson.Grade.toString();
+      const lessonGrade = lesson.Grade?.toString();
       const isAppropriateGrade =
         lessonGrade === "GENERAL" || lessonGrade === student.Grade.toString();
 
@@ -262,7 +235,9 @@ async function main() {
       const isFromSameField = lesson.fieldId === student.fieldId;
 
       return (
-        isAppropriateGrade && (isFromSameField || faker.datatype.boolean(0.3))
+        isAppropriateGrade &&
+        (isFromSameField ||
+          faker.helpers.maybe(() => true, { probability: 0.3 }))
       );
     });
 
@@ -277,23 +252,79 @@ async function main() {
       numLessons
     );
 
-    for (const lesson of selectedLessons) {
+    // Create one SelectUnit per student per period/year
+    // We'll create 1-2 SelectUnits per student
+    const numSelectUnits = faker.number.int({ min: 1, max: 2 });
+
+    for (let i = 0; i < numSelectUnits; i++) {
+      const year = faker.number.int({ min: currentYear - 2, max: currentYear });
+      const period = faker.helpers.arrayElement(periods);
+
       try {
-        await prisma.selectUnit.create({
+        // Create the SelectUnit first
+        const selectUnit = await prisma.selectUnit.create({
           data: {
             StudentId: student.id,
-            LessonId: lesson.id,
-            Year: faker.number.int({ min: currentYear - 2, max: currentYear }),
-            Period: faker.helpers.arrayElement(periods),
+            Year: year,
+            Period: period,
             ExtraFee: faker.number.bigInt({ min: 0, max: 1000000 }),
+            FixedFee: faker.number.bigInt({ min: 500000, max: 2000000 }),
+            CertificateFee: faker.number.bigInt({ min: 100000, max: 500000 }),
+            ExtraClassFee: faker.number.bigInt({ min: 0, max: 1000000 }),
+            BooksFee: faker.number.bigInt({ min: 200000, max: 1000000 }),
           },
         });
+
         console.log(
-          `Created selection for student ${student.id} and lesson ${lesson.id}`
+          `Created SelectUnit for student ${student.id} for ${year}/${period}`
         );
+
+        // Now create SelectedLesson entries for this SelectUnit
+        // Use a subset of the selectedLessons for each SelectUnit
+        const lessonsForThisUnit = faker.helpers.arrayElements(
+          selectedLessons,
+          faker.number.int({ min: 1, max: Math.min(4, selectedLessons.length) })
+        );
+
+        for (const lesson of lessonsForThisUnit) {
+          await prisma.selectedLesson.create({
+            data: {
+              selectUnitId: selectUnit.id,
+              lessonId: lesson.id,
+            },
+          });
+          console.log(
+            `Added lesson ${lesson.LessonName} to SelectUnit ${selectUnit.id}`
+          );
+        }
+
+        // Create 1-3 payments for this SelectUnit
+        const numPayments = faker.number.int({ min: 1, max: 3 });
+        for (let j = 0; j < numPayments; j++) {
+          await prisma.payments.create({
+            data: {
+              selectUnitId: selectUnit.id,
+              Amount: faker.number.bigInt({ min: 500000, max: 5000000 }),
+              Check: faker.helpers.maybe(() => faker.finance.accountNumber(), {
+                probability: 0.7,
+              }),
+              BankName: faker.helpers.maybe(() => faker.company.name(), {
+                probability: 0.8,
+              }),
+              Branch: faker.helpers.maybe(() => faker.location.city(), {
+                probability: 0.8,
+              }),
+              BranchCode: faker.helpers.maybe(() => faker.string.numeric(4), {
+                probability: 0.7,
+              }),
+              PaymentDate: faker.date.recent(),
+            },
+          });
+          console.log(`Created payment for SelectUnit ${selectUnit.id}`);
+        }
       } catch (error) {
         console.log(
-          `Skipping duplicate selection for student ${student.id} and lesson ${lesson.id}`
+          `Skipping duplicate SelectUnit for student ${student.id} for ${year}/${period}`
         );
       }
     }
@@ -337,7 +368,7 @@ async function main() {
   const generalValues = [
     currentYear.toString(),
     faker.helpers.arrayElement(periods),
-    faker.datatype.boolean().toString(),
+    faker.helpers.maybe(() => "true", { probability: 0.5 }) || "false",
     "Educational Management System",
     faker.internet.email(),
   ];

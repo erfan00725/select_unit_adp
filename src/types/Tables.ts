@@ -67,11 +67,21 @@ export interface LessonDataType extends DataBaseType {
 }
 
 export interface SelectUnitDataType {
+  id?: bigint;
   StudentId: bigint;
-  LessonId: bigint;
   Year: number;
   Period: Period;
   ExtraFee?: bigint;
+  FixedFee?: bigint;
+  CertificateFee?: bigint;
+  ExtraClassFee?: bigint;
+  BooksFee?: bigint;
+}
+
+export interface SelectedLessonDataType {
+  id?: bigint;
+  selectUnitId: bigint;
+  lessonId: bigint;
 }
 
 export interface UserDataType extends DataBaseType {

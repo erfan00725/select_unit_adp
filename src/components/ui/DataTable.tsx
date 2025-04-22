@@ -10,13 +10,16 @@ const DataTable = <T extends DataBaseType>({
   title,
   addButtonLabel,
   baseUrl,
+  deleteUrl,
+  addUrl: baseAddUrl,
+  editUrl,
   limit = 50,
   scrollable = false,
   actions,
 }: DataTableProps<T>) => {
   const rows = tableData?.filter((_, index) => index < limit);
 
-  const addUrl = baseUrl ? `${baseUrl}/add` : null;
+  const addUrl = baseUrl || baseAddUrl ? `${baseAddUrl || baseUrl}/add` : null;
 
   return (
     <div className="card mb-8">
@@ -83,7 +86,7 @@ const DataTable = <T extends DataBaseType>({
                         </span>
                       )
                     )}
-                  {baseUrl && (
+                  {(baseUrl || editUrl) && (
                     <Link
                       href={`${baseUrl}/${row.id}/edit`}
                       className="tableAction text-blue-600! hover:text-blue-900!"
@@ -91,10 +94,10 @@ const DataTable = <T extends DataBaseType>({
                       Edit
                     </Link>
                   )}
-                  {baseUrl && (
+                  {(baseUrl || deleteUrl) && (
                     <Link
                       href={`${baseUrl}/${row.id}?delete=true`}
-                      className="text-red-600 hover:text-red-900"
+                      className="tableAction text-red-600! hover:text-red-900!"
                     >
                       Delete
                     </Link>

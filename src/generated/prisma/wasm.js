@@ -146,7 +146,8 @@ exports.Prisma.LessonScalarFieldEnum = {
   id: 'id',
   TeacherId: 'TeacherId',
   LessonName: 'LessonName',
-  Unit: 'Unit',
+  PracticalUnit: 'PracticalUnit',
+  TheoriUnit: 'TheoriUnit',
   Grade: 'Grade',
   fieldId: 'fieldId',
   PassCondition: 'PassCondition',
@@ -163,11 +164,35 @@ exports.Prisma.LessonScalarFieldEnum = {
 };
 
 exports.Prisma.SelectUnitScalarFieldEnum = {
+  id: 'id',
   StudentId: 'StudentId',
-  LessonId: 'LessonId',
   Year: 'Year',
   Period: 'Period',
   ExtraFee: 'ExtraFee',
+  FixedFee: 'FixedFee',
+  CertificateFee: 'CertificateFee',
+  ExtraClassFee: 'ExtraClassFee',
+  BooksFee: 'BooksFee',
+  Created_at: 'Created_at',
+  Updated_at: 'Updated_at',
+  lessonId: 'lessonId'
+};
+
+exports.Prisma.SelectedLessonScalarFieldEnum = {
+  id: 'id',
+  selectUnitId: 'selectUnitId',
+  lessonId: 'lessonId'
+};
+
+exports.Prisma.PaymentsScalarFieldEnum = {
+  id: 'id',
+  Check: 'Check',
+  BankName: 'BankName',
+  BranchCode: 'BranchCode',
+  Branch: 'Branch',
+  Amount: 'Amount',
+  selectUnitId: 'selectUnitId',
+  PaymentDate: 'PaymentDate',
   Created_at: 'Created_at',
   Updated_at: 'Updated_at'
 };
@@ -176,7 +201,8 @@ exports.Prisma.FieldScalarFieldEnum = {
   id: 'id',
   Name: 'Name',
   FixedFee: 'FixedFee',
-  Created_at: 'Created_at'
+  Created_at: 'Created_at',
+  Updated_at: 'Updated_at'
 };
 
 exports.Prisma.GeneralScalarFieldEnum = {
@@ -226,6 +252,13 @@ exports.Prisma.UserOrderByRelevanceFieldEnum = {
 
 exports.Prisma.LessonOrderByRelevanceFieldEnum = {
   LessonName: 'LessonName'
+};
+
+exports.Prisma.PaymentsOrderByRelevanceFieldEnum = {
+  Check: 'Check',
+  BankName: 'BankName',
+  BranchCode: 'BranchCode',
+  Branch: 'Branch'
 };
 
 exports.Prisma.FieldOrderByRelevanceFieldEnum = {
@@ -278,6 +311,8 @@ exports.Prisma.ModelName = {
   User: 'User',
   Lesson: 'Lesson',
   SelectUnit: 'SelectUnit',
+  SelectedLesson: 'SelectedLesson',
+  Payments: 'Payments',
   Field: 'Field',
   General: 'General',
   Teacher: 'Teacher'

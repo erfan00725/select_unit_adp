@@ -80,6 +80,9 @@ export type DataTableProps<T extends DataBaseType> = {
   headers: string[];
   addButtonLabel?: string;
   baseUrl?: string;
+  editUrl?: string;
+  addUrl?: string;
+  deleteUrl?: string;
   limit?: number;
   scrollable?: boolean;
   actions?: DataTableAction[];
