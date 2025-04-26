@@ -12,7 +12,7 @@ const DataTable = <T extends DataBaseType>({
   baseUrl,
   deleteUrl,
   addUrl: baseAddUrl,
-  editUrl,
+  editUrl: baseEditUrl,
   limit = 50,
   scrollable = false,
   actions,
@@ -21,6 +21,13 @@ const DataTable = <T extends DataBaseType>({
   const rows = tableData?.filter((_, index) => index < limit);
 
   const addUrl = baseAddUrl ? baseAddUrl : baseUrl ? `${baseUrl}/add` : null;
+  const editUrl = (id: number | string) => {
+    return baseEditUrl
+      ? baseEditUrl?.replace(":id", id.toString())
+      : baseUrl
+      ? `${baseUrl}/add`
+      : null;
+  };
 
   return (
     <div className="card mb-8">
@@ -87,9 +94,10 @@ const DataTable = <T extends DataBaseType>({
                         </span>
                       )
                     )}
-                  {(baseUrl || editUrl) && (
+                  {(baseUrl || baseEditUrl) && (
                     <Link
-                      href={`${baseUrl}/${row.id}/edit`}
+                      // @ts-ignore
+                      href={editUrl(row.id.toString())}
                       className="tableAction text-blue-600! hover:text-blue-900!"
                     >
                       Edit

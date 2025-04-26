@@ -11,8 +11,8 @@ export default async function DashboardPage() {
   return (
     <div>
       <PageHeader
-        title="مدیریت دانش‌آموزان و دوره‌ها"
-        description="مدیریت اطلاعات دانش‌آموزان و دوره‌ها"
+        title="مدیریت دانش‌آموزان و دروس"
+        description="مدیریت اطلاعات دانش‌آموزان و دروس"
       />
       {/* 
       <LessonsPageTable limit={5} lessonsData={lessonsData} />

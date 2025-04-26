@@ -6,7 +6,6 @@ import {
   getStudents,
   getFields,
   getTeachers,
-  getSelectUnits,
   getSelectUnitsByStudent,
 } from "@/lib/actions";
 import { FilterOptionType, Orders, PageType } from "@/types/General";
@@ -30,6 +29,9 @@ export type ListStaticConfigType = {
   title: string;
   description: string;
   addButtonLabel: string;
+  addUrl?: string;
+  editUrl?: string;
+  removeUrl?: string;
   filterOptions?: FilterOptionType[];
   searchPlaceholder?: string;
 };
@@ -69,6 +71,31 @@ export const s_ListConfig: StaticConfigsType = {
     description: "مدیریت اساتید خود را انجام دهید",
     addButtonLabel: "افزودن استاد جدید",
     searchPlaceholder: "جستجوی اساتید، رشته‌ها...",
+  },
+  selectUnit: {
+    title: "مدیریت انتخاب واحد",
+    description: "مدیریت انتخاب واحد دانش‌آموزان را انجام دهید",
+    addButtonLabel: "افزودن انتخاب واحد جدید",
+    addUrl: urls.selectUnit + "/student/:id",
+    editUrl: urls.selectUnit + "/student/:studentId/edit/:id",
+    searchPlaceholder: "جستجوی دانش‌آموزان، دروس...",
+    filterOptions: [
+      {
+        name: "year",
+        type: "number",
+        placeholder: "سال را وارد کنید",
+      },
+      {
+        name: "period",
+        type: "select",
+        placeholder: "ترم را انتخاب کنید",
+        options: [
+          { label: "ترم اول", value: "first" },
+          { label: "ترم دوم", value: "second" },
+          { label: "ترم تابستان", value: "summer" },
+        ],
+      },
+    ],
   },
 };
 
@@ -240,14 +267,7 @@ const TeachersList = async ({
     Lessons: teacher.lessons?.length || 0,
   }));
 
-  const headers = [
-    "شناسه",
-    "نام",
-    "کد ملی",
-    "شماره تماس",
-    "رشته",
-    "دروس",
-  ];
+  const headers = ["شناسه", "نام", "کد ملی", "شماره تماس", "رشته", "دروس"];
 
   return {
     tableData: tableData,
@@ -319,29 +339,4 @@ export const d_SelectUnitList = async ({
     error: selectUnitsData?.error,
     pagination: selectUnitsData?.pagination,
   };
-};
-
-export const s_SelectUnitList = {
-  title: "Select Unit Management",
-  description: "Manage student course selections",
-  addButtonLabel: "Add New Selection",
-  addUrl: urls.selectUnit + "/student/:id",
-  searchPlaceholder: "Search students, lessons...",
-  filterOptions: [
-    {
-      name: "year",
-      type: "number",
-      placeholder: "Enter year",
-    },
-    {
-      name: "period",
-      type: "select",
-      placeholder: "Select period",
-      options: [
-        { label: "First", value: "first" },
-        { label: "Second", value: "second" },
-        { label: "Summer", value: "summer" },
-      ],
-    },
-  ],
 };

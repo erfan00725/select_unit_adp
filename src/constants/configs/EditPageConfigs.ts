@@ -28,7 +28,7 @@ export const LessonEditConfig: CreateEditProps<any, any> = {
   validateFunction: validateLessonSafe,
   formGenerator: lessonFormConfigGenerator,
   getDataById: getLessonById,
-  entityName: "Lessons",
+  entityName: "درس‌ها",
   redirectUrl: urls.lessons,
 };
 
@@ -37,7 +37,7 @@ export const StudentEditConfig: CreateEditProps<any, any> = {
   validateFunction: validateStudentSafe,
   formGenerator: studentFormConfigGenerator,
   getDataById: getStudentById,
-  entityName: "Students",
+  entityName: "دانشجویان",
   redirectUrl: urls.students,
 };
 
@@ -46,7 +46,7 @@ export const FieldEditConfig: CreateEditProps<any, any> = {
   validateFunction: validateFieldSafe,
   formGenerator: fieldFormConfigGenerator,
   getDataById: getFieldById,
-  entityName: "Fields",
+  entityName: "رشته‌ها",
   redirectUrl: urls.fields,
 };
 
@@ -55,7 +55,7 @@ export const TeacherEditConfig: CreateEditProps<any, any> = {
   validateFunction: validateTeacherSafe,
   formGenerator: teacherFormConfigGenerator,
   getDataById: getTeacherById,
-  entityName: "Teachers",
+  entityName: "اساتید",
   redirectUrl: urls.teachers,
 };
 

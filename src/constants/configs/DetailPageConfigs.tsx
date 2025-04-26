@@ -203,7 +203,7 @@ export const StudentsDetailConfig = (
           className="button "
           key={"selectUnit-" + student.id}
         >
-          Select Unit
+          انتخاب واحد
         </Link>,
       ],
     },

@@ -94,7 +94,7 @@ const Pagination: React.FC<PaginationProps> = ({
         {getPageNumbers().map((page, idx) =>
           typeof page === "number" ? (
             <button
-              key={page}
+              key={idx}
               className={clsx(
                 "px-3 py-1 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 cursor-pointer",
                 {

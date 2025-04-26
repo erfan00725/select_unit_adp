@@ -4,10 +4,11 @@ import DataTable from "../../DataTable";
 import {
   d_SelectUnitList,
   ListGeneralReturnType,
-  s_SelectUnitList,
+  s_ListConfig,
 } from "@/constants/configs/ListPageConfigs";
 import { useParams } from "next/navigation";
 import Loading from "@/components/common/Loading";
+import { PageType } from "@/types/General";
 
 export const UserSelectUnitList = () => {
   const params = useParams();
@@ -34,13 +35,20 @@ export const UserSelectUnitList = () => {
       });
   }, []);
 
-  const s_selectUnitConfig = s_SelectUnitList;
-  const addUrl = s_selectUnitConfig.addUrl.replace(":id", params?.id as string);
+  const s_selectUnitConfig = s_ListConfig[PageType.SelectUnit];
+  const addUrl = s_selectUnitConfig?.addUrl?.replace(
+    ":id",
+    params?.id as string
+  );
+  const editUrl = s_selectUnitConfig?.editUrl?.replace(
+    ":studentId",
+    params?.id as string
+  );
   return isLoading ? (
     <Loading />
   ) : configs ? (
     <div className="mt-5">
-      <DataTable {...configs} />
+      <DataTable {...configs} addUrl={addUrl} editUrl={editUrl} />
     </div>
   ) : null;
 };
