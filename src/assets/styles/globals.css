@@ -1,5 +1,12 @@
 @import "react-toastify/dist/ReactToastify.css";
 
+@font-face {
+  font-family: "IRSans";
+  src: url("../fonts/irsans.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -32,7 +39,7 @@
 }
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "IRSans", Arial, Helvetica, sans-serif;
 }
 
 .loading {

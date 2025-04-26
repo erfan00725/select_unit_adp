@@ -123,11 +123,11 @@ export const SelectUnitForm = ({
     )
       .then((res) => {
         if (res.error) {
-          toast.error((res.error as string) || "Something went wrong");
+          toast.error((res.error as string) || "مشکلی پیش آمده است");
           return;
         }
 
-        toast.success("Courses selected successfully");
+        toast.success("درس‌ها با موفقیت انتخاب شدند");
         handleReset();
       })
       .catch((err) => toast.error(err.message));

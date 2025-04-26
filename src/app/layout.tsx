@@ -1,19 +1,14 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "@/assets/styles/globals.css";
 import "@/assets/styles/tailwindGeneral.css";
 import MainHeader from "@/components/ui/MainHeader";
 import MainFooter from "@/components/ui/MainFooter";
 import { ToastifyProvider } from "@/components/providers/ToastifyProvider";
+import localFont from "@next/font/local";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const font = localFont({
+  src: "@/assets/fonts/irsans.ttf",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -30,9 +25,7 @@ export default function RootLayout({
     <>
       <MainHeader />
       <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased rtl`}
-        >
+        <body className={`antialiased rtl`}>
           <main className="container">{children}</main>
           <ToastifyProvider />
         </body>

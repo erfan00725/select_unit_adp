@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { useEffect, useState } from "react";
 
 export type InputValueType = Record<string, { active: boolean; value: any }>;
@@ -65,25 +66,18 @@ export const FormInputs = ({ configs, onInputsChange }: Props) => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-x-5 space-y-5 flex flex-row flex-wrap w-full mb-7">
       {configs.map((config) => (
         <div key={config.id} className={config.className}>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block font-medium text-gray-700 mb-1 ">
             {config.label ? config.label : "برچسب"}
             {config.required && <span className="text-red-500">*</span>}
           </label>
-          {config.canBeDisabled && (
-            <button
-              type="button"
-              className="text-xs text-blue-600 underline mr-2"
-              onClick={() => toggleInputActive(config.name)}
-            >
-              {inputsValue[config.name]?.active ? "غیرفعال کردن" : "فعال کردن"}
-            </button>
-          )}
           {config.type === "select" ? (
             <select
-              className="border border-gray-300 rounded-md px-3 py-2 w-full"
+              className={clsx("border border-gray-300 rounded-md px-3 py-2", {
+                "text-gray-400": !inputsValue[config.name]?.active,
+              })}
               value={inputsValue[config.name]?.value || ""}
               onChange={(e) => handleInputChange(config.name, e.target.value)}
               disabled={
@@ -100,7 +94,9 @@ export const FormInputs = ({ configs, onInputsChange }: Props) => {
           ) : (
             <input
               type={config.type}
-              className="border border-gray-300 rounded-md px-3 py-2 w-full"
+              className={clsx("border border-gray-300 rounded-md px-3 py-2", {
+                "text-gray-400": !inputsValue[config.name]?.active,
+              })}
               value={inputsValue[config.name]?.value || ""}
               onChange={(e) => handleInputChange(config.name, e.target.value)}
               placeholder={
@@ -110,6 +106,13 @@ export const FormInputs = ({ configs, onInputsChange }: Props) => {
                 config.canBeDisabled && !inputsValue[config.name]?.active
               }
               required={config.required}
+            />
+          )}
+          {config.canBeDisabled && (
+            <input
+              type="checkbox"
+              className="w-4 h-4 mr-2"
+              onClick={() => toggleInputActive(config.name)}
             />
           )}
         </div>

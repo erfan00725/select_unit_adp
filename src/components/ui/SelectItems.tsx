@@ -183,7 +183,7 @@ const SelectItems: React.FC<SelectItemsProps> = ({
           className="flex items-center  cursor-pointer text-sm text-gray-600 hover:text-gray-900"
           type="button"
         >
-          <FontAwesomeIcon icon={faX} className="mr-2" />
+          <FontAwesomeIcon icon={faX} className="ml-2" />
           پاک کردن انتخاب‌ها
         </button>
 
