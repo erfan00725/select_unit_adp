@@ -59,7 +59,7 @@ export async function getFields(params?: BaseListFilterParams) {
     };
   } catch (error) {
     console.error("Failed to fetch fields:", error);
-    return { error: "Failed to fetch fields" };
+    return { error: "خطا در دریافت رشته‌ها" };
   }
 }
 
@@ -76,13 +76,13 @@ export async function getFieldById(id: bigint) {
     });
 
     if (!field) {
-      return { error: "Field not found" };
+      return { error: "رشته مورد نظر یافت نشد" };
     }
 
     return { field };
   } catch (error) {
     console.error("Failed to fetch field:", error);
-    return { error: "Failed to fetch field" };
+    return { error: "خطا در دریافت رشته" };
   }
 }
 
@@ -94,7 +94,7 @@ export async function createField(data: FieldDataType) {
     });
 
     if (existingField) {
-      return { error: "A field with this name already exists" };
+      return { error: "رشته‌ای با این نام قبلاً ثبت شده است" };
     }
 
     const editedData = {
@@ -110,7 +110,7 @@ export async function createField(data: FieldDataType) {
     return { field };
   } catch (error) {
     console.error("Failed to create field:", error);
-    return { error: "Failed to create field" };
+    return { error: "خطا در ایجاد رشته" };
   }
 }
 
@@ -127,7 +127,7 @@ export async function updateField(id: bigint, data: Partial<FieldDataType>) {
       });
 
       if (existingField) {
-        return { error: "A field with this name already exists" };
+        return { error: "رشته‌ای با این نام قبلاً ثبت شده است" };
       }
     }
 
@@ -146,7 +146,7 @@ export async function updateField(id: bigint, data: Partial<FieldDataType>) {
     return { field };
   } catch (error) {
     console.error("Failed to update field:", error);
-    return { error: "Failed to update field" };
+    return { error: "خطا در به‌روزرسانی رشته" };
   }
 }
 
@@ -164,15 +164,15 @@ export async function deleteField(id: bigint) {
     });
 
     if (fieldWithRelations?.students.length) {
-      return { error: "Cannot delete field with associated students" };
+      return { error: "امکان حذف رشته‌ای که دارای دانش‌آموز است وجود ندارد" };
     }
 
     if (fieldWithRelations?.lessons.length) {
-      return { error: "Cannot delete field with associated lessons" };
+      return { error: "امکان حذف رشته‌ای که دارای درس است وجود ندارد" };
     }
 
     if (fieldWithRelations?.teachers.length) {
-      return { error: "Cannot delete field with associated teachers" };
+      return { error: "امکان حذف رشته‌ای که دارای استاد است وجود ندارد" };
     }
 
     await prisma.field.delete({
@@ -183,6 +183,6 @@ export async function deleteField(id: bigint) {
     return { success: true };
   } catch (error) {
     console.error("Failed to delete field:", error);
-    return { error: "Failed to delete field" };
+    return { error: "خطا در حذف رشته" };
   }
 }

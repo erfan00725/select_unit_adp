@@ -16,7 +16,7 @@ type Props = {
 
 const Page = async ({ searchParams, params }: Props) => {
   const type = (await params).type;
-  const config: ListStaticConfigType = s_ListConfig[type] || null;
+  const config: ListStaticConfigType | null = s_ListConfig[type] || null;
 
   if (!config) {
     return notFound();

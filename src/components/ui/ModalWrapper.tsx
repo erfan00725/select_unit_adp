@@ -17,6 +17,7 @@ export const ModalWrapper = ({ isShown, onClose, children }: Props) => {
         }
       )}
       onClick={() => isShown && onClose()}
+      aria-label="پس‌زمینه مودال"
     >
       <div onClick={(e) => e.stopPropagation()} className="w-full">
         {children}

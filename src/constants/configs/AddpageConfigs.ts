@@ -20,7 +20,7 @@ import {
 import { PageType } from "@/types/General";
 
 export const LessonAddConfigs: CreateEditProps<any, any> = {
-  entityName: "Lesson",
+  entityName: "درس",
   formGenerator: lessonFormConfigGenerator,
   submitFunction: createLesson,
   validateFunction: validateLessonSafe,
@@ -28,7 +28,7 @@ export const LessonAddConfigs: CreateEditProps<any, any> = {
 };
 
 export const StudentsAddConfigs: CreateEditProps<any, any> = {
-  entityName: "Student",
+  entityName: "دانش‌آموز",
   formGenerator: studentFormConfigGenerator,
   submitFunction: createStudent,
   validateFunction: validateStudentSafe,
@@ -36,7 +36,7 @@ export const StudentsAddConfigs: CreateEditProps<any, any> = {
 };
 
 export const FieldAddConfigs: CreateEditProps<any, any> = {
-  entityName: "Field",
+  entityName: "رشته",
   formGenerator: fieldFormConfigGenerator,
   submitFunction: createField,
   validateFunction: validateFieldSafe,
@@ -44,7 +44,7 @@ export const FieldAddConfigs: CreateEditProps<any, any> = {
 };
 
 export const TeacherAddConfigs: CreateEditProps<any, any> = {
-  entityName: "Teacher",
+  entityName: "استاد",
   formGenerator: teacherFormConfigGenerator,
   submitFunction: createTeacher,
   validateFunction: validateTeacherSafe,

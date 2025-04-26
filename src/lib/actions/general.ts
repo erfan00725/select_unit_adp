@@ -11,7 +11,7 @@ export async function getGeneralSettings() {
     return { settings };
   } catch (error) {
     console.error("Failed to fetch general settings:", error);
-    return { error: "Failed to fetch general settings" };
+    return { error: "خطا در دریافت تنظیمات عمومی" };
   }
 }
 
@@ -23,13 +23,13 @@ export async function getSettingByKey(key: string) {
     });
 
     if (!setting) {
-      return { error: "Setting not found" };
+      return { error: "تنظیمات مورد نظر یافت نشد" };
     }
 
     return { setting };
   } catch (error) {
     console.error("Failed to fetch setting:", error);
-    return { error: "Failed to fetch setting" };
+    return { error: "خطا در دریافت تنظیمات" };
   }
 }
 
@@ -41,7 +41,7 @@ export async function createSetting(data: GeneralDataType) {
     });
 
     if (existingSetting) {
-      return { error: "A setting with this key already exists" };
+      return { error: "تنظیماتی با این کلید قبلاً ثبت شده است" };
     }
 
     const setting = await prisma.general.create({
@@ -52,7 +52,7 @@ export async function createSetting(data: GeneralDataType) {
     return { setting };
   } catch (error) {
     console.error("Failed to create setting:", error);
-    return { error: "Failed to create setting" };
+    return { error: "خطا در ایجاد تنظیمات" };
   }
 }
 
@@ -68,7 +68,7 @@ export async function updateSetting(key: string, value: string) {
     return { setting };
   } catch (error) {
     console.error("Failed to update setting:", error);
-    return { error: "Failed to update setting" };
+    return { error: "خطا در به‌روزرسانی تنظیمات" };
   }
 }
 
@@ -83,7 +83,7 @@ export async function deleteSetting(key: string) {
     return { success: true };
   } catch (error) {
     console.error("Failed to delete setting:", error);
-    return { error: "Failed to delete setting" };
+    return { error: "خطا در حذف تنظیمات" };
   }
 }
 
@@ -100,6 +100,6 @@ export async function upsertSetting(data: GeneralDataType) {
     return { setting };
   } catch (error) {
     console.error("Failed to upsert setting:", error);
-    return { error: "Failed to upsert setting" };
+    return { error: "خطا در ثبت یا به‌روزرسانی تنظیمات" };
   }
 }

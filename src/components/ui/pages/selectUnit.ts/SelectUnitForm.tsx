@@ -39,21 +39,17 @@ export const SelectUnitForm = ({
   const [selectedLessons, setSelectedLessons] = useState<
     ActionReturnType<typeof getLessonsByIds> | undefined
   >(undefined);
-
   const [isLoading, setIsLoading] = useState(false);
-
   const lessonsSelectItems: SelectItem[] =
     lessons?.lessons?.map((lesson) => ({
       id: lesson.id.toString(),
       name: `${lesson.LessonName} (${lesson.teacher?.FirstName} ${lesson.teacher?.LastName})`,
     })) || [];
-
   // Calculate total price
   const totalPrice = selectedLessons?.lessons?.reduce((total, lesson) => {
     const price = Number(lesson?.PricePerUnit) || Number(defaultPrice);
     return total + price * (Number(lesson?.PricePerUnit) || 1);
   }, 0);
-
   // calcualte Year
   const year = new Date().getFullYear();
   const periodOptions = new Array(10)
@@ -63,7 +59,6 @@ export const SelectUnitForm = ({
       value: year,
       label: getAcademicYearJ(year),
     }));
-
   useEffect(() => {
     if (seLectedLessonsIds.length > 0) {
       setIsLoading(true);
@@ -96,17 +91,11 @@ export const SelectUnitForm = ({
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
-
     if (!selectedLessons || selectedLessons.lessons.length < 0) {
-      toast.error("Please select courses or fill the form");
+      toast.error("لطفاً درس‌ها را انتخاب کنید یا فرم را تکمیل نمایید");
       return;
     }
-
     const lessons = seLectedLessonsIds.map((id) => BigInt(id));
-
-    console.log("selectedLessons", selectedLessons);
-    console.log("inputValues", inputValues.current);
-
     const {
       success,
       data: validateData,
@@ -151,7 +140,7 @@ export const SelectUnitForm = ({
         onRemoveLesson={handleRemoveLesson}
       />
     ) : (
-      <h3 className="w-full text-center text-gray-500">No courses selected</h3>
+      <h3 className="w-full text-center text-gray-500">درسی انتخاب نشده است</h3>
     );
   };
 
@@ -160,7 +149,7 @@ export const SelectUnitForm = ({
   const formConfigs = [
     {
       id: "SU_Year",
-      label: "Year",
+      label: "سال تحصیلی",
       type: "select" as const,
       name: "year",
       options: periodOptions,
@@ -168,39 +157,38 @@ export const SelectUnitForm = ({
     },
     {
       id: "SU_Period",
-      label: "Period",
+      label: "نیمسال",
       type: "select" as const,
       name: "period",
       options: [
-        { value: Period.first, label: "First Half" },
-        { value: Period.second, label: "Second Half" },
-        { value: Period.summer, label: "Summer" },
+        { value: Period.first, label: "نیمسال اول" },
+        { value: Period.second, label: "نیمسال دوم" },
+        { value: Period.summer, label: "تابستان" },
       ],
       required: true,
     },
     {
       id: "SU_Discount",
-      label: "Discount",
+      label: "تخفیف",
       type: "number" as const,
       name: "discount",
       canBeDisabled: true,
     },
     {
       id: "SU_ExtraFee",
-      label: "Extra Fee",
+      label: "هزینه اضافی",
       type: "number" as const,
       name: "extraFee",
       canBeDisabled: true,
     },
     {
       id: "SU_FixedFee",
-      label: "Fixed Fee",
+      label: "هزینه ثابت",
       type: "number" as const,
       name: "fixedFee",
       canBeDisabled: true,
     },
   ];
-
   return (
     <form>
       {/* Course Selection Table */}
@@ -212,7 +200,9 @@ export const SelectUnitForm = ({
           }}
         />
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-bold text-gray-900">Selected Courses</h2>
+          <h2 className="text-lg font-bold text-gray-900">
+            درس‌های انتخاب شده
+          </h2>
           <LessonSelect
             items={lessonsSelectItems}
             selectedLessons={seLectedLessonsIds}
@@ -220,10 +210,9 @@ export const SelectUnitForm = ({
           />
         </div>
         {isLoading ? <Loading /> : showTable()}
-
         <div className="mt-6 w-full flex flex-row justify-between">
           <button type="button" className="button" onClick={handleReset}>
-            Reset
+            بازنشانی
           </button>
           {/* TODO: add total unit */}
           <p className="text-lg font-bold">
@@ -238,14 +227,14 @@ export const SelectUnitForm = ({
           href={`${urls.students}/${studnetId}`}
           className="px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
-          Cancel
+          انصراف
         </Link>
         <button
           type="submit"
           onClick={handleSubmit}
           className="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
-          Confirm Selection
+          تایید انتخاب
         </button>{" "}
       </div>
     </form>

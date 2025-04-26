@@ -3,7 +3,7 @@ import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import { urls } from "@/constants/urls";
+import { homeUrl, urls } from "@/constants/urls";
 import { useSearchParams } from "@/lib/hooks/useSeachParams";
 import { PageType } from "@/types/General";
 
@@ -51,28 +51,39 @@ export default function DeleteConfirm({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 mb-5">
-      <h1 className="text-2xl font-bold text-red-600 mb-4">
-        Delete Confirmation
-      </h1>
-      <p className="text-gray-700 mb-6">
-        Are you sure you want to delete this {title || "item"}? This action
-        cannot be undone.
-      </p>
-      <div className="flex space-x-4 mt-6">
-        <button
-          onClick={handleDelete}
-          className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-        >
-          Confirm Delete
-        </button>
-        <button
-          onClick={clearSearchParams}
-          className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
-        >
-          Cancel
-        </button>
-      </div>{" "}
+    <div className="flex flex-col items-center justify-center min-h-screen">
+      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+        <h2 className="text-2xl font-bold mb-4 text-center text-red-600">
+          {title || "تایید حذف"}
+        </h2>
+        <p className="mb-6 text-center text-gray-700">
+          آیا مطمئن هستید که می‌خواهید این مورد را حذف کنید؟ این عملیات قابل
+          بازگشت نیست.
+        </p>
+        <div className="flex justify-between">
+          <button
+            className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 focus:outline-none"
+            onClick={async () => {
+              const result = await deleteFounction(BigInt(id));
+              if (result.success) {
+                toast.success("با موفقیت حذف شد");
+                onDelete && onDelete();
+                router.push(backUrl || homeUrl);
+              } else {
+                toast.error(result.error || "خطا در حذف");
+              }
+            }}
+          >
+            حذف
+          </button>
+          <Link
+            href={backUrl || homeUrl}
+            className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 focus:outline-none"
+          >
+            بازگشت
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }

@@ -15,8 +15,8 @@ const SelectUnitPage = async ({ params, searchParams }: Props) => {
   return (
     <div className="container mx-auto px-4 py-8">
       <PageHeader
-        title="Course Selection"
-        description="Choose from our available courses"
+        title="انتخاب واحد"
+        description="از میان دوره‌های موجود انتخاب کنید"
       />
 
       {/* Student Information Card */}

@@ -40,35 +40,35 @@ type StaticConfigsType = {
 
 export const s_ListConfig: StaticConfigsType = {
   lessons: {
-    title: "Lessons Management",
-    description: "Manage your lessons",
-    addButtonLabel: "Add New Lesson",
-    searchPlaceholder: "Search lessons, teachers...",
+    title: "مدیریت دروس",
+    description: "مدیریت دروس خود را انجام دهید",
+    addButtonLabel: "افزودن درس جدید",
+    searchPlaceholder: "جستجوی درس‌ها، اساتید...",
     filterOptions: [
       {
         name: "unit",
         type: "number",
-        placeholder: "Enter unit",
+        placeholder: "واحد را وارد کنید",
       },
     ],
   },
   students: {
-    title: "Students Management",
-    description: "Manage your students",
-    addButtonLabel: "Add New Student",
-    searchPlaceholder: "Search students, units...",
+    title: "مدیریت دانش‌آموزان",
+    description: "مدیریت دانش‌آموزان خود را انجام دهید",
+    addButtonLabel: "افزودن دانش‌آموز جدید",
+    searchPlaceholder: "جستجوی دانش‌آموزان، واحدها...",
   },
   fields: {
-    title: "Fields Management",
-    description: "Manage your fields",
-    addButtonLabel: "Add New Field",
-    searchPlaceholder: "Search fields...",
+    title: "مدیریت رشته‌ها",
+    description: "مدیریت رشته‌های خود را انجام دهید",
+    addButtonLabel: "افزودن رشته جدید",
+    searchPlaceholder: "جستجوی رشته‌ها...",
   },
   teachers: {
-    title: "Teachers Management",
-    description: "Manage your teachers",
-    addButtonLabel: "Add New Teacher",
-    searchPlaceholder: "Search teachers, fields...",
+    title: "مدیریت اساتید",
+    description: "مدیریت اساتید خود را انجام دهید",
+    addButtonLabel: "افزودن استاد جدید",
+    searchPlaceholder: "جستجوی اساتید، رشته‌ها...",
   },
 };
 
@@ -111,19 +111,19 @@ const LessonsList = async ({
   }));
 
   const headers = [
-    "ID",
-    "Name",
-    "Theory Unit",
-    "Practical Unit",
-    "Teacher",
-    "Price Per Unit",
+    "شناسه",
+    "نام",
+    "واحد نظری",
+    "واحد عملی",
+    "استاد",
+    "قیمت هر واحد",
   ];
 
   return {
     tableData: tableData,
     headers: headers,
-    title: "Lessons Management",
-    addButtonLabel: "Add New Lesson",
+    title: "مدیریت دروس",
+    addButtonLabel: "افزودن درس جدید",
     baseUrl: urls.lessons,
     limit: pageLimit,
     error: lessonsData?.error,
@@ -155,11 +155,11 @@ const StudentsList = async ({
     Field: student.field?.Name || "_",
   }));
 
-  const headers = ["ID", "Name", "National Code", "Phone Number", "Field"];
+  const headers = ["شناسه", "نام", "کد ملی", "شماره تماس", "رشته"];
 
   const actions: DataTableAction[] = [
     {
-      label: "Select_Unit",
+      label: "انتخاب_واحد",
       href: urls.selectUnit + "/student/$?",
     },
   ];
@@ -167,8 +167,8 @@ const StudentsList = async ({
   return {
     tableData: tableData,
     headers: headers,
-    title: "Students Management",
-    addButtonLabel: "Add New Student",
+    title: "مدیریت دانش‌آموزان",
+    addButtonLabel: "افزودن دانش‌آموز جدید",
     baseUrl: urls.students,
     limit: pageLimit,
     error: studentsData?.error,
@@ -201,13 +201,13 @@ const FieldsList = async ({
     Lessons: field.lessons?.length || 0,
   }));
 
-  const headers = ["ID", "Name", "Fixed Fee", "Students", "Lessons"];
+  const headers = ["شناسه", "نام", "شهریه ثابت", "دانش‌آموزان", "دروس"];
 
   return {
     tableData: tableData,
     headers: headers,
-    title: "Fields Management",
-    addButtonLabel: "Add New Field",
+    title: "مدیریت رشته‌ها",
+    addButtonLabel: "افزودن رشته جدید",
     baseUrl: urls.fields,
     limit: pageLimit,
     error: fieldsData?.error,
@@ -241,19 +241,19 @@ const TeachersList = async ({
   }));
 
   const headers = [
-    "ID",
-    "Name",
-    "National Code",
-    "Phone Number",
-    "Field",
-    "Lessons",
+    "شناسه",
+    "نام",
+    "کد ملی",
+    "شماره تماس",
+    "رشته",
+    "دروس",
   ];
 
   return {
     tableData: tableData,
     headers: headers,
-    title: "Teachers Management",
-    addButtonLabel: "Add New Teacher",
+    title: "مدیریت اساتید",
+    addButtonLabel: "افزودن استاد جدید",
     baseUrl: urls.teachers,
     limit: pageLimit,
     error: teachersData?.error,
@@ -301,19 +301,19 @@ export const d_SelectUnitList = async ({
   });
 
   const headers = [
-    "ID",
-    "Year",
-    "Period",
-    "Lesson Count",
-    "Total Units",
-    "Total Fee",
+    "شناسه",
+    "سال",
+    "ترم",
+    "تعداد دروس",
+    "تعداد واحد",
+    "شهریه کل",
   ];
 
   return {
     tableData: tableData,
     headers: headers,
-    title: "Select Unit Management",
-    addButtonLabel: "Add New Selection",
+    title: "مدیریت انتخاب واحد",
+    addButtonLabel: "افزودن انتخاب واحد جدید",
     baseUrl: urls.selectUnit,
     limit: pageLimit,
     error: selectUnitsData?.error,

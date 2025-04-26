@@ -7,18 +7,18 @@ import { ModalWrapper } from "@/components/ui/ModalWrapper";
 
 // Sample data for demonstration
 const sampleItems = [
-  { id: "1", name: "Professional Camera Kit" },
-  { id: "2", name: "Wireless Headphones" },
-  { id: "3", name: "Smart Watch Series 7" },
-  { id: "4", name: 'Laptop Pro 16"' },
-  { id: "5", name: "Wireless Charging Pad" },
-  { id: "6", name: "Bluetooth Speaker" },
-  { id: "7", name: '4K Monitor 32"' },
-  { id: "8", name: "Gaming Mouse" },
-  { id: "9", name: "Mechanical Keyboard" },
-  { id: "10", name: "External SSD 1TB" },
-  { id: "11", name: "Graphic Tablet" },
-  { id: "12", name: "Portable Power Bank" },
+  { id: "1", name: "کیت دوربین حرفه‌ای" },
+  { id: "2", name: "هدفون بی‌سیم" },
+  { id: "3", name: "ساعت هوشمند سری ۷" },
+  { id: "4", name: "لپ‌تاپ پرو ۱۶ اینچ" },
+  { id: "5", name: "پد شارژ بی‌سیم" },
+  { id: "6", name: "اسپیکر بلوتوثی" },
+  { id: "7", name: "مانیتور ۴K ۳۲ اینچ" },
+  { id: "8", name: "ماوس گیمینگ" },
+  { id: "9", name: "کیبورد مکانیکی" },
+  { id: "10", name: "اس‌اس‌دی اکسترنال ۱ ترابایت" },
+  { id: "11", name: "تبلت گرافیکی" },
+  { id: "12", name: "پاوربانک قابل حمل" },
 ];
 
 export default function SelectItemsDemo() {
@@ -32,18 +32,18 @@ export default function SelectItemsDemo() {
 
   const handleSaveSelection = (items: any[]) => {
     setSavedSelection(items);
-    alert(`Selection saved! ${items.length} items selected.`);
+    alert(`انتخاب ذخیره شد! ${items.length} آیتم انتخاب شده است.`);
   };
 
   return (
     <div className="container mx-auto px-4 py-8">
       <PageHeader
-        title="Select Items Demo"
-        description="Example of the SelectItems component"
+        title="دموی انتخاب آیتم‌ها"
+        description="نمونه‌ای از کامپوننت انتخاب آیتم‌ها"
       />
 
       <div className="mb-8">
-        <h2 className="text-xl font-bold mb-4">Component Demo</h2>
+        <h2 className="text-xl font-bold mb-4">دموی کامپوننت</h2>
         <ModalWrapper
           isShown={isSelectShown}
           onClose={() => setIsSelectShown(false)}
@@ -52,17 +52,17 @@ export default function SelectItemsDemo() {
             items={sampleItems}
             onSelectionChange={handleSelectionChange}
             onSave={handleSaveSelection}
-            title="Select Products"
-            searchPlaceholder="Search products..."
+            title="انتخاب محصولات"
+            searchPlaceholder="جستجوی محصولات..."
           />
         </ModalWrapper>
       </div>
 
-      <button onClick={() => setIsSelectShown(true)}>Show Modal</button>
+      <button onClick={() => setIsSelectShown(true)}>نمایش مودال</button>
 
       {savedSelection.length > 0 && (
         <div className="bg-white rounded-lg shadow-lg p-6">
-          <h2 className="text-xl font-bold mb-4">Your Saved Selection</h2>
+          <h2 className="text-xl font-bold mb-4">انتخاب ذخیره‌شده شما</h2>
           <ul className="list-disc pl-5 space-y-2">
             {savedSelection.map((item) => (
               <li key={item.id}>{item.name}</li>

@@ -40,7 +40,7 @@ function MainHeader() {
                 icon={faSignOutAlt}
                 className="mr-2 w-4 h-auto"
               />
-              Logout
+              خروج
             </Link>
           </div>
         </div>

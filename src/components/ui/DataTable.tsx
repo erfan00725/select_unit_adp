@@ -33,18 +33,18 @@ const DataTable = <T extends DataBaseType>({
       >
         <table className="min-w-full divide-y divide-gray-200">
           <thead>
-            <tr>
+            <tr className="text-right">
               {headers.map((header, index) => (
                 <th
                   key={index}
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
                   {header}
                 </th>
               ))}
               {baseUrl || actions ? (
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Action
+                <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  عملیات
                 </th>
               ) : null}
             </tr>
@@ -111,9 +111,9 @@ const DataTable = <T extends DataBaseType>({
       </div>
 
       {addUrl && canAdd && (
-        <div className="mt-6">
-          <Link href={addUrl} className="button_black">
-            {addButtonLabel || "Add"}
+        <div className="flex justify-end mb-4">
+          <Link href={addUrl} className="button">
+            {addButtonLabel || "افزودن جدید"}
           </Link>
         </div>
       )}
@@ -122,3 +122,13 @@ const DataTable = <T extends DataBaseType>({
 };
 
 export default DataTable;
+
+// {
+//   rows && rows.length === 0 && (
+//     <tr>
+//       <td colSpan={headers.length} className="text-center py-8 text-gray-500">
+//         داده‌ای یافت نشد
+//       </td>
+//     </tr>
+//   );
+// }

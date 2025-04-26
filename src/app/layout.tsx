@@ -31,7 +31,7 @@ export default function RootLayout({
       <MainHeader />
       <html lang="en">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased rtl`}
         >
           <main className="container">{children}</main>
           <ToastifyProvider />

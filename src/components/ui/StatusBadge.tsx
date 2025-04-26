@@ -25,6 +25,14 @@ const getStatusStyles = (variant: StatusVariant): string => {
   return styles[variant] || styles.inactive;
 };
 
+const statusTextMap: Record<string, string> = {
+  active: "فعال",
+  inactive: "غیرفعال",
+  pending: "در انتظار",
+  archived: "بایگانی‌شده",
+  outOfStock: "ناموجود",
+};
+
 const StatusBadge: React.FC<StatusBadgeProps> = ({
   status,
   variant = "active",
@@ -32,10 +40,11 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({
 }) => {
   const baseStyles = "px-2 py-1 text-xs font-medium rounded-full";
   const variantStyles = getStatusStyles(variant as StatusVariant);
+  const localizedStatus = statusTextMap[status] || status;
 
   return (
     <span className={`${baseStyles} ${variantStyles} ${className}`}>
-      {status}
+      {localizedStatus}
     </span>
   );
 };

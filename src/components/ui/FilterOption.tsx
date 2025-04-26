@@ -28,7 +28,7 @@ export default function FilterOption({ option, onChange }: Props) {
       }
       name={option.name}
       id={option.name}
-      placeholder={option.placeholder}
+      placeholder={option.placeholder ? option.placeholder : "جستجو..."}
       onChange={onChange}
       defaultChecked={getSearchParam(option.name) === "true"}
       onWheel={(e) => e.currentTarget.blur()}
@@ -52,7 +52,7 @@ export default function FilterOption({ option, onChange }: Props) {
         >
           {option.options?.map((option) => (
             <option key={option.value} value={option.value}>
-              {`${option.label} : `}
+              {`${option.label ? option.label : "گزینه"} : `}
             </option>
           ))}
         </select>
@@ -68,19 +68,11 @@ export default function FilterOption({ option, onChange }: Props) {
   }
 
   return (
-    <div
-      className={clsx("flex items-center rounded-md", className, {
-        "px-4 border border-gray-300": option.label,
-      })}
-    >
-      {option.label && (
-        <label htmlFor={option.name} className="text-sm text-gray-700 mr-1.5">
-          {" "}
-          {option.label}{" "}
-        </label>
-      )}
-
-      {Input && Input}
+    <div className={clsx("flex flex-col gap-2", className)}>
+      <label htmlFor={option.name} className="text-sm text-gray-700">
+        {option.label ? option.label : "برچسب"}
+      </label>
+      {Input}
     </div>
   );
 }

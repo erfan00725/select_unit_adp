@@ -1,32 +1,32 @@
 const errorMassages = {
   invalidType: (fieldName: string, expectedType: string) =>
-    `Invalid type for ${fieldName}. Expected ${expectedType}.`,
+    `نوع نامعتبر برای ${fieldName}. نوع مورد انتظار ${expectedType}.`,
   invalidValue: (fieldName: string, expectedValue: string) =>
-    `Invalid value for ${fieldName}. Expected ${expectedValue}.`,
+    `مقدار نامعتبر برای ${fieldName}. مقدار مورد انتظار ${expectedValue}.`,
   invalidLength: (fieldName: string, expectedLength: number) =>
-    `Invalid length for ${fieldName}. Expected ${expectedLength}.`,
+    `طول نامعتبر برای ${fieldName}. طول مورد انتظار ${expectedLength}.`,
   invalidDate: (fieldName: string, error?: string) =>
-    `Invalid date for ${fieldName}: ${error}`,
-  invalidEmail: (fieldName: string) => `Invalid email for ${fieldName}.`,
-  invalidPhone: (fieldName: string) => `Invalid phone number for ${fieldName}.`,
-  requiredField: (fieldName: string) => `${fieldName} is required.`,
+    `تاریخ نامعتبر برای ${fieldName}: ${error}`,
+  invalidEmail: (fieldName: string) => `ایمیل نامعتبر برای ${fieldName}.`,
+  invalidPhone: (fieldName: string) => `شماره تلفن نامعتبر برای ${fieldName}.`,
+  requiredField: (fieldName: string) => `${fieldName} الزامی است.`,
   positiveNumber: (fieldName: string) =>
-    `${fieldName} must be a positive number.`,
-  integerNumber: (fieldName: string) => `${fieldName} must be an integer.`,
+    `${fieldName} باید یک عدد مثبت باشد.`,
+  integerNumber: (fieldName: string) => `${fieldName} باید یک عدد صحیح باشد.`,
   nonNegativeNumber: (fieldName: string) =>
-    `${fieldName} must be a non-negative number.`,
+    `${fieldName} باید یک عدد غیر منفی باشد.`,
   maxLength: (fieldName: string, maxLength: number) =>
-    `${fieldName} must be less than ${maxLength} characters.`,
+    `${fieldName} باید کمتر از ${maxLength} کاراکتر باشد.`,
   minLength: (fieldName: string, minLength: number) =>
-    `${fieldName} must be at least ${minLength} characters.`,
-  baseErrorMassage: (error: string) => `Something went wrong: ${error}`,
+    `${fieldName} باید حداقل ${minLength} کاراکتر باشد.`,
+  baseErrorMassage: (error: string) => `خطایی رخ داد: ${error}`,
   lengthError: (fieldName: string, length: number) =>
-    `${fieldName} must be exactly ${length} characters.`,
+    `${fieldName} باید دقیقاً ${length} کاراکتر باشد.`,
 };
 
 export const successMassages = {
-  addSuccess: (objectName: string) => `${objectName} added successfully.`,
-  updateSuccess: (objectName: string) => `${objectName} updated successfully.`,
+  addSuccess: (objectName: string) => `${objectName} با موفقیت اضافه شد.`,
+  updateSuccess: (objectName: string) => `${objectName} با موفقیت بروزرسانی شد.`,
 };
 
 export default errorMassages;

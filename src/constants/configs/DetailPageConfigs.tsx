@@ -54,66 +54,66 @@ export const LessonsDetailConfig = (
     modifiedAt: lesson?.Updated_at.toDateString(),
     rows: [
       {
-        label: "Name",
+        label: "نام",
         value: lesson?.LessonName,
       },
       {
-        label: "Theori Unit",
+        label: "واحد نظری",
         value: lesson?.TheoriUnit,
       },
       {
-        label: "Practical Unit",
+        label: "واحد عملی",
         value: lesson?.PracticalUnit,
       },
       {
-        label: "Grade",
+        label: "مقطع",
         value: lesson?.Grade,
       },
       {
-        label: "Field",
+        label: "رشته",
         value: lesson?.field?.Name,
       },
       {
-        label: "Pass Score",
+        label: "نمره قبولی",
         value: lesson?.PassCondition,
       },
       {
-        label: "Hours",
+        label: "ساعات",
         value: `${lesson?.TheoriHours}.${lesson?.PracticalHours}`,
       },
       {
-        label: "Require Lesson",
+        label: "درس پیش‌نیاز",
         value: lesson?.requiresLesson?.LessonName,
       },
       {
-        label: "Require Unit",
+        label: "واحد مورد نیاز",
         value: lesson?.RequireUnit,
         type: "text",
       },
       {
-        label: "Teacher",
+        label: "استاد",
         value: lesson?.teacher
           ? `${lesson?.teacher?.FirstName} ${lesson?.teacher?.LastName}`
           : null,
         type: "text",
       },
       {
-        label: "Price Per Unit",
+        label: "قیمت هر واحد",
         value: lesson?.PricePerUnit?.toString(),
         type: "price",
       },
       {
-        label: "Notification Code",
+        label: "کد اطلاع‌رسانی",
         value: lesson?.NotifCode?.toString(),
         type: "text",
       },
       {
-        label: "Valid From",
+        label: "تاریخ شروع اعتبار",
         value: getFarsiDate(lesson?.ValidFrom?.toDateString()),
         type: "text",
       },
       {
-        label: "Valid Till",
+        label: "تاریخ پایان اعتبار",
         value: getFarsiDate(lesson?.ValidTill?.toDateString()),
         type: "text",
       },
@@ -146,45 +146,45 @@ export const StudentsDetailConfig = (
     modifiedAt: student?.Updated_at.toDateString(),
     rows: [
       {
-        label: "Name",
+        label: "نام",
         value: `${student?.FirstName} ${student?.LastName}`,
         type: "text",
       },
       {
-        label: "Father Name",
+        label: "نام پدر",
         value: student?.Father,
         type: "text",
       },
       {
-        label: "National Code",
+        label: "کد ملی",
         value: student?.NationalCode,
       },
       {
-        label: "Phone",
+        label: "شماره تماس",
         value: student?.PhoneNumber,
         type: "text",
       },
       {
-        label: "Address",
+        label: "آدرس",
         value: student?.Address,
         type: "text",
       },
       {
-        label: "Date of Birth",
+        label: "تاریخ تولد",
         value: student?.Birth?.toDateString(),
         type: "text",
       },
       {
-        label: "Gender",
+        label: "جنسیت",
         value: student?.Gender ? getGender(student?.Gender) : null,
         type: "text",
       },
       {
-        label: "Grade",
+        label: "مقطع",
         value: student?.Grade,
       },
       {
-        label: "Field",
+        label: "رشته",
         value: student?.field.Name,
       },
     ],
@@ -224,12 +224,12 @@ export const FieldsDetailConfig = (
     createdAt: field?.Created_at.toDateString(),
     rows: [
       {
-        label: "Name",
+        label: "نام",
         value: field?.Name,
         type: "text",
       },
       {
-        label: "Fixed Fee",
+        label: "شهریه ثابت",
         value: field?.FixedFee?.toString(),
         type: "price",
       },
@@ -262,32 +262,32 @@ export const TeachersDetailConfig = (
     modifiedAt: teacher?.Updated_at.toDateString(),
     rows: [
       {
-        label: "Name",
+        label: "نام",
         value: `${teacher?.FirstName} ${teacher?.LastName}`,
         type: "text",
       },
       {
-        label: "National Code",
+        label: "کد ملی",
         value: teacher?.NationalCode,
         type: "text",
       },
       {
-        label: "Phone",
+        label: "شماره تماس",
         value: teacher?.PhoneNumber,
         type: "text",
       },
       {
-        label: "Date of Birth",
+        label: "تاریخ تولد",
         value: teacher?.Birth?.toDateString(),
         type: "text",
       },
       {
-        label: "Gender",
+        label: "جنسیت",
         value: teacher?.Gender ? getGender(teacher?.Gender) : null,
         type: "text",
       },
       {
-        label: "Field",
+        label: "رشته",
         value: teacher?.field?.Name,
         type: "text",
       },
@@ -321,47 +321,47 @@ export const SelectUnitDetailConfig = (
     modifiedAt: selectUnit?.Updated_at.toDateString(),
     rows: [
       {
-        label: "Student",
+        label: "دانش‌آموز",
         value: `${student?.FirstName} ${student?.LastName}`,
         type: "text",
       },
       {
-        label: "Year",
+        label: "سال",
         value: getAcademicYearJ(selectUnit?.Year),
         type: "text",
       },
       {
-        label: "Period",
+        label: "ترم",
         value: selectUnit?.Period,
         type: "text",
       },
       {
-        label: "Fixed Fee",
+        label: "شهریه ثابت",
         value: selectUnit?.FixedFee?.toString(),
         type: "price",
       },
       {
-        label: "Extra Fee",
+        label: "شهریه اضافی",
         value: selectUnit?.ExtraFee?.toString(),
         type: "price",
       },
       {
-        label: "Certificate Fee",
+        label: "هزینه گواهی‌نامه",
         value: selectUnit?.CertificateFee?.toString(),
         type: "price",
       },
       {
-        label: "Extra Class Fee",
+        label: "هزینه کلاس‌های فوق‌العاده",
         value: selectUnit?.ExtraClassFee?.toString(),
         type: "price",
       },
       {
-        label: "Books Fee",
+        label: "هزینه کتاب‌ها",
         value: selectUnit?.BooksFee?.toString(),
         type: "price",
       },
       {
-        label: "Total Units",
+        label: "تعداد واحد کل",
         value: selectUnit?.totalUnits?.toString(),
         type: "price",
       },
@@ -425,35 +425,35 @@ interface s_PageConfig {
 
 export const s_DetailPageConfigs: Record<PageType, s_PageConfig> = {
   lessons: {
-    title: "Lesson Info",
+    title: "اطلاعات درس",
     deleteConfig: {
       deleteFounction: deleteLesson,
       backUrl: urls.lessons,
     },
   },
   students: {
-    title: "Student Info",
+    title: "اطلاعات دانش‌آموز",
     deleteConfig: {
       deleteFounction: deleteLesson,
       backUrl: urls.students,
     },
   },
   fields: {
-    title: "Field Info",
+    title: "اطلاعات رشته",
     deleteConfig: {
       deleteFounction: deleteLesson,
       backUrl: urls.fields,
     },
   },
   teachers: {
-    title: "Teacher Info",
+    title: "اطلاعات استاد",
     deleteConfig: {
       deleteFounction: deleteLesson,
       backUrl: urls.teachers,
     },
   },
   selectUnit: {
-    title: "Select Unit Info",
+    title: "اطلاعات انتخاب واحد",
     deleteConfig: {
       deleteFounction: deleteSelectUnit,
       backUrl: urls.selectUnit,

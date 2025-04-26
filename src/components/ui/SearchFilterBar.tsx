@@ -15,6 +15,7 @@ interface SearchFilterBarProps {
   filterOptions?: FilterOptionType[];
 }
 
+// This component renders a search and filter bar for lists, localized for Persian users.
 const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
   resultsCount,
   filterOptions,
@@ -34,6 +35,7 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
 
   const router = useRouter();
 
+  // Handle input and filter changes
   const onChange = (
     e:
       | React.ChangeEvent<HTMLInputElement>
@@ -43,7 +45,6 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
       case "checkbox":
         setSearchParam(e.target.name, e.target.checked.toString());
         break;
-
       default:
         setSearchParam(e.target.name, e.target.value);
         break;
@@ -57,7 +58,7 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
         <div className="relative flex-grow ">
           <Input
             type="text"
-            placeholder={searchPlaceholder}
+            placeholder={searchPlaceholder || "جستجو..."}
             className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
             defaultValue={getSearchParam("q")}
             onChange={(e) => debounce(e)}
@@ -75,14 +76,14 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
             onChange={onChange}
             name="order"
           >
-            <option value="asc">Newest First</option>
-            <option value="des">Oldest First</option>
+            <option value="asc">جدیدترین</option>
+            <option value="des">قدیمی‌ترین</option>
           </select>
 
           {/* Date Picker */}
           <div className="flex items-center px-4 py-2 border border-gray-300 rounded-md">
             <label htmlFor="FromDate" className="text-sm text-gray-700 mr-1.5">
-              Form :
+              از تاریخ:
             </label>
             <input
               type="date"
@@ -96,7 +97,7 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
 
           <div className="flex items-center px-4 py-2 border border-gray-300 rounded-md">
             <label htmlFor="ToDate" className="text-sm text-gray-700 mr-1.5">
-              To :
+              تا تاریخ:
             </label>
             <input
               type="date"
@@ -107,23 +108,6 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
               defaultValue={getSearchParam("to")}
             />
           </div>
-
-          {/* Price Range Slider */}
-          {/* <div className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md min-w-[200px]">
-            <input
-              type="range"
-              min="0"
-              max="1000"
-              step="10"
-              className="w-full"
-              value={priceRange.max}
-              onChange={(e) =>
-                onPriceRangeChange &&
-                onPriceRangeChange(priceRange.min, parseInt(e.target.value))
-              }
-            />
-            <span className="text-sm text-gray-600">${priceRange.max}</span>
-          </div> */}
 
           {/* Checkbox */}
           <div className="flex items-center px-4 py-2 border border-gray-300 rounded-md">
@@ -136,7 +120,7 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
               onChange={onChange}
             />
             <label htmlFor="filterCheckbox" className="text-sm text-gray-700">
-              In Stock Only
+              فقط موجودی
             </label>
           </div>
 
@@ -177,14 +161,14 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
             }}
             className="text-sm text-indigo-600 hover:text-indigo-800 ml-2"
           >
-            Clear all filters
+            پاک کردن همه فیلترها
           </button>
         )}
 
         {/* Results Count */}
         {resultsCount != null && (
           <div className="ml-auto text-sm text-gray-600">
-            {resultsCount} results found
+            {resultsCount} نتیجه یافت شد
           </div>
         )}
       </div>

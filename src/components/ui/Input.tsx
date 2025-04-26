@@ -36,7 +36,7 @@ const Input: React.FC<InputProps> = ({
       )}
       <input
         type={type}
-        placeholder={placeholder}
+        placeholder={placeholder || "ورودی"}
         value={value}
         onChange={onChange}
         required={required}

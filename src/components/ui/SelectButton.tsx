@@ -15,6 +15,7 @@ export type Props = {
 
 export type SelectButtonProps = Props & SelectItemsProps;
 
+// This component provides a button that opens a modal for selecting items, localized for Persian users.
 export const SelectButton = ({
   onClose,
   onSave,
@@ -24,14 +25,18 @@ export const SelectButton = ({
   children,
   ...rest
 }: SelectButtonProps) => {
+  // State for selected items
   const [selectedItems, setSelectedItems] = useState<SelectItem[]>([]);
+  // State for showing the select modal
   const [isSelectShown, setIsSelectShown] = useState(false);
 
+  // Handle closing the modal
   const handleCloseModal = () => {
     setIsSelectShown(false);
     if (onClose) onClose();
   };
 
+  // Handle saving selected items
   const onSelectSave = (selectedItems: SelectItem[]) => {
     setSelectedItems(selectedItems);
     if (rest.singleSelect && selectedItems.length > 0) {
@@ -40,6 +45,7 @@ export const SelectButton = ({
     onSave && onSave(selectedItems);
   };
 
+  // Handle selection change
   const onSelectionChange = (item: SelectItem[]) => {
     if (rest.singleSelect && selectedItems.length > 0) {
       setIsSelectShown(false);
@@ -47,13 +53,13 @@ export const SelectButton = ({
     rest.onSelectionChange && rest.onSelectionChange(item);
   };
 
+  // Generate the button title based on selection
   const buttonTitle = () => {
-    let title = buttunTitle || "Select";
+    let title = buttunTitle || "انتخاب";
     if (selectedItems.length > 0 && showSelectOnButton) {
       title = selectedItems[0].name;
       if (selectedItems.length > 1) title += "...";
     }
-
     return title;
   };
 

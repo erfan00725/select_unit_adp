@@ -27,7 +27,7 @@ export const LessonSelect = ({
   return (
     <SelectButton
       items={items}
-      buttunTitle="Add Course"
+      buttunTitle="افزودن درس"
       buttnClassName="text-white! bg-indigo-600! hover:bg-indigo-700!"
       required
       singleSelect={false}

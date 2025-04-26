@@ -42,16 +42,16 @@ const DetailInfoCard: React.FC<DetailPageProps> = ({
         <div>
           <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
           <p className="text-sm text-gray-500 mt-1">
-            ID: {id}
-            {createdAt && ` • Created: ${getFarsiDate(createdAt)}`}
-            {modifiedAt && ` • Modified: ${getFarsiDate(modifiedAt)}`}
+            شناسه: {id}
+            {createdAt && ` • ایجاد: ${getFarsiDate(createdAt)}`}
+            {modifiedAt && ` • ویرایش: ${getFarsiDate(modifiedAt)}`}
           </p>
         </div>
         {baseUrl && (
           <div className="flex space-x-2">
             {actions?.map((action) => action)}
             <Link href={`${formBaseUrl}/edit`} className="button_black">
-              Edit
+              ویرایش
             </Link>
             <DeleteButton />
           </div>

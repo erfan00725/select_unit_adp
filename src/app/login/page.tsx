@@ -25,10 +25,10 @@ export default function LoginPage() {
         <div className="flex flex-col items-center">
           <Logo className="mb-6" />
           <h2 className="text-center text-3xl font-bold text-gray-900">
-            Welcome back
+            خوش آمدید
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Please sign in to your account
+            لطفاً وارد حساب کاربری خود شوید
           </p>
         </div>
 
@@ -39,11 +39,11 @@ export default function LoginPage() {
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Email address
+                ایمیل
               </label>
               <Input
                 type="email"
-                placeholder="Enter your email"
+                placeholder="ایمیل خود را وارد کنید"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 icon={<FontAwesomeIcon icon={faEnvelope} />}
@@ -56,11 +56,11 @@ export default function LoginPage() {
                 htmlFor="password"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Password
+                رمز عبور
               </label>
               <Input
                 type="password"
-                placeholder="Enter your password"
+                placeholder="رمز عبور خود را وارد کنید"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 icon={<FontAwesomeIcon icon={faLock} />}
@@ -71,7 +71,7 @@ export default function LoginPage() {
 
           <div className="flex items-center justify-between">
             <Checkbox
-              label="Remember me"
+              label="مرا به خاطر بسپار"
               checked={rememberMe}
               onChange={(e) => setRememberMe(e.target.checked)}
             />
@@ -87,7 +87,7 @@ export default function LoginPage() {
 
           <div>
             <button type="submit" className="btn">
-              Sign in
+              ورود
             </button>
           </div>
         </form>
@@ -115,7 +115,7 @@ export default function LoginPage() {
       </div>
 
       <footer className="mt-8 text-center text-sm text-gray-500">
-        © 2024 Night School. All rights reserved.
+        © 2024 مدرسه شبانه. تمامی حقوق محفوظ است.
       </footer>
     </div>
   );

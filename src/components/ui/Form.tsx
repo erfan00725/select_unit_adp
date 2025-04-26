@@ -90,7 +90,7 @@ const Form: React.FC<FormProps> = ({
   children,
   className = "",
   onSubmit,
-  addText = "Add",
+  addText = "اضافه کردن",
   Header,
   useDefaultValues = false,
 }) => {
@@ -109,7 +109,7 @@ const Form: React.FC<FormProps> = ({
       value === null ||
       value === undefined ||
       (typeof value === "string" && value.trim() === "") ||
-      value === "none";
+      value === "هیچ";
 
     // Convert value based on dataType if specified
     if (dataType && !isValueEmpty) {

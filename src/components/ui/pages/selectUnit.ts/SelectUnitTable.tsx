@@ -14,13 +14,14 @@ const SelectUnitTable: React.FC<SelectUnitTableProps> = ({
   lessons,
   onRemoveLesson,
 }) => {
+  // جدول انتخاب واحد؛ این کامپوننت برای نمایش لیست دروس انتخاب شده توسط دانشجو استفاده می‌شود
   const headers = [
-    "id",
-    "Lesson Name",
-    "Teacher's Name",
-    "Theori Units",
-    "Practical Units",
-    "Price Per Unit",
+    "شناسه",
+    "نام درس",
+    "نام استاد",
+    "واحد نظری",
+    "واحد عملی",
+    "قیمت هر واحد",
   ];
 
   if (!lessons) {
@@ -38,7 +39,7 @@ const SelectUnitTable: React.FC<SelectUnitTableProps> = ({
 
   const actions: DataTableAction[] = [
     {
-      label: "Remove",
+      label: "حذف",
       onClick: (id) => {
         onRemoveLesson(id);
       },

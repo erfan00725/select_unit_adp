@@ -118,7 +118,7 @@ export async function getLessonById(id: bigint) {
     });
 
     if (!lesson) {
-      return { error: "Lesson not found" };
+      return { error: "درس مورد نظر یافت نشد" };
     }
 
     return { lesson };
@@ -139,7 +139,7 @@ export async function createLesson(data: LessonDataType) {
       });
 
       if (!teacher) {
-        return { error: "Teacher not found" };
+        return { error: "استاد مورد نظر یافت نشد" };
       }
     }
 
@@ -150,7 +150,7 @@ export async function createLesson(data: LessonDataType) {
       });
 
       if (!field) {
-        return { error: "Field not found" };
+        return { error: "رشته مورد نظر یافت نشد" };
       }
     }
 
@@ -161,7 +161,7 @@ export async function createLesson(data: LessonDataType) {
       });
 
       if (!requiredLesson) {
-        return { error: "Required lesson not found" };
+        return { error: "درس پیش‌نیاز یافت نشد" };
       }
     }
 
@@ -199,7 +199,7 @@ export async function updateLesson(id: bigint, data: Partial<LessonDataType>) {
     console.log("existingLesson ", existingLesson); // Add this line to log the value of existingLesson t
 
     if (!existingLesson) {
-      return { error: "Lesson not found" };
+      return { error: "درس مورد نظر یافت نشد" };
     }
 
     // Object.keys(data).forEach((key) => {
@@ -219,7 +219,7 @@ export async function updateLesson(id: bigint, data: Partial<LessonDataType>) {
       });
 
       if (!teacher) {
-        return { error: "Teacher not found" };
+        return { error: "استاد مورد نظر یافت نشد" };
       }
     }
 
@@ -230,7 +230,7 @@ export async function updateLesson(id: bigint, data: Partial<LessonDataType>) {
       });
 
       if (!field) {
-        return { error: "Field not found" };
+        return { error: "رشته مورد نظر یافت نشد" };
       }
     }
 
@@ -241,7 +241,7 @@ export async function updateLesson(id: bigint, data: Partial<LessonDataType>) {
       });
 
       if (!requiredLesson) {
-        return { error: "Required lesson not found" };
+        return { error: "درس پیش‌نیاز یافت نشد" };
       }
     }
 

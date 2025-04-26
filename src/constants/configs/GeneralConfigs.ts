@@ -2,23 +2,23 @@ import { urls } from "../urls";
 
 export const NavBarConfigs = [
   {
-    label: "Dashboard",
+    label: "داشبورد",
     href: "/dashboard",
   },
   {
-    label: "Student Management",
+    label: "مدیریت دانش‌آموزان",
     href: urls.students,
   },
   {
-    label: "Lessons Management",
+    label: "مدیریت دروس",
     href: urls.lessons,
   },
   {
-    label: "Teachers Management",
+    label: "مدیریت اساتید",
     href: urls.teachers,
   },
   {
-    label: "Fields Management",
+    label: "مدیریت رشته‌ها",
     href: urls.fields,
   },
 ];

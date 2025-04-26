@@ -1,10 +1,10 @@
 export const formTitle = (name: string, isEdit?: boolean) =>
-  isEdit ? `Edit ${name}` : `Add New ${name}`;
+  isEdit ? `ویرایش ${name}` : `افزودن ${name} جدید`;
 
 export const formDescription = (name: string, isEdit?: boolean) =>
-  isEdit ? `Edit ${name} details` : `Add New ${name}`;
+  isEdit ? `ویرایش جزئیات ${name}` : `افزودن ${name} جدید`;
 
 export const formButton = (name: string, isEdit?: boolean) =>
-  isEdit ? `Update ${name}` : `Add ${name}`;
+  isEdit ? `بروزرسانی ${name}` : `افزودن ${name}`;
 
-export const inputDefaultPlaceholder = (name: string) => `Enter ${name}`;
+export const inputDefaultPlaceholder = (name: string) => `${name} را وارد کنید`;

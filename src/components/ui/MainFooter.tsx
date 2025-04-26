@@ -6,7 +6,7 @@ const MainFooter = () => {
       <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         <div className="flex justify-center space-x-6">
           <a href="#" className="text-gray-400 hover:text-gray-500">
-            <span className="sr-only">Facebook</span>
+            <span className="sr-only">فیسبوک</span>
             <svg
               className="h-6 w-6"
               fill="currentColor"
@@ -21,7 +21,7 @@ const MainFooter = () => {
             </svg>
           </a>
           <a href="#" className="text-gray-400 hover:text-gray-500">
-            <span className="sr-only">Instagram</span>
+            <span className="sr-only">اینستاگرام</span>
             <svg
               className="h-6 w-6"
               fill="currentColor"
@@ -36,7 +36,7 @@ const MainFooter = () => {
             </svg>
           </a>
           <a href="#" className="text-gray-400 hover:text-gray-500">
-            <span className="sr-only">Twitter</span>
+            <span className="sr-only">توییتر</span>
             <svg
               className="h-6 w-6"
               fill="currentColor"
@@ -48,7 +48,7 @@ const MainFooter = () => {
           </a>
         </div>
         <p className="mt-4 text-center text-sm text-gray-500">
-          © 2024 Night School. All rights reserved.
+          © ۲۰۲۴ مدرسه شبانه. کلیه حقوق محفوظ است.
         </p>
       </div>
     </footer>

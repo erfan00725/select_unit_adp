@@ -28,13 +28,14 @@ export interface SelectItemsProps {
   clearOnSave?: boolean;
 }
 
+// This component renders a selectable list of items with search and selection features for Persian users.
 const SelectItems: React.FC<SelectItemsProps> = ({
   items,
   onSelectionChange,
   onSave,
   onCancel,
-  title = "Select Items",
-  searchPlaceholder = "Search items...",
+  title = "انتخاب آیتم‌ها",
+  searchPlaceholder = "جستجوی آیتم‌ها...",
   className = "",
   initialSelectedItems = [],
   singleSelect = true,
@@ -43,20 +44,25 @@ const SelectItems: React.FC<SelectItemsProps> = ({
   required = false,
   clearOnSave = false,
 }) => {
+  // State for search query
   const [searchQuery, setSearchQuery] = useState("");
+  // State for selected items
   const [selectedItems, setSelectedItems] =
     useState<SelectItem[]>(initialSelectedItems);
 
-  const selectItems = [...items]; // Create a copy of the item
+  // Clone items and add 'None' option if not required
+  const selectItems = [...items];
   if (!required) {
     selectItems.unshift({
       id: "none",
-      name: "None",
+      name: "هیچکدام",
     });
   }
 
+  // State for filtered items
   const [filteredItems, setFilteredItems] = useState<SelectItem[]>(selectItems);
 
+  // Initialize selected items based on initialSelectedItemId
   useEffect(() => {
     let initialSelectedItems = selectItems.filter(
       (item) => item.id == initialSelectedItemId?.toString()
@@ -71,6 +77,7 @@ const SelectItems: React.FC<SelectItemsProps> = ({
     }
   }, []);
 
+  // Filter items based on search query
   useEffect(() => {
     const filtered = selectItems.filter((item) => {
       const nameMatch = item.name
@@ -131,7 +138,7 @@ const SelectItems: React.FC<SelectItemsProps> = ({
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold text-gray-900">{title}</h2>
         <span className="text-sm text-gray-500">
-          {selectedItems.length} items selected
+          {selectedItems.length} آیتم انتخاب شده
         </span>
       </div>
 
@@ -140,7 +147,7 @@ const SelectItems: React.FC<SelectItemsProps> = ({
         <div className="relative mb-6 w-full">
           <Input
             type="text"
-            placeholder={searchPlaceholder || "Search items..."}
+            placeholder={searchPlaceholder || "جستجوی آیتم‌ها..."}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             icon={<FontAwesomeIcon icon={faMagnifyingGlass} />}
@@ -165,7 +172,7 @@ const SelectItems: React.FC<SelectItemsProps> = ({
             </div>
           ))
         ) : (
-          <div className="p-4 text-center text-gray-500">No items found</div>
+          <div className="p-4 text-center text-gray-500">آیتمی یافت نشد</div>
         )}
       </div>
 
@@ -177,7 +184,7 @@ const SelectItems: React.FC<SelectItemsProps> = ({
           type="button"
         >
           <FontAwesomeIcon icon={faX} className="mr-2" />
-          Clear selection
+          پاک کردن انتخاب‌ها
         </button>
 
         <div className="flex space-x-4">
@@ -187,7 +194,7 @@ const SelectItems: React.FC<SelectItemsProps> = ({
               className="px-4 py-2 border cursor-pointer border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               type="button"
             >
-              Cancel
+              انصراف
             </button>
           )}
 
@@ -196,7 +203,7 @@ const SelectItems: React.FC<SelectItemsProps> = ({
             className="px-4 py-2 border cursor-pointer border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             type="button"
           >
-            Save Selection
+            ذخیره انتخاب‌ها
           </button>
         </div>
       </div>

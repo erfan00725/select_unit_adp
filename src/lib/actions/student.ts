@@ -109,7 +109,7 @@ export async function createStudent(data: StudentDataType) {
     });
 
     if (existingStudent) {
-      return { error: "A student with this national code already exists" };
+      return { error: "دانش‌آموزی با این کد ملی قبلاً ثبت شده است" };
     }
 
     const editedData = {
@@ -145,7 +145,7 @@ export async function updateStudent(
       });
 
       if (existingStudent) {
-        return { error: "A student with this national code already exists" };
+        return { error: "دانش‌آموزی با این کد ملی قبلاً ثبت شده است" };
       }
     }
     const editedData = {

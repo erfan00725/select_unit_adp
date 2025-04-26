@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import Link from "next/link";
 import clsx from "clsx";
@@ -25,18 +26,6 @@ const Pagination: React.FC<PaginationProps> = ({
   const startItem = (currentPage - 1) * itemsPerPage + 1;
   const endItem = Math.min(currentPage * itemsPerPage, totalItems);
   const totalPages = Math.ceil(totalItems / itemsPerPage);
-  // Log pagination parameters
-  console.log("Pagination Parameters:", {
-    currentPage,
-    totalItems,
-    itemsPerPage,
-    startItem,
-    endItem,
-    totalPages,
-    baseUrl,
-    className,
-    hasOnPageChange: !!onPageChange,
-  });
 
   // Generate page numbers to display
   const getPageNumbers = () => {
@@ -78,70 +67,63 @@ const Pagination: React.FC<PaginationProps> = ({
     }
   };
 
-  // Render page link or button
-  const renderPageLink = (
-    page: number | string,
-    label?: string | React.ReactElement
-  ) => {
-    const isCurrentPage = page === currentPage;
-    const isDisabled = typeof page === "string"; // For ellipsis
-
-    // For ellipsis
-    if (isDisabled) {
-      return <span className="px-3 py-2 text-gray-500">{label || page}</span>;
-    }
-
-    // If using server-side navigation with URLs
-    if (baseUrl) {
-      return (
-        <Link
-          href={`${baseUrl}?page=${page}`}
-          className={clsx(
-            "px-3 py-2 rounded-md",
-            isCurrentPage
-              ? "bg-black text-white"
-              : "text-gray-700 hover:bg-gray-200"
-          )}
-          aria-current={isCurrentPage ? "page" : undefined}
-        >
-          {label || page}
-        </Link>
-      );
-    }
-  };
-
   return (
-    <div
-      className={clsx(
-        "flex flex-col sm:flex-row sm:items-center sm:justify-between py-3",
-        className
-      )}
-    >
-      <div className="text-sm text-gray-700 mb-2 sm:mb-0">
-        Showing <span className="font-medium">{startItem}</span> to{" "}
-        <span className="font-medium">{endItem}</span> of{" "}
-        <span className="font-medium">{totalItems}</span> results
+    <div className={clsx("flex flex-col items-center space-y-2", className)}>
+      {/* Range info */}
+      <div className="text-sm text-gray-600">
+        {totalItems === 0
+          ? "هیچ داده‌ای وجود ندارد"
+          : `نمایش ${startItem} تا ${endItem} از ${totalItems} مورد`}
       </div>
-
-      <nav className="flex items-center space-x-1">
-        {/* Previous page button */}
-        {currentPage <= 1 ||
-          renderPageLink(
-            currentPage > 1 ? currentPage - 1 : currentPage,
-            <FontAwesomeIcon icon={faArrowLeft} />
-          )}
-
+      {/* Pagination controls */}
+      <nav
+        className="flex items-center space-x-2 rtl:space-x-reverse"
+        aria-label="صفحه‌بندی"
+      >
+        {/* Previous button */}
+        <button
+          className="px-3 py-1 rounded-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-100 cursor-pointer disabled:cursor-default disabled:opacity-50"
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          aria-label="صفحه قبل"
+          type="button"
+        >
+          <FontAwesomeIcon icon={faArrowRight} />
+        </button>
         {/* Page numbers */}
-        {getPageNumbers().map((page, index) => (
-          <React.Fragment key={index}>{renderPageLink(page)}</React.Fragment>
-        ))}
-
-        {/* Next page button */}
-        {currentPage >= totalPages ||
-          renderPageLink(
-            currentPage < totalPages ? currentPage + 1 : currentPage,
-            <FontAwesomeIcon icon={faArrowRight} />
-          )}
+        {getPageNumbers().map((page, idx) =>
+          typeof page === "number" ? (
+            <button
+              key={page}
+              className={clsx(
+                "px-3 py-1 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 cursor-pointer",
+                {
+                  "bg-indigo-600 text-white border-indigo-600 hover:bg-indigo-700":
+                    page === currentPage,
+                }
+              )}
+              onClick={() => handlePageChange(page)}
+              aria-current={page === currentPage ? "page" : undefined}
+              type="button"
+            >
+              {page}
+            </button>
+          ) : (
+            <span key={idx} className="px-2 text-gray-400">
+              ...
+            </span>
+          )
+        )}
+        {/* Next button */}
+        <button
+          className="px-3 py-1 rounded-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-100 cursor-pointer disabled:cursor-default disabled:opacity-50"
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages || totalPages === 0}
+          aria-label="صفحه بعد"
+          type="button"
+        >
+          <FontAwesomeIcon icon={faArrowLeft} />
+        </button>
       </nav>
     </div>
   );

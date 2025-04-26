@@ -13,6 +13,6 @@ export const priceFormatter = (
     return "0";
   }
   return haveRial
-    ? `ریال ${formatter.format(Number(price)).replace("ریال", "")}`
+    ? `${formatter.format(Number(price)).replace("ریال", "")} ریال`
     : formatter.format(Number(price)).replace("ریال", "");
 };

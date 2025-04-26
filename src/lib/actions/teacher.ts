@@ -109,7 +109,7 @@ export async function createTeacher(data: TeacherDataType) {
     });
 
     if (existingTeacher) {
-      return { error: "A teacher with this national code already exists" };
+      return { error: "استادی با این کد ملی قبلاً ثبت شده است" };
     }
 
     const editedData = {
@@ -145,7 +145,7 @@ export async function updateTeacher(
       });
 
       if (existingTeacher) {
-        return { error: "A teacher with this national code already exists" };
+        return { error: "استادی با این کد ملی قبلاً ثبت شده است" };
       }
     }
     const editedData = {

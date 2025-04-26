@@ -56,7 +56,7 @@ export function useFormSubmit<T>() {
       toast.error(
         errorMassages.invalidDate(
           entityName,
-          (error as ZodError).errors[0].message || "Validation failed"
+          (error as ZodError).errors[0].message || "اعتبارسنجی ناموفق بود"
         )
       );
       return false;

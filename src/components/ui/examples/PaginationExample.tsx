@@ -91,7 +91,6 @@ const PaginationExample: React.FC = () => {
       <div className="mt-4">
         <Pagination
           currentPage={currentPage}
-          totalPages={totalPages}
           totalItems={totalItems}
           itemsPerPage={itemsPerPage}
           onPageChange={handlePageChange}

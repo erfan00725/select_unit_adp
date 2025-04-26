@@ -16,7 +16,7 @@ export default function Error({
 
   return (
     <main className="flex h-full flex-col items-center justify-center">
-      <h2 className="text-center">Something went wrong!</h2>
+      <h2 className="text-center">یک اشکال رخ داد!</h2>
       <button
         className="mt-4 rounded-md bg-indigo-600 px-4 py-2 text-sm text-white transition-colors hover:bg-indigo-800"
         onClick={
@@ -24,7 +24,7 @@ export default function Error({
           () => reset()
         }
       >
-        Try again
+        تلاش مجدد
       </button>
     </main>
   );

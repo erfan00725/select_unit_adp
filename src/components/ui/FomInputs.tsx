@@ -16,11 +16,11 @@ type Props = {
   onInputsChange?: (inputsValue: InputValueType) => void;
 };
 
-// Function to generate form inputs based on configuration
+// تابعی برای تولید ورودی‌های فرم بر اساس پیکربندی
 export const FormInputs = ({ configs, onInputsChange }: Props) => {
   const [inputsValue, setInputsValue] = useState<InputValueType>({});
 
-  // Initialize input values and active states
+  // مقداردهی اولیه مقادیر ورودی و وضعیت فعال بودن
   useEffect(() => {
     const initialValues: InputValueType = {};
 
@@ -29,9 +29,9 @@ export const FormInputs = ({ configs, onInputsChange }: Props) => {
         active: true,
         value: "",
       };
-      // Initialize active state for inputs that can be disabled
+      // مقداردهی اولیه وضعیت فعال برای ورودی‌هایی که می‌توانند غیرفعال شوند
       if (config.canBeDisabled) {
-        initialValues[`${config.name}`].active = false; // Default to active
+        initialValues[`${config.name}`].active = false; // پیش‌فرض غیرفعال
       }
     });
 
@@ -42,7 +42,7 @@ export const FormInputs = ({ configs, onInputsChange }: Props) => {
     onInputsChange && onInputsChange(inputsValue);
   }, [inputsValue]);
 
-  // Toggle input active state
+  // تغییر وضعیت فعال بودن ورودی
   const toggleInputActive = (name: string) => {
     setInputsValue((prev) => ({
       ...prev,
@@ -53,7 +53,7 @@ export const FormInputs = ({ configs, onInputsChange }: Props) => {
     }));
   };
 
-  // Handle input value change
+  // مدیریت تغییر مقدار ورودی
   const handleInputChange = (name: string, value: any) => {
     setInputsValue((prev) => ({
       ...prev,
@@ -65,76 +65,55 @@ export const FormInputs = ({ configs, onInputsChange }: Props) => {
   };
 
   return (
-    <div className="flex flex-wrap flex-row justify-start items-center space-x-15 my-10 mx-5 space-y-5">
-      {configs.map((config) => {
-        const isActive = config.canBeDisabled
-          ? inputsValue[`${config.name}`]?.active ?? false
-          : true;
-
-        return (
-          <div key={config.id} className="flex items-center">
-            <div className="flex items-center">
-              <label className="text-lg" htmlFor={config.id}>
-                {config.label}
-                {config.required && isActive && (
-                  <span className="text-red-500">*</span>
-                )}{" "}
-                :
-              </label>
-              {config.type === "select" ? (
-                <select
-                  className={`ml-5 button text-lg ${config.className || ""} ${
-                    !isActive ? "opacity-50" : ""
-                  }`}
-                  id={config.id}
-                  name={config.name}
-                  required={config.required && isActive}
-                  value={(inputsValue[config.name]?.value as string) || ""}
-                  onChange={(e) =>
-                    handleInputChange(config.name, e.target.value)
-                  }
-                  disabled={!isActive}
-                >
-                  <option value="" disabled>
-                    Select
-                  </option>
-                  {config.options?.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              ) : (
-                <input
-                  type={config.type}
-                  className={`input ml-5 py-1! w-40 ${config.className || ""} ${
-                    !isActive ? "opacity-50" : ""
-                  }`}
-                  id={config.id}
-                  name={config.name}
-                  required={config.required && isActive}
-                  value={inputsValue[config.name]?.value || ""}
-                  onChange={(e) =>
-                    handleInputChange(config.name, e.target.value)
-                  }
-                  disabled={!isActive}
-                />
-              )}
-            </div>
-            {config.canBeDisabled && !config.required && (
-              <div className="ml-2 flex items-center">
-                <input
-                  type="checkbox"
-                  id={`${config.id}_toggle`}
-                  checked={isActive}
-                  onChange={() => toggleInputActive(config.name)}
-                  className="h-5 w-5 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-                />
-              </div>
-            )}
-          </div>
-        );
-      })}
+    <div className="space-y-4">
+      {configs.map((config) => (
+        <div key={config.id} className={config.className}>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            {config.label ? config.label : "برچسب"}
+            {config.required && <span className="text-red-500">*</span>}
+          </label>
+          {config.canBeDisabled && (
+            <button
+              type="button"
+              className="text-xs text-blue-600 underline mr-2"
+              onClick={() => toggleInputActive(config.name)}
+            >
+              {inputsValue[config.name]?.active ? "غیرفعال کردن" : "فعال کردن"}
+            </button>
+          )}
+          {config.type === "select" ? (
+            <select
+              className="border border-gray-300 rounded-md px-3 py-2 w-full"
+              value={inputsValue[config.name]?.value || ""}
+              onChange={(e) => handleInputChange(config.name, e.target.value)}
+              disabled={
+                config.canBeDisabled && !inputsValue[config.name]?.active
+              }
+            >
+              <option value="">انتخاب کنید...</option>
+              {config.options?.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label ? option.label : "گزینه"}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <input
+              type={config.type}
+              className="border border-gray-300 rounded-md px-3 py-2 w-full"
+              value={inputsValue[config.name]?.value || ""}
+              onChange={(e) => handleInputChange(config.name, e.target.value)}
+              placeholder={
+                config.label ? `لطفاً ${config.label} را وارد کنید` : "ورودی"
+              }
+              disabled={
+                config.canBeDisabled && !inputsValue[config.name]?.active
+              }
+              required={config.required}
+            />
+          )}
+        </div>
+      ))}
     </div>
   );
 };
