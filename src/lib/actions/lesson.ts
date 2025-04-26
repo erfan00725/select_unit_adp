@@ -173,6 +173,7 @@ export async function createLesson(data: LessonDataType) {
     const lesson = await prisma.lesson.create({
       data: {
         ...editedData,
+        fieldId: editedData.fieldId ? Number(editedData.fieldId) : undefined,
         RequireUnit: editedData.RequireUnit
           ? Number(editedData.RequireUnit)
           : null,

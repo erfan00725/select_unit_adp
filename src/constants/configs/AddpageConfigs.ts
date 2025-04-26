@@ -51,7 +51,7 @@ export const TeacherAddConfigs: CreateEditProps<any, any> = {
   redirectUrl: urls.teachers,
 };
 
-export const AddPageConfigs: { [K in PageType]: CreateEditProps<any, any> } = {
+export const AddPageConfigs: { [K in PageType]?: CreateEditProps<any, any> } = {
   lessons: LessonAddConfigs,
   students: StudentsAddConfigs,
   fields: FieldAddConfigs,

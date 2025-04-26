@@ -5,6 +5,9 @@ import {
   getFieldById,
   getTeacherById,
   deleteLesson,
+  getSpecificSelectUnit,
+  deleteSelectUnit,
+  getSelectUnitById,
 } from "@/lib/actions";
 import getFarsiDate from "@/lib/getFarsiDate";
 import { getGender } from "@/lib/getGender";
@@ -12,6 +15,10 @@ import { InfoPageConfig, PageType } from "@/types/General";
 import { DetailPageProps } from "@/types/Props";
 import { urls } from "../urls";
 import { UserSelectUnitList } from "@/components/ui/pages/selectUnit.ts/UserSelectUnitList";
+import SelectUnitTable from "@/components/ui/pages/selectUnit.ts/SelectUnitTable";
+import Link from "next/link";
+import getAcademicYearJ from "@/lib/utils/getAcademicYearJ";
+import { SelectUnitLessonsTable } from "@/components/ui/pages/selectUnit.ts/SelectUnitLessonsTable";
 
 export type DetailPageConfigtReturnType = {
   error?: string;
@@ -51,8 +58,12 @@ export const LessonsDetailConfig = (
         value: lesson?.LessonName,
       },
       {
-        label: "Unit",
-        value: lesson?.Unit,
+        label: "Theori Unit",
+        value: lesson?.TheoriUnit,
+      },
+      {
+        label: "Practical Unit",
+        value: lesson?.PracticalUnit,
       },
       {
         label: "Grade",
@@ -186,6 +197,15 @@ export const StudentsDetailConfig = (
       modifiedAt: StudentConfig.modifiedAt,
       InfoRows: StudentConfig.rows || [],
       baseUrl: urls.students,
+      actions: [
+        <Link
+          href={`${urls.selectUnit}/student/${student.id}`}
+          className="button "
+          key={"selectUnit-" + student.id}
+        >
+          Select Unit
+        </Link>,
+      ],
     },
     chidlren: <UserSelectUnitList />,
   };
@@ -285,6 +305,82 @@ export const TeachersDetailConfig = (
   };
 };
 
+export const SelectUnitDetailConfig = (
+  selectUnitData: Awaited<ReturnType<typeof getSelectUnitById>>
+): DetailPageConfigtReturnType => {
+  if (!selectUnitData.selectUnit || selectUnitData.error)
+    return { error: selectUnitData.error };
+
+  const selectUnit = selectUnitData.selectUnit;
+  const student = selectUnit.student;
+
+  const SelectUnitConfig: InfoPageConfig = {
+    id: selectUnit?.id.toString() || "",
+    title: `${student?.FirstName} ${student?.LastName} - ${selectUnit.Year} ${selectUnit.Period}`,
+    createdAt: selectUnit?.Created_at.toDateString(),
+    modifiedAt: selectUnit?.Updated_at.toDateString(),
+    rows: [
+      {
+        label: "Student",
+        value: `${student?.FirstName} ${student?.LastName}`,
+        type: "text",
+      },
+      {
+        label: "Year",
+        value: getAcademicYearJ(selectUnit?.Year),
+        type: "text",
+      },
+      {
+        label: "Period",
+        value: selectUnit?.Period,
+        type: "text",
+      },
+      {
+        label: "Fixed Fee",
+        value: selectUnit?.FixedFee?.toString(),
+        type: "price",
+      },
+      {
+        label: "Extra Fee",
+        value: selectUnit?.ExtraFee?.toString(),
+        type: "price",
+      },
+      {
+        label: "Certificate Fee",
+        value: selectUnit?.CertificateFee?.toString(),
+        type: "price",
+      },
+      {
+        label: "Extra Class Fee",
+        value: selectUnit?.ExtraClassFee?.toString(),
+        type: "price",
+      },
+      {
+        label: "Books Fee",
+        value: selectUnit?.BooksFee?.toString(),
+        type: "price",
+      },
+      {
+        label: "Total Units",
+        value: selectUnit?.totalUnits?.toString(),
+        type: "price",
+      },
+    ],
+  };
+
+  return {
+    config: {
+      id: SelectUnitConfig.id,
+      title: SelectUnitConfig.title,
+      createdAt: SelectUnitConfig.createdAt,
+      modifiedAt: SelectUnitConfig.modifiedAt,
+      InfoRows: SelectUnitConfig.rows || [],
+      baseUrl: urls.selectUnit,
+    },
+    chidlren: <SelectUnitLessonsTable />,
+  };
+};
+
 export const DetailPageConfigs: Record<PageType, PageConfig<any>> = {
   lessons: {
     config: LessonsDetailConfig,
@@ -301,6 +397,10 @@ export const DetailPageConfigs: Record<PageType, PageConfig<any>> = {
   teachers: {
     config: TeachersDetailConfig,
     data: getTeacherById,
+  },
+  selectUnit: {
+    config: SelectUnitDetailConfig,
+    data: getSelectUnitById,
   },
 };
 
@@ -350,6 +450,13 @@ export const s_DetailPageConfigs: Record<PageType, s_PageConfig> = {
     deleteConfig: {
       deleteFounction: deleteLesson,
       backUrl: urls.teachers,
+    },
+  },
+  selectUnit: {
+    title: "Select Unit Info",
+    deleteConfig: {
+      deleteFounction: deleteSelectUnit,
+      backUrl: urls.selectUnit,
     },
   },
 };

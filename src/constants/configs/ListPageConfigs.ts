@@ -10,6 +10,8 @@ import {
   getSelectUnitsByStudent,
 } from "@/lib/actions";
 import { FilterOptionType, Orders, PageType } from "@/types/General";
+import getAcademicYearJ from "@/lib/utils/getAcademicYearJ";
+import { priceFormatter } from "@/lib/utils/priceFormatter";
 
 type ListGeneralParamsType = {
   searchParams: { [key: string]: string | undefined };
@@ -33,7 +35,7 @@ export type ListStaticConfigType = {
 };
 
 type StaticConfigsType = {
-  [key in PageType]: ListStaticConfigType;
+  [key in PageType]?: ListStaticConfigType;
 };
 
 export const s_ListConfig: StaticConfigsType = {
@@ -73,7 +75,7 @@ export const s_ListConfig: StaticConfigsType = {
 //  ________Dynamic Configs________
 
 type DynamicConfigsType = {
-  [key in PageType]: (
+  [key in PageType]?: (
     params: ListGeneralParamsType
   ) => Promise<ListGeneralReturnType>;
 };
@@ -98,13 +100,24 @@ const LessonsList = async ({
   const tableData = (lessons || []).map((lesson) => ({
     id: lesson.id,
     Name: lesson.LessonName,
-    Unit: lesson.Unit,
+    TheoriUnit: lesson.TheoriUnit,
+    PracticalUnit: lesson.PracticalUnit,
     Teacher: lesson.teacher
       ? `${lesson.teacher.FirstName} ${lesson.teacher.LastName}`
       : "_",
+    PricePerUnit: lesson.PricePerUnit
+      ? priceFormatter(Number(lesson.PricePerUnit), true)
+      : "_",
   }));
 
-  const headers = ["ID", "Name", "Unit", "Teacher"];
+  const headers = [
+    "ID",
+    "Name",
+    "Theory Unit",
+    "Practical Unit",
+    "Teacher",
+    "Price Per Unit",
+  ];
 
   return {
     tableData: tableData,
@@ -276,16 +289,25 @@ export const d_SelectUnitList = async ({
   const pageLimit = selectUnitsData.pagination?.limit || defaultListLimit;
 
   const selectUnits = selectUnitsData?.selectUnits;
-  const tableData = (selectUnits || []).map((unit) => ({
-    id: `${unit.StudentId}-${unit.LessonId}-${unit.Year}-${unit.Period}`,
-    Lesson: unit.lesson ? unit.lesson.LessonName : "_",
-    Year: unit.Year,
-    Period: unit.Period,
-    Units: unit.lesson ? unit.lesson.Unit : "_",
-    ExtraFee: unit.ExtraFee ? `${unit.ExtraFee}` : "0",
-  }));
+  const tableData = (selectUnits || []).map((unit) => {
+    return {
+      id: unit?.id,
+      Year: unit?.Year ? getAcademicYearJ(unit.Year) : "_",
+      Period: unit?.Period,
+      LessonCount: unit?.selectedLessons.length,
+      TotalUnits: unit?.totalUnits || "_",
+      ExtraFee: unit?.totalFee ? priceFormatter(unit?.totalFee, true) : "0",
+    };
+  });
 
-  const headers = ["ID", "Lesson", "Year", "Period", "Units", "Extra Fee"];
+  const headers = [
+    "ID",
+    "Year",
+    "Period",
+    "Lesson Count",
+    "Total Units",
+    "Total Fee",
+  ];
 
   return {
     tableData: tableData,
@@ -303,6 +325,7 @@ export const s_SelectUnitList = {
   title: "Select Unit Management",
   description: "Manage student course selections",
   addButtonLabel: "Add New Selection",
+  addUrl: urls.selectUnit + "/student/:id",
   searchPlaceholder: "Search students, lessons...",
   filterOptions: [
     {

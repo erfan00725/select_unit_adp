@@ -65,11 +65,19 @@ export const lessonFormConfigGenerator = async (
         defaultValue: lesson?.LessonName,
       },
       {
-        title: "Lesson Unit",
-        name: "Unit",
+        title: "Theori Unit",
+        name: "TheoriUnit",
         type: "number",
-        placeholder: inputDefaultPlaceholder("lesson unit"),
-        defaultValue: lesson?.Unit.toString(),
+        placeholder: inputDefaultPlaceholder("theori unit"),
+        defaultValue: lesson?.TheoriUnit?.toString(),
+        required: true,
+      },
+      {
+        title: "Practical Unit",
+        name: "PracticalUnit",
+        type: "number",
+        placeholder: inputDefaultPlaceholder("practical unit"),
+        defaultValue: lesson?.PracticalUnit?.toString(),
         required: true,
       },
       {

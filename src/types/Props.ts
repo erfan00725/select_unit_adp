@@ -86,6 +86,7 @@ export type DataTableProps<T extends DataBaseType> = {
   limit?: number;
   scrollable?: boolean;
   actions?: DataTableAction[];
+  canAdd?: boolean;
 };
 
 export type CreateEditProps<T extends (...args: any) => any, S> = {
@@ -104,7 +105,7 @@ export interface DetailPageProps {
   createdAt?: string;
   modifiedAt?: string;
   InfoRows: DetailPageRow[];
-  actions?: React.ReactNode;
+  actions?: React.ReactNode[];
   baseUrl?: string;
 }
 

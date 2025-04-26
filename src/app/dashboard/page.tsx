@@ -1,7 +1,7 @@
 import React from "react";
 import PageHeader from "@/components/ui/PageHeader";
-import StudentsPageTable from "@/components/ui/pages/students/StudentsPageTable";
-import LessonsPageTable from "@/components/ui/pages/Lessons/LessonsPageTable";
+// import StudentsPageTable from "@/components/ui/pages/students/StudentsPageTable";
+// import LessonsPageTable from "@/components/ui/pages/Lessons/LessonsPageTable";
 import { getLessons, getStudents } from "@/lib/actions";
 
 export default async function DashboardPage() {
@@ -14,9 +14,9 @@ export default async function DashboardPage() {
         title="Student & Course Management"
         description="Manage students and courses information"
       />
-
+      {/* 
       <LessonsPageTable limit={5} lessonsData={lessonsData} />
-      <StudentsPageTable limit={5} studentsData={studentsData} />
+      <StudentsPageTable limit={5} studentsData={studentsData} /> */}
     </div>
   );
 }

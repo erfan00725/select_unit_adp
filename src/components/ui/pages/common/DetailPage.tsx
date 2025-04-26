@@ -13,6 +13,9 @@ type Props = {
 
 export const DetailPage = async ({ type, id }: Props) => {
   const config = DetailPageConfigs[type];
+  if (!config) {
+    return notFound();
+  }
   let data = await config.data(BigInt(id));
   let detailConfig = config.config(data);
 

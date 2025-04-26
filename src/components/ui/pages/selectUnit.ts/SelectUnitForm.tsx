@@ -18,6 +18,8 @@ import Loading from "@/components/common/Loading";
 import { toast } from "react-toastify";
 import { validateSelectUnitSafe } from "@/lib/validations/selectUnit";
 import { ZodError } from "zod";
+import getAcademicYearJ from "@/lib/utils/getAcademicYearJ";
+import { priceFormatter } from "@/lib/utils/priceFormatter";
 
 type Props = {
   studnetId: string;
@@ -49,7 +51,7 @@ export const SelectUnitForm = ({
   // Calculate total price
   const totalPrice = selectedLessons?.lessons?.reduce((total, lesson) => {
     const price = Number(lesson?.PricePerUnit) || Number(defaultPrice);
-    return total + price * (lesson?.Unit || 1);
+    return total + price * (Number(lesson?.PricePerUnit) || 1);
   }, 0);
 
   // calcualte Year
@@ -59,10 +61,7 @@ export const SelectUnitForm = ({
     .map((_, i) => Number(year) + (i - 3))
     .map((year) => ({
       value: year,
-      label: `${getDateJ(new Date(year, 0), "year")}-${getDateJ(
-        new Date(year + 1, 0),
-        "year"
-      )}`,
+      label: getAcademicYearJ(year),
     }));
 
   useEffect(() => {
@@ -127,7 +126,6 @@ export const SelectUnitForm = ({
 
     bulkCreateSelectUnits(
       {
-        LessonId: validateData.Lesson,
         StudentId: validateData.StudentId,
         Period: validateData.Period,
         Year: validateData.Year,
@@ -228,7 +226,9 @@ export const SelectUnitForm = ({
             Reset
           </button>
           {/* TODO: add total unit */}
-          <p className="text-lg font-bold">Total: ریال{totalPrice}</p>
+          <p className="text-lg font-bold">
+            {priceFormatter(Number(totalPrice), true)} :جمع کل
+          </p>
         </div>
       </div>
 

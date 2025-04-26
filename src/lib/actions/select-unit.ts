@@ -1,9 +1,82 @@
 "use server";
 
-import { Period } from "@/generated/prisma";
+import { Period, Prisma } from "@/generated/prisma";
 import { prisma } from "../prisma";
 import { revalidatePath } from "next/cache";
 import { BaseListFilterParams, SelectUnitDataType } from "@/types/Tables";
+
+type ReturnType = Prisma.SelectUnitGetPayload<{
+  include: {
+    student: true;
+    selectedLessons: {
+      include: {
+        lesson: true;
+      };
+    };
+  };
+}> & {
+  totalUnits: number;
+  totalFee: number;
+};
+
+/**
+ * Processes a select unit and calculates total units and fees
+ * @param selectUnit - The select unit to process, can be null
+ * @returns The select unit with calculated totals or null if input is null
+ */
+function customReturn(
+  selectUnit: Prisma.SelectUnitGetPayload<{
+    include: {
+      student?: true;
+      selectedLessons: {
+        include: {
+          lesson: true;
+        };
+      };
+    };
+  }> | null
+) {
+  // Handle null input
+  if (!selectUnit) {
+    return null;
+  }
+
+  // Calculate lesson-based fees
+  const lessonFees = selectUnit.selectedLessons
+    ? selectUnit.selectedLessons.reduce(
+        // @ts-ignore
+        (acc, lesson) =>
+          acc +
+          Number(lesson.lesson?.PricePerUnit || 0) *
+            ((lesson.lesson?.TheoriUnit || 0) +
+              (lesson.lesson?.PracticalUnit || 0)),
+        0
+      )
+    : 0;
+
+  // Calculate additional fees
+  const additionalFees =
+    Number(selectUnit.ExtraFee || 0) +
+    Number(selectUnit.FixedFee || 0) +
+    Number(selectUnit.CertificateFee || 0) +
+    Number(selectUnit.ExtraClassFee || 0) +
+    Number(selectUnit.BooksFee || 0);
+
+  return {
+    ...selectUnit,
+    totalUnits: selectUnit.selectedLessons
+      ? selectUnit.selectedLessons.reduce(
+          // @ts-ignore
+          (acc, lesson) =>
+            acc +
+            ((lesson.lesson?.TheoriUnit || 0) +
+              (lesson.lesson?.PracticalUnit || 0)),
+          0
+        )
+      : 0,
+    totalFee: lessonFees + additionalFees,
+  };
+}
 
 // Get all select units
 export async function getSelectUnits(params?: BaseListFilterParams) {
@@ -47,6 +120,11 @@ export async function getSelectUnits(params?: BaseListFilterParams) {
       where,
       include: {
         student: true,
+        selectedLessons: {
+          include: {
+            lesson: true,
+          },
+        },
       },
       orderBy: {
         Created_at: order === "asc" ? "asc" : "desc",
@@ -55,11 +133,14 @@ export async function getSelectUnits(params?: BaseListFilterParams) {
       take: limit,
     });
 
+    // Apply customReturn to each select unit to calculate totalUnits and totalFee
+    const selectUnitsWithTotal = selectUnits.map((unit) => customReturn(unit));
+
     // Calculate pagination metadata
     const totalPages = Math.ceil(totalCount / limit);
 
     return {
-      selectUnits,
+      selectUnits: selectUnitsWithTotal,
       pagination: {
         total: totalCount,
         totalPages,
@@ -104,7 +185,14 @@ export async function getSelectUnitsByStudent(
     // Get paginated and filtered data
     const selectUnits = await prisma.selectUnit.findMany({
       where,
-      include: {},
+      include: {
+        student: true,
+        selectedLessons: {
+          include: {
+            lesson: true,
+          },
+        },
+      },
       orderBy: {
         Created_at: order === "asc" ? "asc" : "desc",
       },
@@ -112,11 +200,14 @@ export async function getSelectUnitsByStudent(
       take: limit,
     });
 
+    // Apply customReturn to each select unit to calculate totalUnits and totalFee
+    const selectUnitsWithTotal = selectUnits.map((unit) => customReturn(unit));
+
     // Calculate pagination metadata
     const totalPages = Math.ceil(totalCount / limit);
 
     return {
-      selectUnits,
+      selectUnits: selectUnitsWithTotal,
       pagination: {
         total: totalCount,
         totalPages,
@@ -163,6 +254,11 @@ export async function getSelectUnitsByLesson(
       where,
       include: {
         student: true,
+        selectedLessons: {
+          include: {
+            lesson: true,
+          },
+        },
       },
       orderBy: {
         Created_at: order === "asc" ? "asc" : "desc",
@@ -171,11 +267,14 @@ export async function getSelectUnitsByLesson(
       take: limit,
     });
 
+    // Apply customReturn to each select unit to calculate totalUnits and totalFee
+    const selectUnitsWithTotal = selectUnits.map((unit) => customReturn(unit));
+
     // Calculate pagination metadata
     const totalPages = Math.ceil(totalCount / limit);
 
     return {
-      selectUnits,
+      selectUnits: selectUnitsWithTotal,
       pagination: {
         total: totalCount,
         totalPages,
@@ -186,6 +285,41 @@ export async function getSelectUnitsByLesson(
   } catch (error) {
     console.error("Failed to fetch lesson select units:", error);
     return { error: "Failed to fetch lesson select units" };
+  }
+}
+
+// Get a select unit by ID
+export async function getSelectUnitById(selectUnitId: bigint) {
+  try {
+    const selectUnit = await prisma.selectUnit.findUnique({
+      where: {
+        id: selectUnitId,
+      },
+      include: {
+        student: true,
+        selectedLessons: {
+          include: {
+            lesson: {
+              include: {
+                teacher: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!selectUnit) {
+      return { error: "Select unit not found" };
+    }
+
+    // Apply customReturn to calculate totalUnits and totalFee
+    const selectUnitsWithTotal = customReturn(selectUnit);
+
+    return { selectUnit: selectUnitsWithTotal };
+  } catch (error) {
+    console.error("Failed to fetch select unit by ID:", error);
+    return { error: "Failed to fetch select unit by ID" };
   }
 }
 
@@ -226,7 +360,8 @@ export async function getSpecificSelectUnit(
       return { error: "Select unit not found" };
     }
 
-    return { selectUnit };
+    // Apply customReturn to calculate totalUnits and totalFee
+    return { selectUnit: customReturn(selectUnit) };
   } catch (error) {
     console.error("Failed to fetch specific select unit:", error);
     return { error: "Failed to fetch specific select unit" };
@@ -301,8 +436,11 @@ export async function getSelectUnitsByYearPeriod(
     // Calculate pagination metadata
     const totalPages = Math.ceil(totalCount / limit);
 
+    // Apply customReturn to each select unit to calculate totalUnits and totalFee
+    const selectUnitsWithTotal = selectUnits.map((unit) => customReturn(unit));
+
     return {
-      selectUnits,
+      selectUnits: selectUnitsWithTotal,
       pagination: {
         total: totalCount,
         totalPages,
@@ -345,7 +483,8 @@ export async function getSelectUnitLessons(
       return { error: "Select unit not found" };
     }
 
-    return { selectUnit };
+    // Apply customReturn to calculate totalUnits and totalFee
+    return { selectUnit: customReturn(selectUnit) };
   } catch (error) {
     console.error(
       "Failed to fetch select unit by student, year, and period:",
@@ -491,7 +630,8 @@ export async function createSelectUnit(
 
     revalidatePath("/dashboard/select-unit");
     revalidatePath(`/dashboard/students/${data.StudentId}`);
-    return { selectUnit: completeSelectUnit };
+    // Apply customReturn to calculate totalUnits and totalFee
+    return { selectUnit: customReturn(completeSelectUnit) };
   } catch (error) {
     console.error("Failed to create select unit:", error);
     return { error: "Failed to create select unit" };
@@ -524,7 +664,8 @@ export async function updateSelectUnit(
 
     revalidatePath("/dashboard/select-unit");
     revalidatePath(`/dashboard/students/${selectUnit.StudentId}`);
-    return { selectUnit };
+    // Apply customReturn to calculate totalUnits and totalFee
+    return { selectUnit: customReturn(selectUnit) };
   } catch (error) {
     console.error("Failed to update select unit:", error);
     return { error: "Failed to update select unit" };
@@ -758,7 +899,8 @@ export async function bulkCreateSelectUnits(
 
     revalidatePath("/dashboard/select-unit");
     revalidatePath(`/dashboard/students/${baseData.StudentId}`);
-    return { selectUnit: completeSelectUnit };
+    // Apply customReturn to calculate totalUnits and totalFee
+    return { selectUnit: customReturn(completeSelectUnit) };
   } catch (error) {
     console.error("Failed to bulk create select units:", error);
     return { error: "Failed to bulk create select units" };
@@ -792,6 +934,7 @@ export async function getSelectUnitsGroupedByStudentYearPeriod() {
             },
           },
           include: {
+            student: true,
             selectedLessons: {
               include: {
                 lesson: true,

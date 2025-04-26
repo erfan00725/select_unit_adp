@@ -3,6 +3,7 @@ import DataTable from "../../DataTable";
 import { ActionReturnType } from "@/types/General";
 import { getLessonsByIds } from "@/lib/actions";
 import { DataTableAction } from "@/types/Props";
+import { priceFormatter } from "@/lib/utils/priceFormatter";
 
 interface SelectUnitTableProps {
   lessons: ActionReturnType<typeof getLessonsByIds>;
@@ -17,7 +18,8 @@ const SelectUnitTable: React.FC<SelectUnitTableProps> = ({
     "id",
     "Lesson Name",
     "Teacher's Name",
-    "Unit",
+    "Theori Units",
+    "Practical Units",
     "Price Per Unit",
   ];
 
@@ -29,8 +31,9 @@ const SelectUnitTable: React.FC<SelectUnitTableProps> = ({
     id: lesson?.id.toString() as string,
     lessonName: lesson?.LessonName,
     teacherName: `${lesson?.teacher?.FirstName} ${lesson?.teacher?.LastName}`,
-    unit: lesson?.Unit,
-    price: lesson?.PricePerUnit,
+    theoriUnit: lesson?.TheoriUnit,
+    practicalUnit: lesson?.PracticalUnit,
+    price: priceFormatter(Number(lesson?.PricePerUnit), true),
   }));
 
   const actions: DataTableAction[] = [

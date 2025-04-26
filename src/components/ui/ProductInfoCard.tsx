@@ -49,7 +49,7 @@ const DetailInfoCard: React.FC<DetailPageProps> = ({
         </div>
         {baseUrl && (
           <div className="flex space-x-2">
-            {actions}
+            {actions?.map((action) => action)}
             <Link href={`${formBaseUrl}/edit`} className="button_black">
               Edit
             </Link>

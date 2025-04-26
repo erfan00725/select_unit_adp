@@ -16,10 +16,11 @@ const DataTable = <T extends DataBaseType>({
   limit = 50,
   scrollable = false,
   actions,
+  canAdd = true,
 }: DataTableProps<T>) => {
   const rows = tableData?.filter((_, index) => index < limit);
 
-  const addUrl = baseUrl || baseAddUrl ? `${baseAddUrl || baseUrl}/add` : null;
+  const addUrl = baseAddUrl ? baseAddUrl : baseUrl ? `${baseUrl}/add` : null;
 
   return (
     <div className="card mb-8">
@@ -109,7 +110,7 @@ const DataTable = <T extends DataBaseType>({
         </table>
       </div>
 
-      {addUrl && (
+      {addUrl && canAdd && (
         <div className="mt-6">
           <Link href={addUrl} className="button_black">
             {addButtonLabel || "Add"}

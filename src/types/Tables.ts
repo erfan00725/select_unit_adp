@@ -52,18 +52,21 @@ export interface TeacherDataType extends DataBaseType {
 export interface LessonDataType extends DataBaseType {
   TeacherId?: bigint;
   LessonName: string;
-  Unit: number;
+  PracticalUnit: number;
+  TheoriUnit: number;
   Grade?: LessonGrade;
   fieldId?: bigint;
   PassCondition?: number;
   TheoriHours?: number;
   PracticalHours?: number;
-  RequireLesson?: number;
-  RequireUnit?: bigint;
+  RequireLesson?: bigint;
+  RequireUnit?: number;
   NotifCode?: bigint;
   ValidFrom?: Date;
   ValidTill?: Date;
   PricePerUnit?: bigint;
+  Created_at?: Date;
+  Updated_at?: Date;
 }
 
 export interface SelectUnitDataType {

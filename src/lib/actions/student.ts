@@ -84,7 +84,7 @@ export async function getStudentById(id: bigint) {
         field: true,
         selectUnits: {
           include: {
-            lesson: true,
+            Lesson: true,
           },
         },
       },
