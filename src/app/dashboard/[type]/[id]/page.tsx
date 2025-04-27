@@ -15,7 +15,6 @@ const LessonDetailPage = async ({
   const id = paramsRes.id;
   const type = paramsRes.type;
 
-  console.log(s_DetailPageConfigs);
   const s_config = s_DetailPageConfigs[type];
   const deleteConfig = s_config ? s_config.deleteConfig : null;
   const title = s_config ? s_config.title : null;

@@ -1,12 +1,17 @@
 import React from "react";
 import PageHeader from "@/components/ui/PageHeader";
-// import StudentsPageTable from "@/components/ui/pages/students/StudentsPageTable";
-// import LessonsPageTable from "@/components/ui/pages/Lessons/LessonsPageTable";
+import DataTable from "@/components/ui/DataTable";
 import { getLessons, getStudents } from "@/lib/actions";
+import { d_ListConfig } from "@/constants/configs/ListPageConfigs";
 
 export default async function DashboardPage() {
-  const lessonsData = await getLessons({ limit: 5, order: "desc" });
-  const studentsData = await getStudents({ limit: 5, order: "desc" });
+  const studentConfig = await d_ListConfig.students({
+    searchParams: { limit: "5", order: "desc" },
+  });
+
+  const lessonConfig = await d_ListConfig.lessons({
+    searchParams: { limit: "5", order: "desc" },
+  });
 
   return (
     <div>
@@ -14,9 +19,16 @@ export default async function DashboardPage() {
         title="مدیریت دانش‌آموزان و دروس"
         description="مدیریت اطلاعات دانش‌آموزان و دروس"
       />
-      {/* 
-      <LessonsPageTable limit={5} lessonsData={lessonsData} />
-      <StudentsPageTable limit={5} studentsData={studentsData} /> */}
+
+      <div className="mb-8">
+        <h2 className="text-xl font-bold mb-4">دروس اخیر</h2>
+        <DataTable {...lessonConfig} />
+      </div>
+
+      <div>
+        <h2 className="text-xl font-bold mb-4">دانش‌آموزان اخیر</h2>
+        <DataTable {...studentConfig} />
+      </div>
     </div>
   );
 }

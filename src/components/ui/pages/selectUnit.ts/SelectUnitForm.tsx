@@ -10,8 +10,10 @@ import { SelectItem } from "../../SelectItems";
 import { ActionReturnType } from "@/types/General";
 import {
   bulkCreateSelectUnits,
+  bulkEditSelectUnits,
   getLessons,
   getLessonsByIds,
+  getSelectUnitById,
 } from "@/lib/actions";
 import { FormInputs, InputValueType } from "../../FomInputs";
 import Loading from "@/components/common/Loading";
@@ -20,12 +22,15 @@ import { validateSelectUnitSafe } from "@/lib/validations/selectUnit";
 import { ZodError } from "zod";
 import getAcademicYearJ from "@/lib/utils/getAcademicYearJ";
 import { priceFormatter } from "@/lib/utils/priceFormatter";
+import { useRouter } from "next/navigation";
 
 type Props = {
   studnetId: string;
   lessons: ActionReturnType<typeof getLessons>;
   defaultPrice?: string | number;
   defaultFixedFee?: string | number;
+  selectUnitData?: ActionReturnType<typeof getSelectUnitById>; // Data for edit mode
+  isEditMode?: boolean; // Flag to indicate edit mode
 };
 
 export const SelectUnitForm = ({
@@ -33,9 +38,24 @@ export const SelectUnitForm = ({
   lessons,
   defaultPrice = 10,
   defaultFixedFee,
+  selectUnitData,
+  isEditMode = false,
 }: Props) => {
+  const router = useRouter();
+
+  // Initialize input values with data from selectUnitData if in edit mode
   let inputValues = useRef<InputValueType>({});
-  const [seLectedLessonsIds, setSelectedLessonsIds] = useState<string[]>([]);
+
+  // Extract lesson IDs from selectUnitData if in edit mode
+  const initialLessonIds =
+    isEditMode && selectUnitData?.selectUnit?.selectedLessons
+      ? selectUnitData.selectUnit.selectedLessons.map((sl) =>
+          sl.lesson.id.toString()
+        )
+      : [];
+
+  const [seLectedLessonsIds, setSelectedLessonsIds] =
+    useState<string[]>(initialLessonIds);
   const [selectedLessons, setSelectedLessons] = useState<
     ActionReturnType<typeof getLessonsByIds> | undefined
   >(undefined);
@@ -59,6 +79,28 @@ export const SelectUnitForm = ({
       value: year,
       label: getAcademicYearJ(year),
     }));
+  // Initialize form values if in edit mode
+  useEffect(() => {
+    if (isEditMode && selectUnitData?.selectUnit) {
+      const selectUnit = selectUnitData.selectUnit;
+
+      // Set initial form values
+      inputValues.current = {
+        year: { value: selectUnit.Year, active: !!selectUnit.Year },
+        period: { value: selectUnit.Period, active: !!selectUnit.Period },
+        extraFee: {
+          value: selectUnit.ExtraFee || 0,
+          active: !!selectUnit.ExtraFee,
+        },
+        fixedFee: {
+          value: selectUnit.FixedFee || defaultFixedFee || 0,
+          active: !!selectUnit.FixedFee || !!defaultFixedFee,
+        },
+      };
+    }
+  }, [isEditMode, selectUnitData, defaultFixedFee]);
+
+  // Fetch selected lessons whenever seLectedLessonsIds changes
   useEffect(() => {
     if (seLectedLessonsIds.length > 0) {
       setIsLoading(true);
@@ -106,6 +148,10 @@ export const SelectUnitForm = ({
       StudentId: BigInt(studnetId),
       Period: inputValues.current.period?.value,
       Year: inputValues.current.year?.value,
+      // Include ID if in edit mode
+      ...(isEditMode && selectUnitData?.selectUnit
+        ? { id: selectUnitData.selectUnit.id }
+        : {}),
     });
     if (!success || error || !validateData) {
       console.log("error", (error as ZodError).errors);
@@ -113,24 +159,47 @@ export const SelectUnitForm = ({
       return;
     }
 
-    bulkCreateSelectUnits(
-      {
-        StudentId: validateData.StudentId,
-        Period: validateData.Period,
-        Year: validateData.Year,
-      },
-      validateData.Lessons
-    )
-      .then((res) => {
-        if (res.error) {
-          toast.error((res.error as string) || "مشکلی پیش آمده است");
-          return;
-        }
+    // If in edit mode, we need to update the existing select unit
+    // Otherwise, create a new one
+    const action = isEditMode ? "ویرایش" : "انتخاب";
 
-        toast.success("درس‌ها با موفقیت انتخاب شدند");
-        handleReset();
-      })
-      .catch((err) => toast.error(err.message));
+    if (isEditMode && selectUnitData?.selectUnit) {
+      // Use bulkEditSelectUnits for edit mode
+      bulkEditSelectUnits(selectUnitData.selectUnit.id, validateData.Lessons)
+        .then((res) => {
+          if (res.error) {
+            toast.error((res.error as string) || "مشکلی پیش آمده است");
+            return;
+          }
+
+          toast.success(`درس‌ها با موفقیت ${action} شدند`);
+          router.push(`${urls.selectUnit}/${selectUnitData.selectUnit?.id}`);
+          handleReset();
+        })
+        .catch((err) => toast.error(err.message));
+    } else {
+      // Use bulkCreateSelectUnits for create mode
+      bulkCreateSelectUnits(
+        {
+          StudentId: validateData.StudentId,
+          Period: validateData.Period,
+          Year: validateData.Year,
+          ExtraFee: inputValues.current.extraFee?.value,
+          FixedFee: inputValues.current.fixedFee?.value || defaultFixedFee,
+        },
+        validateData.Lessons
+      )
+        .then((res) => {
+          if (res.error) {
+            toast.error((res.error as string) || "مشکلی پیش آمده است");
+            return;
+          }
+
+          toast.success(`درس‌ها با موفقیت ${action} شدند`);
+          handleReset();
+        })
+        .catch((err) => toast.error(err.message));
+    }
   };
 
   const showTable = () => {
@@ -195,6 +264,11 @@ export const SelectUnitForm = ({
       <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
         <FormInputs
           configs={formConfigs}
+          initialValues={
+            isEditMode && selectUnitData?.selectUnit
+              ? inputValues.current
+              : undefined
+          }
           onInputsChange={(inputs) => {
             inputValues.current = { ...inputValues.current, ...inputs };
           }}
@@ -234,7 +308,7 @@ export const SelectUnitForm = ({
           onClick={handleSubmit}
           className="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
-          تایید انتخاب
+          {isEditMode ? "ویرایش انتخاب واحد" : "تایید انتخاب"}
         </button>{" "}
       </div>
     </form>

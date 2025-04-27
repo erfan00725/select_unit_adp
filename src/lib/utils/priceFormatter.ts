@@ -6,7 +6,7 @@ const formatter = new Intl.NumberFormat("fa-IR", {
 });
 
 export const priceFormatter = (
-  price: string | number,
+  price?: string | number,
   haveRial: boolean = false
 ) => {
   if (!price) {

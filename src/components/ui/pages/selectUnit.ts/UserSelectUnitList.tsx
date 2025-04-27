@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import DataTable from "../../DataTable";
 import {
-  d_SelectUnitList,
+  d_StudentSelectUnitList,
   ListGeneralReturnType,
   s_ListConfig,
 } from "@/constants/configs/ListPageConfigs";
@@ -20,7 +20,7 @@ export const UserSelectUnitList = () => {
   // TODO: SelectUnits must be combined, List must change for SelectUnits and SelectUnit add, delete, update and single page must added
 
   useEffect(() => {
-    d_SelectUnitList({
+    d_StudentSelectUnitList({
       studentId: BigInt(params?.id as string),
       searchParams: {},
     })
@@ -46,9 +46,15 @@ export const UserSelectUnitList = () => {
   );
   return isLoading ? (
     <Loading />
-  ) : configs ? (
+  ) : configs?.tableData ? (
     <div className="mt-5">
-      <DataTable {...configs} addUrl={addUrl} editUrl={editUrl} />
+      {configs?.tableData.length > 0 ? (
+        <DataTable {...configs} addUrl={addUrl} editUrl={editUrl} />
+      ) : (
+        <p className="text-center text-gray-600">
+          انتخاب واحدی برای این دانش‌اموز انجام نشده است!
+        </p>
+      )}
     </div>
   ) : null;
 };

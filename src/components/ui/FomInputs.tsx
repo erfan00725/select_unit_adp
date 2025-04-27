@@ -14,33 +14,60 @@ type Props = {
     className?: string;
     canBeDisabled?: boolean;
   }>;
+  initialValues?: InputValueType; // Added for edit mode
   onInputsChange?: (inputsValue: InputValueType) => void;
 };
 
 // تابعی برای تولید ورودی‌های فرم بر اساس پیکربندی
-export const FormInputs = ({ configs, onInputsChange }: Props) => {
+export const FormInputs = ({
+  configs,
+  initialValues,
+  onInputsChange,
+}: Props) => {
   const [inputsValue, setInputsValue] = useState<InputValueType>({});
 
   // مقداردهی اولیه مقادیر ورودی و وضعیت فعال بودن
   useEffect(() => {
-    const initialValues: InputValueType = {};
+    const defaultValues: InputValueType = {};
 
     configs.forEach((config) => {
-      initialValues[config.name] = {
+      defaultValues[config.name] = {
         active: true,
         value: "",
       };
       // مقداردهی اولیه وضعیت فعال برای ورودی‌هایی که می‌توانند غیرفعال شوند
       if (config.canBeDisabled) {
-        initialValues[`${config.name}`].active = false; // پیش‌فرض غیرفعال
+        defaultValues[`${config.name}`].active = false; // پیش‌فرض غیرفعال
       }
     });
 
-    setInputsValue((prev) => ({ ...prev, ...initialValues }));
-  }, []);
+    // If initialValues are provided (edit mode), merge them with defaults
+    if (initialValues) {
+      // For each initialValue, ensure it has active status
+      Object.keys(initialValues).forEach((key) => {
+        if (defaultValues[key]) {
+          // If the field can be disabled, set active to true when there's a value
+          const config = configs.find((c) => c.name === key);
+          if (config?.canBeDisabled && initialValues[key]?.value) {
+            initialValues[key].active = true;
+          }
+          // Otherwise keep the default active status
+          else if (!initialValues[key]?.hasOwnProperty("active")) {
+            initialValues[key].active = defaultValues[key].active;
+          }
+        }
+      });
+      console.log(initialValues);
+
+      setInputsValue({ ...defaultValues, ...initialValues });
+    } else {
+      setInputsValue(defaultValues);
+    }
+  }, [configs, initialValues]);
 
   useEffect(() => {
     onInputsChange && onInputsChange(inputsValue);
+    console.log(inputsValue);
   }, [inputsValue]);
 
   // تغییر وضعیت فعال بودن ورودی

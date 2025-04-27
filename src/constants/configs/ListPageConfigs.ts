@@ -7,6 +7,8 @@ import {
   getFields,
   getTeachers,
   getSelectUnitsByStudent,
+  getSelectUnits,
+  getSelectUnitById,
 } from "@/lib/actions";
 import { FilterOptionType, Orders, PageType } from "@/types/General";
 import getAcademicYearJ from "@/lib/utils/getAcademicYearJ";
@@ -76,8 +78,8 @@ export const s_ListConfig: StaticConfigsType = {
     title: "مدیریت انتخاب واحد",
     description: "مدیریت انتخاب واحد دانش‌آموزان را انجام دهید",
     addButtonLabel: "افزودن انتخاب واحد جدید",
-    addUrl: urls.selectUnit + "/student/:id",
-    editUrl: urls.selectUnit + "/student/:studentId/edit/:id",
+    addUrl: urls.selectUnitEditBase + "/student/:id",
+    editUrl: urls.selectUnitEditBase + "/student/:studentId/edit/:id",
     searchPlaceholder: "جستجوی دانش‌آموزان، دروس...",
     filterOptions: [
       {
@@ -102,14 +104,18 @@ export const s_ListConfig: StaticConfigsType = {
 //  ________Dynamic Configs________
 
 type DynamicConfigsType = {
-  [key in PageType]?: (
-    params: ListGeneralParamsType
+  [key in PageType]: (
+    params: ListGeneralParamsType,
+    ...args: any[]
   ) => Promise<ListGeneralReturnType>;
 };
 
-const LessonsList = async ({
+export const LessonsList = async ({
   searchParams,
-}: ListGeneralParamsType): Promise<ListGeneralReturnType> => {
+  selectUnitLessonData,
+}: ListGeneralParamsType & {
+  selectUnitLessonData?: Awaited<ReturnType<typeof getSelectUnitById>>;
+}): Promise<ListGeneralReturnType> => {
   const { page, q, from, to, order, unit, limit } = searchParams;
 
   const lessonsData = await getLessons({
@@ -124,24 +130,54 @@ const LessonsList = async ({
   const pageLimit = lessonsData.pagination?.limit || defaultListLimit;
 
   const lessons = lessonsData?.lessons;
-  const tableData = (lessons || []).map((lesson) => ({
-    id: lesson.id,
-    Name: lesson.LessonName,
-    TheoriUnit: lesson.TheoriUnit,
-    PracticalUnit: lesson.PracticalUnit,
-    Teacher: lesson.teacher
-      ? `${lesson.teacher.FirstName} ${lesson.teacher.LastName}`
-      : "_",
-    PricePerUnit: lesson.PricePerUnit
-      ? priceFormatter(Number(lesson.PricePerUnit), true)
-      : "_",
-  }));
+
+  console.log(selectUnitLessonData);
+
+  const getTableData = () => {
+    if (selectUnitLessonData?.selectUnit?.selectedLessons?.length) {
+      return selectUnitLessonData?.selectUnit?.selectedLessons.map((l) => {
+        const lesson = l.lesson;
+        return {
+          id: lesson.id,
+          Name: lesson.LessonName,
+          TheoriUnit: lesson.TheoriUnit,
+          PracticalUnit: lesson.PracticalUnit,
+          TotalUnits: lesson.TheoriUnit + lesson.PracticalUnit,
+          // @ts-ignore
+          Teacher: lesson.teacher
+            ? // @ts-ignore
+              `${lesson.teacher.FirstName} ${lesson.teacher.LastName}`
+            : "_",
+          PricePerUnit: lesson.PricePerUnit
+            ? priceFormatter(Number(lesson.PricePerUnit), true)
+            : "_",
+        };
+      });
+    }
+
+    return (lessons || []).map((lesson) => ({
+      id: lesson.id,
+      Name: lesson.LessonName,
+      TheoriUnit: lesson.TheoriUnit,
+      PracticalUnit: lesson.PracticalUnit,
+      TotalUnits: lesson.TheoriUnit + lesson.PracticalUnit,
+      Teacher: lesson.teacher
+        ? `${lesson.teacher.FirstName} ${lesson.teacher.LastName}`
+        : "_",
+      PricePerUnit: lesson.PricePerUnit
+        ? priceFormatter(Number(lesson.PricePerUnit), true)
+        : "_",
+    }));
+  };
+
+  const tableData = getTableData();
 
   const headers = [
     "شناسه",
     "نام",
     "واحد نظری",
     "واحد عملی",
+    "کل واحد‌ها",
     "استاد",
     "قیمت هر واحد",
   ];
@@ -187,7 +223,7 @@ const StudentsList = async ({
   const actions: DataTableAction[] = [
     {
       label: "انتخاب_واحد",
-      href: urls.selectUnit + "/student/$?",
+      href: urls.selectUnitEditBase + "/student/$?",
     },
   ];
 
@@ -281,16 +317,68 @@ const TeachersList = async ({
   };
 };
 
+export const SelectUnitList = async ({
+  searchParams,
+}: ListGeneralParamsType): Promise<ListGeneralReturnType> => {
+  const { page, q, from, to, order, year, period, limit } = searchParams;
+
+  const selectUnitsData = await getSelectUnits({
+    page: page ? Number(page) : 1,
+    limit: limit ? Number(limit) : defaultListLimit,
+    query: q,
+    from: from ? new Date(from) : undefined,
+    to: to ? new Date(to) : undefined,
+    order: order ? (order as Orders) : "asc",
+  });
+  const pageLimit = selectUnitsData.pagination?.limit || defaultListLimit;
+
+  const selectUnits = selectUnitsData?.selectUnits;
+  const tableData = (selectUnits || []).map((unit) => {
+    return {
+      id: unit?.id,
+      Student: `${unit?.student?.FirstName} ${unit?.student?.LastName}`,
+      Year: unit?.Year ? getAcademicYearJ(unit.Year) : "_",
+      Period: unit?.Period,
+      LessonCount: unit?.selectedLessons.length,
+      TotalUnits: unit?.totalUnits || "_",
+      ExtraFee: unit?.totalFee ? priceFormatter(unit?.totalFee, true) : "0",
+    };
+  });
+
+  const headers = [
+    "شناسه",
+    "نام دانش‌آموز",
+    "سال",
+    "ترم",
+    "تعداد دروس",
+    "تعداد واحد",
+    "شهریه کل",
+  ];
+
+  return {
+    tableData: tableData,
+    headers: headers,
+    title: "مدیریت انتخاب واحد",
+    addButtonLabel: "افزودن انتخاب واحد جدید",
+    canAdd: false,
+    baseUrl: urls.selectUnitEditBase,
+    limit: pageLimit,
+    error: selectUnitsData?.error,
+    pagination: selectUnitsData?.pagination,
+  };
+};
+
 export const d_ListConfig: DynamicConfigsType = {
   lessons: LessonsList,
   students: StudentsList,
   fields: FieldsList,
   teachers: TeachersList,
+  selectUnit: SelectUnitList,
 };
 
 //  ________Other Configs________
 
-export const d_SelectUnitList = async ({
+export const d_StudentSelectUnitList = async ({
   searchParams,
   studentId,
 }: ListGeneralParamsType & {
@@ -334,9 +422,35 @@ export const d_SelectUnitList = async ({
     headers: headers,
     title: "مدیریت انتخاب واحد",
     addButtonLabel: "افزودن انتخاب واحد جدید",
-    baseUrl: urls.selectUnit,
+    baseUrl: urls.selectUnitEditBase,
     limit: pageLimit,
     error: selectUnitsData?.error,
     pagination: selectUnitsData?.pagination,
   };
+};
+
+export const s_studnetSelectUnit = {
+  title: "مدیریت انتخاب واحد",
+  description: "مدیریت انتخاب واحد دانش‌آموزان را انجام دهید",
+  addButtonLabel: "افزودن انتخاب واحد جدید",
+  addUrl: urls.selectUnitEditBase + "/student/:id",
+  editUrl: urls.selectUnitEditBase + "/student/:studentId/edit/:id",
+  searchPlaceholder: "جستجوی دانش‌آموزان، دروس...",
+  filterOptions: [
+    {
+      name: "year",
+      type: "number",
+      placeholder: "سال را وارد کنید",
+    },
+    {
+      name: "period",
+      type: "select",
+      placeholder: "ترم را انتخاب کنید",
+      options: [
+        { label: "ترم اول", value: "first" },
+        { label: "ترم دوم", value: "second" },
+        { label: "ترم تابستان", value: "summer" },
+      ],
+    },
+  ],
 };

@@ -3,6 +3,7 @@ import StudentInfoCard from "@/components/ui/StudentInfoCard";
 import { SelectUnitFormFetch } from "@/components/ui/pages/selectUnit.ts/SelectUnitFormFetch";
 import Loading from "@/components/common/Loading";
 import PageHeader from "@/components/ui/PageHeader";
+import { notFound } from "next/navigation";
 
 // Define the Props type for the component
 // It includes params and searchParams which are Promises resolving to objects
@@ -25,12 +26,19 @@ import PageHeader from "@/components/ui/PageHeader";
 // The component is exported as the default export of the module
 
 type Props = {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: string; selectId: string }>;
   searchParams: Promise<{ [key: string]: string | undefined }>;
 };
 
 const SelectUnitEditPage = async ({ params, searchParams }: Props) => {
   const id = (await params).id;
+  const selectId = (await params).selectId;
+
+  console.log(id, selectId);
+
+  if (!selectId || !id) {
+    return notFound();
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -46,7 +54,7 @@ const SelectUnitEditPage = async ({ params, searchParams }: Props) => {
 
       {/* Select Unit Form */}
       <Suspense fallback={<Loading />}>
-        <SelectUnitFormFetch studnetId={id} />
+        <SelectUnitFormFetch studnetId={id} selectUnitId={selectId} />
       </Suspense>
     </div>
   );

@@ -17,17 +17,23 @@ const DataTable = <T extends DataBaseType>({
   scrollable = false,
   actions,
   canAdd = true,
+  editable = true,
 }: DataTableProps<T>) => {
   const rows = tableData?.filter((_, index) => index < limit);
 
   const addUrl = baseAddUrl ? baseAddUrl : baseUrl ? `${baseUrl}/add` : null;
   const editUrl = (id: number | string) => {
+    if (!editable) {
+      return null;
+    }
     return baseEditUrl
       ? baseEditUrl?.replace(":id", id.toString())
       : baseUrl
       ? `${baseUrl}/add`
       : null;
   };
+
+  const isEditable = editable && (baseUrl || baseEditUrl);
 
   return (
     <div className="card mb-8">
@@ -49,7 +55,7 @@ const DataTable = <T extends DataBaseType>({
                   {header}
                 </th>
               ))}
-              {baseUrl || actions ? (
+              {isEditable || (actions || []).length > 0 ? (
                 <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
                   عملیات
                 </th>
@@ -94,7 +100,7 @@ const DataTable = <T extends DataBaseType>({
                         </span>
                       )
                     )}
-                  {(baseUrl || baseEditUrl) && (
+                  {isEditable && (
                     <Link
                       // @ts-ignore
                       href={editUrl(row.id.toString())}
@@ -103,7 +109,7 @@ const DataTable = <T extends DataBaseType>({
                       Edit
                     </Link>
                   )}
-                  {(baseUrl || deleteUrl) && (
+                  {isEditable && (
                     <Link
                       href={`${baseUrl}/${row.id}?delete=true`}
                       className="tableAction text-red-600! hover:text-red-900!"

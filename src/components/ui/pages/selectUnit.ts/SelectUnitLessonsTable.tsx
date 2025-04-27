@@ -3,14 +3,20 @@ import React, { useEffect, useState } from "react";
 import DataTable from "../../DataTable";
 import {
   d_ListConfig,
+  LessonsList,
   ListGeneralReturnType,
   s_ListConfig,
 } from "@/constants/configs/ListPageConfigs";
 import { useParams } from "next/navigation";
 import Loading from "@/components/common/Loading";
 import { PageType } from "@/types/General";
+import { getSelectUnitById } from "@/lib/actions";
 
-export const SelectUnitLessonsTable = () => {
+type Props = {
+  data: Awaited<ReturnType<typeof getSelectUnitById>>;
+};
+
+export const SelectUnitLessonsTable = ({ data }: Props) => {
   const params = useParams();
   const [configs, setConfigs] = useState<ListGeneralReturnType | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -18,8 +24,7 @@ export const SelectUnitLessonsTable = () => {
   if (!params?.id) return null;
 
   useEffect(() => {
-    d_ListConfig
-      ?.lessons?.({ searchParams: {} })
+    LessonsList({ searchParams: {}, selectUnitLessonData: data })
       .then((res) => {
         setConfigs(res);
       })
@@ -40,7 +45,7 @@ export const SelectUnitLessonsTable = () => {
     <Loading />
   ) : configs ? (
     <div className="mt-5">
-      <DataTable {...configs} canAdd={false} addUrl={addUrl} />
+      <DataTable {...configs} canAdd={false} addUrl={addUrl} editable={false} />
     </div>
   ) : null;
 };

@@ -30,7 +30,11 @@ function customReturn(
       student?: true;
       selectedLessons: {
         include: {
-          lesson: true;
+          lesson: {
+            include?: {
+              teacher?: true;
+            };
+          };
         };
       };
     };
@@ -62,17 +66,21 @@ function customReturn(
     Number(selectUnit.ExtraClassFee || 0) +
     Number(selectUnit.BooksFee || 0);
 
+  selectUnit.selectedLessons.forEach((lesson) => {
+    console.log(lesson.lesson?.LessonName);
+  });
+
+  console.log(selectUnit);
+
   return {
     ...selectUnit,
     totalUnits: selectUnit.selectedLessons
-      ? selectUnit.selectedLessons.reduce(
-          // @ts-ignore
-          (acc, lesson) =>
-            acc +
-            ((lesson.lesson?.TheoriUnit || 0) +
-              (lesson.lesson?.PracticalUnit || 0)),
-          0
-        )
+      ? selectUnit.selectedLessons.reduce((acc, lesson) => {
+          console.log(lesson.lesson?.TheoriUnit, lesson.lesson?.PracticalUnit);
+          return (
+            acc + (lesson.lesson?.TheoriUnit + lesson.lesson?.PracticalUnit)
+          );
+        }, 0)
       : 0,
     totalFee: lessonFees + additionalFees,
   };
@@ -843,11 +851,11 @@ export async function bulkCreateSelectUnits(
         StudentId: baseData.StudentId,
         Year: baseData.Year,
         Period: baseData.Period,
-        ExtraFee: baseData.ExtraFee,
-        FixedFee: baseData.FixedFee,
-        CertificateFee: baseData.CertificateFee,
-        ExtraClassFee: baseData.ExtraClassFee,
-        BooksFee: baseData.BooksFee,
+        ExtraFee: baseData.ExtraFee || 0,
+        FixedFee: baseData.FixedFee || 0,
+        CertificateFee: baseData.CertificateFee || 0,
+        ExtraClassFee: baseData.ExtraClassFee || 0,
+        BooksFee: baseData.BooksFee || 0,
       },
     });
 
@@ -904,6 +912,130 @@ export async function bulkCreateSelectUnits(
   } catch (error) {
     console.error("Failed to bulk create select units:", error);
     return { error: "Failed to bulk create select units" };
+  }
+}
+
+// Bulk edit selected lessons for an existing select unit
+export async function bulkEditSelectUnits(
+  selectUnitId: bigint,
+  lessonIds: bigint[]
+) {
+  try {
+    if (lessonIds.length === 0) {
+      return { error: "No lessons provided" };
+    }
+
+    // Check if the select unit exists
+    const existingSelectUnit = await prisma.selectUnit.findUnique({
+      where: {
+        id: selectUnitId,
+      },
+      include: {
+        selectedLessons: true,
+        student: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+
+    if (!existingSelectUnit) {
+      return { error: "Select unit not found" };
+    }
+
+    // Get current lesson IDs
+    const currentLessonIds = existingSelectUnit.selectedLessons.map(
+      (sl) => sl.lessonId
+    );
+
+    // Determine which lessons to add and which to remove
+    const lessonsToAdd = lessonIds.filter(
+      (id) => !currentLessonIds.includes(id)
+    );
+    const lessonsToRemove = currentLessonIds.filter(
+      (id) => !lessonIds.includes(id)
+    );
+
+    // If no changes are needed, return early
+    if (lessonsToAdd.length === 0 && lessonsToRemove.length === 0) {
+      return { message: "No changes needed" };
+    }
+
+    // Process additions and removals in a transaction
+    const result = await prisma.$transaction(async (tx) => {
+      // Remove lessons that are no longer needed
+      if (lessonsToRemove.length > 0) {
+        await tx.selectedLesson.deleteMany({
+          where: {
+            selectUnitId,
+            lessonId: {
+              in: lessonsToRemove,
+            },
+          },
+        });
+      }
+
+      // Add new lessons
+      const addedLessons = [];
+      for (const lessonId of lessonsToAdd) {
+        // Check if the lesson exists
+        const lesson = await tx.lesson.findUnique({
+          where: { id: lessonId },
+        });
+
+        if (!lesson) {
+          throw new Error(`Lesson with ID ${lessonId} not found`);
+        }
+
+        // Create the selected lesson
+        const selectedLesson = await tx.selectedLesson.create({
+          data: {
+            selectUnitId,
+            lessonId,
+          },
+          include: {
+            lesson: true,
+          },
+        });
+
+        addedLessons.push(selectedLesson);
+      }
+
+      // Get the updated select unit with all lessons
+      const updatedSelectUnit = await tx.selectUnit.findUnique({
+        where: { id: selectUnitId },
+        include: {
+          student: true,
+          selectedLessons: {
+            include: {
+              lesson: true,
+            },
+          },
+        },
+      });
+
+      return {
+        selectUnit: updatedSelectUnit,
+        addedLessons,
+        removedLessonIds: lessonsToRemove,
+      };
+    });
+
+    // Revalidate paths
+    revalidatePath("/dashboard/select-unit");
+    if (existingSelectUnit.student) {
+      revalidatePath(`/dashboard/students/${existingSelectUnit.student.id}`);
+    }
+
+    // Apply customReturn to calculate totalUnits and totalFee
+    return {
+      ...result,
+      selectUnit: customReturn(result.selectUnit),
+    };
+  } catch (error) {
+    console.error("Failed to bulk edit select units:", error);
+    return { error: "Failed to bulk edit select units" };
   }
 }
 

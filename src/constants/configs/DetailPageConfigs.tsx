@@ -19,6 +19,7 @@ import SelectUnitTable from "@/components/ui/pages/selectUnit.ts/SelectUnitTable
 import Link from "next/link";
 import getAcademicYearJ from "@/lib/utils/getAcademicYearJ";
 import { SelectUnitLessonsTable } from "@/components/ui/pages/selectUnit.ts/SelectUnitLessonsTable";
+import { priceFormatter } from "@/lib/utils/priceFormatter";
 
 export type DetailPageConfigtReturnType = {
   error?: string;
@@ -199,7 +200,7 @@ export const StudentsDetailConfig = (
       baseUrl: urls.students,
       actions: [
         <Link
-          href={`${urls.selectUnit}/student/${student.id}`}
+          href={`${urls.selectUnitEditBase}/student/${student.id}`}
           className="button "
           key={"selectUnit-" + student.id}
         >
@@ -337,32 +338,37 @@ export const SelectUnitDetailConfig = (
       },
       {
         label: "شهریه ثابت",
-        value: selectUnit?.FixedFee?.toString(),
+        value: priceFormatter(selectUnit?.FixedFee?.toString(), true),
         type: "price",
       },
       {
         label: "شهریه اضافی",
-        value: selectUnit?.ExtraFee?.toString(),
+        value: priceFormatter(selectUnit?.ExtraFee?.toString(), true),
         type: "price",
       },
       {
-        label: "هزینه گواهی‌نامه",
-        value: selectUnit?.CertificateFee?.toString(),
+        label: "هزینه مدرک",
+        value: priceFormatter(selectUnit?.CertificateFee?.toString(), true),
         type: "price",
       },
       {
         label: "هزینه کلاس‌های فوق‌العاده",
-        value: selectUnit?.ExtraClassFee?.toString(),
+        value: priceFormatter(selectUnit?.ExtraClassFee?.toString(), true),
         type: "price",
       },
       {
         label: "هزینه کتاب‌ها",
-        value: selectUnit?.BooksFee?.toString(),
+        value: priceFormatter(selectUnit?.BooksFee?.toString(), true),
         type: "price",
       },
       {
-        label: "تعداد واحد کل",
+        label: "تعداد کل واحد‌ها",
         value: selectUnit?.totalUnits?.toString(),
+        type: "text",
+      },
+      {
+        label: "مبلغ کل",
+        value: priceFormatter(selectUnit?.totalFee?.toString(), true),
         type: "price",
       },
     ],
@@ -375,9 +381,10 @@ export const SelectUnitDetailConfig = (
       createdAt: SelectUnitConfig.createdAt,
       modifiedAt: SelectUnitConfig.modifiedAt,
       InfoRows: SelectUnitConfig.rows || [],
-      baseUrl: urls.selectUnit,
+      baseUrl: urls.selectUnitEditBase,
+      editUrl: `${urls.selectUnitEditBase}/student/${selectUnit.StudentId}/edit/${selectUnit.id}`,
     },
-    chidlren: <SelectUnitLessonsTable />,
+    chidlren: <SelectUnitLessonsTable data={selectUnitData} />,
   };
 };
 
@@ -404,7 +411,7 @@ export const DetailPageConfigs: Record<PageType, PageConfig<any>> = {
   },
 };
 
-// _________ State Page Config _________
+// _________ Static Page Config _________
 
 interface s_PageConfig {
   title: string;
@@ -456,7 +463,7 @@ export const s_DetailPageConfigs: Record<PageType, s_PageConfig> = {
     title: "اطلاعات انتخاب واحد",
     deleteConfig: {
       deleteFounction: deleteSelectUnit,
-      backUrl: urls.selectUnit,
+      backUrl: urls.selectUnitEditBase,
     },
   },
 };

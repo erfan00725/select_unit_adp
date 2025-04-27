@@ -15,6 +15,7 @@ const DetailInfoCard: React.FC<DetailPageProps> = ({
   InfoRows,
   actions,
   baseUrl,
+  editUrl,
 }) => {
   const formatValue = (row: DetailPageRow) => {
     if (!row.value) return null;
@@ -50,7 +51,10 @@ const DetailInfoCard: React.FC<DetailPageProps> = ({
         {baseUrl && (
           <div className="flex space-x-2">
             {actions?.map((action) => action)}
-            <Link href={`${formBaseUrl}/edit`} className="button_black">
+            <Link
+              href={editUrl ? editUrl : `${formBaseUrl}/edit`}
+              className="button_black"
+            >
               ویرایش
             </Link>
             <DeleteButton />
