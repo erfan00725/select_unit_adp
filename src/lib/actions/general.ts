@@ -103,3 +103,42 @@ export async function upsertSetting(data: GeneralDataType) {
     return { error: "خطا در ثبت یا به‌روزرسانی تنظیمات" };
   }
 }
+
+// Get fee-related settings
+export async function getFeeSettings() {
+  try {
+    const feeKeys = [
+      "fixedFee",
+      "certificateFee",
+      "booksFee",
+      "pricePerUnit",
+      "extraClassFee",
+    ];
+
+    const settings = await prisma.general.findMany({
+      where: {
+        Key: { in: feeKeys },
+      },
+    });
+
+    // Convert array of settings to an object with key-value pairs
+    const feeSettings = settings.reduce(
+      (acc: { [key: string]: string }, setting) => {
+        acc[setting.Key] = setting.Value;
+        return acc;
+      },
+      {}
+    );
+
+    return {
+      fixedFee: feeSettings.fixedFee,
+      certificateFee: feeSettings.certificateFee,
+      booksFee: feeSettings.booksFee,
+      pricePerUnit: feeSettings.pricePerUnit,
+      extraClassFee: feeSettings.extraClassFee,
+    };
+  } catch (error) {
+    console.error("Failed to fetch fee settings:", error);
+    return { error: "خطا در دریافت تنظیمات هزینه‌ها" };
+  }
+}
