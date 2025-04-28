@@ -173,6 +173,8 @@ exports.Prisma.SelectUnitScalarFieldEnum = {
   CertificateFee: 'CertificateFee',
   ExtraClassFee: 'ExtraClassFee',
   BooksFee: 'BooksFee',
+  Discount: 'Discount',
+  Paid: 'Paid',
   Created_at: 'Created_at',
   Updated_at: 'Updated_at',
   lessonId: 'lessonId'

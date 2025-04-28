@@ -80,6 +80,8 @@ model SelectUnit {
   CertificateFee BigInt? @default(0) @db.BigInt
   ExtraClassFee BigInt? @default(0) @db.BigInt
   BooksFee   BigInt?  @default(0) @db.BigInt
+  Discount   BigInt?  @default(0) @db.UnsignedBigInt
+  Paid       Boolean  @default(false) @db.Bit(1)
   Created_at DateTime @default(now()) @db.Timestamp()
   Updated_at DateTime @default(now()) @db.Timestamp()
 

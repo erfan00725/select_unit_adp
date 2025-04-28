@@ -5121,6 +5121,7 @@ export namespace Prisma {
     CertificateFee: number | null
     ExtraClassFee: number | null
     BooksFee: number | null
+    Discount: number | null
     lessonId: number | null
   }
 
@@ -5133,6 +5134,7 @@ export namespace Prisma {
     CertificateFee: bigint | null
     ExtraClassFee: bigint | null
     BooksFee: bigint | null
+    Discount: bigint | null
     lessonId: bigint | null
   }
 
@@ -5146,6 +5148,8 @@ export namespace Prisma {
     CertificateFee: bigint | null
     ExtraClassFee: bigint | null
     BooksFee: bigint | null
+    Discount: bigint | null
+    Paid: boolean | null
     Created_at: Date | null
     Updated_at: Date | null
     lessonId: bigint | null
@@ -5161,6 +5165,8 @@ export namespace Prisma {
     CertificateFee: bigint | null
     ExtraClassFee: bigint | null
     BooksFee: bigint | null
+    Discount: bigint | null
+    Paid: boolean | null
     Created_at: Date | null
     Updated_at: Date | null
     lessonId: bigint | null
@@ -5176,6 +5182,8 @@ export namespace Prisma {
     CertificateFee: number
     ExtraClassFee: number
     BooksFee: number
+    Discount: number
+    Paid: number
     Created_at: number
     Updated_at: number
     lessonId: number
@@ -5192,6 +5200,7 @@ export namespace Prisma {
     CertificateFee?: true
     ExtraClassFee?: true
     BooksFee?: true
+    Discount?: true
     lessonId?: true
   }
 
@@ -5204,6 +5213,7 @@ export namespace Prisma {
     CertificateFee?: true
     ExtraClassFee?: true
     BooksFee?: true
+    Discount?: true
     lessonId?: true
   }
 
@@ -5217,6 +5227,8 @@ export namespace Prisma {
     CertificateFee?: true
     ExtraClassFee?: true
     BooksFee?: true
+    Discount?: true
+    Paid?: true
     Created_at?: true
     Updated_at?: true
     lessonId?: true
@@ -5232,6 +5244,8 @@ export namespace Prisma {
     CertificateFee?: true
     ExtraClassFee?: true
     BooksFee?: true
+    Discount?: true
+    Paid?: true
     Created_at?: true
     Updated_at?: true
     lessonId?: true
@@ -5247,6 +5261,8 @@ export namespace Prisma {
     CertificateFee?: true
     ExtraClassFee?: true
     BooksFee?: true
+    Discount?: true
+    Paid?: true
     Created_at?: true
     Updated_at?: true
     lessonId?: true
@@ -5349,6 +5365,8 @@ export namespace Prisma {
     CertificateFee: bigint | null
     ExtraClassFee: bigint | null
     BooksFee: bigint | null
+    Discount: bigint | null
+    Paid: boolean
     Created_at: Date
     Updated_at: Date
     lessonId: bigint | null
@@ -5383,6 +5401,8 @@ export namespace Prisma {
     CertificateFee?: boolean
     ExtraClassFee?: boolean
     BooksFee?: boolean
+    Discount?: boolean
+    Paid?: boolean
     Created_at?: boolean
     Updated_at?: boolean
     lessonId?: boolean
@@ -5405,12 +5425,14 @@ export namespace Prisma {
     CertificateFee?: boolean
     ExtraClassFee?: boolean
     BooksFee?: boolean
+    Discount?: boolean
+    Paid?: boolean
     Created_at?: boolean
     Updated_at?: boolean
     lessonId?: boolean
   }
 
-  export type SelectUnitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "StudentId" | "Year" | "Period" | "ExtraFee" | "FixedFee" | "CertificateFee" | "ExtraClassFee" | "BooksFee" | "Created_at" | "Updated_at" | "lessonId", ExtArgs["result"]["selectUnit"]>
+  export type SelectUnitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "StudentId" | "Year" | "Period" | "ExtraFee" | "FixedFee" | "CertificateFee" | "ExtraClassFee" | "BooksFee" | "Discount" | "Paid" | "Created_at" | "Updated_at" | "lessonId", ExtArgs["result"]["selectUnit"]>
   export type SelectUnitInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     student?: boolean | StudentDefaultArgs<ExtArgs>
     selectedLessons?: boolean | SelectUnit$selectedLessonsArgs<ExtArgs>
@@ -5437,6 +5459,8 @@ export namespace Prisma {
       CertificateFee: bigint | null
       ExtraClassFee: bigint | null
       BooksFee: bigint | null
+      Discount: bigint | null
+      Paid: boolean
       Created_at: Date
       Updated_at: Date
       lessonId: bigint | null
@@ -5822,6 +5846,8 @@ export namespace Prisma {
     readonly CertificateFee: FieldRef<"SelectUnit", 'BigInt'>
     readonly ExtraClassFee: FieldRef<"SelectUnit", 'BigInt'>
     readonly BooksFee: FieldRef<"SelectUnit", 'BigInt'>
+    readonly Discount: FieldRef<"SelectUnit", 'BigInt'>
+    readonly Paid: FieldRef<"SelectUnit", 'Boolean'>
     readonly Created_at: FieldRef<"SelectUnit", 'DateTime'>
     readonly Updated_at: FieldRef<"SelectUnit", 'DateTime'>
     readonly lessonId: FieldRef<"SelectUnit", 'BigInt'>
@@ -11302,6 +11328,8 @@ export namespace Prisma {
     CertificateFee: 'CertificateFee',
     ExtraClassFee: 'ExtraClassFee',
     BooksFee: 'BooksFee',
+    Discount: 'Discount',
+    Paid: 'Paid',
     Created_at: 'Created_at',
     Updated_at: 'Updated_at',
     lessonId: 'lessonId'
@@ -11841,6 +11869,8 @@ export namespace Prisma {
     CertificateFee?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
     ExtraClassFee?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
     BooksFee?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
+    Discount?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
+    Paid?: BoolFilter<"SelectUnit"> | boolean
     Created_at?: DateTimeFilter<"SelectUnit"> | Date | string
     Updated_at?: DateTimeFilter<"SelectUnit"> | Date | string
     lessonId?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
@@ -11860,6 +11890,8 @@ export namespace Prisma {
     CertificateFee?: SortOrderInput | SortOrder
     ExtraClassFee?: SortOrderInput | SortOrder
     BooksFee?: SortOrderInput | SortOrder
+    Discount?: SortOrderInput | SortOrder
+    Paid?: SortOrder
     Created_at?: SortOrder
     Updated_at?: SortOrder
     lessonId?: SortOrderInput | SortOrder
@@ -11883,6 +11915,8 @@ export namespace Prisma {
     CertificateFee?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
     ExtraClassFee?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
     BooksFee?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
+    Discount?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
+    Paid?: BoolFilter<"SelectUnit"> | boolean
     Created_at?: DateTimeFilter<"SelectUnit"> | Date | string
     Updated_at?: DateTimeFilter<"SelectUnit"> | Date | string
     lessonId?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
@@ -11902,6 +11936,8 @@ export namespace Prisma {
     CertificateFee?: SortOrderInput | SortOrder
     ExtraClassFee?: SortOrderInput | SortOrder
     BooksFee?: SortOrderInput | SortOrder
+    Discount?: SortOrderInput | SortOrder
+    Paid?: SortOrder
     Created_at?: SortOrder
     Updated_at?: SortOrder
     lessonId?: SortOrderInput | SortOrder
@@ -11925,6 +11961,8 @@ export namespace Prisma {
     CertificateFee?: BigIntNullableWithAggregatesFilter<"SelectUnit"> | bigint | number | null
     ExtraClassFee?: BigIntNullableWithAggregatesFilter<"SelectUnit"> | bigint | number | null
     BooksFee?: BigIntNullableWithAggregatesFilter<"SelectUnit"> | bigint | number | null
+    Discount?: BigIntNullableWithAggregatesFilter<"SelectUnit"> | bigint | number | null
+    Paid?: BoolWithAggregatesFilter<"SelectUnit"> | boolean
     Created_at?: DateTimeWithAggregatesFilter<"SelectUnit"> | Date | string
     Updated_at?: DateTimeWithAggregatesFilter<"SelectUnit"> | Date | string
     lessonId?: BigIntNullableWithAggregatesFilter<"SelectUnit"> | bigint | number | null
@@ -12605,6 +12643,8 @@ export namespace Prisma {
     CertificateFee?: bigint | number | null
     ExtraClassFee?: bigint | number | null
     BooksFee?: bigint | number | null
+    Discount?: bigint | number | null
+    Paid?: boolean
     Created_at?: Date | string
     Updated_at?: Date | string
     student: StudentCreateNestedOneWithoutSelectUnitsInput
@@ -12623,6 +12663,8 @@ export namespace Prisma {
     CertificateFee?: bigint | number | null
     ExtraClassFee?: bigint | number | null
     BooksFee?: bigint | number | null
+    Discount?: bigint | number | null
+    Paid?: boolean
     Created_at?: Date | string
     Updated_at?: Date | string
     lessonId?: bigint | number | null
@@ -12639,6 +12681,8 @@ export namespace Prisma {
     CertificateFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     ExtraClassFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     BooksFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Discount?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Paid?: BoolFieldUpdateOperationsInput | boolean
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     student?: StudentUpdateOneRequiredWithoutSelectUnitsNestedInput
@@ -12657,6 +12701,8 @@ export namespace Prisma {
     CertificateFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     ExtraClassFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     BooksFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Discount?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Paid?: BoolFieldUpdateOperationsInput | boolean
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     lessonId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
@@ -12674,6 +12720,8 @@ export namespace Prisma {
     CertificateFee?: bigint | number | null
     ExtraClassFee?: bigint | number | null
     BooksFee?: bigint | number | null
+    Discount?: bigint | number | null
+    Paid?: boolean
     Created_at?: Date | string
     Updated_at?: Date | string
     lessonId?: bigint | number | null
@@ -12688,6 +12736,8 @@ export namespace Prisma {
     CertificateFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     ExtraClassFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     BooksFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Discount?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Paid?: BoolFieldUpdateOperationsInput | boolean
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -12702,6 +12752,8 @@ export namespace Prisma {
     CertificateFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     ExtraClassFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     BooksFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Discount?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Paid?: BoolFieldUpdateOperationsInput | boolean
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     lessonId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
@@ -13633,6 +13685,8 @@ export namespace Prisma {
     CertificateFee?: SortOrder
     ExtraClassFee?: SortOrder
     BooksFee?: SortOrder
+    Discount?: SortOrder
+    Paid?: SortOrder
     Created_at?: SortOrder
     Updated_at?: SortOrder
     lessonId?: SortOrder
@@ -13647,6 +13701,7 @@ export namespace Prisma {
     CertificateFee?: SortOrder
     ExtraClassFee?: SortOrder
     BooksFee?: SortOrder
+    Discount?: SortOrder
     lessonId?: SortOrder
   }
 
@@ -13660,6 +13715,8 @@ export namespace Prisma {
     CertificateFee?: SortOrder
     ExtraClassFee?: SortOrder
     BooksFee?: SortOrder
+    Discount?: SortOrder
+    Paid?: SortOrder
     Created_at?: SortOrder
     Updated_at?: SortOrder
     lessonId?: SortOrder
@@ -13675,6 +13732,8 @@ export namespace Prisma {
     CertificateFee?: SortOrder
     ExtraClassFee?: SortOrder
     BooksFee?: SortOrder
+    Discount?: SortOrder
+    Paid?: SortOrder
     Created_at?: SortOrder
     Updated_at?: SortOrder
     lessonId?: SortOrder
@@ -13689,6 +13748,7 @@ export namespace Prisma {
     CertificateFee?: SortOrder
     ExtraClassFee?: SortOrder
     BooksFee?: SortOrder
+    Discount?: SortOrder
     lessonId?: SortOrder
   }
 
@@ -14945,6 +15005,8 @@ export namespace Prisma {
     CertificateFee?: bigint | number | null
     ExtraClassFee?: bigint | number | null
     BooksFee?: bigint | number | null
+    Discount?: bigint | number | null
+    Paid?: boolean
     Created_at?: Date | string
     Updated_at?: Date | string
     selectedLessons?: SelectedLessonCreateNestedManyWithoutSelectUnitInput
@@ -14961,6 +15023,8 @@ export namespace Prisma {
     CertificateFee?: bigint | number | null
     ExtraClassFee?: bigint | number | null
     BooksFee?: bigint | number | null
+    Discount?: bigint | number | null
+    Paid?: boolean
     Created_at?: Date | string
     Updated_at?: Date | string
     lessonId?: bigint | number | null
@@ -15038,6 +15102,8 @@ export namespace Prisma {
     CertificateFee?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
     ExtraClassFee?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
     BooksFee?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
+    Discount?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
+    Paid?: BoolFilter<"SelectUnit"> | boolean
     Created_at?: DateTimeFilter<"SelectUnit"> | Date | string
     Updated_at?: DateTimeFilter<"SelectUnit"> | Date | string
     lessonId?: BigIntNullableFilter<"SelectUnit"> | bigint | number | null
@@ -15215,6 +15281,8 @@ export namespace Prisma {
     CertificateFee?: bigint | number | null
     ExtraClassFee?: bigint | number | null
     BooksFee?: bigint | number | null
+    Discount?: bigint | number | null
+    Paid?: boolean
     Created_at?: Date | string
     Updated_at?: Date | string
     student: StudentCreateNestedOneWithoutSelectUnitsInput
@@ -15232,6 +15300,8 @@ export namespace Prisma {
     CertificateFee?: bigint | number | null
     ExtraClassFee?: bigint | number | null
     BooksFee?: bigint | number | null
+    Discount?: bigint | number | null
+    Paid?: boolean
     Created_at?: Date | string
     Updated_at?: Date | string
     selectedLessons?: SelectedLessonUncheckedCreateNestedManyWithoutSelectUnitInput
@@ -15777,6 +15847,8 @@ export namespace Prisma {
     CertificateFee?: bigint | number | null
     ExtraClassFee?: bigint | number | null
     BooksFee?: bigint | number | null
+    Discount?: bigint | number | null
+    Paid?: boolean
     Created_at?: Date | string
     Updated_at?: Date | string
     student: StudentCreateNestedOneWithoutSelectUnitsInput
@@ -15794,6 +15866,8 @@ export namespace Prisma {
     CertificateFee?: bigint | number | null
     ExtraClassFee?: bigint | number | null
     BooksFee?: bigint | number | null
+    Discount?: bigint | number | null
+    Paid?: boolean
     Created_at?: Date | string
     Updated_at?: Date | string
     lessonId?: bigint | number | null
@@ -15876,6 +15950,8 @@ export namespace Prisma {
     CertificateFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     ExtraClassFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     BooksFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Discount?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Paid?: BoolFieldUpdateOperationsInput | boolean
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     student?: StudentUpdateOneRequiredWithoutSelectUnitsNestedInput
@@ -15893,6 +15969,8 @@ export namespace Prisma {
     CertificateFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     ExtraClassFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     BooksFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Discount?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Paid?: BoolFieldUpdateOperationsInput | boolean
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     lessonId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
@@ -15965,6 +16043,8 @@ export namespace Prisma {
     CertificateFee?: bigint | number | null
     ExtraClassFee?: bigint | number | null
     BooksFee?: bigint | number | null
+    Discount?: bigint | number | null
+    Paid?: boolean
     Created_at?: Date | string
     Updated_at?: Date | string
     student: StudentCreateNestedOneWithoutSelectUnitsInput
@@ -15982,6 +16062,8 @@ export namespace Prisma {
     CertificateFee?: bigint | number | null
     ExtraClassFee?: bigint | number | null
     BooksFee?: bigint | number | null
+    Discount?: bigint | number | null
+    Paid?: boolean
     Created_at?: Date | string
     Updated_at?: Date | string
     lessonId?: bigint | number | null
@@ -16013,6 +16095,8 @@ export namespace Prisma {
     CertificateFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     ExtraClassFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     BooksFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Discount?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Paid?: BoolFieldUpdateOperationsInput | boolean
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     student?: StudentUpdateOneRequiredWithoutSelectUnitsNestedInput
@@ -16030,6 +16114,8 @@ export namespace Prisma {
     CertificateFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     ExtraClassFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     BooksFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Discount?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Paid?: BoolFieldUpdateOperationsInput | boolean
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     lessonId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
@@ -16393,6 +16479,8 @@ export namespace Prisma {
     CertificateFee?: bigint | number | null
     ExtraClassFee?: bigint | number | null
     BooksFee?: bigint | number | null
+    Discount?: bigint | number | null
+    Paid?: boolean
     Created_at?: Date | string
     Updated_at?: Date | string
     lessonId?: bigint | number | null
@@ -16407,6 +16495,8 @@ export namespace Prisma {
     CertificateFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     ExtraClassFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     BooksFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Discount?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Paid?: BoolFieldUpdateOperationsInput | boolean
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     selectedLessons?: SelectedLessonUpdateManyWithoutSelectUnitNestedInput
@@ -16423,6 +16513,8 @@ export namespace Prisma {
     CertificateFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     ExtraClassFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     BooksFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Discount?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Paid?: BoolFieldUpdateOperationsInput | boolean
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     lessonId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
@@ -16439,6 +16531,8 @@ export namespace Prisma {
     CertificateFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     ExtraClassFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     BooksFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Discount?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Paid?: BoolFieldUpdateOperationsInput | boolean
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     lessonId?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
@@ -16474,6 +16568,8 @@ export namespace Prisma {
     CertificateFee?: bigint | number | null
     ExtraClassFee?: bigint | number | null
     BooksFee?: bigint | number | null
+    Discount?: bigint | number | null
+    Paid?: boolean
     Created_at?: Date | string
     Updated_at?: Date | string
   }
@@ -16558,6 +16654,8 @@ export namespace Prisma {
     CertificateFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     ExtraClassFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     BooksFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Discount?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Paid?: BoolFieldUpdateOperationsInput | boolean
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     student?: StudentUpdateOneRequiredWithoutSelectUnitsNestedInput
@@ -16575,6 +16673,8 @@ export namespace Prisma {
     CertificateFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     ExtraClassFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     BooksFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Discount?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Paid?: BoolFieldUpdateOperationsInput | boolean
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     selectedLessons?: SelectedLessonUncheckedUpdateManyWithoutSelectUnitNestedInput
@@ -16591,6 +16691,8 @@ export namespace Prisma {
     CertificateFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     ExtraClassFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     BooksFee?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Discount?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    Paid?: BoolFieldUpdateOperationsInput | boolean
     Created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
