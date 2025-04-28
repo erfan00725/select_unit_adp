@@ -6,7 +6,7 @@ import SelectUnitTable from "./SelectUnitTable";
 import { LessonSelect } from "./LessonSelect";
 import Link from "next/link";
 import { urls } from "@/constants/urls";
-import { SelectItem } from "../../SelectItems";
+import { SelectItem } from "../../Form/SelectItems";
 import { ActionReturnType } from "@/types/General";
 import {
   bulkCreateSelectUnits,
@@ -15,7 +15,7 @@ import {
   getLessonsByIds,
   getSelectUnitById,
 } from "@/lib/actions";
-import { FormInputs, InputValueType } from "../../FomInputs";
+import { FormInputs, InputValueType } from "../../Form/FomInputs";
 import Loading from "@/components/common/Loading";
 import { toast } from "react-toastify";
 import { validateSelectUnitSafe } from "@/lib/validations/selectUnit";

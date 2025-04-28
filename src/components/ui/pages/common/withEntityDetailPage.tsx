@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import { notFound } from "next/navigation";
 import Loading from "@/components/common/Loading";
-import PageHeader from "@/components/ui/PageHeader";
+import PageHeader from "@/components/ui/common/PageHeader";
 import { EntityDetailPage, EntityData } from "./EntityDetailPage";
 import { InfoPageConfig } from "@/types/General";
 

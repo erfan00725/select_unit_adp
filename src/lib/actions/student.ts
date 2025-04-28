@@ -71,7 +71,7 @@ export async function getStudents(params?: BaseListFilterParams) {
     };
   } catch (error) {
     console.error("Failed to fetch students:", error);
-    return { error: "Failed to fetch students" };
+    return { error: "خطا در دریافت لیست دانش‌آموزان" };
   }
 }
 
@@ -91,13 +91,13 @@ export async function getStudentById(id: bigint) {
     });
 
     if (!student) {
-      return { error: "Student not found", code: 404 };
+      return { error: "دانش‌آموز یافت نشد", code: 404 };
     }
 
     return { student };
   } catch (error) {
     console.error("Failed to fetch student:", error);
-    return { error: "Failed to fetch student" };
+    return { error: "خطا در دریافت اطلاعات دانش‌آموز" };
   }
 }
 
@@ -125,7 +125,7 @@ export async function createStudent(data: StudentDataType) {
     return { student };
   } catch (error) {
     console.error("Failed to create student:", error);
-    return { error: "Failed to create student" };
+    return { error: "خطا در ایجاد دانش‌آموز جدید" };
   }
 }
 
@@ -163,7 +163,7 @@ export async function updateStudent(
     return { student };
   } catch (error) {
     console.error("Failed to update student:", error);
-    return { error: "Failed to update student" };
+    return { error: "خطا در به‌روزرسانی اطلاعات دانش‌آموز" };
   }
 }
 
@@ -179,7 +179,7 @@ export async function deleteStudent(id: bigint) {
     });
 
     if (studentWithSelectUnits?.selectUnits.length) {
-      return { error: "Cannot delete student with existing course selections" };
+      return { error: "امکان حذف دانش‌آموز دارای انتخاب واحد وجود ندارد" };
     }
 
     await prisma.student.delete({
@@ -190,6 +190,6 @@ export async function deleteStudent(id: bigint) {
     return { success: true };
   } catch (error) {
     console.error("Failed to delete student:", error);
-    return { error: "Failed to delete student" };
+    return { error: "خطا در حذف دانش‌آموز" };
   }
 }

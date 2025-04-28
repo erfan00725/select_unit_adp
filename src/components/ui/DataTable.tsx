@@ -106,7 +106,7 @@ const DataTable = <T extends DataBaseType>({
                       href={editUrl(row.id.toString())}
                       className="tableAction text-blue-600! hover:text-blue-900!"
                     >
-                      Edit
+                      ویرایش{" "}
                     </Link>
                   )}
                   {isEditable && (
@@ -114,7 +114,8 @@ const DataTable = <T extends DataBaseType>({
                       href={`${baseUrl}/${row.id}?delete=true`}
                       className="tableAction text-red-600! hover:text-red-900!"
                     >
-                      Delete
+                      {" "}
+                      حذف
                     </Link>
                   )}
                 </td>

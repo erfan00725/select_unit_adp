@@ -99,7 +99,7 @@ export async function getLessons(
     };
   } catch (error) {
     console.error("Failed to fetch lessons:", error);
-    return { error: "Failed to fetch lessons" };
+    return { error: "خطا در دریافت دروس" };
   }
 }
 
@@ -124,7 +124,7 @@ export async function getLessonById(id: bigint) {
     return { lesson };
   } catch (error) {
     console.error("Failed to fetch lesson:", error);
-    return { error: "Failed to fetch lesson" };
+    return { error: "خطا در دریافت درس" };
   }
 }
 
@@ -184,7 +184,7 @@ export async function createLesson(data: LessonDataType) {
     return { lesson };
   } catch (error) {
     console.error("Failed to create lesson:", error);
-    return { error: "Failed to create lesson" };
+    return { error: "خطا در ایجاد درس" };
   }
 }
 
@@ -196,21 +196,11 @@ export async function updateLesson(id: bigint, data: Partial<LessonDataType>) {
     const existingLesson = await prisma.lesson.findUnique({
       where: { id },
     });
-    console.log("existingLesson ", existingLesson); // Add this line to log the value of existingLesson t
+    console.log("existingLesson ", existingLesson);
 
     if (!existingLesson) {
       return { error: "درس مورد نظر یافت نشد" };
     }
-
-    // Object.keys(data).forEach((key) => {
-    //   if (
-    //     data[key as keyof typeof data] == "" ||
-    //     data[key as keyof typeof data] == null ||
-    //     data[key as keyof typeof data] == 0
-    //   ) {
-    //     data[key as keyof typeof data] = undefined;
-    //   }
-    // });
 
     // Check if teacher exists if provided
     if (data.TeacherId) {
@@ -265,7 +255,7 @@ export async function updateLesson(id: bigint, data: Partial<LessonDataType>) {
     return { lesson };
   } catch (error) {
     console.error("Failed to update lesson:", error);
-    return { error: "Failed to update lesson" };
+    return { error: "خطا در بروزرسانی درس" };
   }
 }
 
@@ -282,12 +272,12 @@ export async function deleteLesson(id: bigint) {
     });
 
     if (lessonWithSelectUnits?.selectUnits.length) {
-      return { error: "Cannot delete lesson with existing course selections" };
+      return { error: "امکان حذف درس با انتخاب واحدهای موجود وجود ندارد" };
     }
 
     if (lessonWithSelectUnits?.requiredForLesson.length) {
       return {
-        error: "Cannot delete lesson that is required for other lessons",
+        error: "امکان حذف درسی که پیش‌نیاز دروس دیگر است وجود ندارد",
       };
     }
 
@@ -299,7 +289,7 @@ export async function deleteLesson(id: bigint) {
     return { success: true };
   } catch (error) {
     console.error("Failed to delete lesson:", error);
-    return { error: "Failed to delete lesson" };
+    return { error: "خطا در حذف درس" };
   }
 }
 
@@ -328,6 +318,6 @@ export async function getLessonsByIds(ids: (bigint | string | number)[]) {
     return { lessons };
   } catch (error) {
     console.error("Failed to fetch lessons by IDs:", error);
-    return { error: "Failed to fetch lessons by IDs", lessons: [] };
+    return { error: "خطا در دریافت دروس با شناسه‌های مورد نظر", lessons: [] };
   }
 }

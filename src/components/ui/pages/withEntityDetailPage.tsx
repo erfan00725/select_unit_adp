@@ -1,5 +1,5 @@
 import React from "react";
-import DetailInfoCard from "../ProductInfoCard";
+import DetailInfoCard from "../DetailPage/ProductInfoCard";
 import { DataBaseType } from "@/types/Tables";
 import { notFound } from "next/navigation";
 import { toast } from "react-toastify";

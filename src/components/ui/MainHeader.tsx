@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import Logo from "./Logo";
+import Logo from "./common/Logo";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";

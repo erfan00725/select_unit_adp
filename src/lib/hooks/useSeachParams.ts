@@ -18,20 +18,30 @@ export const useSearchParams = () => {
     return params;
   };
 
-  const setSearchParam = (param: string, value: string) => {
+  const setSearchParam = (
+    param: string,
+    value: string,
+    deletePage?: boolean
+  ) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set(param, value);
+    if (deletePage) {
+      params.delete("page");
+    }
+    console.log(searchParams.toString());
     router.push(`?${params.toString()}`);
   };
 
   const removeSearchParam = (param: string) => {
     const params = new URLSearchParams(searchParams.toString());
     params.delete(param);
+    console.log(params.get(param));
     router.push(`?${params.toString()}`);
   };
 
   const clearSearchParams = () => {
-    router.push("");
+    const params = new URLSearchParams();
+    router.push(`?${params.toString()}`);
   };
 
   return {

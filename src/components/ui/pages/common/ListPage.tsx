@@ -1,5 +1,5 @@
 import React from "react";
-import SearchFilterBar from "@/components/ui/SearchFilterBar";
+import SearchFilterBar from "@/components/ui/Filters/SearchFilterBar";
 import { PageType } from "@/types/General";
 import DataTable from "@/components/ui/DataTable";
 import {
@@ -9,8 +9,8 @@ import {
   ListStaticConfigType,
 } from "@/constants/configs/ListPageConfigs";
 import { errorCheck } from "@/lib/errorCheck";
-import Pagination from "@/components/ui/Pagination";
-import { NoData } from "../../NoData";
+import Pagination from "@/components/ui/common/Pagination";
+import { NoData } from "../../common/NoData";
 
 type Props = {
   searchParams: { [key: string]: string | undefined };

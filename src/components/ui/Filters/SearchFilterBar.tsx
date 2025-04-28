@@ -2,12 +2,13 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faX } from "@fortawesome/free-solid-svg-icons";
-import { useSearchParams } from "@/lib/hooks/useSeachParams";
+import { useSearchParams as useCustomSearchParams } from "@/lib/hooks/useSeachParams";
 import { useDebouncedCallback } from "use-debounce";
 import { FilterOptionType } from "@/types/General";
 import FilterOption from "./FilterOption";
-import { useRouter } from "next/navigation";
-import Input from "./Input";
+import { useRouter, useSearchParams } from "next/navigation";
+import Input from "../common/Input";
+import { CalenderFarsi } from "../Form/CalenderFarsi";
 
 interface SearchFilterBarProps {
   searchPlaceholder?: string;
@@ -27,13 +28,20 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
     setSearchParam,
     getAllSearchParams,
     removeSearchParam,
-  } = useSearchParams();
-
-  const debounce = useDebouncedCallback((value) => {
-    onChange(value);
-  }, 500);
-
+  } = useCustomSearchParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const debounce = useDebouncedCallback((value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (value === "") {
+      params.delete("q");
+    } else {
+      params.set("q", value);
+    }
+    params.delete("page");
+    router.push(`?${params.toString()}`);
+  }, 100);
 
   // Handle input and filter changes
   const onChange = (
@@ -43,10 +51,10 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
   ) => {
     switch (e.target.type) {
       case "checkbox":
-        setSearchParam(e.target.name, e.target.checked.toString());
+        setSearchParam(e.target.name, e.target.checked.toString(), true);
         break;
       default:
-        setSearchParam(e.target.name, e.target.value);
+        setSearchParam(e.target.name, e.target.value, true);
         break;
     }
   };
@@ -61,7 +69,7 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
             placeholder={searchPlaceholder || "جستجو..."}
             className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
             defaultValue={getSearchParam("q")}
-            onChange={(e) => debounce(e)}
+            onChange={(e) => debounce(e.target.value)}
             name="q"
             icon={<FontAwesomeIcon icon={faMagnifyingGlass} />}
           />
@@ -82,35 +90,32 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
 
           {/* Date Picker */}
           <div className="flex items-center px-4 py-2 border border-gray-300 rounded-md">
-            <label htmlFor="FromDate" className="text-sm text-gray-700 mr-1.5">
+            <label htmlFor="FromDate" className="text-sm text-gray-700 ml-1.5">
               از تاریخ:
             </label>
-            <input
-              type="date"
-              className="focus:outline-none"
-              id="FromDate"
+            <CalenderFarsi
               name="from"
-              onChange={onChange}
               defaultValue={getSearchParam("from")}
+              onChange={(value) => setSearchParam("from", value, true)}
             />
           </div>
 
           <div className="flex items-center px-4 py-2 border border-gray-300 rounded-md">
-            <label htmlFor="ToDate" className="text-sm text-gray-700 mr-1.5">
+            <label htmlFor="ToDate" className="text-sm text-gray-700 m-1.5">
               تا تاریخ:
             </label>
-            <input
-              type="date"
-              id="ToDate"
-              name="to"
-              className="focus:outline-none"
-              onChange={onChange}
-              defaultValue={getSearchParam("to")}
+            <CalenderFarsi
+              name="till"
+              defaultValue={getSearchParam("till")}
+              onChange={(value) => setSearchParam("till", value, true)}
             />
           </div>
 
           {/* Checkbox */}
-          <div className="flex items-center px-4 py-2 border border-gray-300 rounded-md">
+          {/* <div className="flex items-center px-4 py-2 border border-gray-300 rounded-md">
+            <label htmlFor="filterCheckbox" className="text-sm text-gray-700">
+              فقط موجودی
+            </label>
             <input
               type="checkbox"
               id="filterCheckbox"
@@ -119,10 +124,7 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
               defaultChecked={getSearchParam("filterCheckbox") === "true"}
               onChange={onChange}
             />
-            <label htmlFor="filterCheckbox" className="text-sm text-gray-700">
-              فقط موجودی
-            </label>
-          </div>
+          </div> */}
 
           {/* Filter Options */}
           {filterOptions &&
@@ -134,25 +136,6 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
 
       {/* Active Filters */}
       <div className="flex flex-wrap items-center gap-2 mb-2">
-        {Object.entries(getAllSearchParams()).map(
-          ([key, filter]) =>
-            key != "page" &&
-            filter && (
-              <div
-                key={key}
-                className="flex items-center gap-1 px-3 py-1 bg-gray-100 rounded-full text-sm"
-              >
-                <span>{filter}</span>
-                <button
-                  onClick={() => removeSearchParam(key)}
-                  className="text-gray-500 hover:text-gray-700 ml-0.5"
-                >
-                  <FontAwesomeIcon icon={faX} />
-                </button>
-              </div>
-            )
-        )}
-
         {Object.values(getAllSearchParams()).length > 0 && (
           <button
             onClick={() => {

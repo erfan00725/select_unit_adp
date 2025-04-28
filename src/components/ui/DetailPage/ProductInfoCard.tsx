@@ -1,8 +1,8 @@
 import React from "react";
 import InfoRow from "./InfoRow";
-import StatusBadge from "./StatusBadge";
+import StatusBadge from "../StatusBadge";
 import Link from "next/link";
-import DisplayLessonHours from "./DisplayLessonHours";
+import DisplayLessonHours from "../DisplayLessonHours";
 import { DeleteButton } from "./DeleteButton";
 import getFarsiDate from "@/lib/getFarsiDate";
 import { DetailPageProps, DetailPageRow } from "@/types/Props";

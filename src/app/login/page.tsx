@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import Logo from "@/components/ui/Logo";
-import Input from "@/components/ui/Input";
-import Checkbox from "@/components/ui/Checkbox";
+import Logo from "@/components/ui/common/Logo";
+import Input from "@/components/ui/common/Input";
+import Checkbox from "@/components/ui/Form/Checkbox";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";

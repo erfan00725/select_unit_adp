@@ -1,5 +1,5 @@
 import React from "react";
-import DetailInfoCard from "../../ProductInfoCard";
+import DetailInfoCard from "../../DetailPage/ProductInfoCard";
 import { errorCheck } from "@/lib/errorCheck";
 import { PageType } from "@/types/General";
 import { DetailPageConfigs } from "@/constants/configs/DetailPageConfigs";

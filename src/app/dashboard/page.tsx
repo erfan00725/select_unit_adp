@@ -1,5 +1,5 @@
 import React from "react";
-import PageHeader from "@/components/ui/PageHeader";
+import PageHeader from "@/components/ui/common/PageHeader";
 import DataTable from "@/components/ui/DataTable";
 import { getLessons, getStudents } from "@/lib/actions";
 import { d_ListConfig } from "@/constants/configs/ListPageConfigs";

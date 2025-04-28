@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faX } from "@fortawesome/free-solid-svg-icons";
 import Checkbox from "./Checkbox";
-import Input from "./Input";
+import Input from "../common/Input";
 
 export interface SelectItem {
   id: string;

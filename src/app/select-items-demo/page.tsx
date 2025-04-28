@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import SelectItems from "@/components/ui/SelectItems";
-import PageHeader from "@/components/ui/PageHeader";
-import { ModalWrapper } from "@/components/ui/ModalWrapper";
+import SelectItems from "@/components/ui/Form/SelectItems";
+import PageHeader from "@/components/ui/common/PageHeader";
+import { ModalWrapper } from "@/components/ui/common/ModalWrapper";
 
 // Sample data for demonstration
 const sampleItems = [

@@ -1,5 +1,5 @@
-import Form from "../Form";
-import PageHeader from "../PageHeader";
+import Form from "../Form/Form";
+import PageHeader from "../common/PageHeader";
 import { FormPageProps } from "@/types/Props";
 
 const FormPage: React.FC<FormPageProps> = (props) => {

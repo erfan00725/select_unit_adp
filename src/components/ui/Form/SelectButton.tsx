@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import SelectItems, { SelectItem, SelectItemsProps } from "./SelectItems";
-import { ModalWrapper } from "./ModalWrapper";
+import { ModalWrapper } from "../common/ModalWrapper";
 
 export type Props = {
   items: SelectItem[];

@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import PageHeader from "@/components/ui/PageHeader";
+import PageHeader from "@/components/ui/common/PageHeader";
 import { PageType } from "@/types/General";
 import { notFound } from "next/navigation";
 import Loading from "@/components/common/Loading";

@@ -11,8 +11,8 @@ export async function getUsers() {
     const users = await prisma.user.findMany();
     return { users };
   } catch (error) {
-    console.error("Failed to fetch users:", error);
-    return { error: "Failed to fetch users" };
+    console.error("خطا در دریافت کاربران:", error);
+    return { error: "خطا در دریافت کاربران" };
   }
 }
 
@@ -24,13 +24,13 @@ export async function getUserById(id: bigint) {
     });
 
     if (!user) {
-      return { error: "User not found" };
+      return { error: "کاربر یافت نشد" };
     }
 
     return { user };
   } catch (error) {
-    console.error("Failed to fetch user:", error);
-    return { error: "Failed to fetch user" };
+    console.error("خطا در دریافت کاربر:", error);
+    return { error: "خطا در دریافت کاربر" };
   }
 }
 
@@ -42,7 +42,7 @@ export async function createUser(data: UserDataType) {
     });
 
     if (existingUser) {
-      return { error: "A user with this username already exists" };
+      return { error: "کاربری با این نام کاربری قبلاً ثبت شده است" };
     }
 
     // In a real application, you would hash the password here
@@ -59,8 +59,8 @@ export async function createUser(data: UserDataType) {
     revalidatePath("/dashboard/users");
     return { user };
   } catch (error) {
-    console.error("Failed to create user:", error);
-    return { error: "Failed to create user" };
+    console.error("خطا در ایجاد کاربر:", error);
+    return { error: "خطا در ایجاد کاربر" };
   }
 }
 
@@ -77,7 +77,7 @@ export async function updateUser(id: bigint, data: Partial<UserDataType>) {
       });
 
       if (existingUser) {
-        return { error: "A user with this username already exists" };
+        return { error: "کاربری با این نام کاربری قبلاً ثبت شده است" };
       }
     }
 
@@ -100,8 +100,8 @@ export async function updateUser(id: bigint, data: Partial<UserDataType>) {
     revalidatePath(`/dashboard/users/${id}`);
     return { user };
   } catch (error) {
-    console.error("Failed to update user:", error);
-    return { error: "Failed to update user" };
+    console.error("خطا در به‌روزرسانی کاربر:", error);
+    return { error: "خطا در به‌روزرسانی کاربر" };
   }
 }
 
@@ -115,7 +115,7 @@ export async function deleteUser(id: bigint) {
     revalidatePath("/dashboard/users");
     return { success: true };
   } catch (error) {
-    console.error("Failed to delete user:", error);
-    return { error: "Failed to delete user" };
+    console.error("خطا در حذف کاربر:", error);
+    return { error: "خطا در حذف کاربر" };
   }
 }

@@ -16,8 +16,6 @@ export async function getTeachers(params?: BaseListFilterParams) {
     const from = params?.from;
     const to = params?.to;
 
-    // await new Promise((resolve) => setTimeout(resolve, 10000));
-
     // Build where condition for search
     let where: any = query
       ? {
@@ -70,7 +68,7 @@ export async function getTeachers(params?: BaseListFilterParams) {
     };
   } catch (error) {
     console.error("Failed to fetch teachers:", error);
-    return { error: "Failed to fetch teachers" };
+    return { error: "خطا در دریافت لیست اساتید" };
   }
 }
 
@@ -86,7 +84,7 @@ export async function getTeacherById(id: bigint) {
     });
 
     if (!teacher) {
-      return { error: "Teacher not found" };
+      return { error: "استاد مورد نظر یافت نشد" };
     }
 
     const modifiedTeahcer = {
@@ -97,7 +95,7 @@ export async function getTeacherById(id: bigint) {
     return { teacher: modifiedTeahcer };
   } catch (error) {
     console.error("Failed to fetch teacher:", error);
-    return { error: "Failed to fetch teacher" };
+    return { error: "خطا در دریافت اطلاعات استاد" };
   }
 }
 
@@ -125,7 +123,7 @@ export async function createTeacher(data: TeacherDataType) {
     return { teacher };
   } catch (error) {
     console.error("Failed to create teacher:", error);
-    return { error: "Failed to create teacher" };
+    return { error: "خطا در ایجاد استاد جدید" };
   }
 }
 
@@ -163,7 +161,7 @@ export async function updateTeacher(
     return { teacher };
   } catch (error) {
     console.error("Failed to update teacher:", error);
-    return { error: "Failed to update teacher" };
+    return { error: "خطا در بروزرسانی اطلاعات استاد" };
   }
 }
 
@@ -179,7 +177,7 @@ export async function deleteTeacher(id: bigint) {
     });
 
     if (teacherWithLessons?.lessons.length) {
-      return { error: "Cannot delete teacher with assigned lessons" };
+      return { error: "امکان حذف استادی که دارای درس است وجود ندارد" };
     }
 
     await prisma.teacher.delete({
@@ -190,6 +188,6 @@ export async function deleteTeacher(id: bigint) {
     return { success: true };
   } catch (error) {
     console.error("Failed to delete teacher:", error);
-    return { error: "Failed to delete teacher" };
+    return { error: "خطا در حذف استاد" };
   }
 }

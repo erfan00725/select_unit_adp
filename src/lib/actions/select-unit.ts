@@ -158,7 +158,7 @@ export async function getSelectUnits(params?: BaseListFilterParams) {
     };
   } catch (error) {
     console.error("Failed to fetch select units:", error);
-    return { error: "Failed to fetch select units" };
+    return { error: "دریافت اطلاعات انتخاب واحد با خطا مواجه شد" };
   }
 }
 
@@ -225,7 +225,7 @@ export async function getSelectUnitsByStudent(
     };
   } catch (error) {
     console.error("Failed to fetch student select units:", error);
-    return { error: "Failed to fetch student select units" };
+    return { error: "دریافت اطلاعات انتخاب واحد دانشجو با خطا مواجه شد" };
   }
 }
 
@@ -292,7 +292,7 @@ export async function getSelectUnitsByLesson(
     };
   } catch (error) {
     console.error("Failed to fetch lesson select units:", error);
-    return { error: "Failed to fetch lesson select units" };
+    return { error: "دریافت اطلاعات انتخاب واحد درس با خطا مواجه شد" };
   }
 }
 
@@ -318,7 +318,7 @@ export async function getSelectUnitById(selectUnitId: bigint) {
     });
 
     if (!selectUnit) {
-      return { error: "Select unit not found" };
+      return { error: "انتخاب واحد یافت نشد" };
     }
 
     // Apply customReturn to calculate totalUnits and totalFee
@@ -327,7 +327,9 @@ export async function getSelectUnitById(selectUnitId: bigint) {
     return { selectUnit: selectUnitsWithTotal };
   } catch (error) {
     console.error("Failed to fetch select unit by ID:", error);
-    return { error: "Failed to fetch select unit by ID" };
+    return {
+      error: "دریافت اطلاعات انتخاب واحد با شناسه مورد نظر با خطا مواجه شد",
+    };
   }
 }
 
@@ -365,14 +367,14 @@ export async function getSpecificSelectUnit(
     });
 
     if (!selectUnit) {
-      return { error: "Select unit not found" };
+      return { error: "انتخاب واحد یافت نشد" };
     }
 
     // Apply customReturn to calculate totalUnits and totalFee
     return { selectUnit: customReturn(selectUnit) };
   } catch (error) {
     console.error("Failed to fetch specific select unit:", error);
-    return { error: "Failed to fetch specific select unit" };
+    return { error: "دریافت اطلاعات انتخاب واحد مشخص با خطا مواجه شد" };
   }
 }
 
@@ -458,7 +460,9 @@ export async function getSelectUnitsByYearPeriod(
     };
   } catch (error) {
     console.error("Failed to fetch select units by year and period:", error);
-    return { error: "Failed to fetch select units by year and period" };
+    return {
+      error: "دریافت اطلاعات انتخاب واحد بر اساس سال و ترم با خطا مواجه شد",
+    };
   }
 }
 
@@ -488,7 +492,7 @@ export async function getSelectUnitLessons(
     });
 
     if (!selectUnit) {
-      return { error: "Select unit not found" };
+      return { error: "انتخاب واحد یافت نشد" };
     }
 
     // Apply customReturn to calculate totalUnits and totalFee
@@ -516,7 +520,7 @@ export async function createSelectUnit(
     });
 
     if (!student) {
-      return { error: "Student not found" };
+      return { error: "دانشجو یافت نشد" };
     }
 
     // Check if the select unit already exists for this student, year, and period
@@ -539,7 +543,7 @@ export async function createSelectUnit(
         });
 
         if (!lesson) {
-          return { error: "Lesson not found" };
+          return { error: "درس یافت نشد" };
         }
 
         // Check if this lesson is already selected for this unit
@@ -553,7 +557,7 @@ export async function createSelectUnit(
         });
 
         if (existingSelectedLesson) {
-          return { error: "This lesson is already selected for this unit" };
+          return { error: "این درس قبلاً برای این واحد انتخاب شده است" };
         }
 
         // Add the lesson to the existing select unit
@@ -577,8 +581,7 @@ export async function createSelectUnit(
       }
 
       return {
-        error:
-          "This course selection already exists for this student, year, and period",
+        error: "انتخاب واحد برای این دانشجو در این سال و ترم قبلاً ثبت شده است",
       };
     }
 
@@ -642,7 +645,7 @@ export async function createSelectUnit(
     return { selectUnit: customReturn(completeSelectUnit) };
   } catch (error) {
     console.error("Failed to create select unit:", error);
-    return { error: "Failed to create select unit" };
+    return { error: "ایجاد انتخاب واحد با خطا مواجه شد" };
   }
 }
 
@@ -676,7 +679,7 @@ export async function updateSelectUnit(
     return { selectUnit: customReturn(selectUnit) };
   } catch (error) {
     console.error("Failed to update select unit:", error);
-    return { error: "Failed to update select unit" };
+    return { error: "به‌روزرسانی انتخاب واحد با خطا مواجه شد" };
   }
 }
 
@@ -690,7 +693,7 @@ export async function deleteSelectUnit(selectUnitId: bigint) {
     });
 
     if (!selectUnit) {
-      return { error: "Select unit not found" };
+      return { error: "انتخاب واحد یافت نشد" };
     }
 
     // Delete the select unit (this will cascade delete all associated selectedLessons)
@@ -703,7 +706,7 @@ export async function deleteSelectUnit(selectUnitId: bigint) {
     return { success: true };
   } catch (error) {
     console.error("Failed to delete select unit:", error);
-    return { error: "Failed to delete select unit" };
+    return { error: "حذف انتخاب واحد با خطا مواجه شد" };
   }
 }
 
@@ -720,7 +723,7 @@ export async function removeSelectedLesson(
     });
 
     if (!selectUnit) {
-      return { error: "Select unit not found" };
+      return { error: "انتخاب واحد یافت نشد" };
     }
 
     // Delete the selected lesson
@@ -750,7 +753,7 @@ export async function removeSelectedLesson(
     return { success: true };
   } catch (error) {
     console.error("Failed to remove selected lesson:", error);
-    return { error: "Failed to remove selected lesson" };
+    return { error: "حذف درس انتخاب شده با خطا مواجه شد" };
   }
 }
 
@@ -761,7 +764,7 @@ export async function bulkCreateSelectUnits(
 ) {
   try {
     if (lessonIds.length === 0) {
-      return { error: "No lessons provided" };
+      return { error: "هیچ درسی انتخاب نشده است" };
     }
 
     // Check if the student already has a select unit for this year and period
@@ -791,7 +794,7 @@ export async function bulkCreateSelectUnits(
       );
 
       if (newLessonIds.length === 0) {
-        return { error: "All provided lessons are already selected" };
+        return { error: "تمام دروس انتخاب شده قبلاً ثبت شده‌اند" };
       }
 
       // Add each new lesson
@@ -803,7 +806,7 @@ export async function bulkCreateSelectUnits(
           });
 
           if (!lesson) {
-            return { error: `Lesson with ID ${lessonId} not found` };
+            return { error: `درس با شناسه ${lessonId} یافت نشد` };
           }
 
           // Create the selected lesson
@@ -820,7 +823,7 @@ export async function bulkCreateSelectUnits(
           createdLessons.push(selectedLesson);
         } catch (error) {
           console.error(`Failed to add lesson ${lessonId}:`, error);
-          return { error: `Failed to add lesson ${lessonId}` };
+          return { error: `افزودن درس ${lessonId} با خطا مواجه شد` };
         }
       }
 
@@ -911,7 +914,7 @@ export async function bulkCreateSelectUnits(
     return { selectUnit: customReturn(completeSelectUnit) };
   } catch (error) {
     console.error("Failed to bulk create select units:", error);
-    return { error: "Failed to bulk create select units" };
+    return { error: "ایجاد گروهی انتخاب واحد با خطا مواجه شد" };
   }
 }
 
@@ -922,7 +925,7 @@ export async function bulkEditSelectUnits(
 ) {
   try {
     if (lessonIds.length === 0) {
-      return { error: "No lessons provided" };
+      return { error: "هیچ درسی انتخاب نشده است" };
     }
 
     // Check if the select unit exists
@@ -941,7 +944,7 @@ export async function bulkEditSelectUnits(
     });
 
     if (!existingSelectUnit) {
-      return { error: "Select unit not found" };
+      return { error: "انتخاب واحد یافت نشد" };
     }
 
     // Get current lesson IDs
@@ -959,7 +962,7 @@ export async function bulkEditSelectUnits(
 
     // If no changes are needed, return early
     if (lessonsToAdd.length === 0 && lessonsToRemove.length === 0) {
-      return { message: "No changes needed" };
+      return { message: "تغییری نیاز نیست" };
     }
 
     // Process additions and removals in a transaction
@@ -985,7 +988,7 @@ export async function bulkEditSelectUnits(
         });
 
         if (!lesson) {
-          throw new Error(`Lesson with ID ${lessonId} not found`);
+          throw new Error(`درس با شناسه ${lessonId} یافت نشد`);
         }
 
         // Create the selected lesson
@@ -1035,7 +1038,7 @@ export async function bulkEditSelectUnits(
     };
   } catch (error) {
     console.error("Failed to bulk edit select units:", error);
-    return { error: "Failed to bulk edit select units" };
+    return { error: "ویرایش گروهی انتخاب واحد با خطا مواجه شد" };
   }
 }
 
@@ -1129,6 +1132,6 @@ export async function getSelectUnitsGroupedByStudentYearPeriod() {
     return { data: results };
   } catch (error) {
     console.error("Failed to group select units:", error);
-    return { error: "Failed to group select units" };
+    return { error: "گروه‌بندی انتخاب واحدها با خطا مواجه شد" };
   }
 }

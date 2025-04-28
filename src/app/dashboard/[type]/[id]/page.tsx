@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
-import PageHeader from "@/components/ui/PageHeader";
+import PageHeader from "@/components/ui/common/PageHeader";
 import Loading from "@/components/common/Loading";
-import DeleteConfirm from "@/components/ui/DeleteConfirm";
+import DeleteConfirm from "@/components/ui/DetailPage/DeleteConfirm";
 import { PageType } from "@/types/General";
 import { DetailPage } from "@/components/ui/pages/common/DetailPage";
 import { s_DetailPageConfigs } from "@/constants/configs/DetailPageConfigs";

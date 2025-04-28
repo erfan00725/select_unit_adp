@@ -1,8 +1,8 @@
 import React, { Suspense } from "react";
-import StudentInfoCard from "@/components/ui/StudentInfoCard";
+import StudentInfoCard from "@/components/ui/DetailPage/StudentInfoCard";
 import { SelectUnitFormFetch } from "@/components/ui/pages/selectUnit.ts/SelectUnitFormFetch";
 import Loading from "@/components/common/Loading";
-import PageHeader from "@/components/ui/PageHeader";
+import PageHeader from "@/components/ui/common/PageHeader";
 
 type Props = {
   params: Promise<{ id: string }>;

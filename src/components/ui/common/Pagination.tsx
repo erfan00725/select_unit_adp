@@ -4,6 +4,7 @@ import Link from "next/link";
 import clsx from "clsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { useSearchParams } from "@/lib/hooks/useSeachParams";
 
 export interface PaginationProps {
   currentPage: number;
@@ -22,6 +23,8 @@ const Pagination: React.FC<PaginationProps> = ({
   baseUrl,
   className,
 }) => {
+  const { setSearchParam, getSearchParam } = useSearchParams();
+
   // Calculate the range of items being displayed
   const startItem = (currentPage - 1) * itemsPerPage + 1;
   const endItem = Math.min(currentPage * itemsPerPage, totalItems);
@@ -62,6 +65,8 @@ const Pagination: React.FC<PaginationProps> = ({
 
   // Handle page change
   const handlePageChange = (page: number) => {
+    const currentPage = getSearchParam("page") || "1";
+    if (page !== Number(currentPage)) setSearchParam("page", page.toString());
     if (onPageChange) {
       onPageChange(page);
     }

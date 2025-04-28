@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import { SelectItem } from "../../SelectItems";
-import { SelectButton } from "../../SelectButton";
+import { SelectItem } from "../../Form/SelectItems";
+import { SelectButton } from "../../Form/SelectButton";
 
 type Props = {
   items: SelectItem[];
