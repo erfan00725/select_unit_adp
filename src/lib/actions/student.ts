@@ -7,7 +7,7 @@ import { BaseListFilterParams, StudentDataType } from "@/types/Tables";
 // Get all students
 export async function getStudents(params?: BaseListFilterParams) {
   try {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    // await new Promise((resolve) => setTimeout(resolve, 2000));
 
     const {
       query,

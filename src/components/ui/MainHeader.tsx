@@ -7,9 +7,21 @@ import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import clsx from "clsx";
 import { usePathname } from "next/navigation";
 import { NavBarConfigs } from "@/constants/configs/GeneralConfigs";
+import { signOut, useSession } from "next-auth/react";
+import { toast } from "react-toastify";
 
 function MainHeader() {
   const pathName = usePathname();
+
+  const handleSignOut = () => {
+    signOut({ redirectTo: "/login" })
+      .then(() => {
+        toast.success("خروج با موفقیت انجام شد");
+      })
+      .catch(() => {
+        toast.error("خطا در خروج از حساب کاربری");
+      });
+  };
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
@@ -35,13 +47,13 @@ function MainHeader() {
             })}
           </nav>
           <div>
-            <Link href="/login" className="button_black">
+            <button onClick={handleSignOut} className="button_black">
               <FontAwesomeIcon
                 icon={faSignOutAlt}
                 className="mr-2 w-4 h-auto"
               />
               خروج
-            </Link>
+            </button>
           </div>
         </div>
       </div>

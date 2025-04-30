@@ -35,7 +35,7 @@ export async function getUserById(id: bigint) {
 }
 
 // Create a new user
-export async function createUser(data: UserDataType) {
+export async function createUser(data: Omit<UserDataType, "id">) {
   try {
     const existingUser = await prisma.user.findFirst({
       where: { UserName: data.UserName },
@@ -102,6 +102,24 @@ export async function updateUser(id: bigint, data: Partial<UserDataType>) {
   } catch (error) {
     console.error("خطا در به‌روزرسانی کاربر:", error);
     return { error: "خطا در به‌روزرسانی کاربر" };
+  }
+}
+
+// Get a user by username
+export async function getUserByUsername(username: string) {
+  try {
+    const user = await prisma.user.findFirst({
+      where: { UserName: username },
+    });
+
+    if (!user) {
+      return { error: "کاربر یافت نشد" };
+    }
+
+    return { user };
+  } catch (error) {
+    console.error("خطا در دریافت کاربر:", error);
+    return { error: "خطا در دریافت کاربر" };
   }
 }
 

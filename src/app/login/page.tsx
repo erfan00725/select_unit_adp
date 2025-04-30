@@ -4,19 +4,59 @@ import React, { useState } from "react";
 import Logo from "@/components/ui/common/Logo";
 import Input from "@/components/ui/common/Input";
 import Checkbox from "@/components/ui/Form/Checkbox";
-import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
+import { handleLogin } from "@/lib/actions/auth";
+import { toast } from "react-toastify";
+import { signIn } from "next-auth/react";
+import { homeUrl } from "@/constants/urls";
+import { AuthError } from "next-auth";
+import Loading from "@/components/common/Loading";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
+  const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const [result, setResult] = useState("");
+  const [errors, setErrors] = useState({}); // New state for errors
+  const [isLoading, setIsLoading] = useState(false); // New state for loading
+  const [isSuccess, setIsSuccess] = useState(false); // New state for success
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log({ email, password, rememberMe });
+    if (userName === "" || password === "") {
+      toast.error("نام کاربری و رمز عبور را وارد کنید");
+      return; // Add return to prevent form submission
+    }
+
+    setIsLoading(true); // Show loading state
+
+    signIn("credentials", {
+      userName,
+      password,
+      redirectTo: homeUrl,
+    })
+      .then((response) => {
+        // @ts-ignore
+        if (response?.error) {
+          // Handle the specific error from auth.config.ts
+          console.log("Authentication error:", response);
+          toast.error("نام کاربری یا رمز عبور اشتباه است");
+          setIsSuccess(false);
+        } else {
+          // Successful login
+          toast.success("ورود شما با موفقیت انجام شد");
+          setIsSuccess(true);
+        }
+      })
+      .catch((error) => {
+        console.log("Unexpected error:", error);
+        toast.error("خطایی رخ داده است");
+        setIsSuccess(false);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   return (
@@ -36,16 +76,17 @@ export default function LoginPage() {
           <div className="space-y-4">
             <div>
               <label
-                htmlFor="email"
+                htmlFor="user"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                ایمیل
+                نام کاربری <span className="text-red-500">*</span>
               </label>
               <Input
-                type="email"
-                placeholder="ایمیل خود را وارد کنید"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type="text"
+                name="user"
+                placeholder="نام کاربری خود را وارد کنید"
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
                 icon={<FontAwesomeIcon icon={faEnvelope} />}
                 required
               />
@@ -56,10 +97,11 @@ export default function LoginPage() {
                 htmlFor="password"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                رمز عبور
+                رمز عبور <span className="text-red-500">*</span>
               </label>
               <Input
                 type="password"
+                name="password"
                 placeholder="رمز عبور خود را وارد کنید"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -69,25 +111,25 @@ export default function LoginPage() {
             </div>
           </div>
 
-          <div className="flex items-center justify-between">
+          {/* <div className="flex items-center justify-between">
             <Checkbox
               label="مرا به خاطر بسپار"
               checked={rememberMe}
               onChange={(e) => setRememberMe(e.target.checked)}
             />
-            {/* <div className="text-sm">
+            <div className="text-sm">
               <Link
                 href="/forgot-password"
                 className="font-medium text-indigo-600 hover:text-indigo-500"
               >
                 Forgot your password?
               </Link>
-            </div> */}
-          </div>
+            </div>
+          </div> */}
 
           <div>
             <button type="submit" className="btn">
-              ورود
+              {isLoading ? <Loading /> : "ورود"}
             </button>
           </div>
         </form>

@@ -117,6 +117,46 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
+exports.Prisma.UserScalarFieldEnum = {
+  id: 'id',
+  UserName: 'UserName',
+  Password: 'Password',
+  Type: 'Type',
+  Created_at: 'Created_at'
+};
+
+exports.Prisma.AccountScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  provider: 'provider',
+  providerAccountId: 'providerAccountId',
+  refresh_token: 'refresh_token',
+  access_token: 'access_token',
+  expires_at: 'expires_at',
+  token_type: 'token_type',
+  scope: 'scope',
+  id_token: 'id_token',
+  session_state: 'session_state',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SessionScalarFieldEnum = {
+  id: 'id',
+  sessionToken: 'sessionToken',
+  userId: 'userId',
+  expires: 'expires',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.VerificationTokenScalarFieldEnum = {
+  identifier: 'identifier',
+  token: 'token',
+  expires: 'expires'
+};
+
 exports.Prisma.StudentScalarFieldEnum = {
   id: 'id',
   FirstName: 'FirstName',
@@ -131,14 +171,6 @@ exports.Prisma.StudentScalarFieldEnum = {
   Grade: 'Grade',
   Gender: 'Gender',
   Updated_at: 'Updated_at',
-  Created_at: 'Created_at'
-};
-
-exports.Prisma.UserScalarFieldEnum = {
-  id: 'id',
-  UserName: 'UserName',
-  Password: 'Password',
-  Type: 'Type',
   Created_at: 'Created_at'
 };
 
@@ -237,6 +269,37 @@ exports.Prisma.NullsOrder = {
   last: 'last'
 };
 
+exports.Prisma.UserOrderByRelevanceFieldEnum = {
+  id: 'id',
+  UserName: 'UserName',
+  Password: 'Password'
+};
+
+exports.Prisma.AccountOrderByRelevanceFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  provider: 'provider',
+  providerAccountId: 'providerAccountId',
+  refresh_token: 'refresh_token',
+  access_token: 'access_token',
+  token_type: 'token_type',
+  scope: 'scope',
+  id_token: 'id_token',
+  session_state: 'session_state'
+};
+
+exports.Prisma.SessionOrderByRelevanceFieldEnum = {
+  id: 'id',
+  sessionToken: 'sessionToken',
+  userId: 'userId'
+};
+
+exports.Prisma.VerificationTokenOrderByRelevanceFieldEnum = {
+  identifier: 'identifier',
+  token: 'token'
+};
+
 exports.Prisma.StudentOrderByRelevanceFieldEnum = {
   FirstName: 'FirstName',
   LastName: 'LastName',
@@ -245,11 +308,6 @@ exports.Prisma.StudentOrderByRelevanceFieldEnum = {
   Address: 'Address',
   HomeNumber: 'HomeNumber',
   PhoneNumber: 'PhoneNumber'
-};
-
-exports.Prisma.UserOrderByRelevanceFieldEnum = {
-  UserName: 'UserName',
-  Password: 'Password'
 };
 
 exports.Prisma.LessonOrderByRelevanceFieldEnum = {
@@ -278,6 +336,11 @@ exports.Prisma.TeacherOrderByRelevanceFieldEnum = {
   LastName: 'LastName',
   PhoneNumber: 'PhoneNumber'
 };
+exports.UserType = exports.$Enums.UserType = {
+  admin: 'admin',
+  user: 'user'
+};
+
 exports.Grade = exports.$Enums.Grade = {
   GRADE_7: 'GRADE_7',
   GRADE_8: 'GRADE_8',
@@ -285,11 +348,6 @@ exports.Grade = exports.$Enums.Grade = {
   GRADE_10: 'GRADE_10',
   GRADE_11: 'GRADE_11',
   GRADE_12: 'GRADE_12'
-};
-
-exports.UserType = exports.$Enums.UserType = {
-  admin: 'admin',
-  user: 'user'
 };
 
 exports.LessonGrade = exports.$Enums.LessonGrade = {
@@ -309,8 +367,11 @@ exports.Period = exports.$Enums.Period = {
 };
 
 exports.Prisma.ModelName = {
-  Student: 'Student',
   User: 'User',
+  Account: 'Account',
+  Session: 'Session',
+  VerificationToken: 'VerificationToken',
+  Student: 'Student',
   Lesson: 'Lesson',
   SelectUnit: 'SelectUnit',
   SelectedLesson: 'SelectedLesson',

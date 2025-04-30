@@ -5,7 +5,10 @@ import {
   LessonGrade,
   Period,
   UserType,
-} from "../src/generated/prisma/index.js";
+} from "@/generated/prisma/index.js";
+import { createUser } from "@/lib/actions/user.js";
+import bcrypt from "bcryptjs";
+import { Settings } from "@/types/General.js";
 
 const prisma = new PrismaClient();
 
@@ -386,7 +389,45 @@ async function main() {
   console.log("Seeding finished.");
 }
 
-main()
+// main()
+//   .then(async () => {
+//     await prisma.$disconnect();
+//   })
+//   .catch(async (e) => {
+//     console.error(e);
+//     await prisma.$disconnect();
+//     process.exit(1);
+//   });
+
+const initialDataBase = async () => {
+  await prisma.user.deleteMany();
+  await prisma.general.deleteMany();
+
+  const adminUserName = "admin";
+  const adminPassword = bcrypt.hashSync("@dmin20123", 10);
+  createUser({
+    UserName: adminUserName,
+    Password: adminPassword,
+    Type: "admin",
+  });
+
+  // Initialize fee-related general settings
+  const feeSettings = [
+    { Key: Settings.FixedFee, Value: "2000000" },
+    { Key: Settings.CertificateFee, Value: "300000" },
+    { Key: Settings.BooksFee, Value: "500000" },
+    { Key: Settings.PricePerUnit, Value: "1000000" },
+    { Key: Settings.ExtraClassFee, Value: "800000" },
+  ];
+
+  for (const setting of feeSettings) {
+    await prisma.general.create({
+      data: setting,
+    });
+    console.log(`Created fee setting: ${setting.Key} = ${setting.Value}`);
+  }
+};
+initialDataBase()
   .then(async () => {
     await prisma.$disconnect();
   })

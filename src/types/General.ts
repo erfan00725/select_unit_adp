@@ -30,3 +30,11 @@ export enum PageType {
 export type ActionReturnType<T extends (...args: any[]) => any> = Awaited<
   ReturnType<T>
 >;
+
+export enum Settings {
+  FixedFee = "fixedFee",
+  CertificateFee = "certificateFee",
+  BooksFee = "booksFee",
+  PricePerUnit = "pricePerUnit",
+  ExtraClassFee = "extraClassFee",
+}

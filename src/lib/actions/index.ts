@@ -5,5 +5,6 @@ export * from "./user";
 export * from "./lesson";
 export * from "./select-unit";
 export * from "./field";
-export * from "./general";
+export * from "./setting";
 export * from "./teacher";
+export * from "./seedDatabase";
