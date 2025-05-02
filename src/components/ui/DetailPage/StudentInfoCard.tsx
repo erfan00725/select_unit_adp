@@ -1,4 +1,5 @@
 import { getStudentById } from "@/lib/actions";
+import { gradeRender } from "@/lib/utils/dataRenderer";
 import { notFound } from "next/navigation";
 import React from "react";
 
@@ -35,7 +36,7 @@ const StudentInfoCard: React.FC<StudentInfoProps> = async ({ studentId }) => {
         </div>
         <div>
           <h3 className="text-sm text-gray-500">مقطع:</h3>
-          <p className="font-medium">{student.Grade || "_"}</p>
+          <p className="font-medium">{gradeRender(student.Grade) || "_"}</p>
         </div>
       </div>
     </div>

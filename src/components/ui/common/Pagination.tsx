@@ -36,9 +36,9 @@ const Pagination: React.FC<PaginationProps> = ({
     const maxPagesToShow = 5; // Show at most 5 page numbers
 
     // Always show first page
-    if (currentPage > 3) {
+    if (currentPage >= 3) {
       pages.push(1);
-      if (currentPage > 4) {
+      if (currentPage >= 4) {
         pages.push("...");
       }
     }
@@ -53,12 +53,14 @@ const Pagination: React.FC<PaginationProps> = ({
     }
 
     // Always show last page
-    if (currentPage < totalPages - 2) {
-      if (currentPage < totalPages - 3) {
+    if (currentPage <= totalPages - 2) {
+      if (currentPage <= totalPages - 3) {
         pages.push("...");
       }
       pages.push(totalPages);
     }
+    console.log(currentPage);
+    console.log(totalPages);
 
     return pages;
   };

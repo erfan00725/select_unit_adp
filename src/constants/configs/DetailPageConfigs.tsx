@@ -8,6 +8,9 @@ import {
   getSpecificSelectUnit,
   deleteSelectUnit,
   getSelectUnitById,
+  deleteStudent,
+  deleteField,
+  deleteTeacher,
 } from "@/lib/actions";
 import getFarsiDate from "@/lib/getFarsiDate";
 import { getGender } from "@/lib/getGender";
@@ -20,6 +23,7 @@ import Link from "next/link";
 import getAcademicYearJ from "@/lib/utils/getAcademicYearJ";
 import { SelectUnitLessonsTable } from "@/components/ui/pages/selectUnit.ts/SelectUnitLessonsTable";
 import { priceFormatter } from "@/lib/utils/priceFormatter";
+import { gradeRender, periodRender } from "@/lib/utils/dataRenderer";
 
 export type DetailPageConfigtReturnType = {
   error?: string;
@@ -68,7 +72,7 @@ export const LessonsDetailConfig = (
       },
       {
         label: "مقطع",
-        value: lesson?.Grade,
+        value: gradeRender(lesson?.Grade),
       },
       {
         label: "رشته",
@@ -182,7 +186,7 @@ export const StudentsDetailConfig = (
       },
       {
         label: "مقطع",
-        value: student?.Grade,
+        value: gradeRender(student?.Grade),
       },
       {
         label: "رشته",
@@ -317,7 +321,9 @@ export const SelectUnitDetailConfig = (
 
   const SelectUnitConfig: InfoPageConfig = {
     id: selectUnit?.id.toString() || "",
-    title: `${student?.FirstName} ${student?.LastName} - ${selectUnit.Year} ${selectUnit.Period}`,
+    title: `${student?.FirstName} ${student?.LastName} - ${
+      selectUnit.Year
+    } ${periodRender(selectUnit.Period)}`,
     createdAt: selectUnit?.Created_at.toDateString(),
     modifiedAt: selectUnit?.Updated_at.toDateString(),
     rows: [
@@ -332,8 +338,8 @@ export const SelectUnitDetailConfig = (
         type: "text",
       },
       {
-        label: "ترم",
-        value: selectUnit?.Period,
+        label: "نیمسال",
+        value: periodRender(selectUnit.Period),
         type: "text",
       },
       {
@@ -441,21 +447,21 @@ export const s_DetailPageConfigs: Record<PageType, s_PageConfig> = {
   students: {
     title: "اطلاعات دانش‌آموز",
     deleteConfig: {
-      deleteFounction: deleteLesson,
+      deleteFounction: deleteStudent,
       backUrl: urls.students,
     },
   },
   fields: {
     title: "اطلاعات رشته",
     deleteConfig: {
-      deleteFounction: deleteLesson,
+      deleteFounction: deleteField,
       backUrl: urls.fields,
     },
   },
   teachers: {
     title: "اطلاعات استاد",
     deleteConfig: {
-      deleteFounction: deleteLesson,
+      deleteFounction: deleteTeacher,
       backUrl: urls.teachers,
     },
   },

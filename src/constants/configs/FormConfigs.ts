@@ -14,6 +14,7 @@ import {
   formButton,
   inputDefaultPlaceholder,
 } from "@/constants/commonTexts";
+import { gradeRender } from "@/lib/utils/dataRenderer";
 
 export const lessonFormConfigGenerator = async (
   data?: Awaited<ReturnType<typeof getLessonById>>
@@ -23,9 +24,9 @@ export const lessonFormConfigGenerator = async (
   const currentTachersId = lesson?.teacher?.id;
   const currentRequireLessonsId = lesson?.requiresLesson?.id;
 
-  const teachers = await getTeachers();
+  const teachers = await getTeachers({ limit: 500 });
   const lessons = await getLessons();
-  const fields = await getFields();
+  const fields = await getFields({ limit: 500 });
 
   const teacherOptions = teachers?.teachers?.map((teacher) => ({
     id: teacher.id.toString(),
@@ -46,7 +47,7 @@ export const lessonFormConfigGenerator = async (
 
   const gradeOptions = Object.entries(LessonGrade).map(([key, value]) => ({
     id: key,
-    name: value,
+    name: gradeRender(value) || "_",
   }));
 
   return {
@@ -202,7 +203,7 @@ export const studentFormConfigGenerator = async (
 ): Promise<FormPageProps> => {
   const student = data?.student;
 
-  const fields = await getFields();
+  const fields = await getFields({ limit: 500 });
 
   const fieldOptions = fields?.fields?.map((field) => ({
     id: field.id.toString(),
@@ -211,7 +212,7 @@ export const studentFormConfigGenerator = async (
 
   const gradeOptions = Object.entries(Grade).map(([key, value]) => ({
     id: key,
-    name: value,
+    name: gradeRender(value) || "_",
   }));
 
   return {
@@ -372,7 +373,7 @@ export const teacherFormConfigGenerator = async (
 ): Promise<FormPageProps> => {
   const teacher = data?.teacher;
 
-  const fields = await getFields();
+  const fields = await getFields({ limit: 500 });
 
   const fieldOptions = fields?.fields?.map((field) => ({
     id: field.id.toString(),

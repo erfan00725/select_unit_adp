@@ -5,13 +5,14 @@ const errorMassages = {
     `مقدار نامعتبر برای ${fieldName}. مقدار مورد انتظار ${expectedValue}.`,
   invalidLength: (fieldName: string, expectedLength: number) =>
     `طول نامعتبر برای ${fieldName}. طول مورد انتظار ${expectedLength}.`,
+  invalidData: (fieldName: string, error?: string) =>
+    `اطلاعات نامعتبر برای ${fieldName}: ${error}`,
   invalidDate: (fieldName: string, error?: string) =>
     `تاریخ نامعتبر برای ${fieldName}: ${error}`,
   invalidEmail: (fieldName: string) => `ایمیل نامعتبر برای ${fieldName}.`,
   invalidPhone: (fieldName: string) => `شماره تلفن نامعتبر برای ${fieldName}.`,
   requiredField: (fieldName: string) => `${fieldName} الزامی است.`,
-  positiveNumber: (fieldName: string) =>
-    `${fieldName} باید یک عدد مثبت باشد.`,
+  positiveNumber: (fieldName: string) => `${fieldName} باید یک عدد مثبت باشد.`,
   integerNumber: (fieldName: string) => `${fieldName} باید یک عدد صحیح باشد.`,
   nonNegativeNumber: (fieldName: string) =>
     `${fieldName} باید یک عدد غیر منفی باشد.`,
@@ -26,7 +27,8 @@ const errorMassages = {
 
 export const successMassages = {
   addSuccess: (objectName: string) => `${objectName} با موفقیت اضافه شد.`,
-  updateSuccess: (objectName: string) => `${objectName} با موفقیت بروزرسانی شد.`,
+  updateSuccess: (objectName: string) =>
+    `${objectName} با موفقیت بروزرسانی شد.`,
 };
 
 export default errorMassages;

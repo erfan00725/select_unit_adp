@@ -10,8 +10,8 @@ export const fieldSchema = z.object({
   // Required fields
   Name: z
     .string()
-    .min(1, { message: errorMassages.requiredField("Field name") })
-    .max(255, { message: errorMassages.maxLength("Field name", 255) }),
+    .min(1, { message: errorMassages.requiredField("نام فیلد") })
+    .max(255, { message: errorMassages.maxLength("نام فیلد", 255) }),
 
   // Optional fields with validation
   FixedFee: z

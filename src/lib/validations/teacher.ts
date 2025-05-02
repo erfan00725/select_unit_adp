@@ -10,23 +10,22 @@ export const teacherSchema = z.object({
   // Required fields
   FirstName: z
     .string()
-    .min(1, { message: errorMassages.requiredField("First name") })
-    .max(255, { message: errorMassages.maxLength("First name", 255) }),
+    .min(1, { message: errorMassages.requiredField("نام") })
+    .max(255, { message: errorMassages.maxLength("نام", 255) }),
 
   LastName: z
     .string()
-    .min(1, { message: errorMassages.requiredField("Last name") })
-    .max(255, { message: errorMassages.maxLength("Last name", 255) }),
+    .min(1, { message: errorMassages.requiredField("نام خانوادگی") })
+    .max(255, { message: errorMassages.maxLength("نام خانوادگی", 255) }),
 
   NationalCode: z
     .string()
-    .length(10, { message: errorMassages.lengthError("National Code", 10) }),
+    .length(10, { message: errorMassages.lengthError("کد ملی", 10) }),
 
   PhoneNumber: z
     .string()
-    .min(1, { message: errorMassages.requiredField("Phone number") })
-    .max(255, { message: errorMassages.maxLength("Phone number", 255) }),
-
+    .min(1, { message: errorMassages.requiredField("شماره تلفن") })
+    .max(255, { message: errorMassages.maxLength("شماره تلفن", 255) }),
   // Optional fields with validation
   fieldId: z
     .bigint()

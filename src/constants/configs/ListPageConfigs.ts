@@ -13,6 +13,8 @@ import {
 import { FilterOptionType, Orders, PageType } from "@/types/General";
 import getAcademicYearJ from "@/lib/utils/getAcademicYearJ";
 import { priceFormatter } from "@/lib/utils/priceFormatter";
+import { gradeRender, periodRender } from "@/lib/utils/dataRenderer";
+import { Period } from "@/generated/prisma";
 
 type ListGeneralParamsType = {
   searchParams: { [key: string]: string | undefined };
@@ -90,11 +92,11 @@ export const s_ListConfig: StaticConfigsType = {
       {
         name: "period",
         type: "select",
-        placeholder: "ترم را انتخاب کنید",
+        placeholder: "نیمسال را انتخاب کنید",
         options: [
-          { label: "ترم اول", value: "first" },
-          { label: "ترم دوم", value: "second" },
-          { label: "ترم تابستان", value: "summer" },
+          { label: "نیمسال اول", value: Period.first },
+          { label: "نیمسال دوم", value: Period.second },
+          { label: "تابستان", value: Period.summer },
         ],
       },
     ],
@@ -140,6 +142,7 @@ export const LessonsList = async ({
         return {
           id: lesson.id,
           Name: lesson.LessonName,
+          Grade: gradeRender(lesson.Grade),
           TheoriUnit: lesson.TheoriUnit,
           PracticalUnit: lesson.PracticalUnit,
           TotalUnits: lesson.TheoriUnit + lesson.PracticalUnit,
@@ -158,6 +161,7 @@ export const LessonsList = async ({
     return (lessons || []).map((lesson) => ({
       id: lesson.id,
       Name: lesson.LessonName,
+      Grade: gradeRender(lesson.Grade),
       TheoriUnit: lesson.TheoriUnit,
       PracticalUnit: lesson.PracticalUnit,
       TotalUnits: lesson.TheoriUnit + lesson.PracticalUnit,
@@ -175,6 +179,7 @@ export const LessonsList = async ({
   const headers = [
     "شناسه",
     "نام",
+    "مقطع",
     "واحد نظری",
     "واحد عملی",
     "کل واحد‌ها",
@@ -338,7 +343,7 @@ export const SelectUnitList = async ({
       id: unit?.id,
       Student: `${unit?.student?.FirstName} ${unit?.student?.LastName}`,
       Year: unit?.Year ? getAcademicYearJ(unit.Year) : "_",
-      Period: unit?.Period,
+      Period: periodRender(unit?.Period),
       LessonCount: unit?.selectedLessons.length,
       TotalUnits: unit?.totalUnits || "_",
       ExtraFee: unit?.totalFee ? priceFormatter(unit?.totalFee, true) : "0",
@@ -349,7 +354,7 @@ export const SelectUnitList = async ({
     "شناسه",
     "نام دانش‌آموز",
     "سال",
-    "ترم",
+    "نیمسال",
     "تعداد دروس",
     "تعداد واحد",
     "شهریه کل",
@@ -401,7 +406,7 @@ export const d_StudentSelectUnitList = async ({
     return {
       id: unit?.id,
       Year: unit?.Year ? getAcademicYearJ(unit.Year) : "_",
-      Period: unit?.Period,
+      Period: periodRender(unit?.Period),
       LessonCount: unit?.selectedLessons.length,
       TotalUnits: unit?.totalUnits || "_",
       ExtraFee: unit?.totalFee ? priceFormatter(unit?.totalFee, true) : "0",
@@ -411,7 +416,7 @@ export const d_StudentSelectUnitList = async ({
   const headers = [
     "شناسه",
     "سال",
-    "ترم",
+    "نیمسال",
     "تعداد دروس",
     "تعداد واحد",
     "شهریه کل",
@@ -445,11 +450,11 @@ export const s_studnetSelectUnit = {
     {
       name: "period",
       type: "select",
-      placeholder: "ترم را انتخاب کنید",
+      placeholder: "نیمسال را انتخاب کنید",
       options: [
-        { label: "ترم اول", value: "first" },
-        { label: "ترم دوم", value: "second" },
-        { label: "ترم تابستان", value: "summer" },
+        { label: "نیمسال اول", value: Period.first },
+        { label: "نیمسال دوم", value: Period.second },
+        { label: "تابستان", value: Period.summer },
       ],
     },
   ],

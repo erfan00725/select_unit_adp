@@ -21,4 +21,8 @@ export const NavBarConfigs = [
     label: "مدیریت رشته‌ها",
     href: urls.fields,
   },
+  {
+    label: "مدیریت انتخاب واحد‌ها",
+    href: urls.selectUnit,
+  },
 ];

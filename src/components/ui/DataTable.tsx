@@ -29,7 +29,7 @@ const DataTable = <T extends DataBaseType>({
     return baseEditUrl
       ? baseEditUrl?.replace(":id", id.toString())
       : baseUrl
-      ? `${baseUrl}/add`
+      ? `${baseUrl}/${id}/edit`
       : null;
   };
 

@@ -461,7 +461,7 @@ export async function getSelectUnitsByYearPeriod(
   } catch (error) {
     console.error("Failed to fetch select units by year and period:", error);
     return {
-      error: "دریافت اطلاعات انتخاب واحد بر اساس سال و ترم با خطا مواجه شد",
+      error: "دریافت اطلاعات انتخاب واحد بر اساس سال و نیمسال با خطا مواجه شد",
     };
   }
 }
@@ -581,7 +581,8 @@ export async function createSelectUnit(
       }
 
       return {
-        error: "انتخاب واحد برای این دانشجو در این سال و ترم قبلاً ثبت شده است",
+        error:
+          "انتخاب واحد برای این دانشجو در این سال و نیمسال قبلاً ثبت شده است",
       };
     }
 
@@ -689,11 +690,18 @@ export async function deleteSelectUnit(selectUnitId: bigint) {
     // Get the student ID before deleting for revalidation
     const selectUnit = await prisma.selectUnit.findUnique({
       where: { id: selectUnitId },
-      select: { StudentId: true },
+      include: {
+        student: true,
+        Payments: true,
+      },
     });
 
     if (!selectUnit) {
       return { error: "انتخاب واحد یافت نشد" };
+    }
+    console.log(selectUnit.Payments);
+    if (selectUnit.Payments.length) {
+      return { error: "امکان حذف انتخاب واحد با پرداخت وجود ندارد" };
     }
 
     // Delete the select unit (this will cascade delete all associated selectedLessons)

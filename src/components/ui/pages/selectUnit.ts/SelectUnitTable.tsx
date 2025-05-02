@@ -4,6 +4,7 @@ import { ActionReturnType } from "@/types/General";
 import { getLessonsByIds } from "@/lib/actions";
 import { DataTableAction } from "@/types/Props";
 import { priceFormatter } from "@/lib/utils/priceFormatter";
+import { gradeRender } from "@/lib/utils/dataRenderer";
 
 interface SelectUnitTableProps {
   lessons: ActionReturnType<typeof getLessonsByIds>;
@@ -18,6 +19,7 @@ const SelectUnitTable: React.FC<SelectUnitTableProps> = ({
   const headers = [
     "شناسه",
     "نام درس",
+    "مقطع",
     "نام استاد",
     "واحد نظری",
     "واحد عملی",
@@ -31,6 +33,7 @@ const SelectUnitTable: React.FC<SelectUnitTableProps> = ({
   const tableData = lessons?.lessons?.map((lesson) => ({
     id: lesson?.id.toString() as string,
     lessonName: lesson?.LessonName,
+    grade: gradeRender(lesson?.Grade),
     teacherName: `${lesson?.teacher?.FirstName} ${lesson?.teacher?.LastName}`,
     theoriUnit: lesson?.TheoriUnit,
     practicalUnit: lesson?.PracticalUnit,

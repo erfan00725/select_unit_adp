@@ -1,6 +1,5 @@
 "use client";
 import { Period } from "@/generated/prisma";
-import { getDateJ } from "@/lib/utils/getCurrentDataJ";
 import React, { useEffect, useRef, useState } from "react";
 import SelectUnitTable from "./SelectUnitTable";
 import { LessonSelect } from "./LessonSelect";
@@ -194,8 +193,8 @@ export const SelectUnitForm = ({
             toast.error((res.error as string) || "مشکلی پیش آمده است");
             return;
           }
-
           toast.success(`درس‌ها با موفقیت ${action} شدند`);
+          router.push(`${urls.students}/${studnetId}`);
           handleReset();
         })
         .catch((err) => toast.error(err.message));

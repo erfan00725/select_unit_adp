@@ -11,9 +11,9 @@ export const selectUnitSchema = z.object({
   // Required fields
   Period: z
     .nativeEnum(Period, {
-      errorMap: () => ({ message: errorMassages.requiredField("Period") }),
+      errorMap: () => ({ message: errorMassages.requiredField("نیمسال") }),
     })
-    .describe("Academic period (first half, second half, or summer)"),
+    .describe("نیمسال تحصیلی (نیمسال اول، نیمسال دوم یا تابستان)"),
 
   Year: z
     .number()
@@ -21,36 +21,35 @@ export const selectUnitSchema = z.object({
     .pipe(
       z
         .number()
-        .int({ message: errorMassages.integerNumber("Year") })
-        .min(1000, { message: "Year must be a 4-digit number" })
-        .max(9999, { message: "Year must be a 4-digit number" })
+        .int({ message: errorMassages.integerNumber("سال تحصیلی") })
+        .min(1000, { message: "سال باید یک عدد ۴ رقمی باشد" })
+        .max(9999, { message: "سال باید یک عدد ۴ رقمی باشد" })
     )
-    .describe("Academic year"),
+    .describe("سال تحصیلی"),
 
   Lesson: z
     .bigint()
     .or(z.string().transform((val) => BigInt(val)))
-    .describe("Lesson ID"),
+    .describe("شناسه درس"),
 
   StudentId: z
     .bigint()
     .or(z.string().transform((val) => BigInt(val)))
-    .describe("Student ID if applicable"),
+    .describe("شناسه دانشجو در صورت وجود"),
 
   // Optional fields
   Lessons: z
     .array(z.bigint().or(z.string().transform((val) => BigInt(val))))
-    .min(1, { message: "At least one lesson must be selected" })
-    .describe("Array of selected lesson IDs"),
+    .min(1, { message: "حداقل یک درس باید انتخاب شود" })
+    .describe("آرایه‌ای از شناسه‌های دروس انتخاب شده"),
 
   ExtraFee: z
     .bigint()
     .or(z.string().transform((val) => BigInt(val)))
     .optional()
     .default(BigInt(0))
-    .describe("Any additional fees"),
+    .describe("هزینه‌های اضافی"),
 });
-
 /**
  * Type definition derived from the Zod schema
  */

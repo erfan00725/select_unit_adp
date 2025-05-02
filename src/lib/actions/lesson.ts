@@ -266,12 +266,17 @@ export async function deleteLesson(id: bigint) {
     const lessonWithSelectUnits = await prisma.lesson.findUnique({
       where: { id },
       include: {
-        selectUnits: true,
+        SelectedLesson: true,
         requiredForLesson: true,
       },
     });
 
-    if (lessonWithSelectUnits?.selectUnits.length) {
+    console.log(
+      "lessonWithSelectUnits ",
+      lessonWithSelectUnits?.SelectedLesson
+    );
+
+    if (lessonWithSelectUnits?.SelectedLesson.length) {
       return { error: "امکان حذف درس با انتخاب واحدهای موجود وجود ندارد" };
     }
 

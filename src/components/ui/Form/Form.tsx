@@ -20,21 +20,6 @@ const FormInput = ({
   value,
   SelectButtonProps,
 }: FormInputProps) => {
-  if (type === "select") {
-    if (!SelectButtonProps) return;
-    return (
-      <SelectButton
-        {...SelectButtonProps}
-        onSave={(i) => {
-          const data = SelectButtonProps.singleSelect
-            ? i[0].id
-            : i.map((i) => i.id);
-          onChange && onChange(data);
-        }}
-      />
-    );
-  }
-
   switch (type) {
     case "select":
       if (!SelectButtonProps) return;
@@ -109,7 +94,7 @@ const Form: React.FC<FormProps> = ({
       value === null ||
       value === undefined ||
       (typeof value === "string" && value.trim() === "") ||
-      value === "هیچ";
+      value === "none";
 
     // Convert value based on dataType if specified
     if (dataType && !isValueEmpty) {

@@ -11,26 +11,26 @@ export const studentSchema = z.object({
   // Required fields
   FirstName: z
     .string()
-    .min(1, { message: errorMassages.requiredField("First name") })
-    .max(255, { message: errorMassages.maxLength("First name", 255) }),
+    .min(1, { message: errorMassages.requiredField("نام") })
+    .max(255, { message: errorMassages.maxLength("نام", 255) }),
 
   LastName: z
     .string()
-    .min(1, { message: errorMassages.requiredField("Last name") })
-    .max(255, { message: errorMassages.maxLength("Last name", 255) }),
+    .min(1, { message: errorMassages.requiredField("نام خانوادگی") })
+    .max(255, { message: errorMassages.maxLength("نام خانوادگی", 255) }),
 
   NationalCode: z
     .string()
-    .length(10, { message: errorMassages.lengthError("National Code", 10) }),
+    .length(10, { message: errorMassages.lengthError("کد ملی", 10) }),
 
   fieldId: z
-    .bigint({ message: errorMassages.requiredField("Field Id") })
-    .positive({ message: errorMassages.positiveNumber("Field Id") }),
+    .bigint({ message: errorMassages.requiredField("شناسه رشته") })
+    .nonnegative({ message: errorMassages.nonNegativeNumber("شناسه رشته") }),
 
   // Optional fields with validation
   Father: z
     .string()
-    .max(255, { message: errorMassages.maxLength("Father's name", 255) })
+    .max(255, { message: errorMassages.maxLength("نام پدر", 255) })
     .optional()
     .or(z.string().transform(returnNullIfEmpty)),
 
@@ -41,19 +41,19 @@ export const studentSchema = z.object({
 
   Address: z
     .string()
-    .max(255, { message: errorMassages.maxLength("Address", 255) })
+    .max(255, { message: errorMassages.maxLength("آدرس", 255) })
     .optional()
     .or(z.string().transform(returnNullIfEmpty)),
 
   HomeNumber: z
     .string()
-    .max(255, { message: errorMassages.maxLength("Home number", 255) })
+    .max(255, { message: errorMassages.maxLength("تلفن منزل", 255) })
     .optional()
     .or(z.string().transform(returnNullIfEmpty)),
 
   PhoneNumber: z
     .string()
-    .max(255, { message: errorMassages.maxLength("Phone number", 255) })
+    .max(255, { message: errorMassages.maxLength("شماره موبایل", 255) })
     .optional()
     .or(z.string().transform(returnNullIfEmpty)),
 

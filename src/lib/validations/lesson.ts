@@ -11,17 +11,26 @@ export const lessonSchema = z.object({
   // Required fields
   LessonName: z
     .string()
-    .min(1, { message: errorMassages.requiredField("Lesson name") })
-    .max(255, { message: errorMassages.maxLength("Lesson name", 255) }),
+    .min(1, { message: errorMassages.requiredField("نام درس") })
+    .max(255, { message: errorMassages.maxLength("نام درس", 255) }),
 
-  Unit: z
+  TheoriUnit: z
     .number()
     .or(z.string().transform((val) => Number(val)))
     .pipe(
       z
         .number()
-        .int({ message: errorMassages.integerNumber("Unit") })
-        .positive({ message: errorMassages.positiveNumber("Unit") })
+        .int({ message: errorMassages.integerNumber("واحد نظری") })
+        .nonnegative({ message: errorMassages.positiveNumber("واحد نظری") })
+    ),
+  PracticalUnit: z
+    .number()
+    .or(z.string().transform((val) => Number(val)))
+    .pipe(
+      z
+        .number()
+        .int({ message: errorMassages.integerNumber("واحد عملی") })
+        .nonnegative({ message: errorMassages.positiveNumber("واحد عملی") })
     ),
 
   TeacherId: z
@@ -55,8 +64,8 @@ export const lessonSchema = z.object({
     .pipe(
       z
         .number()
-        .int({ message: errorMassages.integerNumber("Pass condition") })
-        .min(0, { message: errorMassages.nonNegativeNumber("Pass condition") })
+        .int({ message: errorMassages.integerNumber("شرط قبولی") })
+        .min(0, { message: errorMassages.nonNegativeNumber("شرط قبولی") })
     )
     .optional(),
 
@@ -66,8 +75,8 @@ export const lessonSchema = z.object({
     .pipe(
       z
         .number()
-        .int({ message: errorMassages.integerNumber("Theory hours") })
-        .min(0, { message: errorMassages.nonNegativeNumber("Theory hours") })
+        .int({ message: errorMassages.integerNumber("ساعات نظری") })
+        .min(0, { message: errorMassages.nonNegativeNumber("ساعات نظری") })
     )
     .optional(),
 
@@ -77,13 +86,13 @@ export const lessonSchema = z.object({
     .pipe(
       z
         .number()
-        .int({ message: errorMassages.integerNumber("Practical hours") })
-        .min(0, { message: errorMassages.nonNegativeNumber("Practical hours") })
+        .int({ message: errorMassages.integerNumber("ساعات عملی") })
+        .min(0, { message: errorMassages.nonNegativeNumber("ساعات عملی") })
     )
     .optional(),
 
   RequireLesson: z
-    .number({ message: errorMassages.integerNumber("Required lesson") })
+    .number({ message: errorMassages.integerNumber("درس پیشنیاز") })
     .or(
       z
         .string()
@@ -99,6 +108,7 @@ export const lessonSchema = z.object({
   NotifCode: z
     .bigint()
     .or(z.string().transform((val) => BigInt(val)))
+    .nullable()
     .optional(),
 
   ValidFrom: z

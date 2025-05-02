@@ -54,7 +54,7 @@ export function useFormSubmit<T>() {
       if ((error as ZodError)?.errors?.length > 0)
         console.log((error as ZodError).errors);
       toast.error(
-        errorMassages.invalidDate(
+        errorMassages.invalidData(
           entityName,
           (error as ZodError).errors[0].message || "اعتبارسنجی ناموفق بود"
         )

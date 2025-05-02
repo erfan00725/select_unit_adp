@@ -25,7 +25,7 @@ export const SelectUnitFormFetch = async ({
   )[0]?.Value;
 
   // TODO: Get only related lessons
-  const lessons = await getLessons();
+  const lessons = await getLessons({ limit: 500 });
 
   // If selectUnitId is provided, fetch the select unit data for editing
   let selectUnitData = undefined;

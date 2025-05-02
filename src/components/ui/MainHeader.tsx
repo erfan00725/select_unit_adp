@@ -7,7 +7,7 @@ import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import clsx from "clsx";
 import { usePathname } from "next/navigation";
 import { NavBarConfigs } from "@/constants/configs/GeneralConfigs";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { toast } from "react-toastify";
 
 function MainHeader() {
