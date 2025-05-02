@@ -439,7 +439,7 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.5.0
+   * Prisma Client JS version: 6.7.0
    * Query Engine version: 173f8d54f8d52e692c7e27e72a88314ec7aeff60
    */
   export type PrismaVersion = {
@@ -2643,7 +2643,7 @@ export namespace Prisma {
 
   /**
    * Fields of the User model
-   */ 
+   */
   interface UserFieldRefs {
     readonly id: FieldRef<"User", 'String'>
     readonly UserName: FieldRef<"User", 'String'>
@@ -3744,7 +3744,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Account model
-   */ 
+   */
   interface AccountFieldRefs {
     readonly id: FieldRef<"Account", 'String'>
     readonly userId: FieldRef<"Account", 'String'>
@@ -4692,7 +4692,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Session model
-   */ 
+   */
   interface SessionFieldRefs {
     readonly id: FieldRef<"Session", 'String'>
     readonly sessionToken: FieldRef<"Session", 'String'>
@@ -5595,7 +5595,7 @@ export namespace Prisma {
 
   /**
    * Fields of the VerificationToken model
-   */ 
+   */
   interface VerificationTokenFieldRefs {
     readonly identifier: FieldRef<"VerificationToken", 'String'>
     readonly token: FieldRef<"VerificationToken", 'String'>
@@ -6616,7 +6616,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Student model
-   */ 
+   */
   interface StudentFieldRefs {
     readonly id: FieldRef<"Student", 'BigInt'>
     readonly FirstName: FieldRef<"Student", 'String'>
@@ -7808,7 +7808,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Lesson model
-   */ 
+   */
   interface LessonFieldRefs {
     readonly id: FieldRef<"Lesson", 'BigInt'>
     readonly TeacherId: FieldRef<"Lesson", 'BigInt'>
@@ -9053,7 +9053,7 @@ export namespace Prisma {
 
   /**
    * Fields of the SelectUnit model
-   */ 
+   */
   interface SelectUnitFieldRefs {
     readonly id: FieldRef<"SelectUnit", 'BigInt'>
     readonly StudentId: FieldRef<"SelectUnit", 'BigInt'>
@@ -10084,7 +10084,7 @@ export namespace Prisma {
 
   /**
    * Fields of the SelectedLesson model
-   */ 
+   */
   interface SelectedLessonFieldRefs {
     readonly id: FieldRef<"SelectedLesson", 'BigInt'>
     readonly selectUnitId: FieldRef<"SelectedLesson", 'BigInt'>
@@ -11103,7 +11103,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Payments model
-   */ 
+   */
   interface PaymentsFieldRefs {
     readonly id: FieldRef<"Payments", 'BigInt'>
     readonly Check: FieldRef<"Payments", 'String'>
@@ -12085,7 +12085,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Field model
-   */ 
+   */
   interface FieldFieldRefs {
     readonly id: FieldRef<"Field", 'BigInt'>
     readonly Name: FieldRef<"Field", 'String'>
@@ -13069,7 +13069,7 @@ export namespace Prisma {
 
   /**
    * Fields of the General model
-   */ 
+   */
   interface GeneralFieldRefs {
     readonly Key: FieldRef<"General", 'String'>
     readonly Value: FieldRef<"General", 'String'>
@@ -14051,7 +14051,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Teacher model
-   */ 
+   */
   interface TeacherFieldRefs {
     readonly id: FieldRef<"Teacher", 'BigInt'>
     readonly NationalCode: FieldRef<"Teacher", 'String'>
@@ -14774,7 +14774,7 @@ export namespace Prisma {
 
 
   /**
-   * Field references 
+   * Field references
    */
 
 
