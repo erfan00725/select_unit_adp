@@ -17,7 +17,7 @@ export async function getUsers() {
 }
 
 // Get a single user by ID
-export async function getUserById(id: bigint) {
+export async function getUserById(id: string) {
   try {
     const user = await prisma.user.findUnique({
       where: { id },
@@ -65,7 +65,7 @@ export async function createUser(data: Omit<UserDataType, "id">) {
 }
 
 // Update a user
-export async function updateUser(id: bigint, data: Partial<UserDataType>) {
+export async function updateUser(id: string, data: Partial<UserDataType>) {
   try {
     // Check if username is being updated and if it's already in use
     if (data.UserName) {
@@ -124,7 +124,7 @@ export async function getUserByUsername(username: string) {
 }
 
 // Delete a user
-export async function deleteUser(id: bigint) {
+export async function deleteUser(id: string) {
   try {
     await prisma.user.delete({
       where: { id },

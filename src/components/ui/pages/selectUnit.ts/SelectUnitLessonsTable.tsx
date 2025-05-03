@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import DataTable from "../../DataTable";
 import {
-  d_ListConfig,
   LessonsList,
   ListGeneralReturnType,
   s_ListConfig,

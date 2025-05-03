@@ -3,24 +3,17 @@
 import React, { useState } from "react";
 import Logo from "@/components/ui/common/Logo";
 import Input from "@/components/ui/common/Input";
-import Checkbox from "@/components/ui/Form/Checkbox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
-import { handleLogin } from "@/lib/actions/auth";
 import { toast } from "react-toastify";
 import { signIn } from "next-auth/react";
 import { homeUrl } from "@/constants/urls";
-import { AuthError } from "next-auth";
 import Loading from "@/components/common/Loading";
 
 export default function LoginPage() {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
-  const [result, setResult] = useState("");
-  const [errors, setErrors] = useState({}); // New state for errors
   const [isLoading, setIsLoading] = useState(false); // New state for loading
-  const [isSuccess, setIsSuccess] = useState(false); // New state for success
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,17 +35,14 @@ export default function LoginPage() {
           // Handle the specific error from auth.config.ts
           console.log("Authentication error:", response);
           toast.error("نام کاربری یا رمز عبور اشتباه است");
-          setIsSuccess(false);
         } else {
           // Successful login
           toast.success("ورود شما با موفقیت انجام شد");
-          setIsSuccess(true);
         }
       })
       .catch((error) => {
         console.log("Unexpected error:", error);
         toast.error("خطایی رخ داده است");
-        setIsSuccess(false);
       })
       .finally(() => {
         setIsLoading(false);

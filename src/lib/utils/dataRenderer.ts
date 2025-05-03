@@ -1,4 +1,4 @@
-import { Grade, LessonGrade, Period } from "@/generated/prisma";
+import { Grade, LessonGrade, Period } from "@prisma/client";
 
 export function gradeRender(grade?: Grade | LessonGrade | null) {
   switch (grade) {

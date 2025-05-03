@@ -30,7 +30,7 @@ type Props = {
   searchParams: Promise<{ [key: string]: string | undefined }>;
 };
 
-const SelectUnitEditPage = async ({ params, searchParams }: Props) => {
+const SelectUnitEditPage = async ({ params }: Props) => {
   const id = (await params).id;
   const selectId = (await params).selectId;
 

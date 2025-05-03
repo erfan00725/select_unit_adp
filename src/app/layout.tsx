@@ -4,14 +4,14 @@ import "@/assets/styles/tailwindGeneral.css";
 import MainHeader from "@/components/ui/MainHeader";
 import MainFooter from "@/components/ui/MainFooter";
 import { ToastifyProvider } from "@/components/providers/ToastifyProvider";
-import localFont from "@next/font/local";
+// import localFont from "@next/font/local";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
 
-const font = localFont({
-  src: "@/assets/fonts/irsans.ttf",
-  display: "swap",
-});
+// const font = localFont({
+//   src: "@/assets/fonts/irsans.ttf",
+//   display: "swap",
+// });
 
 export const metadata: Metadata = {
   title: "Create Next App",

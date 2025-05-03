@@ -1,6 +1,5 @@
 import { SelectButtonProps } from "@/components/ui/Form/SelectButton";
 import { DataBaseType } from "./Tables";
-import { PageType } from "./General";
 import { SubmitFunction, ValidateFunction } from "./Form";
 
 export interface PageHeaderProps {

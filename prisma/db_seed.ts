@@ -5,10 +5,10 @@ import {
   LessonGrade,
   Period,
   UserType,
-} from "@/generated/prisma/index.js";
-import { createUser } from "@/lib/actions/user.js";
+} from "@prisma/client";
+import { createUser } from "../src/lib/actions/user";
 import bcrypt from "bcryptjs";
-import { Settings } from "@/types/General.js";
+import { Settings } from "../src/types/General.js";
 
 const prisma = new PrismaClient();
 

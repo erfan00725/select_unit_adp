@@ -3,7 +3,7 @@
 import { prisma } from "../prisma";
 import { revalidatePath } from "next/cache";
 import { BaseListFilterParams, LessonDataType } from "@/types/Tables";
-import { LessonGrade } from "@/generated/prisma";
+import { LessonGrade } from "@prisma/client";
 
 type LessonsParams = {
   unit?: string;
@@ -34,7 +34,7 @@ export async function getLessons(
     const skip = (page - 1) * limit;
 
     // Build where condition for search
-    let where: any = query
+    const where: any = query
       ? {
           OR: [
             { LessonName: { contains: query } },

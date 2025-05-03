@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import Link from "next/link";
 import clsx from "clsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
@@ -20,7 +19,6 @@ const Pagination: React.FC<PaginationProps> = ({
   totalItems,
   itemsPerPage,
   onPageChange,
-  baseUrl,
   className,
 }) => {
   const { setSearchParam, getSearchParam } = useSearchParams();
@@ -33,7 +31,6 @@ const Pagination: React.FC<PaginationProps> = ({
   // Generate page numbers to display
   const getPageNumbers = () => {
     const pages = [];
-    const maxPagesToShow = 5; // Show at most 5 page numbers
 
     // Always show first page
     if (currentPage >= 3) {

@@ -1,7 +1,6 @@
 import { z } from "zod";
 import errorMassages from "@/constants/massages";
-import { Period } from "@/generated/prisma";
-import { SelectUnitDataType } from "@/types/Tables";
+import { Period } from "@prisma/client";
 
 /**
  * Zod validation schema for the SelectUnit form

@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { homeUrl, urls } from "@/constants/urls";
 import { useSearchParams } from "@/lib/hooks/useSeachParams";
-import { PageType } from "@/types/General";
 
 type Props = {
   id: string;
@@ -32,23 +31,23 @@ export default function DeleteConfirm({
   backUrl,
 }: Props) {
   const router = useRouter();
-  const { getSearchParam, clearSearchParams } = useSearchParams();
+  const { getSearchParam } = useSearchParams();
   if (!getSearchParam("delete")) {
     return null;
   }
 
-  const handleDelete = async (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("handleDelete");
-    const res = await deleteFounction(BigInt(id));
-    if (res.error) {
-      toast.error(res.error);
-      return;
-    }
-    onDelete?.();
-    toast.success("Deleted successfully");
-    router.push(backUrl || urls.dashboard);
-  };
+  // const handleDelete = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   console.log("handleDelete");
+  //   const res = await deleteFounction(BigInt(id));
+  //   if (res.error) {
+  //     toast.error(res.error);
+  //     return;
+  //   }
+  //   onDelete?.();
+  //   toast.success("Deleted successfully");
+  //   router.push(backUrl || urls.dashboard);
+  // };
 
   return (
     <div className="flex flex-col items-center justify-center w-full mb-5">

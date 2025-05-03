@@ -1,4 +1,4 @@
-import { Grade, LessonGrade } from "@/generated/prisma";
+import { Grade, LessonGrade } from "@prisma/client";
 import {
   getFields,
   getLessonById,

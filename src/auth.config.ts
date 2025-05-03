@@ -1,6 +1,6 @@
 import { homeUrl } from "@/constants/urls";
 import { type NextAuthConfig } from "next-auth";
-import { User } from "./generated/prisma";
+import { User } from "@prisma/client";
 
 export const authConfig = {
   pages: {
@@ -24,7 +24,7 @@ export const authConfig = {
       }
       return true;
     },
-    async session({ token, session, user }) {
+    async session({ token, session }) {
       session.user.id = (token.user as User).id;
 
       return session;

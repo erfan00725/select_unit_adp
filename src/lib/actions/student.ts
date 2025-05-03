@@ -22,7 +22,7 @@ export async function getStudents(params?: BaseListFilterParams) {
     const skip = (page - 1) * limit;
 
     // Build where condition for search
-    let where: any = query
+    const where: any = query
       ? {
           OR: [
             { FirstName: { contains: query } },

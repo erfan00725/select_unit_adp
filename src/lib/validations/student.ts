@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Grade } from "@/generated/prisma";
+import { Grade } from "@prisma/client";
 import errorMassages from "@/constants/massages";
 import { returnNullIfEmpty } from "../utils/validationUtilds";
 

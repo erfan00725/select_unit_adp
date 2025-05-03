@@ -17,7 +17,7 @@ export async function getFields(params?: BaseListFilterParams) {
     const to = params?.to;
 
     // Build where condition for search
-    let where: any = query
+    const where: any = query
       ? {
           OR: [{ Name: { contains: query } }],
         }

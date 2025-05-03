@@ -1,4 +1,3 @@
-import React from "react";
 import { getDateJ } from "./getCurrentDataJ";
 
 export default function getAcademicYearJ(year: number) {

@@ -1,11 +1,9 @@
-import DataTable from "@/components/ui/DataTable";
 import {
   getLessonById,
   getStudentById,
   getFieldById,
   getTeacherById,
   deleteLesson,
-  getSpecificSelectUnit,
   deleteSelectUnit,
   getSelectUnitById,
   deleteStudent,
@@ -18,7 +16,6 @@ import { InfoPageConfig, PageType } from "@/types/General";
 import { DetailPageProps } from "@/types/Props";
 import { urls } from "../urls";
 import { UserSelectUnitList } from "@/components/ui/pages/selectUnit.ts/UserSelectUnitList";
-import SelectUnitTable from "@/components/ui/pages/selectUnit.ts/SelectUnitTable";
 import Link from "next/link";
 import getAcademicYearJ from "@/lib/utils/getAcademicYearJ";
 import { SelectUnitLessonsTable } from "@/components/ui/pages/selectUnit.ts/SelectUnitLessonsTable";

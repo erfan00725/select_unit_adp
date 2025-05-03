@@ -1,6 +1,6 @@
 "use server";
 
-import { Period, Prisma } from "@/generated/prisma";
+import { Period, Prisma } from "@prisma/client";
 import { prisma } from "../prisma";
 import { revalidatePath } from "next/cache";
 import { BaseListFilterParams, SelectUnitDataType } from "@/types/Tables";
@@ -102,7 +102,7 @@ export async function getSelectUnits(params?: BaseListFilterParams) {
     const skip = (page - 1) * limit;
 
     // Build where condition for search
-    let where: any = query
+    const where: any = query
       ? {
           OR: [
             { student: { FirstName: { contains: query } } },

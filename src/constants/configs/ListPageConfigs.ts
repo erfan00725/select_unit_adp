@@ -14,7 +14,7 @@ import { FilterOptionType, Orders, PageType } from "@/types/General";
 import getAcademicYearJ from "@/lib/utils/getAcademicYearJ";
 import { priceFormatter } from "@/lib/utils/priceFormatter";
 import { gradeRender, periodRender } from "@/lib/utils/dataRenderer";
-import { Period } from "@/generated/prisma";
+import { Period } from "@prisma/client";
 
 type ListGeneralParamsType = {
   searchParams: { [key: string]: string | undefined };
@@ -146,9 +146,9 @@ export const LessonsList = async ({
           TheoriUnit: lesson.TheoriUnit,
           PracticalUnit: lesson.PracticalUnit,
           TotalUnits: lesson.TheoriUnit + lesson.PracticalUnit,
-          // @ts-ignore
+          // @ts-expect-error
           Teacher: lesson.teacher
-            ? // @ts-ignore
+            ? // @ts-expect-error
               `${lesson.teacher.FirstName} ${lesson.teacher.LastName}`
             : "_",
           PricePerUnit: lesson.PricePerUnit

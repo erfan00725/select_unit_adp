@@ -1,7 +1,7 @@
 // Data type definitions
 
 // Import necessary enum types from Prisma
-import { Grade, LessonGrade, UserType, Period } from "@/generated/prisma";
+import { Grade, LessonGrade, UserType, Period } from "@prisma/client";
 import { Orders } from "./General";
 
 export type DataBaseType = {

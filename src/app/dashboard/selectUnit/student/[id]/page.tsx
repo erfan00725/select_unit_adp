@@ -9,7 +9,7 @@ type Props = {
   searchParams: Promise<{ [key: string]: string | undefined }>;
 };
 
-const AddSelectUnitPage = async ({ params, searchParams }: Props) => {
+const AddSelectUnitPage = async ({ params }: Props) => {
   const id = (await params).id;
 
   return (

@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass, faX } from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { useSearchParams as useCustomSearchParams } from "@/lib/hooks/useSeachParams";
 import { useDebouncedCallback } from "use-debounce";
 import { FilterOptionType } from "@/types/General";
@@ -27,7 +27,6 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
     getSearchParam,
     setSearchParam,
     getAllSearchParams,
-    removeSearchParam,
   } = useCustomSearchParams();
   const router = useRouter();
   const searchParams = useSearchParams();

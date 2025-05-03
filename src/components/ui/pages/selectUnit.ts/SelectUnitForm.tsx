@@ -1,5 +1,5 @@
 "use client";
-import { Period } from "@/generated/prisma";
+import { Period } from "@prisma/client";
 import React, { useEffect, useRef, useState } from "react";
 import SelectUnitTable from "./SelectUnitTable";
 import { LessonSelect } from "./LessonSelect";
@@ -43,7 +43,7 @@ export const SelectUnitForm = ({
   const router = useRouter();
 
   // Initialize input values with data from selectUnitData if in edit mode
-  let inputValues = useRef<InputValueType>({});
+  const inputValues = useRef<InputValueType>({});
 
   // Extract lesson IDs from selectUnitData if in edit mode
   const initialLessonIds =

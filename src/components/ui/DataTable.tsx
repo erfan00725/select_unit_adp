@@ -10,7 +10,6 @@ const DataTable = <T extends DataBaseType>({
   title,
   addButtonLabel,
   baseUrl,
-  deleteUrl,
   addUrl: baseAddUrl,
   editUrl: baseEditUrl,
   limit = 50,
@@ -65,7 +64,7 @@ const DataTable = <T extends DataBaseType>({
           <tbody className="bg-white divide-y divide-gray-200">
             {rows?.map((row, rowIndex) => (
               <tr key={rowIndex}>
-                {Object.entries(row).map(([name, data], colIndex) => (
+                {Object.entries(row).map(([_, data], colIndex) => (
                   <td
                     key={colIndex}
                     className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
@@ -102,7 +101,7 @@ const DataTable = <T extends DataBaseType>({
                     )}
                   {isEditable && (
                     <Link
-                      // @ts-ignore
+                      // @ts-expect-error
                       href={editUrl(row.id.toString())}
                       className="tableAction text-blue-600! hover:text-blue-900!"
                     >

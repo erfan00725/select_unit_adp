@@ -1,11 +1,9 @@
 import {
   getGeneralSettings,
   getLessons,
-  getLessonsByIds,
   getSelectUnitById,
 } from "@/lib/actions";
 import { SelectUnitForm } from "./SelectUnitForm";
-import { ActionReturnType } from "@/types/General";
 
 type Props = {
   studnetId: string;

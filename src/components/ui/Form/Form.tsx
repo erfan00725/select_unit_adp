@@ -15,7 +15,6 @@ const FormInput = ({
   icon,
   placeholder,
   required,
-  title,
   onChange,
   value,
   SelectButtonProps,
