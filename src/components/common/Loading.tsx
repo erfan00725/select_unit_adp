@@ -1,8 +1,14 @@
 import React from "react";
 
-const Loading = () => {
+interface Props {
+  className?: string;
+}
+
+const Loading = ({ className }: Props) => {
   return (
-    <div className="w-full flex justify-center items-center py-2">
+    <div
+      className={`w-full flex justify-center items-center py-2 ${className}`}
+    >
       <svg
         aria-hidden="true"
         className="w-8 h-8  animate-spin dark:text-transparent fill-indigo-600"

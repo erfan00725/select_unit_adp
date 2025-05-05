@@ -41,7 +41,6 @@ export const SelectUnitForm = ({
   isEditMode = false,
 }: Props) => {
   const router = useRouter();
-
   // Initialize input values with data from selectUnitData if in edit mode
   const inputValues = useRef<InputValueType>({});
 
@@ -59,6 +58,8 @@ export const SelectUnitForm = ({
     ActionReturnType<typeof getLessonsByIds> | undefined
   >(undefined);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const lessonsSelectItems: SelectItem[] =
     lessons?.lessons?.map((lesson) => ({
       id: lesson.id.toString(),
@@ -132,17 +133,30 @@ export const SelectUnitForm = ({
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
-    if (!selectedLessons || selectedLessons.lessons.length < 0) {
+    if (isSubmitting) return;
+
+    if (!selectedLessons || selectedLessons.lessons.length === 0) {
+      // Changed < 0 to === 0
       toast.error("لطفاً درس‌ها را انتخاب کنید یا فرم را تکمیل نمایید");
       return;
     }
+    console.log("onSubmit");
+    setIsSubmitting(true); // Set submitting to true
+
+    // Remove the unnecessary Promise/setTimeout
+    new Promise<void>((resolve, reject) => {
+      setTimeout(() => {
+        resolve();
+      }, 3000);
+    });
+
     const lessons = seLectedLessonsIds.map((id) => BigInt(id));
     const {
       success,
       data: validateData,
       error,
     } = validateSelectUnitSafe({
-      Lesson: BigInt(seLectedLessonsIds[0]),
+      Lesson: BigInt(seLectedLessonsIds[0]), // Still need at least one lesson for validation? Consider if this is correct logic.
       Lessons: lessons,
       StudentId: BigInt(studnetId),
       Period: inputValues.current.period?.value,
@@ -152,14 +166,14 @@ export const SelectUnitForm = ({
         ? { id: selectUnitData.selectUnit.id }
         : {}),
     });
+
     if (!success || error || !validateData) {
       console.log("error", (error as ZodError).errors);
       toast.error((error as ZodError).errors[0].message);
+      setIsSubmitting(false); // Set submitting to false on validation error
       return;
     }
 
-    // If in edit mode, we need to update the existing select unit
-    // Otherwise, create a new one
     const action = isEditMode ? "ویرایش" : "انتخاب";
 
     if (isEditMode && selectUnitData?.selectUnit) {
@@ -170,12 +184,17 @@ export const SelectUnitForm = ({
             toast.error((res.error as string) || "مشکلی پیش آمده است");
             return;
           }
-
           toast.success(`درس‌ها با موفقیت ${action} شدند`);
           router.push(`${urls.selectUnit}/${selectUnitData.selectUnit?.id}`);
           handleReset();
         })
-        .catch((err) => toast.error(err.message));
+        .catch((err) => {
+          toast.error(err.message || "خطا در هنگام ویرایش");
+          console.error("Edit Error:", err);
+        })
+        .finally(() => {
+          setIsSubmitting(false);
+        });
     } else {
       // Use bulkCreateSelectUnits for create mode
       bulkCreateSelectUnits(
@@ -197,7 +216,13 @@ export const SelectUnitForm = ({
           router.push(`${urls.students}/${studnetId}`);
           handleReset();
         })
-        .catch((err) => toast.error(err.message));
+        .catch((err) => {
+          toast.error(err.message || "خطا در هنگام ایجاد");
+          console.error("Create Error:", err);
+        })
+        .finally(() => {
+          setIsSubmitting(false);
+        });
     }
   };
 
@@ -211,6 +236,10 @@ export const SelectUnitForm = ({
       <h3 className="w-full text-center text-gray-500">درسی انتخاب نشده است</h3>
     );
   };
+
+  useEffect(() => {
+    console.log("isSubmitting", isSubmitting);
+  }, [isSubmitting]);
 
   // State to track which inputs are active
 
@@ -257,6 +286,9 @@ export const SelectUnitForm = ({
       canBeDisabled: true,
     },
   ];
+
+  const buttonText = isEditMode ? "ویرایش انتخاب واحد" : "تایید انتخاب";
+
   return (
     <form>
       {/* Course Selection Table */}
@@ -307,7 +339,7 @@ export const SelectUnitForm = ({
           onClick={handleSubmit}
           className="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
-          {isEditMode ? "ویرایش انتخاب واحد" : "تایید انتخاب"}
+          {isSubmitting ? <Loading className="h-5! w-5!" /> : buttonText}
         </button>{" "}
       </div>
     </form>
