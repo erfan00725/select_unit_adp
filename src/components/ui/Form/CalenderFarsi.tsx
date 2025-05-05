@@ -82,7 +82,7 @@ export const CalenderFarsi = ({
         <div ref={calendarRef}>
           <CalendarProvider locale="fa" round="x2" direction="rtl">
             <Calendar
-              className="absolute! top-0 right-full z-30 rtl"
+              className="absolute! top-0 left-4 z-30 rtl"
               defaultValue={defaultValue ? new Date(defaultValue) : undefined}
               onChange={({ value }) => onChangeHandler(value)}
               weekends={[6]}
