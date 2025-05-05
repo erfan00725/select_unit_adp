@@ -28,7 +28,7 @@ export async function getLessons(
       grade,
     } = params || {};
 
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    // await new Promise((resolve) => setTimeout(resolve, 2000));
 
     // Calculate skip for pagination
     const skip = (page - 1) * limit;
