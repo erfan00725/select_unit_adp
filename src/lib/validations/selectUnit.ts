@@ -46,6 +46,7 @@ export const selectUnitSchema = z.object({
     .bigint()
     .or(z.string().transform((val) => BigInt(val)))
     .optional()
+    .nullable()
     .default(BigInt(0))
     .describe("هزینه‌های اضافی"),
 });

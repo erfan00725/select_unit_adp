@@ -22,7 +22,7 @@ export const fieldSchema = z.object({
         .transform((val) => (returnNullIfEmpty(val) ? BigInt(val) : undefined))
     )
     .optional()
-    .or(z.literal(null)),
+    .nullable(),
 });
 
 /**

@@ -34,12 +34,14 @@ export const teacherSchema = z.object({
         .string()
         .transform((val) => (returnNullIfEmpty(val) ? BigInt(val) : undefined))
     )
-    .optional(),
+    .optional()
+    .nullable(),
 
   Birth: z
     .date()
     .or(z.string().transform((val) => new Date(val) || undefined))
-    .optional(),
+    .optional()
+    .nullable(),
 
   Gender: z
     .boolean()

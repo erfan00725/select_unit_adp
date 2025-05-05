@@ -32,40 +32,47 @@ export const studentSchema = z.object({
     .string()
     .max(255, { message: errorMassages.maxLength("نام پدر", 255) })
     .optional()
+    .nullable()
     .or(z.string().transform(returnNullIfEmpty)),
 
   Birth: z
     .date()
     .or(z.string().transform((val) => new Date(val) || undefined))
-    .optional(),
+    .optional()
+    .nullable(),
 
   Address: z
     .string()
     .max(255, { message: errorMassages.maxLength("آدرس", 255) })
     .optional()
+    .nullable()
     .or(z.string().transform(returnNullIfEmpty)),
 
   HomeNumber: z
     .string()
     .max(255, { message: errorMassages.maxLength("تلفن منزل", 255) })
     .optional()
+    .nullable()
     .or(z.string().transform(returnNullIfEmpty)),
 
   PhoneNumber: z
     .string()
     .max(255, { message: errorMassages.maxLength("شماره موبایل", 255) })
     .optional()
+    .nullable()
     .or(z.string().transform(returnNullIfEmpty)),
 
   Grade: z
     .nativeEnum(Grade)
     .optional()
+    .nullable()
     .or(z.string().transform(returnNullIfEmpty))
-    .pipe(z.nativeEnum(Grade).optional()),
+    .pipe(z.nativeEnum(Grade).optional().nullable()),
 
   Gender: z
     .boolean()
     .optional()
+    .nullable()
     .or(
       z.string().transform((val) => {
         if (val === "") return undefined;

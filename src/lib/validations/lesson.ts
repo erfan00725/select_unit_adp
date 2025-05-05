@@ -40,14 +40,16 @@ export const lessonSchema = z.object({
         .string()
         .transform((val) => (returnNullIfEmpty(val) ? BigInt(val) : undefined))
     )
-    .optional(),
+    .optional()
+    .nullable(),
 
   // Optional fields with validation
   Grade: z
     .nativeEnum(LessonGrade)
     .optional()
+    .nullable()
     .or(z.string().transform(returnNullIfEmpty))
-    .pipe(z.nativeEnum(LessonGrade).optional()),
+    .pipe(z.nativeEnum(LessonGrade).optional().nullable()),
 
   fieldId: z
     .bigint()
@@ -56,7 +58,8 @@ export const lessonSchema = z.object({
         .string()
         .transform((val) => (returnNullIfEmpty(val) ? BigInt(val) : undefined))
     )
-    .optional(),
+    .optional()
+    .nullable(),
 
   PassCondition: z
     .number()
@@ -67,7 +70,8 @@ export const lessonSchema = z.object({
         .int({ message: errorMassages.integerNumber("شرط قبولی") })
         .min(0, { message: errorMassages.nonNegativeNumber("شرط قبولی") })
     )
-    .optional(),
+    .optional()
+    .nullable(),
 
   TheoriHours: z
     .number()
@@ -78,7 +82,8 @@ export const lessonSchema = z.object({
         .int({ message: errorMassages.integerNumber("ساعات نظری") })
         .min(0, { message: errorMassages.nonNegativeNumber("ساعات نظری") })
     )
-    .optional(),
+    .optional()
+    .nullable(),
 
   PracticalHours: z
     .number()
@@ -89,7 +94,8 @@ export const lessonSchema = z.object({
         .int({ message: errorMassages.integerNumber("ساعات عملی") })
         .min(0, { message: errorMassages.nonNegativeNumber("ساعات عملی") })
     )
-    .optional(),
+    .optional()
+    .nullable(),
 
   RequireLesson: z
     .number({ message: errorMassages.integerNumber("درس پیشنیاز") })
@@ -97,34 +103,37 @@ export const lessonSchema = z.object({
       z
         .string()
         .transform((val) => (returnNullIfEmpty(val) ? Number(val) : undefined))
+        .optional()
+        .nullable()
     )
-    .optional(),
+    .optional()
+    .nullable(),
 
-  RequireUnit: z
-    .bigint()
-    .or(z.string().transform((val) => BigInt(val)))
-    .optional(),
+  RequireUnit: z.bigint().optional().nullable(),
 
   NotifCode: z
     .bigint()
     .or(z.string().transform((val) => BigInt(val)))
     .nullable()
-    .optional(),
+    .optional(), // Keeping existing order as nullable().optional()
 
   ValidFrom: z
     .date()
     .or(z.string().transform((val) => new Date(val) || new Date()))
-    .optional(),
+    .optional()
+    .nullable(),
 
   ValidTill: z
     .date()
     .or(z.string().transform((val) => new Date(val) || undefined))
-    .optional(),
+    .optional()
+    .nullable(),
 
   PricePerUnit: z
     .bigint()
     .or(z.string().transform((val) => BigInt(val)))
-    .optional(),
+    .optional()
+    .nullable(),
 });
 
 /**
