@@ -5,11 +5,13 @@ import { User } from "@prisma/client";
 export const authConfig = {
   pages: {
     signIn: "/login",
+    error: "/login",
   },
 
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       console.log("auth", auth);
+      console.log("nextUrl", nextUrl);
       const isLoggedIn = !!auth?.user;
       const protectedRoutes = [homeUrl];
       const isProtectedRoute = protectedRoutes.some((route) =>

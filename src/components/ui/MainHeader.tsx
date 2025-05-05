@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react"; // Import useState
+import React, { useEffect, useState } from "react"; // Import useState
 import Logo from "./common/Logo";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,13 +11,24 @@ import {
 import clsx from "clsx";
 import { usePathname } from "next/navigation";
 import { NavBarConfigs } from "@/constants/configs/GeneralConfigs";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { toast } from "react-toastify";
 
 // Main header component
 function MainHeader() {
   const pathName = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State for mobile menu visibility
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const session = useSession();
+
+  useEffect(() => {
+    console.log("session", session);
+    setIsAuthenticated(session.status === "authenticated");
+  }, [session.status, pathName]);
+
+  if (!isAuthenticated) {
+    return null; // Render nothing if loading or unauthenticated
+  }
 
   // Function to handle user sign out
   const handleSignOut = () => {

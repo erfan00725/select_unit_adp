@@ -1,19 +1,30 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Logo from "@/components/ui/common/Logo";
 import Input from "@/components/ui/common/Input";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { homeUrl } from "@/constants/urls";
 import Loading from "@/components/common/Loading";
+import { useSearchParams } from "@/lib/hooks/useSeachParams";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false); // New state for loading
+  const { getSearchParam } = useSearchParams();
+  const router = useRouter();
+  const session = useSession();
+
+  useEffect(() => {
+    if (session.status === "authenticated") {
+      router.push(homeUrl);
+    }
+  }, [session]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,17 +38,23 @@ export default function LoginPage() {
     signIn("credentials", {
       userName,
       password,
-      redirectTo: homeUrl,
+      redirect: false,
     })
       .then((response) => {
         // @ts-ignore
         if (response?.error) {
           // Handle the specific error from auth.config.ts
-          console.log("Authentication error:", response);
           toast.error("نام کاربری یا رمز عبور اشتباه است");
         } else {
-          // Successful login
           toast.success("ورود شما با موفقیت انجام شد");
+          const callbackUrl = getSearchParam("callbackUrl");
+          if (!!callbackUrl) {
+            const callbackPath = callbackUrl.split(homeUrl)[1];
+            router.push(homeUrl + callbackPath);
+          } else {
+            router.push(homeUrl);
+          }
+          // Successful login
         }
       })
       .catch((error) => {

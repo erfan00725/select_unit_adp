@@ -30,7 +30,7 @@ export default async function RootLayout({
   return (
     <>
       <SessionProvider>
-        {!!user && <MainHeader />}
+        <MainHeader />
         <html lang="en">
           <body className={`antialiased rtl`}>
             <main className="container">{children}</main>
