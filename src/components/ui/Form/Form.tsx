@@ -92,7 +92,7 @@ const Form: React.FC<FormProps> = ({
     const isValueEmpty =
       value === null ||
       value === undefined ||
-      (typeof value === "string" && value.trim() === "") ||
+      value.trim() === "" ||
       value === "none";
 
     // Convert value based on dataType if specified
@@ -127,8 +127,7 @@ const Form: React.FC<FormProps> = ({
     if (useDefaultValues) {
       const defaultValues: Record<string, any> = {};
       inputs.forEach((input) => {
-        console.log(input.defaultValue);
-        defaultValues[input.name] = input.defaultValue || "";
+        defaultValues[input.name] = input.defaultValue || null;
       });
       setFormData(defaultValues);
     } else {
@@ -136,14 +135,9 @@ const Form: React.FC<FormProps> = ({
     }
   }, []);
 
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
-
   // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData);
     if (onSubmit) {
       onSubmit(formData);
     }

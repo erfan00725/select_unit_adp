@@ -105,7 +105,7 @@ export const LessonsDetailConfig = (
         type: "price",
       },
       {
-        label: "کد اطلاع‌رسانی",
+        label: "کد ابلاغ",
         value: lesson?.NotifCode?.toString(),
         type: "text",
       },
@@ -318,9 +318,9 @@ export const SelectUnitDetailConfig = (
 
   const SelectUnitConfig: InfoPageConfig = {
     id: selectUnit?.id.toString() || "",
-    title: `${student?.FirstName} ${student?.LastName} - ${
-      selectUnit.Year
-    } ${periodRender(selectUnit.Period)}`,
+    title: `${student?.FirstName} ${student?.LastName} _ ${getAcademicYearJ(
+      selectUnit?.Year
+    )} _ ${periodRender(selectUnit.Period)}`,
     createdAt: selectUnit?.Created_at.toDateString(),
     modifiedAt: selectUnit?.Updated_at.toDateString(),
     rows: [
