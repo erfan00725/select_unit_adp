@@ -1,4 +1,5 @@
 import {
+  getFeeSettings,
   getGeneralSettings,
   getLessons,
   getSelectUnitById,
@@ -14,13 +15,8 @@ export const SelectUnitFormFetch = async ({
   studnetId,
   selectUnitId,
 }: Props) => {
-  const settings = (await getGeneralSettings()).settings;
-  const defaultPrice =
-    settings?.filter((setting) => setting.Key === "PricePerUnit")[0]?.Value ||
-    10;
-  const defaultFixedFee = settings?.filter(
-    (setting) => setting.Key === "FixedFee"
-  )[0]?.Value;
+  const { booksFee, certificateFee, extraClassFee, fixedFee, pricePerUnit } =
+    await getFeeSettings();
 
   // TODO: Get only related lessons
   const lessons = await getLessons({ limit: 500 });
@@ -35,8 +31,8 @@ export const SelectUnitFormFetch = async ({
     <SelectUnitForm
       studnetId={studnetId}
       lessons={lessons}
-      defaultPrice={defaultPrice}
-      defaultFixedFee={defaultFixedFee}
+      defaultPrice={pricePerUnit}
+      defaultFixedFee={fixedFee}
       selectUnitData={selectUnitData} // Pass the select unit data for editing
       isEditMode={!!selectUnitId} // Flag to indicate edit mode
     />

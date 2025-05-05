@@ -67,8 +67,12 @@ export const SelectUnitForm = ({
     })) || [];
   // Calculate total price
   const totalPrice = selectedLessons?.lessons?.reduce((total, lesson) => {
-    const price = Number(lesson?.PricePerUnit) || Number(defaultPrice);
-    return total + price * (Number(lesson?.PricePerUnit) || 1);
+    console.log("lesson", lesson.PricePerUnit);
+    const price = Number(lesson?.PricePerUnit) || Number(defaultPrice) || 0;
+    return (
+      total +
+      price * (Number(lesson?.TheoriUnit) + Number(lesson?.PracticalUnit) || 1)
+    );
   }, 0);
   // calcualte Year
   const year = new Date().getFullYear();
