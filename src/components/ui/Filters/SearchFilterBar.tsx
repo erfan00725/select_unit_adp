@@ -104,9 +104,9 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
               تا تاریخ:
             </label>
             <CalenderFarsi
-              name="till"
-              defaultValue={getSearchParam("till")}
-              onChange={(value) => setSearchParam("till", value, true)}
+              name="to"
+              defaultValue={getSearchParam("to")}
+              onChange={(value) => setSearchParam("to", value, true)}
             />
           </div>
 

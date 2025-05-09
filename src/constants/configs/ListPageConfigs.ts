@@ -14,7 +14,7 @@ import { FilterOptionType, Orders, PageType } from "@/types/General";
 import getAcademicYearJ from "@/lib/utils/getAcademicYearJ";
 import { priceFormatter } from "@/lib/utils/priceFormatter";
 import { gradeRender, periodRender } from "@/lib/utils/dataRenderer";
-import { Period } from "@prisma/client";
+import { LessonGrade, Period } from "@prisma/client";
 
 type ListGeneralParamsType = {
   searchParams: { [key: string]: string | undefined };
@@ -52,8 +52,24 @@ export const s_ListConfig: StaticConfigsType = {
     searchPlaceholder: "جستجوی درس‌ها، اساتید...",
     filterOptions: [
       {
+        name: "grade",
+        type: "select",
+        label: "مقطع",
+        placeholder: "مقطع را وارد کنید",
+        options: [
+          { label: "عمومی", value: LessonGrade.GENERAL },
+          { label: "هفتم", value: LessonGrade.GRADE_7 },
+          { label: "هشتم", value: LessonGrade.GRADE_8 },
+          { label: "نهم", value: LessonGrade.GRADE_9 },
+          { label: "دهم", value: LessonGrade.GRADE_10 },
+          { label: "یازدهم", value: LessonGrade.GRADE_11 },
+          { label: "دوازدهم", value: LessonGrade.GRADE_12 },
+        ],
+      },
+      {
         name: "unit",
         type: "number",
+        label: "واحد",
         placeholder: "واحد را وارد کنید",
       },
     ],
@@ -62,7 +78,7 @@ export const s_ListConfig: StaticConfigsType = {
     title: "مدیریت دانش‌آموزان",
     description: "مدیریت دانش‌آموزان خود را انجام دهید",
     addButtonLabel: "افزودن دانش‌آموز جدید",
-    searchPlaceholder: "جستجوی دانش‌آموزان، واحدها...",
+    searchPlaceholder: "جستجوی دانش‌آموزان، رشته، کدملی...",
   },
   fields: {
     title: "مدیریت رشته‌ها",
@@ -118,7 +134,7 @@ export const LessonsList = async ({
 }: ListGeneralParamsType & {
   selectUnitLessonData?: Awaited<ReturnType<typeof getSelectUnitById>>;
 }): Promise<ListGeneralReturnType> => {
-  const { page, q, from, to, order, unit, limit } = searchParams;
+  const { page, q, from, to, order, unit, limit, grade } = searchParams;
 
   const lessonsData = await getLessons({
     page: page ? Number(page) : 1,
@@ -128,6 +144,7 @@ export const LessonsList = async ({
     to: to ? new Date(to) : undefined,
     order: order ? (order as Orders) : "asc",
     unit,
+    grade: grade as LessonGrade,
   });
   const pageLimit = lessonsData.pagination?.limit || defaultListLimit;
 
@@ -162,6 +179,7 @@ export const LessonsList = async ({
       id: lesson.id,
       Name: lesson.LessonName,
       Grade: gradeRender(lesson.Grade),
+      Field: lesson.field?.Name || "عمومی",
       TheoriUnit: lesson.TheoriUnit,
       PracticalUnit: lesson.PracticalUnit,
       TotalUnits: lesson.TheoriUnit + lesson.PracticalUnit,
@@ -180,6 +198,7 @@ export const LessonsList = async ({
     "شناسه",
     "نام",
     "مقطع",
+    "رشته",
     "واحد نظری",
     "واحد عملی",
     "کل واحد‌ها",

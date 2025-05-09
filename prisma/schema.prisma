@@ -18,7 +18,7 @@ model User {
   id         String    @id @default(cuid())
   UserName   String    @db.VarChar(255) @unique
   Password   String    @db.VarChar(255)
-  Type       UserType? @default(user)
+  Type       UserType @default(user)
   Created_at DateTime  @default(now()) @db.Timestamp()
   // Updated_at DateTime  @updatedAt
 
@@ -97,16 +97,16 @@ model Lesson {
   TeacherId      BigInt?      @db.UnsignedBigInt
   LessonName     String       @db.VarChar(255)
   PracticalUnit  Int
-  TheoriUnit  Int
-  Grade          LessonGrade? @default(GENERAL)
-  fieldId        BigInt?      @map("Field") @db.UnsignedBigInt // no field id if lesson is general
+  TheoriUnit     Int
+  Grade          LessonGrade @default(GENERAL)
+  fieldId        BigInt?     @map("Field") @db.UnsignedBigInt // no field id if lesson is general
   PassCondition  Int?
-  TheoriHours    Int?         @default(0)
-  PracticalHours Int?         @default(0)
+  TheoriHours    Int         @default(0)
+  PracticalHours Int         @default(0)
   RequireLesson  BigInt?      @db.UnsignedBigInt
   RequireUnit    Int?
   NotifCode      BigInt?      @db.UnsignedBigInt
-  ValidFrom      DateTime?    @default(now()) @db.Date
+  ValidFrom      DateTime    @default(now()) @db.Date
   ValidTill      DateTime?    @db.Date
   PricePerUnit   BigInt?      @db.BigInt
   Created_at     DateTime     @default(now()) @db.Timestamp()
@@ -125,12 +125,12 @@ model SelectUnit {
   StudentId  BigInt   @db.UnsignedBigInt
   Year       Int
   Period     Period
-  ExtraFee   BigInt?  @default(0) @db.UnsignedBigInt
-  FixedFee   BigInt?  @default(0) @db.BigInt // fixed fee for the unit, not for the lesson
-  CertificateFee BigInt? @default(0) @db.BigInt
-  ExtraClassFee BigInt? @default(0) @db.BigInt
-  BooksFee   BigInt?  @default(0) @db.BigInt
-  Discount   BigInt?  @default(0) @db.UnsignedBigInt
+  ExtraFee   BigInt  @default(0) @db.UnsignedBigInt
+  FixedFee   BigInt  @default(0) @db.BigInt // fixed fee for the unit, not for the lesson
+  CertificateFee BigInt @default(0) @db.BigInt
+  ExtraClassFee BigInt @default(0) @db.BigInt
+  BooksFee   BigInt  @default(0) @db.BigInt
+  Discount   BigInt  @default(0) @db.UnsignedBigInt
   Paid       Boolean  @default(false) @db.Bit(1)
   Created_at DateTime @default(now()) @db.Timestamp()
   Updated_at DateTime @default(now()) @db.Timestamp()

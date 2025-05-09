@@ -52,12 +52,26 @@ export async function getLessons(
       if (to) where.Created_at.lte = to;
     }
 
-    if (unit) {
-      where.Unit = Number(unit);
+    if (!!unit) {
+      where.OR = [
+        ...(where.OR ? where.OR : []),
+        {
+          TheoriUnit: {
+            equals: +unit,
+          },
+        },
+        {
+          PracticalUnit: {
+            equals: +unit,
+          },
+        },
+      ];
     }
 
     if (grade) {
-      where.Grade = grade || LessonGrade.GENERAL;
+      where.Grade = {
+        equals: grade,
+      };
     }
 
     if (field) {

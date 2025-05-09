@@ -37,22 +37,29 @@ export default function FilterOption({ option, onChange }: Props) {
 
   let className = "";
 
+  const defaultValue =
+    getSearchParam(option.name) ||
+    (typeof option.defaultValue === "boolean"
+      ? option.defaultValue.toString()
+      : option.defaultValue);
+
+  console.log(getSearchParam(option.name));
+
   switch (option.type) {
     case "select":
       Input = (
         <select
           className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          defaultValue={
-            getSearchParam(option.name) ||
-            (typeof option.defaultValue === "boolean"
-              ? option.defaultValue.toString()
-              : option.defaultValue)
-          }
+          defaultValue={defaultValue || ""}
           onChange={onChange}
+          name={option.name}
         >
+          <option value="">{`${
+            option.placeholder ? option.placeholder : "انتخاب..."
+          }`}</option>
           {option.options?.map((option) => (
             <option key={option.value} value={option.value}>
-              {`${option.label ? option.label : "گزینه"} : `}
+              {`${option.label ? option.label : "گزینه"} `}
             </option>
           ))}
         </select>
@@ -68,10 +75,12 @@ export default function FilterOption({ option, onChange }: Props) {
   }
 
   return (
-    <div className={clsx("flex flex-col gap-2", className)}>
-      <label htmlFor={option.name} className="text-sm text-gray-700">
-        {option.label ? option.label : "برچسب"}
-      </label>
+    <div className={clsx("flex flex-col gap-2 h-full", className)}>
+      {option.label && (
+        <label htmlFor={option.name} className="text-sm text-gray-700">
+          {option.label}
+        </label>
+      )}
       {Input}
     </div>
   );
