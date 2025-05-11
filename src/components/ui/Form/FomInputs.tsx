@@ -1,7 +1,10 @@
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 
-export type InputValueType = Record<string, { active: boolean; value: any }>;
+export type InputValueType = Record<
+  string,
+  { active: boolean; value: string | number }
+>;
 
 type Props = {
   configs: Array<{
@@ -9,7 +12,7 @@ type Props = {
     label: string;
     type: "select" | "number";
     name: string;
-    options?: Array<{ value: any; label: string }>;
+    options?: Array<{ value: string; label: string }>;
     required?: boolean;
     className?: string;
     canBeDisabled?: boolean;
@@ -63,11 +66,11 @@ export const FormInputs = ({
     } else {
       setInputsValue(defaultValues);
     }
-  }, [configs, initialValues]);
+  }, []);
 
   useEffect(() => {
     onInputsChange && onInputsChange(inputsValue);
-    console.log(inputsValue);
+    // console.log(inputsValue);
   }, [inputsValue]);
 
   // تغییر وضعیت فعال بودن ورودی

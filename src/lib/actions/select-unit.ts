@@ -929,6 +929,7 @@ export async function bulkCreateSelectUnits(
 // Bulk edit selected lessons for an existing select unit
 export async function bulkEditSelectUnits(
   selectUnitId: bigint,
+  baseData: Partial<SelectUnitDataType>,
   lessonIds: bigint[]
 ) {
   try {
@@ -1011,6 +1012,15 @@ export async function bulkEditSelectUnits(
         });
 
         addedLessons.push(selectedLesson);
+      }
+
+      // Update SelectUnit fields from baseData
+      const { StudentId, id, ...updateDataFromBase } = baseData;
+      if (Object.keys(updateDataFromBase).length > 0) {
+        await tx.selectUnit.update({
+          where: { id: selectUnitId },
+          data: updateDataFromBase,
+        });
       }
 
       // Get the updated select unit with all lessons

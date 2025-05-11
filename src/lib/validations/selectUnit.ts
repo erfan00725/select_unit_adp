@@ -49,6 +49,36 @@ export const selectUnitSchema = z.object({
     .nullable()
     .default(BigInt(0))
     .describe("هزینه‌های اضافی"),
+
+  FixedFee: z
+    .bigint()
+    .or(z.string().transform((val) => BigInt(val)))
+    .optional(),
+
+  // Add new fee fields to the schema
+  CertificateFee: z
+    .bigint()
+    .or(z.string().transform((val) => BigInt(val)))
+    .optional()
+    .nullable()
+    .default(BigInt(0))
+    .describe("هزینه گواهی"),
+
+  ExtraClassFee: z
+    .bigint()
+    .or(z.string().transform((val) => BigInt(val)))
+    .optional()
+    .nullable()
+    .default(BigInt(0))
+    .describe("هزینه کلاس اضافی"),
+
+  BooksFee: z
+    .bigint()
+    .or(z.string().transform((val) => BigInt(val)))
+    .optional()
+    .nullable()
+    .default(BigInt(0))
+    .describe("هزینه کتاب"),
 });
 /**
  * Type definition derived from the Zod schema

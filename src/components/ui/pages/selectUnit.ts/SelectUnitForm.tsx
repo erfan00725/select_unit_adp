@@ -1,6 +1,6 @@
 "use client";
 import { Period } from "@prisma/client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import SelectUnitTable from "./SelectUnitTable";
 import { LessonSelect } from "./LessonSelect";
 import Link from "next/link";
@@ -23,6 +23,84 @@ import getAcademicYearJ from "@/lib/utils/getAcademicYearJ";
 import { priceFormatter } from "@/lib/utils/priceFormatter";
 import { useRouter } from "next/navigation";
 
+const formConfigs = () => {
+  // calcualte Year
+  const year = new Date().getFullYear();
+  const periodOptions = new Array(10)
+    .fill(0)
+    .map((_, i) => Number(year) + (i - 3))
+    .map((year) => ({
+      value: year.toString(),
+      label: getAcademicYearJ(year),
+    }));
+
+  return [
+    {
+      id: "SU_Year",
+      label: "سال تحصیلی",
+      type: "select" as const,
+      name: "year",
+      options: periodOptions,
+      required: true,
+    },
+    {
+      id: "SU_Period",
+      label: "نیمسال",
+      type: "select" as const,
+      name: "period",
+      options: [
+        { value: Period.first, label: "نیمسال اول" },
+        { value: Period.second, label: "نیمسال دوم" },
+        { value: Period.summer, label: "تابستان" },
+      ],
+      required: true,
+    },
+    {
+      id: "SU_Discount",
+      label: "تخفیف",
+      type: "number" as const,
+      name: "discount",
+      canBeDisabled: true,
+    },
+    {
+      id: "SU_ExtraFee",
+      label: "هزینه اضافی",
+      type: "number" as const,
+      name: "extraFee",
+      canBeDisabled: true,
+    },
+    {
+      id: "SU_FixedFee",
+      label: "هزینه ثابت",
+      type: "number" as const,
+      name: "fixedFee",
+      canBeDisabled: true,
+    },
+    // Add new form configurations
+    {
+      id: "SU_CertificateFee",
+      label: "هزینه مدرک",
+      type: "number" as const,
+      name: "certificateFee",
+      canBeDisabled: true,
+    },
+    {
+      id: "SU_ExtraClassFee",
+      label: "هزینه کلاس اضافی",
+      type: "number" as const,
+      name: "extraClassFee",
+      canBeDisabled: true,
+    },
+    {
+      id: "SU_BooksFee",
+      label: "هزینه کتاب",
+      type: "number" as const,
+      name: "booksFee",
+      canBeDisabled: true,
+    },
+  ];
+};
+
 type Props = {
   studnetId: string;
   lessons: ActionReturnType<typeof getLessons>;
@@ -42,7 +120,7 @@ export const SelectUnitForm = ({
 }: Props) => {
   const router = useRouter();
   // Initialize input values with data from selectUnitData if in edit mode
-  const inputValues = useRef<InputValueType>({});
+  const [inputValues, setInputValues] = useState<InputValueType>({});
 
   // Extract lesson IDs from selectUnitData if in edit mode
   const initialLessonIds =
@@ -59,50 +137,88 @@ export const SelectUnitForm = ({
   >(undefined);
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [totalPrice, setTotalPrice] = useState<number>(0); // State for total price
 
   const lessonsSelectItems: SelectItem[] =
-    lessons?.lessons?.map((lesson) => ({
-      id: lesson.id.toString(),
-      name: `${lesson.LessonName} (${lesson.teacher?.FirstName} ${lesson.teacher?.LastName})`,
-    })) || [];
-  // Calculate total price
-  const totalPrice = selectedLessons?.lessons?.reduce((total, lesson) => {
-    console.log("lesson", lesson.PricePerUnit);
-    const price = Number(lesson?.PricePerUnit) || Number(defaultPrice) || 0;
-    return (
-      total +
-      price * (Number(lesson?.TheoriUnit) + Number(lesson?.PracticalUnit) || 1)
-    );
-  }, 0);
-  // calcualte Year
-  const year = new Date().getFullYear();
-  const periodOptions = new Array(10)
-    .fill(0)
-    .map((_, i) => Number(year) + (i - 3))
-    .map((year) => ({
-      value: year,
-      label: getAcademicYearJ(year),
-    }));
+    lessons?.lessons?.map((lesson) => {
+      const teacherName = lesson.teacher
+        ? `${lesson.teacher?.FirstName} ${lesson.teacher?.LastName}`
+        : "بدون معلم";
+      return {
+        id: lesson.id.toString(),
+        name: `${lesson.LessonName} (${teacherName})`,
+      };
+    }) || [];
+
   // Initialize form values if in edit mode
   useEffect(() => {
     if (isEditMode && selectUnitData?.selectUnit) {
       const selectUnit = selectUnitData.selectUnit;
 
       // Set initial form values
-      inputValues.current = {
+      setInputValues({
         year: { value: selectUnit.Year, active: !!selectUnit.Year },
         period: { value: selectUnit.Period, active: !!selectUnit.Period },
         extraFee: {
-          value: selectUnit.ExtraFee || 0,
+          value: Number(selectUnit.ExtraFee) || 0,
           active: !!selectUnit.ExtraFee,
         },
         fixedFee: {
-          value: selectUnit.FixedFee || defaultFixedFee || 0,
+          value: Number(selectUnit.FixedFee) || defaultFixedFee || 0,
           active: !!selectUnit.FixedFee || !!defaultFixedFee,
         },
-      };
+        // Add initialization for new fees
+        certificateFee: {
+          value: Number(selectUnit.CertificateFee) || 0,
+          active: !!selectUnit.CertificateFee,
+        },
+        extraClassFee: {
+          value: Number(selectUnit.ExtraClassFee) || 0,
+          active: !!selectUnit.ExtraClassFee,
+        },
+        booksFee: {
+          value: Number(selectUnit.BooksFee) || 0,
+          active: !!selectUnit.BooksFee,
+        },
+      });
     }
-  }, [isEditMode, selectUnitData, defaultFixedFee]);
+  }, []);
+
+  const getFee = (fee: { value: number | string; active: boolean }) => {
+    if (!fee) return 0;
+    if (fee.active && !!fee.value) {
+      return Number(fee.value);
+    } else {
+      return 0;
+    }
+  };
+
+  useEffect(() => {
+    // Calculate total price
+    const lessonsPrice =
+      selectedLessons?.lessons?.reduce((total, lesson) => {
+        const price = Number(lesson?.PricePerUnit) || Number(defaultPrice) || 0;
+        const a = Number(lesson?.TheoriUnit) + Number(lesson?.PracticalUnit);
+        return (
+          total + price * (a || 1) // if a is 0, use 1
+        );
+      }, 0) || 0; // Ensure lessonsPrice is a number, defaulting to 0
+
+    console.log(inputValues);
+
+    const additionalFees =
+      getFee(inputValues.extraFee) +
+      getFee(inputValues.fixedFee) +
+      getFee(inputValues.certificateFee) +
+      getFee(inputValues.extraClassFee) +
+      getFee(inputValues.booksFee) -
+      getFee(inputValues.discount);
+
+    console.log("lessonsPrice", lessonsPrice);
+    console.log("additionalFees", additionalFees);
+
+    setTotalPrice(lessonsPrice + additionalFees);
+  }, [inputValues, selectedLessons]);
 
   // Fetch selected lessons whenever seLectedLessonsIds changes
   useEffect(() => {
@@ -155,21 +271,25 @@ export const SelectUnitForm = ({
     });
 
     const lessons = seLectedLessonsIds.map((id) => BigInt(id));
+    const dataToValidate = {
+      StudentId: BigInt(studnetId),
+      Period: inputValues.period?.value,
+      Year: inputValues.year?.value,
+      Lessons: lessons,
+      ExtraFee: inputValues.extraFee?.value,
+      FixedFee: inputValues.fixedFee?.value,
+      CertificateFee: inputValues.certificateFee?.value,
+      ExtraClassFee: inputValues.extraClassFee?.value,
+      BooksFee: inputValues.booksFee?.value,
+      // Conditionally add Lesson if lessons exist, as schema requires it but it might be empty before validation catch
+      ...(lessons.length > 0 ? { Lesson: lessons[0] } : {}),
+    };
+
     const {
       success,
       data: validateData,
       error,
-    } = validateSelectUnitSafe({
-      Lesson: BigInt(seLectedLessonsIds[0]), // Still need at least one lesson for validation? Consider if this is correct logic.
-      Lessons: lessons,
-      StudentId: BigInt(studnetId),
-      Period: inputValues.current.period?.value,
-      Year: inputValues.current.year?.value,
-      // Include ID if in edit mode
-      ...(isEditMode && selectUnitData?.selectUnit
-        ? { id: selectUnitData.selectUnit.id }
-        : {}),
-    });
+    } = validateSelectUnitSafe(dataToValidate);
 
     if (!success || error || !validateData) {
       console.log("error", (error as ZodError).errors);
@@ -182,7 +302,17 @@ export const SelectUnitForm = ({
 
     if (isEditMode && selectUnitData?.selectUnit) {
       // Use bulkEditSelectUnits for edit mode
-      bulkEditSelectUnits(selectUnitData.selectUnit.id, validateData.Lessons)
+      bulkEditSelectUnits(
+        selectUnitData.selectUnit.id,
+        {
+          ...validateData,
+          ExtraFee: validateData.ExtraFee || undefined,
+          CertificateFee: validateData.CertificateFee || undefined,
+          ExtraClassFee: validateData.ExtraClassFee || undefined,
+          BooksFee: validateData.BooksFee || undefined,
+        },
+        seLectedLessonsIds.map((id) => BigInt(id))
+      )
         .then((res) => {
           if (res.error) {
             toast.error((res.error as string) || "مشکلی پیش آمده است");
@@ -206,8 +336,11 @@ export const SelectUnitForm = ({
           StudentId: validateData.StudentId,
           Period: validateData.Period,
           Year: validateData.Year,
-          ExtraFee: inputValues.current.extraFee?.value,
-          FixedFee: inputValues.current.fixedFee?.value || defaultFixedFee,
+          ExtraFee: validateData.ExtraFee || undefined,
+          FixedFee: validateData.FixedFee,
+          CertificateFee: validateData.CertificateFee || undefined,
+          ExtraClassFee: validateData.ExtraClassFee || undefined,
+          BooksFee: validateData.BooksFee || undefined,
         },
         validateData.Lessons
       )
@@ -247,50 +380,6 @@ export const SelectUnitForm = ({
 
   // State to track which inputs are active
 
-  const formConfigs = [
-    {
-      id: "SU_Year",
-      label: "سال تحصیلی",
-      type: "select" as const,
-      name: "year",
-      options: periodOptions,
-      required: true,
-    },
-    {
-      id: "SU_Period",
-      label: "نیمسال",
-      type: "select" as const,
-      name: "period",
-      options: [
-        { value: Period.first, label: "نیمسال اول" },
-        { value: Period.second, label: "نیمسال دوم" },
-        { value: Period.summer, label: "تابستان" },
-      ],
-      required: true,
-    },
-    {
-      id: "SU_Discount",
-      label: "تخفیف",
-      type: "number" as const,
-      name: "discount",
-      canBeDisabled: true,
-    },
-    {
-      id: "SU_ExtraFee",
-      label: "هزینه اضافی",
-      type: "number" as const,
-      name: "extraFee",
-      canBeDisabled: true,
-    },
-    {
-      id: "SU_FixedFee",
-      label: "هزینه ثابت",
-      type: "number" as const,
-      name: "fixedFee",
-      canBeDisabled: true,
-    },
-  ];
-
   const buttonText = isEditMode ? "ویرایش انتخاب واحد" : "تایید انتخاب";
 
   return (
@@ -298,14 +387,12 @@ export const SelectUnitForm = ({
       {/* Course Selection Table */}
       <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
         <FormInputs
-          configs={formConfigs}
+          configs={formConfigs()}
           initialValues={
-            isEditMode && selectUnitData?.selectUnit
-              ? inputValues.current
-              : undefined
+            isEditMode && selectUnitData?.selectUnit ? inputValues : undefined
           }
           onInputsChange={(inputs) => {
-            inputValues.current = { ...inputValues.current, ...inputs };
+            setInputValues((prev) => ({ ...prev, ...inputs }));
           }}
         />
         <div className="flex justify-between items-center mb-4">
