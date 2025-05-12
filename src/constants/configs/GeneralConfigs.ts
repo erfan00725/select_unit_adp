@@ -25,4 +25,8 @@ export const NavBarConfigs = [
     label: "مدیریت انتخاب واحد‌ها",
     href: urls.selectUnit,
   },
+  {
+    label: "تنظیمات عمومی",
+    href: urls.generals,
+  },
 ];

@@ -6,6 +6,7 @@ import {
   getStudentById,
   getTeacherById,
   getTeachers,
+  getGeneralByKey, // Added for General entity
 } from "@/lib/actions";
 import { FormInputProps, FormPageProps, InputDataType } from "@/types/Props";
 import {
@@ -458,6 +459,40 @@ export const teacherFormConfigGenerator = async (
           title: "انتخاب جنسیت",
           required: true,
         },
+      },
+    ],
+  };
+};
+
+// Form config generator for General entity
+export const generalFormConfigGenerator = async (
+  data?: Awaited<ReturnType<typeof getGeneralByKey>>
+): Promise<FormPageProps> => {
+  const general = data?.general;
+
+  return {
+    title: formTitle("تنظیم عمومی", !!general),
+    description: formDescription("تنظیم عمومی", !!general),
+    useDefaultValues: true,
+    addText: formButton("تنظیم عمومی", !!general),
+    inputs: [
+      {
+        title: "کلید",
+        name: "Key",
+        type: "text",
+        placeholder: inputDefaultPlaceholder("کلید"),
+        required: true,
+        defaultValue: general?.Key,
+        // Disable Key field when editing, as it's the primary key
+        disabled: !!general,
+      },
+      {
+        title: "مقدار",
+        name: "Value",
+        type: "text",
+        placeholder: inputDefaultPlaceholder("مقدار"),
+        required: true,
+        defaultValue: general?.Value,
       },
     ],
   };

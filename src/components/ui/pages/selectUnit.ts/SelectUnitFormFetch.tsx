@@ -24,7 +24,7 @@ export const SelectUnitFormFetch = async ({
   // If selectUnitId is provided, fetch the select unit data for editing
   let selectUnitData = undefined;
   if (selectUnitId) {
-    selectUnitData = await getSelectUnitById(BigInt(selectUnitId));
+    selectUnitData = await getSelectUnitById(selectUnitId);
   }
 
   return (

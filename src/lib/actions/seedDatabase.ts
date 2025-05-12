@@ -3,14 +3,11 @@
 import bcrypt from "bcryptjs";
 import { createSetting, createUser } from "@/lib/actions";
 import { Settings } from "@/types/General";
-import { cleareUserAndSetings } from "./general";
 
 /**
  * Initializes the database with default admin user and fee settings
  */
 export const initialDataBase = async () => {
-  await cleareUserAndSetings();
-
   const adminUserName = "admin";
   const adminPassword = "@dmin113link";
   createUser({

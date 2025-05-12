@@ -11,4 +11,5 @@ export const urls = {
   [PageType.Field]: homeUrl + `/${PageType.Field}`,
   [PageType.Teacher]: homeUrl + `/${PageType.Teacher}`,
   [PageType.SelectUnit]: homeUrl + `/${PageType.SelectUnit}`,
+  [PageType.General]: homeUrl + `/${PageType.General}`,
 };

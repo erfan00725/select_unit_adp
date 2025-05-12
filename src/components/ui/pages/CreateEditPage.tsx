@@ -20,8 +20,7 @@ export default function CreateEditPage<T extends (...args: any) => any, S>({
 
   useEffect(() => {
     const fetchData = async () => {
-      const lessonData =
-        getDataById && id ? await getDataById(BigInt(id)) : undefined;
+      const lessonData = getDataById && id ? await getDataById(id) : undefined;
       const config = await formGenerator(lessonData);
       setFormConfig(config);
     };

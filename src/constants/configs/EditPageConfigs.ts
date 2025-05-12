@@ -7,11 +7,14 @@ import {
   updateStudent,
   updateField,
   updateTeacher,
+  getGeneralByKey, // Added for General entity
+  updateGeneral, // Added for General entity
 } from "@/lib/actions";
 import { validateLessonSafe, validateStudentSafe } from "@/lib/validations";
 import {
   safeValidateField as validateFieldSafe,
   safeValidateTeacher as validateTeacherSafe,
+  validateGeneralSafe, // Added for General entity
 } from "@/lib/validations";
 import { urls } from "../urls";
 import { CreateEditProps } from "@/types/Props";
@@ -20,6 +23,7 @@ import {
   studentFormConfigGenerator,
   fieldFormConfigGenerator,
   teacherFormConfigGenerator,
+  generalFormConfigGenerator, // Added for General entity
 } from "./FormConfigs";
 import { PageType } from "@/types/General";
 
@@ -59,10 +63,20 @@ export const TeacherEditConfig: CreateEditProps<any, any> = {
   redirectUrl: urls.teachers,
 };
 
+export const GeneralEditConfig: CreateEditProps<any, any> = {
+  submitFunction: updateGeneral,
+  validateFunction: validateGeneralSafe,
+  formGenerator: generalFormConfigGenerator,
+  getDataById: getGeneralByKey,
+  entityName: "تنظیمات عمومی",
+  redirectUrl: urls.generals,
+};
+
 export const EditPageConfigs: { [K in PageType]?: CreateEditProps<any, any> } =
   {
     fields: FieldEditConfig,
     lessons: LessonEditConfig,
     students: StudentEditConfig,
     teachers: TeacherEditConfig,
+    generals: GeneralEditConfig, // Added for General entity
   };

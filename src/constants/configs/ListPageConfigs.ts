@@ -9,11 +9,14 @@ import {
   getSelectUnitsByStudent,
   getSelectUnits,
   getSelectUnitById,
+  getGenerals, // Added for General entity
+  deleteGeneral, // Added for General entity
 } from "@/lib/actions";
 import { FilterOptionType, Orders, PageType } from "@/types/General";
 import getAcademicYearJ from "@/lib/utils/getAcademicYearJ";
 import { priceFormatter } from "@/lib/utils/priceFormatter";
 import { gradeRender, periodRender } from "@/lib/utils/dataRenderer";
+import getFarsiDate from "@/lib/getFarsiDate"; // Added for date formatting
 import { LessonGrade, Period } from "@prisma/client";
 
 type ListGeneralParamsType = {
@@ -45,6 +48,14 @@ type StaticConfigsType = {
 };
 
 export const s_ListConfig: StaticConfigsType = {
+  generals: {
+    title: "مدیریت تنظیمات عمومی",
+    description: "مدیریت تنظیمات عمومی خود را انجام دهید",
+    addButtonLabel: "افزودن تنظیم جدید",
+    searchPlaceholder: "جستجوی کلید، مقدار...",
+    addUrl: urls.generals + "/add",
+    editUrl: urls.generals + "/edit/:id",
+  },
   lessons: {
     title: "مدیریت دروس",
     description: "مدیریت دروس خود را انجام دهید",
@@ -393,11 +404,49 @@ export const SelectUnitList = async ({
 };
 
 export const d_ListConfig: DynamicConfigsType = {
+  generals: async ({
+    searchParams,
+  }: ListGeneralParamsType): Promise<ListGeneralReturnType> => {
+    const page = searchParams?.page ? parseInt(searchParams.page) : 1;
+    const limit = searchParams?.limit
+      ? parseInt(searchParams.limit)
+      : defaultListLimit;
+    const query = searchParams?.query;
+    const data = await getGenerals({ page, limit, query });
+
+    const tableData = (data.generals || []).map((item) => ({
+      id: item.Key, // Using Key as id for General entity
+      Key: item.Key,
+      Value: item.Value,
+      Updated_at: getFarsiDate(item.Updated_at),
+      Created_at: getFarsiDate(item.Created_at),
+    }));
+
+    const headers = ["کلید", "مقدار", "آخرین بروزرسانی", "تاریخ ایجاد"];
+
+    return {
+      tableData,
+      headers,
+      title: s_ListConfig.generals?.title || "",
+      addButtonLabel: s_ListConfig.generals?.addButtonLabel || "",
+      baseUrl: urls.generals,
+      limit: limit,
+      error: data.error || undefined,
+      pagination: {
+        currentPage: page,
+        limit,
+        total: data.total || 0,
+        totalPages: Math.ceil(data.total / limit),
+      },
+      canAdd: false,
+    };
+  },
   lessons: LessonsList,
   students: StudentsList,
   fields: FieldsList,
   teachers: TeachersList,
   selectUnit: SelectUnitList,
+  // generals will be handled by the new structure above
 };
 
 //  ________Other Configs________

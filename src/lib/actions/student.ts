@@ -3,6 +3,7 @@
 import { prisma } from "../prisma";
 import { revalidatePath } from "next/cache";
 import { BaseListFilterParams, StudentDataType } from "@/types/Tables";
+import { DeleteFunctionReturnType } from "@/types/General";
 
 // Get all students
 export async function getStudents(params?: BaseListFilterParams) {
@@ -76,10 +77,16 @@ export async function getStudents(params?: BaseListFilterParams) {
 }
 
 // Get a single student by ID
-export async function getStudentById(id: bigint) {
+/**
+ * Retrieves a single student by their unique ID.
+ * @param id - The ID of the student to retrieve (string, will be converted to BigInt).
+ * @returns A promise that resolves to an object containing the student or an error.
+ */
+export async function getStudentById(id: string) {
   try {
+    const studentId = BigInt(id);
     const student = await prisma.student.findUnique({
-      where: { id },
+      where: { id: studentId },
       include: {
         field: true,
         selectUnits: {
@@ -131,16 +138,18 @@ export async function createStudent(data: StudentDataType) {
 
 // Update a student
 export async function updateStudent(
-  id: bigint,
+  id: string,
   data: Partial<StudentDataType>
 ) {
+  // Convert id to BigInt for database operations
+  const studentId = BigInt(id);
   try {
     // Check if national code is being updated and if it's already in use
     if (data.NationalCode) {
       const existingStudent = await prisma.student.findFirst({
         where: {
           NationalCode: data.NationalCode,
-          id: { not: id },
+          id: { not: studentId },
         },
       });
 
@@ -154,7 +163,7 @@ export async function updateStudent(
     };
 
     const student = await prisma.student.update({
-      where: { id },
+      where: { id: studentId },
       data: editedData,
     });
 
@@ -163,16 +172,22 @@ export async function updateStudent(
     return { student };
   } catch (error) {
     console.error("Failed to update student:", error);
-    return { error: "خطا در به‌روزرسانی اطلاعات دانش‌آموز" };
+    return { error: "خطا در به‌روزرسانی دانش‌آموز" };
   }
 }
 
 // Delete a student
-export async function deleteStudent(id: bigint) {
+/**
+ * Deletes a student by its string ID. Converts the string ID to BigInt internally.
+ * @param id - The student ID as a string
+ * @returns A promise that resolves to an object indicating success or an error.
+ */
+export async function deleteStudent(id: string): DeleteFunctionReturnType {
   try {
+    const studentId = BigInt(id);
     // Check if student has any select units before deleting
     const studentWithSelectUnits = await prisma.student.findUnique({
-      where: { id },
+      where: { id: studentId },
       include: {
         selectUnits: true,
       },
@@ -183,10 +198,11 @@ export async function deleteStudent(id: bigint) {
     }
 
     await prisma.student.delete({
-      where: { id },
+      where: { id: studentId },
     });
 
     revalidatePath("/dashboard/students");
+    revalidatePath(`/dashboard/students/${id}`);
     return { success: true };
   } catch (error) {
     console.error("Failed to delete student:", error);

@@ -9,10 +9,12 @@ import {
   deleteStudent,
   deleteField,
   deleteTeacher,
+  getGeneralByKey, // Added for General entity
+  deleteGeneral, // Added for General entity
 } from "@/lib/actions";
 import getFarsiDate from "@/lib/getFarsiDate";
 import { getGender } from "@/lib/getGender";
-import { InfoPageConfig, PageType } from "@/types/General";
+import { DeleteFunction, InfoPageConfig, PageType } from "@/types/General";
 import { DetailPageProps } from "@/types/Props";
 import { urls } from "../urls";
 import { UserSelectUnitList } from "@/components/ui/pages/selectUnit.ts/UserSelectUnitList";
@@ -33,7 +35,7 @@ interface ConfigFunction<T> {
 }
 
 interface DataFunction<T> {
-  (id: bigint): Promise<T>;
+  (id: string): Promise<T>; // Allow string ID for General entity
 }
 
 interface PageConfig<T> {
@@ -391,6 +393,44 @@ export const SelectUnitDetailConfig = (
   };
 };
 
+// Configuration for the General Detail Page
+export const GeneralDetailConfig = (
+  generalData: Awaited<ReturnType<typeof getGeneralByKey>>
+): DetailPageConfigtReturnType => {
+  if (!generalData.general || generalData.error)
+    return { error: generalData.error };
+
+  const general = generalData.general;
+
+  const config: InfoPageConfig = {
+    id: general?.Key || "", // Key is the ID for General entity
+    title: `جزئیات تنظیم: ${general?.Key}`,
+    createdAt: general?.Created_at.toDateString(),
+    modifiedAt: general?.Updated_at.toDateString(),
+    rows: [
+      {
+        label: "کلید",
+        value: general?.Key,
+      },
+      {
+        label: "مقدار",
+        value: general?.Value,
+      },
+    ],
+  };
+
+  return {
+    config: {
+      id: config.id,
+      title: config.title,
+      createdAt: config.createdAt,
+      modifiedAt: config.modifiedAt,
+      InfoRows: config.rows || [],
+      baseUrl: urls.generals,
+    },
+  };
+};
+
 export const DetailPageConfigs: Record<PageType, PageConfig<any>> = {
   lessons: {
     config: LessonsDetailConfig,
@@ -412,6 +452,10 @@ export const DetailPageConfigs: Record<PageType, PageConfig<any>> = {
     config: SelectUnitDetailConfig,
     data: getSelectUnitById,
   },
+  generals: {
+    config: GeneralDetailConfig, // Added for General entity
+    data: getGeneralByKey,
+  },
 };
 
 // _________ Static Page Config _________
@@ -419,21 +463,19 @@ export const DetailPageConfigs: Record<PageType, PageConfig<any>> = {
 interface s_PageConfig {
   title: string;
   deleteConfig: {
-    deleteFounction: (id: bigint) => Promise<
-      | {
-          error: string;
-          success?: undefined;
-        }
-      | {
-          success: boolean;
-          error?: undefined;
-        }
-    >;
+    deleteFounction: DeleteFunction;
     backUrl: string;
   };
 }
 
 export const s_DetailPageConfigs: Record<PageType, s_PageConfig> = {
+  generals: {
+    title: "اطلاعات تنظیم عمومی",
+    deleteConfig: {
+      deleteFounction: deleteGeneral,
+      backUrl: urls.generals,
+    },
+  },
   lessons: {
     title: "اطلاعات درس",
     deleteConfig: {

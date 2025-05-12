@@ -3,6 +3,7 @@
 import { BaseListFilterParams, TeacherDataType } from "@/types/Tables";
 import { prisma } from "../prisma";
 import { revalidatePath } from "next/cache";
+import { DeleteFunctionReturnType } from "@/types/General";
 
 // Get all teachers
 export async function getTeachers(params?: BaseListFilterParams) {
@@ -73,10 +74,16 @@ export async function getTeachers(params?: BaseListFilterParams) {
 }
 
 // Get a single teacher by ID
-export async function getTeacherById(id: bigint) {
+/**
+ * Retrieves a single teacher by their unique ID.
+ * @param id - The ID of the teacher to retrieve (string, will be converted to BigInt).
+ * @returns A promise that resolves to an object containing the teacher or an error.
+ */
+export async function getTeacherById(id: string) {
   try {
+    const teacherId = BigInt(id);
     const teacher = await prisma.teacher.findUnique({
-      where: { id },
+      where: { id: teacherId },
       include: {
         field: true,
         lessons: true,
@@ -129,16 +136,18 @@ export async function createTeacher(data: TeacherDataType) {
 
 // Update a teacher
 export async function updateTeacher(
-  id: bigint,
+  id: string,
   data: Partial<TeacherDataType>
 ) {
+  // Convert id to BigInt for database operations
+  const teacherId = BigInt(id);
   try {
     // Check if national code is being updated and if it's already in use
     if (data.NationalCode) {
       const existingTeacher = await prisma.teacher.findFirst({
         where: {
           NationalCode: data.NationalCode,
-          id: { not: id },
+          id: { not: teacherId },
         },
       });
 
@@ -152,7 +161,7 @@ export async function updateTeacher(
     };
 
     const teacher = await prisma.teacher.update({
-      where: { id },
+      where: { id: teacherId },
       data: editedData,
     });
 
@@ -161,16 +170,22 @@ export async function updateTeacher(
     return { teacher };
   } catch (error) {
     console.error("Failed to update teacher:", error);
-    return { error: "خطا در بروزرسانی اطلاعات استاد" };
+    return { error: "خطا در به‌روزرسانی استاد" };
   }
 }
 
 // Delete a teacher
-export async function deleteTeacher(id: bigint) {
+/**
+ * Deletes a teacher by its string ID. Converts the string ID to BigInt internally.
+ * @param id - The teacher ID as a string
+ * @returns A promise that resolves to an object indicating success or an error.
+ */
+export async function deleteTeacher(id: string): DeleteFunctionReturnType {
   try {
+    const teacherId = BigInt(id);
     // Check if teacher has any lessons before deleting
     const teacherWithLessons = await prisma.teacher.findUnique({
-      where: { id },
+      where: { id: teacherId },
       include: {
         lessons: true,
       },
@@ -181,10 +196,11 @@ export async function deleteTeacher(id: bigint) {
     }
 
     await prisma.teacher.delete({
-      where: { id },
+      where: { id: teacherId },
     });
 
     revalidatePath("/dashboard/teachers");
+    revalidatePath(`/dashboard/teachers/${id}`);
     return { success: true };
   } catch (error) {
     console.error("Failed to delete teacher:", error);

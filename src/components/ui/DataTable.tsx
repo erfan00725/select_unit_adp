@@ -61,66 +61,80 @@ const DataTable = <T extends DataBaseType>({
               ) : null}
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {rows?.map((row, rowIndex) => (
-              <tr key={rowIndex}>
-                {Object.entries(row).map(([_, data], colIndex) => (
-                  <td
-                    key={colIndex}
-                    className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
-                  >
-                    {baseUrl ? (
-                      <Link href={`${baseUrl}/${row.id}`}>{data || "_"}</Link>
-                    ) : (
-                      data || "_"
+          {rows && rows.length > 0 ? (
+            <tbody className="bg-white divide-y divide-gray-200">
+              {rows?.map((row, rowIndex) => (
+                <tr key={rowIndex}>
+                  {Object.entries(row).map(([_, data], colIndex) => (
+                    <td
+                      key={colIndex}
+                      className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                    >
+                      {baseUrl ? (
+                        <Link href={`${baseUrl}/${row.id}`}>{data || "_"}</Link>
+                      ) : (
+                        data || "_"
+                      )}
+                    </td>
+                  ))}
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    {actions &&
+                      actions.map((action) =>
+                        action.href ? (
+                          <Link
+                            key={action.label}
+                            href={action.href.replace("$?", row.id.toString())}
+                            className={`tableAction ${action.className}`}
+                          >
+                            {action.label}
+                          </Link>
+                        ) : (
+                          <span
+                            key={action.label}
+                            className={`tableAction ${action.className} cursor-pointer`}
+                            onClick={() =>
+                              action.onClick &&
+                              action.onClick(row.id.toString())
+                            }
+                          >
+                            {action.label}
+                          </span>
+                        )
+                      )}
+                    {isEditable && (
+                      <Link
+                        // @ts-expect-error
+                        href={editUrl(row.id.toString())}
+                        className="tableAction text-blue-600! hover:text-blue-900!"
+                      >
+                        ویرایش{" "}
+                      </Link>
+                    )}
+                    {isEditable && (
+                      <Link
+                        href={`${baseUrl}/${row.id}?delete=true`}
+                        className="tableAction text-red-600! hover:text-red-900!"
+                      >
+                        {" "}
+                        حذف
+                      </Link>
                     )}
                   </td>
-                ))}
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  {actions &&
-                    actions.map((action) =>
-                      action.href ? (
-                        <Link
-                          key={action.label}
-                          href={action.href.replace("$?", row.id.toString())}
-                          className={`tableAction ${action.className}`}
-                        >
-                          {action.label}
-                        </Link>
-                      ) : (
-                        <span
-                          key={action.label}
-                          className={`tableAction ${action.className} cursor-pointer`}
-                          onClick={() =>
-                            action.onClick && action.onClick(row.id.toString())
-                          }
-                        >
-                          {action.label}
-                        </span>
-                      )
-                    )}
-                  {isEditable && (
-                    <Link
-                      // @ts-expect-error
-                      href={editUrl(row.id.toString())}
-                      className="tableAction text-blue-600! hover:text-blue-900!"
-                    >
-                      ویرایش{" "}
-                    </Link>
-                  )}
-                  {isEditable && (
-                    <Link
-                      href={`${baseUrl}/${row.id}?delete=true`}
-                      className="tableAction text-red-600! hover:text-red-900!"
-                    >
-                      {" "}
-                      حذف
-                    </Link>
-                  )}
+                </tr>
+              ))}
+            </tbody>
+          ) : (
+            <tbody className="bg-white divide-y divide-gray-200">
+              <tr>
+                <td
+                  colSpan={headers.length}
+                  className="text-center py-8 text-gray-500"
+                >
+                  داده‌ای یافت نشد
                 </td>
               </tr>
-            ))}
-          </tbody>
+            </tbody>
+          )}
         </table>
       </div>
 

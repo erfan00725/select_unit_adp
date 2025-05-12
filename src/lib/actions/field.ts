@@ -3,6 +3,7 @@
 import { BaseListFilterParams, FieldDataType } from "@/types/Tables";
 import { prisma } from "../prisma";
 import { revalidatePath } from "next/cache";
+import { DeleteFunctionReturnType } from "@/types/General";
 
 // Get all fields
 export async function getFields(params?: BaseListFilterParams) {
@@ -64,10 +65,16 @@ export async function getFields(params?: BaseListFilterParams) {
 }
 
 // Get a single field by ID
-export async function getFieldById(id: bigint) {
+/**
+ * Retrieves a single field by its unique ID.
+ * @param id - The ID of the field to retrieve (string, will be converted to BigInt).
+ * @returns A promise that resolves to an object containing the field or an error.
+ */
+export async function getFieldById(id: string) {
   try {
+    const fieldId = BigInt(id);
     const field = await prisma.field.findUnique({
-      where: { id },
+      where: { id: fieldId },
       include: {
         students: true,
         lessons: true,
@@ -115,14 +122,16 @@ export async function createField(data: FieldDataType) {
 }
 
 // Update a field
-export async function updateField(id: bigint, data: Partial<FieldDataType>) {
+export async function updateField(id: string, data: Partial<FieldDataType>) {
+  // Convert id to BigInt for database operations
+  const fieldId = BigInt(id);
   try {
     // Check if name is being updated and if it's already in use
     if (data.Name) {
       const existingField = await prisma.field.findFirst({
         where: {
           Name: data.Name,
-          id: { not: id },
+          id: { not: fieldId },
         },
       });
 
@@ -137,7 +146,7 @@ export async function updateField(id: bigint, data: Partial<FieldDataType>) {
     };
 
     const field = await prisma.field.update({
-      where: { id },
+      where: { id: fieldId },
       data: editedData,
     });
 
@@ -151,11 +160,17 @@ export async function updateField(id: bigint, data: Partial<FieldDataType>) {
 }
 
 // Delete a field
-export async function deleteField(id: bigint) {
+/**
+ * Deletes a field by its string ID. Converts the string ID to BigInt internally.
+ * @param id - The field ID as a string
+ * @returns A promise that resolves to an object indicating success or an error.
+ */
+export async function deleteField(id: string): DeleteFunctionReturnType {
   try {
+    const fieldId = BigInt(id);
     // Check if field has any related records before deleting
     const fieldWithRelations = await prisma.field.findUnique({
-      where: { id },
+      where: { id: fieldId },
       include: {
         students: true,
         lessons: true,
@@ -176,10 +191,11 @@ export async function deleteField(id: bigint) {
     }
 
     await prisma.field.delete({
-      where: { id },
+      where: { id: fieldId },
     });
 
     revalidatePath("/dashboard/fields");
+    revalidatePath(`/dashboard/fields/${id}`);
     return { success: true };
   } catch (error) {
     console.error("Failed to delete field:", error);

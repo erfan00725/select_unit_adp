@@ -1,5 +1,5 @@
 export type UpdateFunction<T> = (
-  id: bigint,
+  id: string,
   data: T
 ) => Promise<{ error?: string; [key: string]: any }>;
 export type AddFunction<T> = (

@@ -16,7 +16,7 @@ export const DetailPage = async ({ type, id }: Props) => {
   if (!config) {
     return notFound();
   }
-  const data = await config.data(BigInt(id));
+  const data = await config.data(id);
   const detailConfig = config.config(data);
 
   if (!detailConfig || !data) {

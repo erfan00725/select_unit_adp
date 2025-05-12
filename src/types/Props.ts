@@ -35,6 +35,7 @@ export type FormInputProps = {
   onChange?: (value: string | number | readonly string[] | undefined) => void;
   SelectButtonProps?: SelectButtonProps;
   valueType?: InpueValueType;
+  disabled?: boolean;
 };
 
 export type FormProps = {
@@ -92,7 +93,7 @@ export type DataTableProps<T extends DataBaseType> = {
 export type CreateEditProps<T extends (...args: any) => any, S> = {
   id?: string;
   formGenerator: (data?: Awaited<ReturnType<T>>) => Promise<FormPageProps>;
-  getDataById?: (id: bigint) => ReturnType<T>;
+  getDataById?: (id: string) => ReturnType<T>;
   entityName: string;
   redirectUrl?: string;
   submitFunction: SubmitFunction<S>;

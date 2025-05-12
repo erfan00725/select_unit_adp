@@ -4,6 +4,7 @@ import { Period, Prisma } from "@prisma/client";
 import { prisma } from "../prisma";
 import { revalidatePath } from "next/cache";
 import { BaseListFilterParams, SelectUnitDataType } from "@/types/Tables";
+import { DeleteFunctionReturnType } from "@/types/General";
 
 type ReturnType = Prisma.SelectUnitGetPayload<{
   include: {
@@ -296,13 +297,17 @@ export async function getSelectUnitsByLesson(
   }
 }
 
-// Get a select unit by ID
-export async function getSelectUnitById(selectUnitId: bigint) {
+// Get a single select unit by ID
+/**
+ * Retrieves a single select unit by its unique ID.
+ * @param selectUnitId - The ID of the select unit to retrieve (string, will be converted to BigInt).
+ * @returns A promise that resolves to an object containing the select unit or an error.
+ */
+export async function getSelectUnitById(selectUnitId: string) {
   try {
+    const unitId = BigInt(selectUnitId);
     const selectUnit = await prisma.selectUnit.findUnique({
-      where: {
-        id: selectUnitId,
-      },
+      where: { id: unitId },
       include: {
         student: true,
         selectedLessons: {
@@ -322,14 +327,10 @@ export async function getSelectUnitById(selectUnitId: bigint) {
     }
 
     // Apply customReturn to calculate totalUnits and totalFee
-    const selectUnitsWithTotal = customReturn(selectUnit);
-
-    return { selectUnit: selectUnitsWithTotal };
+    return { selectUnit: customReturn(selectUnit) };
   } catch (error) {
-    console.error("Failed to fetch select unit by ID:", error);
-    return {
-      error: "دریافت اطلاعات انتخاب واحد با شناسه مورد نظر با خطا مواجه شد",
-    };
+    console.error("Failed to fetch select unit:", error);
+    return { error: "دریافت اطلاعات انتخاب واحد با خطا مواجه شد" };
   }
 }
 
@@ -467,16 +468,24 @@ export async function getSelectUnitsByYearPeriod(
 }
 
 // Get select units by studentId, year, and period with all selected lessons
+/**
+ * Retrieves select unit lessons for a specific student, year, and period.
+ * @param studentId - The ID of the student (string, will be converted to BigInt).
+ * @param year - The academic year.
+ * @param period - The academic period.
+ * @returns A promise that resolves to an object containing the select unit with lessons or an error.
+ */
 export async function getSelectUnitLessons(
-  studentId: bigint,
+  studentId: string,
   year: number,
   period: Period
 ) {
   try {
+    const sId = BigInt(studentId);
     const selectUnit = await prisma.selectUnit.findUnique({
       where: {
         StudentId_Year_Period: {
-          StudentId: studentId,
+          StudentId: sId,
           Year: year,
           Period: period,
         },
@@ -509,9 +518,15 @@ export async function getSelectUnitLessons(
 }
 
 // Create a new select unit
+/**
+ * Creates a new select unit or adds a lesson to an existing one.
+ * @param data - The data for the select unit.
+ * @param lessonId - Optional ID of the lesson to add (string, will be converted to BigInt).
+ * @returns A promise that resolves to an object containing the select unit or an error.
+ */
 export async function createSelectUnit(
   data: SelectUnitDataType,
-  lessonId?: bigint
+  lessonId?: string
 ) {
   try {
     // Check if the student exists
@@ -537,9 +552,10 @@ export async function createSelectUnit(
     if (existingSelectUnit) {
       // If we're adding a lesson to an existing select unit
       if (lessonId) {
+        const lessonIdBigInt = BigInt(lessonId);
         // Check if the lesson exists
         const lesson = await prisma.lesson.findUnique({
-          where: { id: lessonId },
+          where: { id: lessonIdBigInt },
         });
 
         if (!lesson) {
@@ -551,7 +567,7 @@ export async function createSelectUnit(
           where: {
             selectUnitId_lessonId: {
               selectUnitId: existingSelectUnit.id,
-              lessonId: lessonId,
+              lessonId: BigInt(lessonId), // Ensure BigInt conversion here too
             },
           },
         });
@@ -564,7 +580,7 @@ export async function createSelectUnit(
         const selectedLesson = await prisma.selectedLesson.create({
           data: {
             selectUnitId: existingSelectUnit.id,
-            lessonId: lessonId,
+            lessonId: BigInt(lessonId), // Ensure BigInt conversion here too
           },
           include: {
             lesson: true,
@@ -605,9 +621,10 @@ export async function createSelectUnit(
 
     // If a lesson ID is provided, create a selected lesson entry
     if (lessonId) {
+      const lessonIdBigInt = BigInt(lessonId);
       // Check if the lesson exists
       const lesson = await prisma.lesson.findUnique({
-        where: { id: lessonId },
+        where: { id: lessonIdBigInt },
       });
 
       if (!lesson) {
@@ -622,7 +639,7 @@ export async function createSelectUnit(
       await prisma.selectedLesson.create({
         data: {
           selectUnitId: selectUnit.id,
-          lessonId: lessonId,
+          lessonId: BigInt(lessonId), // Ensure BigInt conversion here too
         },
       });
     }
@@ -652,16 +669,18 @@ export async function createSelectUnit(
 
 // Update a select unit
 export async function updateSelectUnit(
-  selectUnitId: bigint,
+  selectUnitId: string,
   data: Partial<SelectUnitDataType>
 ) {
+  // Convert id to BigInt for database operations
+  const id = BigInt(selectUnitId);
   try {
     // Remove id from data if it exists
-    const { id, ...updateData } = data;
+    const { id: _id, ...updateData } = data;
 
     const selectUnit = await prisma.selectUnit.update({
       where: {
-        id: selectUnitId,
+        id,
       },
       data: updateData,
       include: {
@@ -685,8 +704,14 @@ export async function updateSelectUnit(
 }
 
 // Delete a select unit
-export async function deleteSelectUnit(selectUnitId: bigint) {
+/**
+ * Deletes a select unit by its string ID. Converts the string ID to BigInt internally.
+ * @param id - The select unit ID as a string
+ * @returns A promise that resolves to an object indicating success or an error.
+ */
+export async function deleteSelectUnit(id: string): DeleteFunctionReturnType {
   try {
+    const selectUnitId = BigInt(id);
     // Get the student ID before deleting for revalidation
     const selectUnit = await prisma.selectUnit.findUnique({
       where: { id: selectUnitId },
@@ -699,7 +724,6 @@ export async function deleteSelectUnit(selectUnitId: bigint) {
     if (!selectUnit) {
       return { error: "انتخاب واحد یافت نشد" };
     }
-    console.log(selectUnit.Payments);
     if (selectUnit.Payments.length) {
       return { error: "امکان حذف انتخاب واحد با پرداخت وجود ندارد" };
     }

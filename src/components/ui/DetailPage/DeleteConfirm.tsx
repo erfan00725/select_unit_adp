@@ -5,19 +5,11 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { homeUrl, urls } from "@/constants/urls";
 import { useSearchParams } from "@/lib/hooks/useSeachParams";
+import { DeleteFunction } from "@/types/General";
 
 type Props = {
   id: string;
-  deleteFounction: (id: bigint) => Promise<
-    | {
-        error: string;
-        success?: undefined;
-      }
-    | {
-        success: boolean;
-        error?: undefined;
-      }
-  >;
+  deleteFounction: DeleteFunction;
   onDelete?: () => void;
   title?: string;
   backUrl?: string;
@@ -63,7 +55,7 @@ export default function DeleteConfirm({
           <button
             className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 focus:outline-none"
             onClick={async () => {
-              const result = await deleteFounction(BigInt(id));
+              const result = await deleteFounction(id);
               if (result.success) {
                 toast.success("با موفقیت حذف شد");
                 onDelete && onDelete();

@@ -4,6 +4,7 @@ import { prisma } from "../prisma";
 import { revalidatePath } from "next/cache";
 import { BaseListFilterParams, LessonDataType } from "@/types/Tables";
 import { LessonGrade } from "@prisma/client";
+import { DeleteFunctionReturnType } from "@/types/General";
 
 type LessonsParams = {
   unit?: string;
@@ -118,10 +119,16 @@ export async function getLessons(
 }
 
 // Get a single lesson by ID
-export async function getLessonById(id: bigint) {
+/**
+ * Retrieves a single lesson by its unique ID.
+ * @param id - The ID of the lesson to retrieve (string, will be converted to BigInt).
+ * @returns A promise that resolves to an object containing the lesson or an error.
+ */
+export async function getLessonById(id: string) {
   try {
+    const lessonId = BigInt(id);
     const lesson = await prisma.lesson.findUnique({
-      where: { id },
+      where: { id: lessonId },
       include: {
         field: true,
         teacher: true,
@@ -203,12 +210,14 @@ export async function createLesson(data: LessonDataType) {
 }
 
 // Update a lesson
-export async function updateLesson(id: bigint, data: Partial<LessonDataType>) {
+export async function updateLesson(id: string, data: Partial<LessonDataType>) {
+  // Convert id to BigInt for database operations
+  const lessonId = BigInt(id);
   console.log("data ", data);
   try {
     // Check if lesson exists
     const existingLesson = await prisma.lesson.findUnique({
-      where: { id },
+      where: { id: lessonId },
     });
     console.log("existingLesson ", existingLesson);
 
@@ -245,7 +254,7 @@ export async function updateLesson(id: bigint, data: Partial<LessonDataType>) {
       });
 
       if (!requiredLesson) {
-        return { error: "درس پیش‌نیاز یافت نشد" };
+        return { error: "درس پیش‌نیاز مورد نظر یافت نشد" };
       }
     }
 
@@ -255,56 +264,46 @@ export async function updateLesson(id: bigint, data: Partial<LessonDataType>) {
     };
 
     const lesson = await prisma.lesson.update({
-      where: { id },
-      data: {
-        ...editedData,
-        RequireUnit: editedData.RequireUnit
-          ? Number(editedData.RequireUnit)
-          : null,
-      },
+      where: { id: lessonId },
+      data: editedData,
     });
 
     revalidatePath("/dashboard/lessons");
-    revalidatePath(`/dashboard/lessons/${id}`);
     return { lesson };
   } catch (error) {
     console.error("Failed to update lesson:", error);
-    return { error: "خطا در بروزرسانی درس" };
+    return { error: "خطا در به‌روزرسانی درس" };
   }
 }
 
 // Delete a lesson
-export async function deleteLesson(id: bigint) {
+/**
+ * Deletes a lesson by its string ID. Converts the string ID to BigInt internally.
+ * @param id - The lesson ID as a string
+ * @returns A promise that resolves to an object indicating success or an error.
+ */
+export async function deleteLesson(id: string): DeleteFunctionReturnType {
   try {
+    const lessonId = BigInt(id);
     // Check if lesson has any select units before deleting
     const lessonWithSelectUnits = await prisma.lesson.findUnique({
-      where: { id },
+      where: { id: lessonId },
       include: {
         SelectedLesson: true,
         requiredForLesson: true,
       },
     });
 
-    console.log(
-      "lessonWithSelectUnits ",
-      lessonWithSelectUnits?.SelectedLesson
-    );
-
     if (lessonWithSelectUnits?.SelectedLesson.length) {
       return { error: "امکان حذف درس با انتخاب واحدهای موجود وجود ندارد" };
     }
 
-    if (lessonWithSelectUnits?.requiredForLesson.length) {
-      return {
-        error: "امکان حذف درسی که پیش‌نیاز دروس دیگر است وجود ندارد",
-      };
-    }
-
     await prisma.lesson.delete({
-      where: { id },
+      where: { id: lessonId },
     });
 
     revalidatePath("/dashboard/lessons");
+    revalidatePath(`/dashboard/lessons/${id}`);
     return { success: true };
   } catch (error) {
     console.error("Failed to delete lesson:", error);

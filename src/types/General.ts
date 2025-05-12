@@ -25,6 +25,7 @@ export enum PageType {
   Field = "fields",
   Teacher = "teachers",
   SelectUnit = "selectUnit",
+  General = "generals",
 }
 
 export type ActionReturnType<T extends (...args: any[]) => any> = Awaited<
@@ -38,3 +39,9 @@ export enum Settings {
   PricePerUnit = "pricePerUnit",
   ExtraClassFee = "extraClassFee",
 }
+
+export type DeleteFunctionReturnType = Promise<{
+  success?: boolean;
+  error?: string;
+}>;
+export type DeleteFunction = (id: string) => DeleteFunctionReturnType;

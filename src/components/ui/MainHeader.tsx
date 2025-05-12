@@ -13,6 +13,7 @@ import { usePathname } from "next/navigation";
 import { NavBarConfigs } from "@/constants/configs/GeneralConfigs";
 import { signOut, useSession } from "next-auth/react";
 import { toast } from "react-toastify";
+import { urls } from "@/constants/urls";
 
 // Main header component
 function MainHeader() {
@@ -52,7 +53,9 @@ function MainHeader() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center">
-            <Logo className="text-2xl" />
+            <Link href={urls.dashboard}>
+              <Logo />
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
