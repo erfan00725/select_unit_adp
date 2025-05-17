@@ -123,9 +123,8 @@ export async function createField(data: FieldDataType) {
 
 // Update a field
 export async function updateField(id: string, data: Partial<FieldDataType>) {
-  // Convert id to BigInt for database operations
-  const fieldId = BigInt(id);
   try {
+    const fieldId = BigInt(id);
     // Check if name is being updated and if it's already in use
     if (data.Name) {
       const existingField = await prisma.field.findFirst({

@@ -1,6 +1,8 @@
 import React from "react";
 
-const MainFooter = () => {
+const MainFooter = async () => {
+  // seedGeneralSettings();
+
   return (
     <footer className="bg-white absolute bottom-0 w-full">
       <div className="max-w-7xl mx-auto py-6 px-4 min-h-24 sm:px-6 lg:px-8">

@@ -431,7 +431,7 @@ export const GeneralDetailConfig = (
   };
 };
 
-export const DetailPageConfigs: Record<PageType, PageConfig<any>> = {
+export const DetailPageConfigs: Partial<Record<PageType, PageConfig<any>>> = {
   lessons: {
     config: LessonsDetailConfig,
     data: getLessonById,
@@ -451,10 +451,6 @@ export const DetailPageConfigs: Record<PageType, PageConfig<any>> = {
   selectUnit: {
     config: SelectUnitDetailConfig,
     data: getSelectUnitById,
-  },
-  generals: {
-    config: GeneralDetailConfig, // Added for General entity
-    data: getGeneralByKey,
   },
 };
 

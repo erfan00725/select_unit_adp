@@ -139,9 +139,8 @@ export async function updateTeacher(
   id: string,
   data: Partial<TeacherDataType>
 ) {
-  // Convert id to BigInt for database operations
-  const teacherId = BigInt(id);
   try {
+    const teacherId = BigInt(id);
     // Check if national code is being updated and if it's already in use
     if (data.NationalCode) {
       const existingTeacher = await prisma.teacher.findFirst({
@@ -155,6 +154,7 @@ export async function updateTeacher(
         return { error: "استادی با این کد ملی قبلاً ثبت شده است" };
       }
     }
+
     const editedData = {
       ...data,
       id: undefined,
@@ -170,7 +170,7 @@ export async function updateTeacher(
     return { teacher };
   } catch (error) {
     console.error("Failed to update teacher:", error);
-    return { error: "خطا در به‌روزرسانی استاد" };
+    return { error: "خطا در بروزرسانی اطلاعات استاد" };
   }
 }
 

@@ -87,7 +87,9 @@ export type DataTableProps<T extends DataBaseType> = {
   scrollable?: boolean;
   actions?: DataTableAction[];
   canAdd?: boolean;
+  canRemove?: boolean;
   editable?: boolean;
+  haveSinglePage?: boolean;
 };
 
 export type CreateEditProps<T extends (...args: any) => any, S> = {

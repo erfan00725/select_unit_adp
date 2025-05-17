@@ -669,37 +669,32 @@ export async function createSelectUnit(
 
 // Update a select unit
 export async function updateSelectUnit(
-  selectUnitId: string,
+  id: string,
   data: Partial<SelectUnitDataType>
 ) {
-  // Convert id to BigInt for database operations
-  const id = BigInt(selectUnitId);
   try {
-    // Remove id from data if it exists
-    const { id: _id, ...updateData } = data;
-
-    const selectUnit = await prisma.selectUnit.update({
-      where: {
-        id,
-      },
-      data: updateData,
-      include: {
-        student: true,
-        selectedLessons: {
-          include: {
-            lesson: true,
-          },
-        },
-      },
+    const selectUnitId = BigInt(id);
+    // Check if select unit exists
+    const existingSelectUnit = await prisma.selectUnit.findUnique({
+      where: { id: selectUnitId },
     });
-
-    revalidatePath("/dashboard/select-unit");
-    revalidatePath(`/dashboard/students/${selectUnit.StudentId}`);
-    // Apply customReturn to calculate totalUnits and totalFee
-    return { selectUnit: customReturn(selectUnit) };
+    if (!existingSelectUnit) {
+      return { error: "انتخاب واحد مورد نظر یافت نشد" };
+    }
+    const editedData = {
+      ...data,
+      id: undefined,
+    };
+    const selectUnit = await prisma.selectUnit.update({
+      where: { id: selectUnitId },
+      data: editedData,
+    });
+    revalidatePath("/dashboard/select-units");
+    revalidatePath(`/dashboard/select-units/${id}`);
+    return { selectUnit };
   } catch (error) {
     console.error("Failed to update select unit:", error);
-    return { error: "به‌روزرسانی انتخاب واحد با خطا مواجه شد" };
+    return { error: "خطا در به‌روزرسانی انتخاب واحد" };
   }
 }
 

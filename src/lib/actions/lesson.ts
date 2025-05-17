@@ -211,64 +211,30 @@ export async function createLesson(data: LessonDataType) {
 
 // Update a lesson
 export async function updateLesson(id: string, data: Partial<LessonDataType>) {
-  // Convert id to BigInt for database operations
-  const lessonId = BigInt(id);
-  console.log("data ", data);
   try {
-    // Check if lesson exists
-    const existingLesson = await prisma.lesson.findUnique({
-      where: { id: lessonId },
-    });
-    console.log("existingLesson ", existingLesson);
-
-    if (!existingLesson) {
-      return { error: "درس مورد نظر یافت نشد" };
-    }
-
-    // Check if teacher exists if provided
-    if (data.TeacherId) {
-      const teacher = await prisma.teacher.findUnique({
-        where: { id: data.TeacherId },
+    const lessonId = BigInt(id);
+    // Check if lesson name is being updated and if it's already in use
+    if (data.LessonName) {
+      const existingLesson = await prisma.lesson.findFirst({
+        where: {
+          LessonName: data.LessonName,
+          id: { not: lessonId },
+        },
       });
-
-      if (!teacher) {
-        return { error: "استاد مورد نظر یافت نشد" };
+      if (existingLesson) {
+        return { error: "درسی با این نام قبلاً ثبت شده است" };
       }
     }
-
-    // Check if field exists if provided
-    if (data.fieldId) {
-      const field = await prisma.field.findUnique({
-        where: { id: data.fieldId },
-      });
-
-      if (!field) {
-        return { error: "رشته مورد نظر یافت نشد" };
-      }
-    }
-
-    // Check if required lesson exists if provided
-    if (data.RequireLesson) {
-      const requiredLesson = await prisma.lesson.findUnique({
-        where: { id: data.RequireLesson },
-      });
-
-      if (!requiredLesson) {
-        return { error: "درس پیش‌نیاز مورد نظر یافت نشد" };
-      }
-    }
-
     const editedData = {
       ...data,
       id: undefined,
     };
-
     const lesson = await prisma.lesson.update({
       where: { id: lessonId },
       data: editedData,
     });
-
     revalidatePath("/dashboard/lessons");
+    revalidatePath(`/dashboard/lessons/${id}`);
     return { lesson };
   } catch (error) {
     console.error("Failed to update lesson:", error);

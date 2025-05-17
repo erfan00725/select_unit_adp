@@ -12,12 +12,13 @@ import {
   getGenerals, // Added for General entity
   deleteGeneral, // Added for General entity
 } from "@/lib/actions";
-import { FilterOptionType, Orders, PageType } from "@/types/General";
+import { FilterOptionType, Orders, PageType, Settings } from "@/types/General";
 import getAcademicYearJ from "@/lib/utils/getAcademicYearJ";
 import { priceFormatter } from "@/lib/utils/priceFormatter";
 import { gradeRender, periodRender } from "@/lib/utils/dataRenderer";
 import getFarsiDate from "@/lib/getFarsiDate"; // Added for date formatting
 import { LessonGrade, Period } from "@prisma/client";
+import translateGeneralSettings from "@/lib/utils/translateGeneralSettings";
 
 type ListGeneralParamsType = {
   searchParams: { [key: string]: string | undefined };
@@ -416,13 +417,19 @@ export const d_ListConfig: DynamicConfigsType = {
 
     const tableData = (data.generals || []).map((item) => ({
       id: item.Key, // Using Key as id for General entity
-      Key: item.Key,
+      Key: translateGeneralSettings(item.Key as Settings),
       Value: item.Value,
       Updated_at: getFarsiDate(item.Updated_at),
       Created_at: getFarsiDate(item.Created_at),
     }));
 
-    const headers = ["کلید", "مقدار", "آخرین بروزرسانی", "تاریخ ایجاد"];
+    const headers = [
+      "شناسه",
+      "کلید",
+      "مقدار",
+      "آخرین بروزرسانی",
+      "تاریخ ایجاد",
+    ];
 
     return {
       tableData,
@@ -438,7 +445,8 @@ export const d_ListConfig: DynamicConfigsType = {
         total: data.total || 0,
         totalPages: Math.ceil(data.total / limit),
       },
-      canAdd: false,
+      canRemove: false,
+      haveSinglePage: false,
     };
   },
   lessons: LessonsList,

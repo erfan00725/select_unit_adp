@@ -113,20 +113,19 @@ export async function updateGeneral(
   id: string,
   data: Partial<GeneralDataType>
 ) {
-  const Key = id;
   try {
     // Update the general entry
     const general = await prisma.general.update({
-      where: { Key },
+      where: { Key: id },
       data,
     });
 
     revalidatePath("/dashboard/generals"); // Revalidate the cache for the generals list page
-    revalidatePath(`/dashboard/generals/${Key}`); // Revalidate the cache for the specific general entry page
+    revalidatePath(`/dashboard/generals/${id}`); // Revalidate the cache for the specific general entry page
     return { general };
   } catch (error) {
     console.error("Error updating general entry:", error);
-    return { error: "Error updating general entry" };
+    return { error: "Error updating general entry", general: null };
   }
 }
 
@@ -309,3 +308,11 @@ export async function getFeeSettings() {
     return { error: "خطا در دریافت تنظیمات هزینه‌ها" };
   }
 }
+
+export const clearGeneralData = async () => {
+  try {
+    await prisma.general.deleteMany();
+  } catch (error) {
+    console.error("Error clearing general data:", error);
+  }
+};

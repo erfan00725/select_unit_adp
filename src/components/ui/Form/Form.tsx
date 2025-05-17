@@ -18,6 +18,7 @@ const FormInput = ({
   onChange,
   value,
   SelectButtonProps,
+  disabled,
 }: FormInputProps) => {
   switch (type) {
     case "select":
@@ -44,6 +45,7 @@ const FormInput = ({
           onChange={(e) => onChange && onChange(e.target.value)}
           className="input min-h-[100px]"
           required={required}
+          disabled={disabled}
         />
       );
     case "date":
@@ -64,6 +66,7 @@ const FormInput = ({
           icon={icon}
           id={name}
           required={required}
+          disabled={disabled}
         />
       );
   }
@@ -170,6 +173,7 @@ const Form: React.FC<FormProps> = ({
                   onChange={(value) =>
                     handleInputChange(input.name, value, input.dataType)
                   }
+                  disabled={input.disabled}
                 />
               }
             </div>

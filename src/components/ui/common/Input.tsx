@@ -12,6 +12,7 @@ interface InputProps {
   required?: boolean;
   defaultValue?: string | number | readonly string[];
   name?: string;
+  disabled?: boolean;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -26,6 +27,7 @@ const Input: React.FC<InputProps> = ({
   defaultValue,
   name,
   wrapperClassName,
+  disabled = false,
 }) => {
   return (
     <div className={`relative ${wrapperClassName}`}>
@@ -44,6 +46,7 @@ const Input: React.FC<InputProps> = ({
         className={`input ${icon ? "pl-10!" : ""} ${className} w-full`}
         defaultValue={defaultValue}
         name={name}
+        disabled={disabled}
       />
     </div>
   );

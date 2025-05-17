@@ -17,6 +17,8 @@ const DataTable = <T extends DataBaseType>({
   actions,
   canAdd = true,
   editable = true,
+  canRemove = true,
+  haveSinglePage = true,
 }: DataTableProps<T>) => {
   const rows = tableData?.filter((_, index) => index < limit);
 
@@ -70,7 +72,7 @@ const DataTable = <T extends DataBaseType>({
                       key={colIndex}
                       className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
                     >
-                      {baseUrl ? (
+                      {baseUrl && haveSinglePage ? (
                         <Link href={`${baseUrl}/${row.id}`}>{data || "_"}</Link>
                       ) : (
                         data || "_"
@@ -110,7 +112,7 @@ const DataTable = <T extends DataBaseType>({
                         ویرایش{" "}
                       </Link>
                     )}
-                    {isEditable && (
+                    {isEditable && canRemove && (
                       <Link
                         href={`${baseUrl}/${row.id}?delete=true`}
                         className="tableAction text-red-600! hover:text-red-900!"

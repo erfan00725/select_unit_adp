@@ -18,14 +18,7 @@ export const GeneralSchema = z.object({
  * @returns The validated data or an error object.
  */
 export function validateGeneralSafe(data: unknown) {
-  const result = GeneralSchema.safeParse(data);
-  if (!result.success) {
-    return {
-      error: result.error.flatten().fieldErrors,
-      success: false,
-    };
-  }
-  return { data: result.data, success: true };
+  return GeneralSchema.safeParse(data);
 }
 
 // Schema for validating General data when updating an existing entry (all fields optional)
@@ -37,12 +30,5 @@ export const PartialGeneralSchema = GeneralSchema.partial();
  * @returns The validated data or an error object.
  */
 export function validatePartialGeneralSafe(data: unknown) {
-  const result = PartialGeneralSchema.safeParse(data);
-  if (!result.success) {
-    return {
-      error: result.error.flatten().fieldErrors,
-      data: null,
-    };
-  }
-  return { data: result.data, error: null };
+  return GeneralSchema.parse(data);
 }
