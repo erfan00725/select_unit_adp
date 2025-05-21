@@ -309,9 +309,17 @@ const FieldsList = async ({
     FixedFee: field.FixedFee ? `${field.FixedFee}` : "_",
     Students: field.students?.length || 0,
     Lessons: field.lessons?.length || 0,
+    Teachers: field.teachers?.length || 0,
   }));
 
-  const headers = ["شناسه", "نام", "شهریه ثابت", "دانش‌آموزان", "دروس"];
+  const headers = [
+    "شناسه",
+    "نام",
+    "شهریه ثابت",
+    "دانش‌آموزان",
+    "دروس",
+    "استادان",
+  ];
 
   return {
     tableData: tableData,
