@@ -28,14 +28,12 @@ export const useSearchParams = () => {
     if (deletePage) {
       params.delete("page");
     }
-    console.log(searchParams.toString());
     router.push(`?${params.toString()}`);
   };
 
   const removeSearchParam = (param: string) => {
     const params = new URLSearchParams(searchParams.toString());
     params.delete(param);
-    console.log(params.get(param));
     router.push(`?${params.toString()}`);
   };
 

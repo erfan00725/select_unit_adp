@@ -1,11 +1,12 @@
 import React from "react";
 import InfoRow from "./InfoRow";
-import StatusBadge from "../StatusBadge";
+import StatusBadge from "./StatusBadge";
 import Link from "next/link";
 import DisplayLessonHours from "../DisplayLessonHours";
 import { DeleteButton } from "./DeleteButton";
 import getFarsiDate from "@/lib/getFarsiDate";
 import { DetailPageProps, DetailPageRow } from "@/types/Props";
+import { priceFormatter } from "@/lib/utils/priceFormatter";
 
 const DetailInfoCard: React.FC<DetailPageProps> = ({
   id,
@@ -18,15 +19,24 @@ const DetailInfoCard: React.FC<DetailPageProps> = ({
   editUrl,
 }) => {
   const formatValue = (row: DetailPageRow) => {
-    if (!row.value) return null;
+    if (!row.value && row.type !== "status") return null;
 
     switch (row.type) {
       case "status":
-        return <StatusBadge status={row.value as string} variant="active" />;
+        return (
+          <StatusBadge
+            status={row.value ? "paid" : "unpaid"}
+            variant={row.value ? "paid" : "unpaid"}
+          />
+        );
       case "category":
         return <span className="text-blue-600">{row.value}</span>;
       case "price":
-        return <span className="font-semibold">{row.value}</span>;
+        return (
+          <span className="font-semibold">
+            {priceFormatter(row.value?.toString(), true)}
+          </span>
+        );
       case "hours":
         return <DisplayLessonHours hours={row.value?.toString() || ""} />;
       default:

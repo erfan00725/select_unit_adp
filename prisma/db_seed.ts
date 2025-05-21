@@ -1,3 +1,4 @@
+import bcrypt from "bcryptjs";
 import { PrismaClient, LessonGrade } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -307,17 +308,42 @@ const lessonsData = [
   // Note: Some fields like TeacherId, fieldId, PassCondition, RequireLesson, etc., are not in the image and are omitted or will use schema defaults.
 ];
 
+// Settings keys for fee settings
+const Settings = {
+  FixedFee: "fixedFee",
+  CertificateFee: "certificateFee",
+  BooksFee: "booksFee",
+  PricePerUnit: "pricePerUnit",
+  ExtraClassFee: "extraClassFee",
+} as const;
+
 // Define fee settings data
 const feeSettingsData = [
-  { Key: "FixedFee", Value: "2000000" },
-  { Key: "CertificateFee", Value: "300000" },
-  { Key: "BooksFee", Value: "500000" },
-  { Key: "PricePerUnit", Value: "1000000" },
-  { Key: "ExtraClassFee", Value: "800000" },
+  { Key: Settings.FixedFee, Value: "2000000" },
+  { Key: Settings.CertificateFee, Value: "300000" },
+  { Key: Settings.BooksFee, Value: "500000" },
+  { Key: Settings.PricePerUnit, Value: "1000000" },
+  { Key: Settings.ExtraClassFee, Value: "800000" },
 ];
+
+const adminUserName = "admin";
+const adminPassword = "@dmin113link";
 
 async function main() {
   console.log(`Start seeding ...`);
+
+  // Seed Admin
+  console.log(`Seeding Admin...`);
+  const admin = await prisma.user.upsert({
+    where: { UserName: adminUserName },
+    update: {},
+    create: {
+      UserName: adminUserName,
+      Password: bcrypt.hashSync(adminPassword, 10),
+      Type: "admin",
+    },
+  });
+  console.log(`Seeded Admin: ${admin.UserName}`);
 
   // Seed Lessons
   console.log(`Seeding ${lessonsData.length} lessons...`);

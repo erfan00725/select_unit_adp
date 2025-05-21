@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import { SelectItem } from "../../Form/SelectItems";
-import { SelectButton } from "../../Form/SelectButton";
+import { SelectItem } from "../Form/SelectItems";
+import { SelectButton } from "../Form/SelectButton";
 
 type Props = {
   items: SelectItem[];
@@ -21,7 +21,6 @@ export const LessonSelect = ({
     setSelectedLessons((prev) => {
       return [...prev, ...noneDuplicate.map((item) => item.id)];
     });
-    console.log("Selected items:", selectedItems);
   };
 
   return (

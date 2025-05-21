@@ -8,7 +8,7 @@ interface StudentInfoProps {
 }
 
 const StudentInfoCard: React.FC<StudentInfoProps> = async ({ studentId }) => {
-  const studentData = await getStudentById(BigInt(studentId));
+  const studentData = await getStudentById(studentId);
   const student = studentData.student;
 
   if (!student) {

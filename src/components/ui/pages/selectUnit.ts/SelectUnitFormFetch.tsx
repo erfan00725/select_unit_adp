@@ -1,9 +1,4 @@
-import {
-  getFeeSettings,
-  getGeneralSettings,
-  getLessons,
-  getSelectUnitById,
-} from "@/lib/actions";
+import { getLessons, getSelectUnitById } from "@/lib/actions";
 import { SelectUnitForm } from "./SelectUnitForm";
 
 type Props = {
@@ -15,9 +10,6 @@ export const SelectUnitFormFetch = async ({
   studnetId,
   selectUnitId,
 }: Props) => {
-  const { booksFee, certificateFee, extraClassFee, fixedFee, pricePerUnit } =
-    await getFeeSettings();
-
   // TODO: Get only related lessons
   const lessons = await getLessons({ limit: 500 });
 
@@ -31,8 +23,6 @@ export const SelectUnitFormFetch = async ({
     <SelectUnitForm
       studnetId={studnetId}
       lessons={lessons}
-      defaultPrice={pricePerUnit}
-      defaultFixedFee={fixedFee}
       selectUnitData={selectUnitData} // Pass the select unit data for editing
       isEditMode={!!selectUnitId} // Flag to indicate edit mode
     />

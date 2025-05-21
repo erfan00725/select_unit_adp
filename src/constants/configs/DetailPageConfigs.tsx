@@ -17,10 +17,10 @@ import { getGender } from "@/lib/getGender";
 import { DeleteFunction, InfoPageConfig, PageType } from "@/types/General";
 import { DetailPageProps } from "@/types/Props";
 import { urls } from "../urls";
-import { UserSelectUnitList } from "@/components/ui/pages/selectUnit.ts/UserSelectUnitList";
+import { UserSelectUnitList } from "@/components/ui/selectUnit/UserSelectUnitList";
 import Link from "next/link";
 import getAcademicYearJ from "@/lib/utils/getAcademicYearJ";
-import { SelectUnitLessonsTable } from "@/components/ui/pages/selectUnit.ts/SelectUnitLessonsTable";
+import { SelectUnitLessonsTable } from "@/components/ui/selectUnit/SelectUnitLessonsTable";
 import { priceFormatter } from "@/lib/utils/priceFormatter";
 import { gradeRender, periodRender } from "@/lib/utils/dataRenderer";
 
@@ -82,8 +82,13 @@ export const LessonsDetailConfig = (
         value: lesson?.PassCondition,
       },
       {
-        label: "ساعات",
-        value: `${lesson?.TheoriHours}.${lesson?.PracticalHours}`,
+        label: "ساعت تئوری",
+        value: lesson?.TheoriHours,
+      },
+
+      {
+        label: "ساعت عملی",
+        value: lesson?.PracticalHours,
       },
       {
         label: "درس پیش‌نیاز",
@@ -367,6 +372,11 @@ export const SelectUnitDetailConfig = (
         type: "price",
       },
       {
+        label: "تخفیف",
+        value: priceFormatter(selectUnit?.Discount?.toString(), true),
+        type: "price",
+      },
+      {
         label: "تعداد کل واحد‌ها",
         value: selectUnit?.totalUnits?.toString(),
         type: "text",
@@ -375,6 +385,11 @@ export const SelectUnitDetailConfig = (
         label: "مبلغ کل",
         value: priceFormatter(selectUnit?.totalFee?.toString(), true),
         type: "price",
+      },
+      {
+        label: "وضعیت پرداخت",
+        value: !!selectUnit?.Paid,
+        type: "status",
       },
     ],
   };

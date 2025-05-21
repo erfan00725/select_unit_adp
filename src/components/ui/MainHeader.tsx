@@ -23,7 +23,6 @@ function MainHeader() {
   const session = useSession();
 
   useEffect(() => {
-    console.log("session", session);
     setIsAuthenticated(session.status === "authenticated");
   }, [session.status, pathName]);
 

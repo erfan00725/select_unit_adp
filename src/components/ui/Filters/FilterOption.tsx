@@ -43,8 +43,6 @@ export default function FilterOption({ option, onChange }: Props) {
       ? option.defaultValue.toString()
       : option.defaultValue);
 
-  console.log(getSearchParam(option.name));
-
   switch (option.type) {
     case "select":
       Input = (

@@ -106,7 +106,7 @@ model Lesson {
   RequireLesson  BigInt?      @db.UnsignedBigInt
   RequireUnit    Int?
   NotifCode      BigInt?      @db.UnsignedBigInt
-  ValidFrom      DateTime    @default(now()) @db.Date
+  ValidFrom      DateTime     @default(now()) @db.Date
   ValidTill      DateTime?    @db.Date
   PricePerUnit   BigInt?      @db.BigInt
   Created_at     DateTime     @default(now()) @db.Timestamp()

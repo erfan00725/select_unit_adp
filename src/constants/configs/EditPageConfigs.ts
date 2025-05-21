@@ -31,7 +31,7 @@ export const LessonEditConfig: CreateEditProps<any, any> = {
   submitFunction: updateLesson,
   validateFunction: validateLessonSafe,
   formGenerator: lessonFormConfigGenerator,
-  getDataById: getLessonById,
+  getDataById: (id: string) => getLessonById(id, false),
   entityName: "درس‌ها",
   redirectUrl: urls.lessons,
 };
@@ -70,6 +70,7 @@ export const GeneralEditConfig: CreateEditProps<any, any> = {
   getDataById: getGeneralByKey,
   entityName: "تنظیمات عمومی",
   redirectUrl: urls.generals,
+  backToSingle: false,
 };
 
 export const EditPageConfigs: { [K in PageType]?: CreateEditProps<any, any> } =

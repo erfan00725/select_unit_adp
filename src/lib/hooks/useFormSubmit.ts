@@ -8,6 +8,7 @@ import {
   UpdateFunction,
   ValidateFunction,
 } from "@/types/Form";
+import { useState } from "react";
 
 type SubmitOptions<T> = {
   /** The ID of the entity being updated (optional, for update operations) */
@@ -30,6 +31,7 @@ type SubmitOptions<T> = {
  */
 export function useFormSubmit<T>() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   /**
    * Handles form submission with validation and error handling
@@ -43,35 +45,32 @@ export function useFormSubmit<T>() {
     redirectUrl,
     type,
   }: SubmitOptions<T>) => {
-    console.log(formData);
     // Validate the form data
     const { success, data, error } = validateFn(formData);
-
-    console.log(data);
+    setIsLoading(true);
 
     // Handle validation errors
     if (!success || !data || (error as ZodError)) {
       if ((error as ZodError)?.errors?.length > 0)
-        console.log((error as ZodError).errors);
-      toast.error(
-        errorMassages.invalidData(
-          entityName,
-          (error as ZodError).errors[0].message || "اعتبارسنجی ناموفق بود"
-        )
-      );
+        toast.error(
+          errorMassages.invalidData(
+            entityName,
+            (error as ZodError).errors[0].message || "اعتبارسنجی ناموفق بود"
+          )
+        );
+      setIsLoading(false);
       return false;
     }
 
     try {
       // Convert ID to BigInt if provided
-      const bigIntId = id ? BigInt(id) : undefined;
       let result;
 
       // Submit the data - handle both update and add function types
-      if (bigIntId) {
+      if (id) {
         // For update operations (with ID)
         result = await (submitFn as UpdateFunction<T>)(
-          bigIntId,
+          id.toString(),
           data as unknown as T
         );
       } else {
@@ -82,6 +81,7 @@ export function useFormSubmit<T>() {
       // Handle submission errors
       if (result.error) {
         toast.error(errorMassages.baseErrorMassage(result.error));
+        setIsLoading(false);
         return false;
       }
 
@@ -102,14 +102,17 @@ export function useFormSubmit<T>() {
         router.push(redirectUrl);
       }
 
+      setIsLoading(false);
+
       return true;
     } catch (error) {
       // Handle unexpected errors
       toast.error(errorMassages.baseErrorMassage(String(error)));
-      console.log("err: ", error);
+
+      setIsLoading(false);
       return false;
     }
   };
 
-  return { submitForm };
+  return { submitForm, isLoading };
 }

@@ -25,6 +25,7 @@
     "postcss": "^8.5.3",
     "prisma": "^6.5.0",
     "react": "^19.0.0",
+    "react-currency-input-field": "^3.10.0",
     "react-dom": "^19.0.0",
     "react-toastify": "^11.0.5",
     "use-debounce": "^10.0.4",
@@ -45,6 +46,6 @@
     "typescript": "^5"
   },
   "prisma": {
-    "seed": "ts-node --project tsconfig.json src/lib/utils/db_seed.ts"
+    "seed": "ts-node --project tsconfig.json prisma/db_seed.ts"
   }
 }

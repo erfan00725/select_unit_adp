@@ -65,19 +65,13 @@ function customReturn(
     Number(selectUnit.FixedFee || 0) +
     Number(selectUnit.CertificateFee || 0) +
     Number(selectUnit.ExtraClassFee || 0) +
-    Number(selectUnit.BooksFee || 0);
-
-  selectUnit.selectedLessons.forEach((lesson) => {
-    console.log(lesson.lesson?.LessonName);
-  });
-
-  console.log(selectUnit);
+    Number(selectUnit.BooksFee || 0) -
+    Number(selectUnit.Discount || 0);
 
   return {
     ...selectUnit,
     totalUnits: selectUnit.selectedLessons
       ? selectUnit.selectedLessons.reduce((acc, lesson) => {
-          console.log(lesson.lesson?.TheoriUnit, lesson.lesson?.PracticalUnit);
           return (
             acc + (lesson.lesson?.TheoriUnit + lesson.lesson?.PracticalUnit)
           );
@@ -88,7 +82,13 @@ function customReturn(
 }
 
 // Get all select units
-export async function getSelectUnits(params?: BaseListFilterParams) {
+export async function getSelectUnits(
+  params?: BaseListFilterParams & {
+    year?: number;
+    period?: Period;
+    paid?: number;
+  }
+) {
   try {
     const {
       query,
@@ -97,6 +97,9 @@ export async function getSelectUnits(params?: BaseListFilterParams) {
       page = 1,
       from,
       to,
+      year,
+      period,
+      paid,
     } = params || {};
 
     // Calculate skip for pagination
@@ -119,6 +122,21 @@ export async function getSelectUnits(params?: BaseListFilterParams) {
       where.Created_at = {};
       if (from) where.Created_at.gte = from;
       if (to) where.Created_at.lte = to;
+    }
+
+    if (year) {
+      const GyYear = year + 621;
+      where.Year = {
+        in: [GyYear, GyYear + 1],
+      };
+    }
+
+    if (period) {
+      where.Period = period;
+    }
+
+    if (typeof paid === "number") {
+      where.Paid = !!paid;
     }
 
     // Get total count for pagination
@@ -315,6 +333,7 @@ export async function getSelectUnitById(selectUnitId: string) {
             lesson: {
               include: {
                 teacher: true,
+                field: true,
               },
             },
           },
@@ -886,6 +905,8 @@ export async function bulkCreateSelectUnits(
         CertificateFee: baseData.CertificateFee || 0,
         ExtraClassFee: baseData.ExtraClassFee || 0,
         BooksFee: baseData.BooksFee || 0,
+        Discount: baseData.Discount || 0,
+        Paid: !!baseData.Paid,
       },
     });
 
@@ -989,7 +1010,11 @@ export async function bulkEditSelectUnits(
     );
 
     // If no changes are needed, return early
-    if (lessonsToAdd.length === 0 && lessonsToRemove.length === 0) {
+    if (
+      lessonsToAdd.length === 0 &&
+      lessonsToRemove.length === 0 &&
+      !baseData
+    ) {
       return { message: "تغییری نیاز نیست" };
     }
 
@@ -1035,10 +1060,13 @@ export async function bulkEditSelectUnits(
 
       // Update SelectUnit fields from baseData
       const { StudentId, id, ...updateDataFromBase } = baseData;
+
       if (Object.keys(updateDataFromBase).length > 0) {
         await tx.selectUnit.update({
           where: { id: selectUnitId },
-          data: updateDataFromBase,
+          data: {
+            ...updateDataFromBase,
+          },
         });
       }
 

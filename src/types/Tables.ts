@@ -79,6 +79,8 @@ export interface SelectUnitDataType {
   CertificateFee?: bigint;
   ExtraClassFee?: bigint;
   BooksFee?: bigint;
+  Discount?: bigint;
+  Paid?: boolean;
 }
 
 export interface SelectedLessonDataType {

@@ -26,11 +26,6 @@ export const selectUnitSchema = z.object({
     )
     .describe("سال تحصیلی"),
 
-  Lesson: z
-    .bigint()
-    .or(z.string().transform((val) => BigInt(val)))
-    .describe("شناسه درس"),
-
   StudentId: z
     .bigint()
     .or(z.string().transform((val) => BigInt(val)))
@@ -79,6 +74,21 @@ export const selectUnitSchema = z.object({
     .nullable()
     .default(BigInt(0))
     .describe("هزینه کتاب"),
+
+  Discount: z
+    .bigint()
+    .or(z.string().transform((val) => BigInt(val)))
+    .optional()
+    .nullable()
+    .default(BigInt(0))
+    .describe("تخفیف"),
+
+  Paid: z
+    .boolean()
+    .default(false)
+    .nullable()
+    .optional()
+    .describe("وضعیت پرداخت"),
 });
 /**
  * Type definition derived from the Zod schema

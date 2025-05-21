@@ -25,8 +25,6 @@ export default async function RootLayout({
 }>) {
   const session = await auth();
   const user = session?.user;
-  console.log("session", session);
-  console.log("user", !!user);
   return (
     <>
       <SessionProvider>

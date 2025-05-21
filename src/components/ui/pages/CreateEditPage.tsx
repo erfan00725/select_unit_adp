@@ -14,9 +14,10 @@ export default function CreateEditPage<T extends (...args: any) => any, S>({
   redirectUrl,
   submitFunction,
   validateFunction,
+  backToSingle = true,
 }: CreateEditProps<T, S>) {
   const [formConfig, setFormConfig] = useState<FormPageProps | null>(null);
-  const { submitForm } = useFormSubmit();
+  const { submitForm, isLoading } = useFormSubmit();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,7 +36,7 @@ export default function CreateEditPage<T extends (...args: any) => any, S>({
       validateFn: validateFunction,
       submitFn: submitFunction,
       entityName: entityName,
-      redirectUrl: `${redirectUrl}/${id || ""}`,
+      redirectUrl: `${redirectUrl}/${(backToSingle && id) || ""}`,
     });
   };
 
@@ -43,5 +44,7 @@ export default function CreateEditPage<T extends (...args: any) => any, S>({
     return <Loading />;
   }
 
-  return <FormPage {...formConfig} onSubmit={onSubmit} />;
+  return (
+    <FormPage {...formConfig} onSubmit={onSubmit} isSubmiting={isLoading} />
+  );
 }

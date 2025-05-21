@@ -3,8 +3,58 @@
 import { prisma } from "../prisma";
 import { revalidatePath } from "next/cache";
 import { BaseListFilterParams, LessonDataType } from "@/types/Tables";
-import { LessonGrade } from "@prisma/client";
+import {
+  Field,
+  Lesson,
+  LessonGrade,
+  SelectUnit,
+  Teacher,
+} from "@prisma/client";
 import { DeleteFunctionReturnType } from "@/types/General";
+import { getFeeSettings } from "./general";
+
+// Define a type that represents a Lesson with potentially included relations
+type LessonWithOptionalRelations = Lesson & {
+  teacher?: Teacher | null;
+  field?: Field | null;
+  selectUnits?: SelectUnit[] | null;
+  requiredForLesson?: Lesson[] | null;
+  requiresLesson?: Lesson | null;
+};
+
+const customReturn = async (
+  data: LessonWithOptionalRelations,
+  P_defaultPrice?: BigInt,
+  useDefault: boolean = true
+) => {
+  let defaultPrice;
+  if (
+    (data.PricePerUnit == undefined || data.PricePerUnit == null) &&
+    useDefault
+  ) {
+    if (P_defaultPrice == undefined || P_defaultPrice == null) {
+      const { settings } = await getFeeSettings();
+      defaultPrice = BigInt(settings.pricePerUnit);
+    } else {
+      defaultPrice = P_defaultPrice;
+    }
+
+    return {
+      ...data,
+      PricePerUnit: defaultPrice,
+    };
+  } else {
+    return data;
+  }
+};
+const customReturnLessons = async (data: LessonWithOptionalRelations[]) => {
+  const { settings } = await getFeeSettings();
+  const { pricePerUnit: defaultPrice } = settings;
+
+  return await Promise.all(
+    data.map((item) => customReturn(item, BigInt(defaultPrice)))
+  );
+};
 
 type LessonsParams = {
   unit?: string;
@@ -103,8 +153,10 @@ export async function getLessons(
     // Calculate pagination metadata
     const totalPages = Math.ceil(totalCount / limit);
 
+    const processedLessons = await customReturnLessons(lessons);
+
     return {
-      lessons,
+      lessons: processedLessons,
       pagination: {
         total: totalCount,
         totalPages,
@@ -124,7 +176,10 @@ export async function getLessons(
  * @param id - The ID of the lesson to retrieve (string, will be converted to BigInt).
  * @returns A promise that resolves to an object containing the lesson or an error.
  */
-export async function getLessonById(id: string) {
+export async function getLessonById(
+  id: string,
+  UserDefaultPrice: boolean = true
+) {
   try {
     const lessonId = BigInt(id);
     const lesson = await prisma.lesson.findUnique({
@@ -142,7 +197,7 @@ export async function getLessonById(id: string) {
       return { error: "درس مورد نظر یافت نشد" };
     }
 
-    return { lesson };
+    return { lesson: await customReturn(lesson, undefined, UserDefaultPrice) };
   } catch (error) {
     console.error("Failed to fetch lesson:", error);
     return { error: "خطا در دریافت درس" };
@@ -151,7 +206,6 @@ export async function getLessonById(id: string) {
 
 // Create a new lesson
 export async function createLesson(data: LessonDataType) {
-  console.log("data ", data);
   try {
     // Check if teacher exists
     if (data.TeacherId) {
@@ -189,15 +243,30 @@ export async function createLesson(data: LessonDataType) {
     const editedData = {
       ...data,
       id: undefined,
+      TeacherId: undefined,
+      fieldId: undefined,
+      RequireLesson: undefined,
+      TheoriHours: data.TheoriHours ? Number(data.TheoriHours) : undefined,
+      PracticalHours: data.PracticalHours
+        ? Number(data.PracticalHours)
+        : undefined,
+      RequireUnit: data.RequireUnit ? Number(data.RequireUnit) : undefined,
+      ValidFrom: data.ValidFrom ? data.ValidFrom : undefined,
     };
 
     const lesson = await prisma.lesson.create({
       data: {
         ...editedData,
-        fieldId: editedData.fieldId ? Number(editedData.fieldId) : undefined,
-        RequireUnit: editedData.RequireUnit
-          ? Number(editedData.RequireUnit)
-          : null,
+        Grade: data.Grade || undefined,
+        teacher: editedData.TeacherId
+          ? { connect: { id: data.TeacherId } }
+          : undefined,
+        field: editedData.fieldId
+          ? { connect: { id: data.fieldId } }
+          : undefined,
+        requiresLesson: editedData.RequireLesson
+          ? { connect: { id: data.RequireLesson } }
+          : undefined,
       },
     });
 
@@ -214,24 +283,48 @@ export async function updateLesson(id: string, data: Partial<LessonDataType>) {
   try {
     const lessonId = BigInt(id);
     // Check if lesson name is being updated and if it's already in use
-    if (data.LessonName) {
-      const existingLesson = await prisma.lesson.findFirst({
-        where: {
-          LessonName: data.LessonName,
-          id: { not: lessonId },
-        },
-      });
-      if (existingLesson) {
-        return { error: "درسی با این نام قبلاً ثبت شده است" };
-      }
+    const existingLesson = await prisma.lesson.findFirst({
+      where: {
+        id: lessonId,
+      },
+    });
+    if (!existingLesson) {
+      return { error: "درس مورد نظر یافت نشد" };
     }
     const editedData = {
       ...data,
       id: undefined,
+      TeacherId: undefined,
+      fieldId: undefined,
+      RequireLesson: undefined,
+      TheoriHours: data.TheoriHours ? Number(data.TheoriHours) : undefined,
+      PracticalHours: data.PracticalHours
+        ? Number(data.PracticalHours)
+        : undefined,
+      RequireUnit: data.RequireUnit ? Number(data.RequireUnit) : undefined,
+      ValidFrom: data.ValidFrom ? data.ValidFrom : undefined,
     };
     const lesson = await prisma.lesson.update({
       where: { id: lessonId },
-      data: editedData,
+      include: {
+        field: true,
+        teacher: true,
+        selectUnits: true,
+        requiredForLesson: true,
+        requiresLesson: true,
+      },
+      data: {
+        ...editedData,
+        teacher: editedData.TeacherId
+          ? { connect: { id: data.TeacherId } }
+          : { disconnect: true },
+        field: editedData.fieldId
+          ? { connect: { id: data.fieldId } }
+          : { disconnect: true },
+        requiresLesson: editedData.RequireLesson
+          ? { connect: { id: data.RequireLesson } }
+          : { disconnect: true },
+      },
     });
     revalidatePath("/dashboard/lessons");
     revalidatePath(`/dashboard/lessons/${id}`);
@@ -299,7 +392,7 @@ export async function getLessonsByIds(ids: (bigint | string | number)[]) {
       },
     });
 
-    return { lessons };
+    return { lessons: await customReturnLessons(lessons) };
   } catch (error) {
     console.error("Failed to fetch lessons by IDs:", error);
     return { error: "خطا در دریافت دروس با شناسه‌های مورد نظر", lessons: [] };

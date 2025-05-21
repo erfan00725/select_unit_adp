@@ -56,8 +56,6 @@ const Pagination: React.FC<PaginationProps> = ({
       }
       pages.push(totalPages);
     }
-    console.log(currentPage);
-    console.log(totalPages);
 
     return pages;
   };

@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import DataTable from "../../DataTable";
+import DataTable from "../DataTable";
 import {
   LessonsList,
   ListGeneralReturnType,

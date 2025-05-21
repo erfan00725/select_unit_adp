@@ -117,7 +117,6 @@ export function validateStudentUpdate(data: unknown) {
  * @returns An object with success status and either data or error
  */
 export function validateStudentSafe(data: unknown) {
-  console.log("validat ", data);
   try {
     const validData = studentSchema.parse(data);
     return { success: true, data: validData };

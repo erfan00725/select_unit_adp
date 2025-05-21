@@ -127,6 +127,15 @@ export const s_ListConfig: StaticConfigsType = {
           { label: "تابستان", value: Period.summer },
         ],
       },
+      {
+        name: "paid",
+        type: "select",
+        placeholder: "وضعیت پرداخت",
+        options: [
+          { label: "پرداخت شده", value: 1 },
+          { label: "پرداخت نشده", value: 0 },
+        ],
+      },
     ],
   },
 };
@@ -162,7 +171,7 @@ export const LessonsList = async ({
 
   const lessons = lessonsData?.lessons;
 
-  console.log(selectUnitLessonData);
+  // TODO: Fix this shit
 
   const getTableData = () => {
     if (selectUnitLessonData?.selectUnit?.selectedLessons?.length) {
@@ -172,6 +181,8 @@ export const LessonsList = async ({
           id: lesson.id,
           Name: lesson.LessonName,
           Grade: gradeRender(lesson.Grade),
+          // @ts-expect-error
+          Field: lesson.field?.Name || "عمومی",
           TheoriUnit: lesson.TheoriUnit,
           PracticalUnit: lesson.PracticalUnit,
           TotalUnits: lesson.TheoriUnit + lesson.PracticalUnit,
@@ -356,7 +367,7 @@ const TeachersList = async ({
 export const SelectUnitList = async ({
   searchParams,
 }: ListGeneralParamsType): Promise<ListGeneralReturnType> => {
-  const { page, q, from, to, order, year, period, limit } = searchParams;
+  const { page, q, from, to, order, year, period, paid, limit } = searchParams;
 
   const selectUnitsData = await getSelectUnits({
     page: page ? Number(page) : 1,
@@ -365,6 +376,9 @@ export const SelectUnitList = async ({
     from: from ? new Date(from) : undefined,
     to: to ? new Date(to) : undefined,
     order: order ? (order as Orders) : "asc",
+    year: year ? Number(year) : undefined,
+    period: period ? (period as Period) : undefined,
+    paid: paid ? Number(paid) : undefined,
   });
   const pageLimit = selectUnitsData.pagination?.limit || defaultListLimit;
 
@@ -377,7 +391,8 @@ export const SelectUnitList = async ({
       Period: periodRender(unit?.Period),
       LessonCount: unit?.selectedLessons.length,
       TotalUnits: unit?.totalUnits || "_",
-      ExtraFee: unit?.totalFee ? priceFormatter(unit?.totalFee, true) : "0",
+      TotalFee: unit?.totalFee ? priceFormatter(unit?.totalFee, true) : "0",
+      Paid: unit?.Paid ? "پرداخت شده" : "پرداخت نشده",
     };
   });
 
@@ -389,6 +404,7 @@ export const SelectUnitList = async ({
     "تعداد دروس",
     "تعداد واحد",
     "شهریه کل",
+    "وضیعت پرداخت",
   ];
 
   return {
@@ -401,60 +417,56 @@ export const SelectUnitList = async ({
     limit: pageLimit,
     error: selectUnitsData?.error,
     pagination: selectUnitsData?.pagination,
+    editable: false,
+  };
+};
+
+const generalsList = async ({
+  searchParams,
+}: ListGeneralParamsType): Promise<ListGeneralReturnType> => {
+  const page = searchParams?.page ? parseInt(searchParams.page) : 1;
+  const limit = searchParams?.limit
+    ? parseInt(searchParams.limit)
+    : defaultListLimit;
+  const query = searchParams?.query;
+  const data = await getGenerals({ page, limit, query });
+
+  const tableData = (data.generals || []).map((item) => ({
+    id: item.Key, // Using Key as id for General entity
+    Key: translateGeneralSettings(item.Key as Settings),
+    Value: priceFormatter(item.Value, true),
+    Updated_at: getFarsiDate(item.Updated_at),
+    Created_at: getFarsiDate(item.Created_at),
+  }));
+
+  const headers = ["شناسه", "کلید", "مقدار", "آخرین بروزرسانی", "تاریخ ایجاد"];
+
+  return {
+    tableData,
+    headers,
+    title: s_ListConfig.generals?.title || "",
+    addButtonLabel: s_ListConfig.generals?.addButtonLabel || "",
+    baseUrl: urls.generals,
+    limit: limit,
+    error: data.error || undefined,
+    pagination: {
+      currentPage: page,
+      limit,
+      total: data.total || 0,
+      totalPages: Math.ceil(data.total / limit),
+    },
+    canRemove: false,
+    haveSinglePage: false,
   };
 };
 
 export const d_ListConfig: DynamicConfigsType = {
-  generals: async ({
-    searchParams,
-  }: ListGeneralParamsType): Promise<ListGeneralReturnType> => {
-    const page = searchParams?.page ? parseInt(searchParams.page) : 1;
-    const limit = searchParams?.limit
-      ? parseInt(searchParams.limit)
-      : defaultListLimit;
-    const query = searchParams?.query;
-    const data = await getGenerals({ page, limit, query });
-
-    const tableData = (data.generals || []).map((item) => ({
-      id: item.Key, // Using Key as id for General entity
-      Key: translateGeneralSettings(item.Key as Settings),
-      Value: item.Value,
-      Updated_at: getFarsiDate(item.Updated_at),
-      Created_at: getFarsiDate(item.Created_at),
-    }));
-
-    const headers = [
-      "شناسه",
-      "کلید",
-      "مقدار",
-      "آخرین بروزرسانی",
-      "تاریخ ایجاد",
-    ];
-
-    return {
-      tableData,
-      headers,
-      title: s_ListConfig.generals?.title || "",
-      addButtonLabel: s_ListConfig.generals?.addButtonLabel || "",
-      baseUrl: urls.generals,
-      limit: limit,
-      error: data.error || undefined,
-      pagination: {
-        currentPage: page,
-        limit,
-        total: data.total || 0,
-        totalPages: Math.ceil(data.total / limit),
-      },
-      canRemove: false,
-      haveSinglePage: false,
-    };
-  },
   lessons: LessonsList,
   students: StudentsList,
   fields: FieldsList,
   teachers: TeachersList,
   selectUnit: SelectUnitList,
-  // generals will be handled by the new structure above
+  generals: generalsList,
 };
 
 //  ________Other Configs________

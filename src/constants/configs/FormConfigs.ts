@@ -16,6 +16,8 @@ import {
   inputDefaultPlaceholder,
 } from "@/constants/commonTexts";
 import { gradeRender } from "@/lib/utils/dataRenderer";
+import translateGeneralSettings from "@/lib/utils/translateGeneralSettings";
+import { Settings } from "@/types/General";
 
 export const lessonFormConfigGenerator = async (
   data?: Awaited<ReturnType<typeof getLessonById>>
@@ -190,7 +192,7 @@ export const lessonFormConfigGenerator = async (
       {
         title: "قیمت هر واحد",
         name: "PricePerUnit",
-        type: "number",
+        type: "price",
         dataType: InputDataType.bigint,
         placeholder: inputDefaultPlaceholder("قیمت هر واحد"),
         defaultValue: (lesson?.PricePerUnit || "").toString(),
@@ -471,10 +473,21 @@ export const generalFormConfigGenerator = async (
   const general = data?.general;
 
   return {
-    title: formTitle("تنظیم عمومی", !!general),
+    title: formTitle(
+      !!general
+        ? translateGeneralSettings(general.Key as Settings)
+        : "تنظیم عمومی",
+      !!general
+    ),
     description: formDescription("تنظیم عمومی", !!general),
     useDefaultValues: true,
-    addText: formButton("تنظیم عمومی", !!general),
+
+    addText: formButton(
+      !!general
+        ? translateGeneralSettings(general.Key as Settings)
+        : "تنظیم عمومی",
+      !!general
+    ),
     inputs: [
       {
         title: "کلید",
@@ -489,7 +502,7 @@ export const generalFormConfigGenerator = async (
       {
         title: "مقدار",
         name: "Value",
-        type: "text",
+        type: "price",
         placeholder: inputDefaultPlaceholder("مقدار"),
         required: true,
         defaultValue: general?.Value,

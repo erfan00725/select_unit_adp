@@ -7,6 +7,8 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FormInputProps, FormProps, InputDataType } from "@/types/Props";
 import { SelectButton } from "./SelectButton";
 import { CalenderFarsi } from "./CalenderFarsi";
+import CurrencyInput from "react-currency-input-field";
+import Loading from "@/components/common/Loading";
 
 const FormInput = ({
   name,
@@ -27,7 +29,6 @@ const FormInput = ({
         <SelectButton
           {...SelectButtonProps}
           onSave={(i) => {
-            console.log(i);
             const data = SelectButtonProps.singleSelect
               ? i[0].id
               : i.map((i) => i.id);
@@ -56,6 +57,24 @@ const FormInput = ({
           onChange={onChange}
         />
       );
+    case "price":
+      return (
+        <CurrencyInput
+          className="input"
+          name={name}
+          placeholder={placeholder || ""}
+          value={value?.toString() || ""}
+          onValueChange={(value: string | undefined, name?: string) =>
+            onChange && onChange(value)
+          }
+          id={name}
+          required={required}
+          disabled={disabled}
+          suffix="ریال"
+          allowNegativeValue={false}
+          allowDecimals={false}
+        />
+      );
     default:
       return (
         <Input
@@ -80,16 +99,12 @@ const Form: React.FC<FormProps> = ({
   addText = "اضافه کردن",
   Header,
   useDefaultValues = false,
+  isSubmiting = false,
 }) => {
   // Create a state object to store all input values
   const [formData, setFormData] = useState<Record<string, any>>({});
 
-  // Handle input changes
-  const handleInputChange = (
-    name: string,
-    value: any,
-    dataType: InputDataType = InputDataType.string
-  ) => {
+  const formatInputValue = (value: any, dataType?: InputDataType) => {
     let convertedValue = value;
 
     const isValueEmpty =
@@ -97,6 +112,10 @@ const Form: React.FC<FormProps> = ({
       value === undefined ||
       value.trim() === "" ||
       value === "none";
+
+    if (isValueEmpty) {
+      return null;
+    }
 
     // Convert value based on dataType if specified
     if (dataType && !isValueEmpty) {
@@ -120,9 +139,18 @@ const Form: React.FC<FormProps> = ({
       }
     }
 
+    return convertedValue;
+  };
+
+  // Handle input changes
+  const handleInputChange = (
+    name: string,
+    value: any,
+    dataType: InputDataType = InputDataType.string
+  ) => {
     setFormData((prevData) => ({
       ...prevData,
-      [name]: !isValueEmpty ? convertedValue : null,
+      [name]: formatInputValue(value, dataType),
     }));
   };
 
@@ -130,7 +158,10 @@ const Form: React.FC<FormProps> = ({
     if (useDefaultValues) {
       const defaultValues: Record<string, any> = {};
       inputs.forEach((input) => {
-        defaultValues[input.name] = input.defaultValue || null;
+        defaultValues[input.name] = formatInputValue(
+          input.defaultValue,
+          input.dataType
+        );
       });
       setFormData(defaultValues);
     } else {
@@ -183,8 +214,14 @@ const Form: React.FC<FormProps> = ({
         {children}
 
         <button type="submit" className="btn mt-10">
-          <FontAwesomeIcon icon={faPlus} className="mr-2" />
-          {addText}
+          {isSubmiting ? (
+            <Loading />
+          ) : (
+            <>
+              <FontAwesomeIcon icon={faPlus} className="mr-2" />
+              {addText}
+            </>
+          )}
         </button>
       </form>
     </div>

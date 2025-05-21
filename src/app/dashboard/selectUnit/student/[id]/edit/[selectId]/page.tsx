@@ -34,8 +34,6 @@ const SelectUnitEditPage = async ({ params }: Props) => {
   const id = (await params).id;
   const selectId = (await params).selectId;
 
-  console.log(id, selectId);
-
   if (!selectId || !id) {
     return notFound();
   }

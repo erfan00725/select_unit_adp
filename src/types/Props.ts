@@ -46,6 +46,7 @@ export type FormProps = {
   addText?: string;
   onSubmit?: (formData: Record<string, any>) => void;
   useDefaultValues?: boolean;
+  isSubmiting?: boolean;
 };
 
 export type FormPageProps = FormProps & PageHeaderProps;
@@ -100,6 +101,7 @@ export type CreateEditProps<T extends (...args: any) => any, S> = {
   redirectUrl?: string;
   submitFunction: SubmitFunction<S>;
   validateFunction: ValidateFunction<S>;
+  backToSingle?: boolean;
 };
 
 export interface DetailPageProps {
@@ -118,3 +120,25 @@ export interface DetailPageRow {
   value?: React.ReactNode;
   type?: "text" | "status" | "category" | "price" | "number" | "hours";
 }
+
+export type InputValueType = Record<
+  string,
+  { active: boolean; value: string | number }
+>;
+
+export type SelectUnitFormConfig = {
+  id: string;
+  label: string;
+  type: "select" | "number" | "price" | "text" | string;
+  name: string;
+  options?: Array<{ value: string; label: string }>;
+  required?: boolean;
+  className?: string;
+  canBeDisabled?: boolean;
+};
+
+export type SelectUnitFormInpursProps = {
+  configs: SelectUnitFormConfig[];
+  initialValues?: InputValueType; // Added for edit mode
+  onInputsChange?: (inputsValue: InputValueType) => void;
+};

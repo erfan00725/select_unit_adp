@@ -1,5 +1,5 @@
 import React from "react";
-import DataTable from "../../DataTable";
+import DataTable from "../DataTable";
 import { ActionReturnType } from "@/types/General";
 import { getLessonsByIds } from "@/lib/actions";
 import { DataTableAction } from "@/types/Props";
@@ -34,7 +34,9 @@ const SelectUnitTable: React.FC<SelectUnitTableProps> = ({
     id: lesson?.id.toString() as string,
     lessonName: lesson?.LessonName,
     grade: gradeRender(lesson?.Grade),
-    teacherName: `${lesson?.teacher?.FirstName} ${lesson?.teacher?.LastName}`,
+    teacherName:
+      lesson?.teacher &&
+      `${lesson?.teacher?.FirstName} ${lesson?.teacher?.LastName}`,
     theoriUnit: lesson?.TheoriUnit,
     practicalUnit: lesson?.PracticalUnit,
     price: priceFormatter(Number(lesson?.PricePerUnit), true),

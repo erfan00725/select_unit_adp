@@ -297,15 +297,20 @@ export async function getFeeSettings() {
     );
 
     return {
-      fixedFee: feeSettings.fixedFee,
-      certificateFee: feeSettings.certificateFee,
-      booksFee: feeSettings.booksFee,
-      pricePerUnit: feeSettings.pricePerUnit,
-      extraClassFee: feeSettings.extraClassFee,
+      settings: {
+        [Settings.FixedFee]: feeSettings.fixedFee,
+        [Settings.CertificateFee]: feeSettings.certificateFee,
+        [Settings.BooksFee]: feeSettings.booksFee,
+        [Settings.PricePerUnit]: feeSettings.pricePerUnit,
+        [Settings.ExtraClassFee]: feeSettings.extraClassFee,
+      } as Record<Settings, string>,
     };
   } catch (error) {
     console.error("Failed to fetch fee settings:", error);
-    return { error: "خطا در دریافت تنظیمات هزینه‌ها" };
+    return {
+      error: "خطا در دریافت تنظیمات هزینه‌ها",
+      settings: {} as Record<Settings, string>,
+    };
   }
 }
 

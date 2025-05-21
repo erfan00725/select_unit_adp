@@ -11,9 +11,6 @@ export async function handleLogin(formData: FormData) {
     const username = formData.get("user") as string;
     const password = formData.get("password") as string;
 
-    console.log("Received username:", username);
-    console.log("Received password:", password);
-
     // Validate inputs directly
     if (!username || !password) {
       return {
@@ -30,19 +27,12 @@ export async function handleLogin(formData: FormData) {
         error: "1 نام کاربری یا رمز عبور اشتباه است",
       };
     }
-    console.log(
-      "Received password hashed:",
-      `'${bcrypt.hashSync(password, 10)}'`
-    );
-    console.log("User from database:", `'${userResult.user.Password}'`);
 
     // Verify password WITHOUT trimming
     const isValidPassword = await bcrypt.compare(
       password,
       userResult.user.Password
     );
-
-    console.log("Password comparison result:", isValidPassword);
 
     if (!isValidPassword) {
       return {
