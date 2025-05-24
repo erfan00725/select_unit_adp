@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import SearchFilterBar from "@/components/ui/Filters/SearchFilterBar";
 import { PageType } from "@/types/General";
 import DataTable from "@/components/ui/DataTable";
@@ -11,6 +12,7 @@ import {
 import { errorCheck } from "@/lib/errorCheck";
 import Pagination from "@/components/ui/common/Pagination";
 import { NoData } from "../../common/NoData";
+import Loading from "@/components/common/Loading";
 
 type Props = {
   searchParams: { [key: string]: string | undefined };
@@ -18,32 +20,48 @@ type Props = {
   staticConfig: ListStaticConfigType;
 };
 
-const ListPage = async ({ searchParams, params, staticConfig }: Props) => {
+const ListPage = ({ searchParams, params, staticConfig }: Props) => {
+  const [loading, setLoading] = React.useState(true);
+  const [data, setData] = React.useState<ListGeneralReturnType>();
+
   const type = params.type;
-  let pageData: ListGeneralReturnType | undefined;
 
-  if (d_ListConfig[type]) {
-    pageData = await d_ListConfig[type]({ searchParams });
+  useEffect(() => {
+    if (d_ListConfig[type]) {
+      d_ListConfig[type]({ searchParams })
+        .then((res) => {
+          console.log(res);
+          setData(res);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  }, []);
+
+  errorCheck(data?.error);
+
+  if (loading) {
+    return <Loading />;
   }
-  errorCheck(pageData?.error);
 
-  if (!pageData) {
+  if (!data) {
     return <NoData />;
   }
 
   return (
     <>
       <SearchFilterBar
-        resultsCount={pageData?.pagination?.total}
+        resultsCount={data?.pagination?.total}
         filterOptions={staticConfig.filterOptions}
         searchPlaceholder={staticConfig.searchPlaceholder}
       />
-      <DataTable {...pageData} />
+      <DataTable {...data} />
       <Pagination
-        currentPage={pageData.pagination?.currentPage || 1}
-        itemsPerPage={pageData.pagination?.limit || defaultListLimit}
-        totalItems={pageData.pagination?.total || 0}
-        baseUrl={pageData.baseUrl}
+        currentPage={data.pagination?.currentPage || 1}
+        itemsPerPage={data.pagination?.limit || defaultListLimit}
+        totalItems={data.pagination?.total || 0}
+        baseUrl={data.baseUrl}
       />
     </>
   );

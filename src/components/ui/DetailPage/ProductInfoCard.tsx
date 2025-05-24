@@ -47,19 +47,21 @@ const DetailInfoCard: React.FC<DetailPageProps> = ({
   const formBaseUrl = `${baseUrl}/${id}`;
 
   return (
-    <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+    <div className="bg-white rounded-lg shadow-sm overflow-hidden print:shadow-none print:rounded-none print:overflow-visible">
       {/* Header */}
-      <div className="p-6 border-b border-gray-200 flex justify-between items-center">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
-          <p className="text-sm text-gray-500 mt-1">
+      <div className="p-6 border-b border-gray-200 flex justify-between items-center print:p-4 print:border-b-2 print:border-black print:flex-col print:items-start print:gap-2">
+        <div className="print:w-full">
+          <h1 className="text-2xl font-bold text-gray-900 print:text-xl print:text-black print:mb-2">
+            {title}
+          </h1>
+          <p className="text-sm text-gray-500 mt-1 print:hidden">
             شناسه: {id}
             {createdAt && ` • ایجاد: ${getFarsiDate(createdAt)}`}
             {modifiedAt && ` • ویرایش: ${getFarsiDate(modifiedAt)}`}
           </p>
         </div>
         {baseUrl && (
-          <div className="flex space-x-2">
+          <div className="flex space-x-2 print:hidden">
             {actions?.map((action) => action)}
             <Link
               href={editUrl ? editUrl : `${formBaseUrl}/edit`}
@@ -73,7 +75,7 @@ const DetailInfoCard: React.FC<DetailPageProps> = ({
       </div>
 
       {/* Content */}
-      <div className="p-6 grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="p-6 grid grid-cols-1 lg:grid-cols-2 gap-8 print:p-4 print:grid-cols-3 print:gap-2 print:text-black">
         {InfoRows.map((row, rowIndex) => (
           <InfoRow key={rowIndex} label={row.label} value={formatValue(row)} />
         ))}

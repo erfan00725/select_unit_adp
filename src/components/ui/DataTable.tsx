@@ -1,8 +1,10 @@
+"use client";
 import { DataTableProps } from "@/types/Props";
 import { DataBaseType } from "@/types/Tables";
 import clsx from "clsx";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
+import { number } from "zod";
 
 const DataTable = <T extends DataBaseType>({
   tableData,
@@ -19,7 +21,11 @@ const DataTable = <T extends DataBaseType>({
   editable = true,
   canRemove = true,
   haveSinglePage = true,
+  selectable = false,
+  generalActions,
 }: DataTableProps<T>) => {
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+
   const rows = tableData?.filter((_, index) => index < limit);
 
   const addUrl = baseAddUrl ? baseAddUrl : baseUrl ? `${baseUrl}/add` : null;
@@ -37,49 +43,90 @@ const DataTable = <T extends DataBaseType>({
   const isEditable = editable && (baseUrl || baseEditUrl);
 
   return (
-    <div className="card mb-8">
-      <h2 className="text-xl font-bold text-gray-900 mb-6">{title}</h2>
+    <div className="card mb-8 print:shadow-none print:border print:border-gray-300 print:mb-4">
+      <h2 className="text-xl font-bold text-gray-900 mb-6 print:text-lg print:text-black print:mb-4 print:border-b print:border-black print:pb-2">
+        {title}
+      </h2>
 
       <div
-        className={clsx("overflow-x-auto overflow-y-auto", {
-          "overflow-y-scroll!": scrollable,
-        })}
+        className={clsx(
+          "overflow-x-auto overflow-y-auto print:overflow-visible",
+          {
+            "overflow-y-scroll!": scrollable,
+          }
+        )}
       >
-        <table className="min-w-full divide-y divide-gray-200">
+        <table className="min-w-full divide-y divide-gray-200 print:text-sm print:border-collapse print:border print:border-gray-400">
           <thead>
-            <tr className="text-right">
+            <tr className="text-right print:bg-gray-100">
+              {selectable && (
+                <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider print:hidden">
+                  انتخاب
+                </th>
+              )}
               {headers.map((header, index) => (
                 <th
                   key={index}
-                  className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider print:px-2 print:py-2 print:text-xs print:text-black print:font-bold print:border print:border-gray-400"
                 >
                   {header}
                 </th>
               ))}
               {isEditable || (actions || []).length > 0 ? (
-                <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider print:hidden">
                   عملیات
                 </th>
               ) : null}
             </tr>
           </thead>
           {rows && rows.length > 0 ? (
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-white divide-y divide-gray-200 print:divide-gray-400">
               {rows?.map((row, rowIndex) => (
-                <tr key={rowIndex}>
+                <tr
+                  key={rowIndex}
+                  className="print:break-inside-avoid print:border-b print:border-gray-300"
+                >
+                  {selectable && (
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 print:hidden">
+                      <input
+                        type="checkbox"
+                        className="form-checkbox h-5 w-5 text-indigo-600"
+                        checked={selectedItems.includes(row.id.toString())}
+                        onChange={() => {
+                          if (selectedItems.includes(row.id.toString())) {
+                            setSelectedItems(
+                              selectedItems.filter(
+                                (item) => item !== row.id.toString()
+                              )
+                            );
+                          } else {
+                            setSelectedItems([
+                              ...selectedItems,
+                              row.id.toString(),
+                            ]);
+                          }
+                        }}
+                      />
+                    </td>
+                  )}
                   {Object.entries(row).map(([_, data], colIndex) => (
                     <td
                       key={colIndex}
-                      className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                      className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 print:px-2 print:py-2 print:text-xs print:text-black print:border print:border-gray-400 print:whitespace-normal"
                     >
                       {baseUrl && haveSinglePage ? (
-                        <Link href={`${baseUrl}/${row.id}`}>{data || "_"}</Link>
+                        <Link
+                          href={`${baseUrl}/${row.id}`}
+                          className="print:no-underline print:text-black"
+                        >
+                          {data || "_"}
+                        </Link>
                       ) : (
                         data || "_"
                       )}
                     </td>
                   ))}
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium print:hidden">
                     {actions &&
                       actions.map((action) =>
                         action.href ? (
@@ -130,7 +177,7 @@ const DataTable = <T extends DataBaseType>({
               <tr>
                 <td
                   colSpan={headers.length}
-                  className="text-center py-8 text-gray-500"
+                  className="text-center py-8 text-gray-500 print:py-4 print:text-black print:border print:border-gray-400"
                 >
                   داده‌ای یافت نشد
                 </td>
@@ -140,13 +187,23 @@ const DataTable = <T extends DataBaseType>({
         </table>
       </div>
 
-      {addUrl && canAdd && (
-        <div className="flex justify-end mb-4">
-          <Link href={addUrl} className="button">
+      <div className="flex justify-end mb-4 print:hidden">
+        {generalActions &&
+          generalActions.map((action) => (
+            <span
+              key={action.label}
+              className={`button ${action.className}`}
+              onClick={() => action.onClick && action.onClick(selectedItems)}
+            >
+              {action.label}
+            </span>
+          ))}
+        {addUrl && canAdd && (
+          <Link href={addUrl} className="button mr-5">
             {addButtonLabel || "افزودن جدید"}
           </Link>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

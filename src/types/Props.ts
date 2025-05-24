@@ -74,6 +74,12 @@ export type DataTableAction = {
   icon?: React.ReactNode;
 };
 
+export type DataTableGeneralAction = {
+  label: string;
+  onClick?: (selectedItems?: string[]) => void;
+  className?: string;
+};
+
 export type DataTableProps<T extends DataBaseType> = {
   title: string;
   description?: string;
@@ -91,6 +97,8 @@ export type DataTableProps<T extends DataBaseType> = {
   canRemove?: boolean;
   editable?: boolean;
   haveSinglePage?: boolean;
+  selectable?: boolean;
+  generalActions?: DataTableGeneralAction[];
 };
 
 export type CreateEditProps<T extends (...args: any) => any, S> = {

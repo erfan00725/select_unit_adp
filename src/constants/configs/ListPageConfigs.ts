@@ -426,6 +426,15 @@ export const SelectUnitList = async ({
     error: selectUnitsData?.error,
     pagination: selectUnitsData?.pagination,
     editable: false,
+    selectable: true,
+    generalActions: [
+      {
+        label: "پرینت",
+        onClick: (selectedItems) => {
+          console.log(selectedItems);
+        },
+      },
+    ],
   };
 };
 
