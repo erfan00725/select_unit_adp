@@ -11,6 +11,7 @@ import { homeUrl } from "@/constants/urls";
 import Loading from "@/components/common/Loading";
 import { useSearchParams } from "@/lib/hooks/useSeachParams";
 import { useRouter } from "next/navigation";
+import { RightsReserved } from "@/constants/commonTexts";
 
 export default function LoginPage() {
   const [userName, setUserName] = useState("");
@@ -70,7 +71,7 @@ export default function LoginPage() {
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8 space-y-8">
         <div className="flex flex-col items-center">
-          <Logo className="mb-6" />
+          <Logo className="mb-8 text-3xl" />
           <h2 className="text-center text-3xl font-bold text-gray-900">
             خوش آمدید
           </h2>
@@ -164,7 +165,7 @@ export default function LoginPage() {
       </div>
 
       <footer className="mt-8 text-center text-sm text-gray-500">
-        © 2024 مدرسه شبانه. تمامی حقوق محفوظ است.
+        {RightsReserved}
       </footer>
     </div>
   );

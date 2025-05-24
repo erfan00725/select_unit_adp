@@ -1,10 +1,11 @@
+import { RightsReserved } from "@/constants/commonTexts";
 import React from "react";
 
 const MainFooter = async () => {
   // seedGeneralSettings();
 
   return (
-    <footer className="bg-white absolute bottom-0 w-full">
+    <footer className="bg-white absolute bottom-0 w-full print:hidden">
       <div className="max-w-7xl mx-auto py-6 px-4 min-h-24 sm:px-6 lg:px-8">
         {/* <div className="flex justify-center space-x-6">
           <a href="#" className="text-gray-400 hover:text-gray-500">
@@ -49,9 +50,9 @@ const MainFooter = async () => {
             </svg>
           </a>
         </div> */}
-        {/* <p className="mt-4 text-center text-sm text-gray-500">
-          © ۲۰۲۴ مدرسه شبانه. کلیه حقوق محفوظ است.
-        </p> */}
+        <p className="mt-4 text-center text-sm text-gray-500">
+          {RightsReserved}
+        </p>
       </div>
     </footer>
   );
