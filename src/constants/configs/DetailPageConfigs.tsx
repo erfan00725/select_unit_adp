@@ -112,7 +112,7 @@ export const LessonsDetailConfig = (
         type: "price",
       },
       {
-        label: "کد ابلاغ",
+        label: "معرف",
         value: lesson?.NotifCode?.toString(),
         type: "text",
       },
@@ -523,3 +523,20 @@ export const s_DetailPageConfigs: Record<PageType, s_PageConfig> = {
     },
   },
 };
+
+
+/*
+
+TODO: 
+هزینه ثابت = هزینه شهریه ثابت
+هزینه مدرک = هزینه صدور مدرک
+هزیه ثبت مهارت
+
+
+
+
+تاریخ تولد شمسی شود
+نا عدد صفحه سینگل فیکس شود
+
+ساعت عملی یا یه همچین چیزی آپدیت نمیشد
+*/

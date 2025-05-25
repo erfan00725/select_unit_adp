@@ -105,7 +105,7 @@ model Lesson {
   PracticalHours Int         @default(0)
   RequireLesson  BigInt?      @db.UnsignedBigInt
   RequireUnit    Int?
-  NotifCode      BigInt?      @db.UnsignedBigInt
+  Introducer     String?      @db.VarChar(255)
   ValidFrom      DateTime     @default(now()) @db.Date
   ValidTill      DateTime?    @db.Date
   PricePerUnit   BigInt?      @db.BigInt
@@ -130,8 +130,11 @@ model SelectUnit {
   CertificateFee BigInt @default(0) @db.BigInt
   ExtraClassFee BigInt @default(0) @db.BigInt
   BooksFee   BigInt  @default(0) @db.BigInt
+  InsuranceFee  BigInt  @default(0) @db.UnsignedBigInt
   Discount   BigInt  @default(0) @db.UnsignedBigInt
   Paid       Boolean  @default(false) @db.Bit(1)
+  PaymentMethod     PaymentMethods?
+  PaymentDescription String? @db.VarChar(255)
   Created_at DateTime @default(now()) @db.Timestamp()
   Updated_at DateTime @default(now()) @db.Timestamp()
 
@@ -233,4 +236,11 @@ enum Period {
   first
   second
   summer
+}
+
+enum PaymentMethods {
+  creditCard
+  deposit
+  check
+  cash
 }

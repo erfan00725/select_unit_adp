@@ -168,10 +168,10 @@ export const lessonFormConfigGenerator = async (
         dataType: InputDataType.bigint,
       },
       {
-        title: "کد اطلاع‌رسانی",
+        title: "معرف",
         name: "NotifCode",
         type: "number",
-        placeholder: inputDefaultPlaceholder("کد اطلاع‌رسانی"),
+        placeholder: inputDefaultPlaceholder("معرف"),
         defaultValue: (lesson?.NotifCode || "").toString(),
         dataType: InputDataType.bigint,
       },
