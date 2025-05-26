@@ -8,6 +8,8 @@ type Props = {
   onChange?: (value: string) => void;
   title?: string;
   name: string;
+  disabled?: boolean;
+  required?: boolean;
 };
 
 export const CalenderFarsi = ({
@@ -15,6 +17,8 @@ export const CalenderFarsi = ({
   onChange,
   title,
   name,
+  disabled,
+  required,
 }: Props) => {
   const [isShow, setIsShow] = useState(false);
   const calendarRef = useRef<HTMLDivElement>(null);
@@ -72,15 +76,24 @@ export const CalenderFarsi = ({
   return (
     <div className="relative">
       <button
-        className="button"
+        className={`button ${disabled ? "hover:bg-white!" : ""}`}
         onClick={() => setIsShow((prev) => !prev)}
         type="button"
+        disabled={disabled}
       >
         {showDate() || title || "انتخاب تاریخ"}
       </button>
       {isShow && (
-        <div ref={calendarRef}>
-          <CalendarProvider locale="fa" round="x2" direction="rtl">
+        <div
+          ref={calendarRef}
+          className={`${disabled ? "pointer-events-none" : ""}`}
+        >
+          <CalendarProvider
+            locale="fa"
+            round="x2"
+            direction="rtl"
+            accentColor="#5856d6"
+          >
             <Calendar
               className="absolute! top-0 left-4 z-30 rtl"
               defaultValue={defaultValue ? new Date(defaultValue) : undefined}
@@ -90,7 +103,14 @@ export const CalenderFarsi = ({
           </CalendarProvider>
         </div>
       )}
-      <input type="hidden" name={name} id={name} value={value || ""} />
+      <input
+        type="hidden"
+        name={name}
+        id={name}
+        value={value || ""}
+        disabled={disabled}
+        required={required}
+      />
     </div>
   );
 };

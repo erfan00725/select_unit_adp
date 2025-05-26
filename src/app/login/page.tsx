@@ -163,10 +163,6 @@ export default function LoginPage() {
           </div>
         </div> */}
       </div>
-
-      <footer className="mt-8 text-center text-sm text-gray-500">
-        {RightsReserved}
-      </footer>
     </div>
   );
 }

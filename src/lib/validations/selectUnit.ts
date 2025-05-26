@@ -1,6 +1,6 @@
 import { z } from "zod";
 import errorMassages from "@/constants/massages";
-import { Period } from "@prisma/client";
+import { Period, PaymentMethods } from "@prisma/client";
 
 /**
  * Zod validation schema for the SelectUnit form
@@ -75,6 +75,14 @@ export const selectUnitSchema = z.object({
     .default(BigInt(0))
     .describe("هزینه کتاب"),
 
+  InsuranceFee: z
+    .bigint()
+    .or(z.string().transform((val) => BigInt(val)))
+    .optional()
+    .nullable()
+    .default(BigInt(0))
+    .describe("هزینه بیمه"),
+
   Discount: z
     .bigint()
     .or(z.string().transform((val) => BigInt(val)))
@@ -89,6 +97,25 @@ export const selectUnitSchema = z.object({
     .nullable()
     .optional()
     .describe("وضعیت پرداخت"),
+
+  PaymentMethod: z
+    .nativeEnum(PaymentMethods)
+    .optional()
+    .nullable()
+    .describe("روش پرداخت"),
+
+  PaymentDescription: z
+    .string()
+    .optional()
+    .nullable()
+    .describe("توضیحات پرداخت"),
+
+  PaymentDate: z
+    .date()
+    .or(z.string().transform((val) => new Date(val)))
+    .optional()
+    .nullable()
+    .describe("تاریخ پرداخت"),
 });
 /**
  * Type definition derived from the Zod schema

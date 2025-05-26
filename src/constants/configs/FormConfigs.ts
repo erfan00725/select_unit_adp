@@ -169,10 +169,10 @@ export const lessonFormConfigGenerator = async (
       },
       {
         title: "معرف",
-        name: "NotifCode",
+        name: "Introducer",
         type: "number",
         placeholder: inputDefaultPlaceholder("معرف"),
-        defaultValue: (lesson?.NotifCode || "").toString(),
+        defaultValue: (lesson?.Introducer || "").toString(),
         dataType: InputDataType.bigint,
       },
       {
@@ -356,17 +356,17 @@ export const fieldFormConfigGenerator = async (data?: {
         required: true,
         defaultValue: field?.Name || "",
       },
-      {
-        title: "هزینه ثابت",
-        name: "FixedFee",
-        type: "number",
-        dataType: InputDataType.bigint,
-        placeholder: inputDefaultPlaceholder("هزینه ثابت"),
-        defaultValue:
-          field?.FixedFee !== undefined && field?.FixedFee !== null
-            ? field.FixedFee.toString()
-            : "0",
-      },
+      // {
+      //   title: "هزینه ثابت",
+      //   name: "FixedFee",
+      //   type: "number",
+      //   dataType: InputDataType.bigint,
+      //   placeholder: inputDefaultPlaceholder("هزینه ثابت"),
+      //   defaultValue:
+      //     field?.FixedFee !== undefined && field?.FixedFee !== null
+      //       ? field.FixedFee.toString()
+      //       : "0",
+      // },
     ],
   };
 };
@@ -500,6 +500,13 @@ export const generalFormConfigGenerator = async (
         disabled: !!general,
       },
       {
+        title: "عنوان",
+        name: "Title",
+        type: "text",
+        placeholder: inputDefaultPlaceholder("عنوان"),
+        defaultValue: general?.Title || "",
+      },
+      {
         title: "مقدار",
         name: "Value",
         type: "price",
@@ -507,23 +514,13 @@ export const generalFormConfigGenerator = async (
         required: true,
         defaultValue: general?.Value,
       },
+      {
+        title: "توضیحات",
+        name: "Description",
+        type: "text",
+        placeholder: inputDefaultPlaceholder("توضیحات"),
+        defaultValue: general?.Description || "",
+      },
     ],
-  };
-};
-
-export const unitSelectFormConfigGenerator = (): FormPageProps => {
-  const inputs: FormInputProps[] = [
-    {
-      title: "واحد",
-      name: "Unit",
-      type: "number",
-      placeholder: inputDefaultPlaceholder("unit"),
-      required: true,
-    },
-  ];
-
-  return {
-    title: formTitle("انتخاب واحد"),
-    inputs,
   };
 };

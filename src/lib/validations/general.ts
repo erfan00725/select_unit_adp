@@ -10,6 +10,14 @@ export const GeneralSchema = z.object({
     .string()
     .min(1, { message: "Value is required" })
     .max(255, { message: "Value must be 255 characters or less" }),
+  Title: z
+    .string()
+    .max(255, { message: "Title must be 255 characters or less" })
+    .optional(),
+  Description: z
+    .string()
+    .max(255, { message: "Description must be 255 characters or less" })
+    .optional(),
 });
 
 /**

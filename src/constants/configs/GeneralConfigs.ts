@@ -1,6 +1,6 @@
 import getAcademicYearJ from "@/lib/utils/getAcademicYearJ";
 import { urls } from "../urls";
-import { Period } from "@prisma/client";
+import { PaymentMethods, Period } from "@prisma/client";
 import { SelectUnitFormConfig } from "@/types/Props";
 import { Settings } from "@/types/General";
 
@@ -110,12 +110,38 @@ export const selectUnitFormConfigs = (): SelectUnitFormConfig[] => {
       name: Settings.BooksFee,
       canBeDisabled: true,
     },
-
     {
       id: "SU_Payed",
       label: "پرداخت شده؟",
       type: "checkbox" as const,
       name: "paid",
+    },
+    {
+      id: "SU_PaymentMethod",
+      label: "روش پرداخت",
+      type: "select" as const,
+      name: "paymentMethod",
+      options: [
+        { value: PaymentMethods.cash, label: "نقدی" },
+        { value: PaymentMethods.card, label: "کارت" },
+        { value: PaymentMethods.check, label: "چک" },
+        { value: PaymentMethods.deposit, label: "انتقال" },
+      ],
+      canBeDisabled: true,
+    },
+    {
+      id: "SU_PaymentDescription",
+      label: "توضیحات پرداخت",
+      type: "textarea" as const,
+      name: "paymentDescription",
+      canBeDisabled: true,
+    },
+    {
+      id: "SU_PaymentDate",
+      label: "تاریخ پرداخت",
+      type: "date" as const,
+      name: "paymentDate",
+      canBeDisabled: true,
     },
   ];
 };

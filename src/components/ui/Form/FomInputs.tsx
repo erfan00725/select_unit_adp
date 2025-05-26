@@ -7,6 +7,7 @@ import {
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import CurrencyInput from "react-currency-input-field";
+import { CalenderFarsi } from "./CalenderFarsi";
 
 // تابعی برای تولید ورودی‌های فرم بر اساس پیکربندی
 export const FormInputs = ({
@@ -81,6 +82,31 @@ export const FormInputs = ({
 
   const Inputs = (config: SelectUnitFormConfig) => {
     switch (config.type) {
+      case "date":
+        return (
+          <CalenderFarsi
+            name={config.name}
+            defaultValue={inputsValue[config.name]?.value.toString() || ""}
+            onChange={(value) => handleInputChange(config.name, value)}
+            disabled={config.canBeDisabled && !inputsValue[config.name]?.active}
+            required={config.required}
+          />
+        );
+      case "textarea":
+        return (
+          <textarea
+            className={clsx("border border-gray-300 rounded-md px-3 py-2", {
+              "text-gray-400": !inputsValue[config.name]?.active,
+            })}
+            value={inputsValue[config.name]?.value || ""}
+            onChange={(e) => handleInputChange(config.name, e.target.value)}
+            placeholder={
+              config.label ? `لطفاً ${config.label} را وارد کنید` : ""
+            }
+            disabled={config.canBeDisabled && !inputsValue[config.name]?.active}
+            required={config.required}
+          />
+        );
       case "select":
         return (
           <select
@@ -161,23 +187,25 @@ export const FormInputs = ({
   return isLoading ? (
     <Loading />
   ) : (
-    <div className="space-x-5 space-y-5 flex flex-row flex-wrap w-full mb-7">
+    <div className="space-x-5 space-y-8 flex flex-row flex-wrap w-full mb-7">
       {configs.map((config) => (
         <div key={config.id} className={config.className}>
           <label className="block font-medium text-gray-700 mb-1 ">
             {config.label ? config.label : "برچسب"}
             {config.required && <span className="text-red-500">*</span>}
           </label>
-          {Inputs(config)}
-          {config.canBeDisabled && (
-            <input
-              type="checkbox"
-              className="w-4 h-4 mr-2"
-              onClick={() => toggleInputActive(config.name)}
-              checked={!!inputsValue[config.name]?.active}
-              readOnly
-            />
-          )}
+          <div className="flex flex-row items-center">
+            {Inputs(config)}
+            {config.canBeDisabled && (
+              <input
+                type="checkbox"
+                className="w-4 h-4 mr-2"
+                onClick={() => toggleInputActive(config.name)}
+                checked={!!inputsValue[config.name]?.active}
+                readOnly
+              />
+            )}
+          </div>
         </div>
       ))}
     </div>

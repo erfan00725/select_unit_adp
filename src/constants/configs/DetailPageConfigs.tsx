@@ -113,7 +113,7 @@ export const LessonsDetailConfig = (
       },
       {
         label: "معرف",
-        value: lesson?.NotifCode?.toString(),
+        value: lesson?.Introducer,
         type: "text",
       },
       {
@@ -372,6 +372,11 @@ export const SelectUnitDetailConfig = (
         type: "price",
       },
       {
+        label: "هزینه بیمه دانش‌آموز",
+        value: priceFormatter(selectUnit?.InsuranceFee?.toString(), true),
+        type: "price",
+      },
+      {
         label: "تخفیف",
         value: priceFormatter(selectUnit?.Discount?.toString(), true),
         type: "price",
@@ -390,6 +395,21 @@ export const SelectUnitDetailConfig = (
         label: "وضعیت پرداخت",
         value: !!selectUnit?.Paid,
         type: "status",
+      },
+      {
+        label: "روش پرداخت",
+        value: selectUnit?.PaymentMethod,
+        type: "text",
+      },
+      {
+        label: "توضیحات پرداخت",
+        value: selectUnit?.PaymentDescription,
+        type: "text",
+      },
+      {
+        label: "تاریخ پرداخت",
+        value: getFarsiDate(selectUnit?.PaymentDate?.toDateString()),
+        type: "text",
       },
     ],
   };
@@ -419,7 +439,7 @@ export const GeneralDetailConfig = (
 
   const config: InfoPageConfig = {
     id: general?.Key || "", // Key is the ID for General entity
-    title: `جزئیات تنظیم: ${general?.Key}`,
+    title: general?.Title || `جزئیات تنظیم: ${general?.Key}`,
     createdAt: general?.Created_at.toDateString(),
     modifiedAt: general?.Updated_at.toDateString(),
     rows: [
@@ -428,8 +448,16 @@ export const GeneralDetailConfig = (
         value: general?.Key,
       },
       {
+        label: "عنوان",
+        value: general?.Title || "-",
+      },
+      {
         label: "مقدار",
         value: general?.Value,
+      },
+      {
+        label: "توضیحات",
+        value: general?.Description || "-",
       },
     ],
   };
@@ -524,7 +552,6 @@ export const s_DetailPageConfigs: Record<PageType, s_PageConfig> = {
   },
 };
 
-
 /*
 
 TODO: 
@@ -539,4 +566,6 @@ TODO:
 نا عدد صفحه سینگل فیکس شود
 
 ساعت عملی یا یه همچین چیزی آپدیت نمیشد
+
+استاد دبیر شود
 */

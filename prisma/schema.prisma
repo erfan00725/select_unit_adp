@@ -125,18 +125,19 @@ model SelectUnit {
   StudentId  BigInt   @db.UnsignedBigInt
   Year       Int
   Period     Period
-  ExtraFee   BigInt  @default(0) @db.UnsignedBigInt
-  FixedFee   BigInt  @default(0) @db.BigInt // fixed fee for the unit, not for the lesson
+  ExtraFee   BigInt     @default(0) @db.UnsignedBigInt
+  FixedFee   BigInt     @default(0) @db.BigInt // fixed fee for the unit, not for the lesson
   CertificateFee BigInt @default(0) @db.BigInt
-  ExtraClassFee BigInt @default(0) @db.BigInt
-  BooksFee   BigInt  @default(0) @db.BigInt
+  ExtraClassFee BigInt  @default(0) @db.BigInt
+  BooksFee   BigInt     @default(0) @db.BigInt
   InsuranceFee  BigInt  @default(0) @db.UnsignedBigInt
-  Discount   BigInt  @default(0) @db.UnsignedBigInt
-  Paid       Boolean  @default(false) @db.Bit(1)
+  Discount   BigInt     @default(0) @db.UnsignedBigInt
+  Paid       Boolean    @default(false) @db.Bit(1)
   PaymentMethod     PaymentMethods?
   PaymentDescription String? @db.VarChar(255)
-  Created_at DateTime @default(now()) @db.Timestamp()
-  Updated_at DateTime @default(now()) @db.Timestamp()
+  PaymentDate DateTime? @db.Date
+  Created_at DateTime   @default(now()) @db.Timestamp()
+  Updated_at DateTime   @default(now()) @db.Timestamp()
 
   student         Student          @relation(fields: [StudentId], references: [id])
   selectedLessons SelectedLesson[]
@@ -188,6 +189,8 @@ model Field {
 model General {
   Key        String   @id @db.VarChar(255)
   Value      String   @db.VarChar(255)
+  Title      String?  @db.VarChar(255)
+  Description String? @db.VarChar(255)
   Updated_at DateTime @default(now()) @db.Timestamp()
   Created_at DateTime @default(now()) @db.Timestamp()
 }
@@ -239,7 +242,7 @@ enum Period {
 }
 
 enum PaymentMethods {
-  creditCard
+  card
   deposit
   check
   cash

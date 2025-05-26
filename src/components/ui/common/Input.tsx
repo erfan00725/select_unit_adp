@@ -47,6 +47,7 @@ const Input: React.FC<InputProps> = ({
         defaultValue={defaultValue}
         name={name}
         disabled={disabled}
+        onWheel={(e) => e.currentTarget.blur()}
       />
     </div>
   );

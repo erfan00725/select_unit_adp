@@ -65,7 +65,8 @@ function customReturn(
     Number(selectUnit.FixedFee || 0) +
     Number(selectUnit.CertificateFee || 0) +
     Number(selectUnit.ExtraClassFee || 0) +
-    Number(selectUnit.BooksFee || 0) -
+    Number(selectUnit.BooksFee || 0) +
+    Number(selectUnit.InsuranceFee || 0) -
     Number(selectUnit.Discount || 0);
 
   return {
@@ -632,6 +633,12 @@ export async function createSelectUnit(
         CertificateFee: data.CertificateFee,
         ExtraClassFee: data.ExtraClassFee,
         BooksFee: data.BooksFee,
+        InsuranceFee: data.InsuranceFee,
+        Discount: data.Discount,
+        Paid: data.Paid,
+        PaymentMethod: data.PaymentMethod,
+        PaymentDescription: data.PaymentDescription,
+        PaymentDate: data.PaymentDate,
       },
       include: {
         student: true,
@@ -907,6 +914,9 @@ export async function bulkCreateSelectUnits(
         BooksFee: baseData.BooksFee || 0,
         Discount: baseData.Discount || 0,
         Paid: !!baseData.Paid,
+        PaymentMethod: baseData.PaymentMethod,
+        PaymentDescription: baseData.PaymentDescription,
+        PaymentDate: baseData.PaymentDate,
       },
     });
 
@@ -1060,6 +1070,7 @@ export async function bulkEditSelectUnits(
 
       // Update SelectUnit fields from baseData
       const { StudentId, id, ...updateDataFromBase } = baseData;
+      console.log("baseData: ", baseData);
 
       if (Object.keys(updateDataFromBase).length > 0) {
         await tx.selectUnit.update({

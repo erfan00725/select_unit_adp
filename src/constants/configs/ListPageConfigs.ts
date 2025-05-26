@@ -450,13 +450,13 @@ const generalsList = async ({
 
   const tableData = (data.generals || []).map((item) => ({
     id: item.Key, // Using Key as id for General entity
-    Key: translateGeneralSettings(item.Key as Settings),
+    Title: item.Title || "-",
     Value: priceFormatter(item.Value, true),
     Updated_at: getFarsiDate(item.Updated_at),
     Created_at: getFarsiDate(item.Created_at),
   }));
 
-  const headers = ["شناسه", "کلید", "مقدار", "آخرین بروزرسانی", "تاریخ ایجاد"];
+  const headers = ["شناسه", "عنوان", "مقدار", "آخرین بروزرسانی", "تاریخ ایجاد"];
 
   return {
     tableData,

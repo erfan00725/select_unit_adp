@@ -1,7 +1,13 @@
 // Data type definitions
 
 // Import necessary enum types from Prisma
-import { Grade, LessonGrade, UserType, Period } from "@prisma/client";
+import {
+  Grade,
+  LessonGrade,
+  UserType,
+  Period,
+  PaymentMethods,
+} from "@prisma/client";
 import { Orders } from "./General";
 
 export type DataBaseType = {
@@ -79,8 +85,12 @@ export interface SelectUnitDataType {
   CertificateFee?: bigint;
   ExtraClassFee?: bigint;
   BooksFee?: bigint;
+  InsuranceFee?: bigint;
   Discount?: bigint;
   Paid?: boolean;
+  PaymentMethod?: PaymentMethods;
+  PaymentDescription?: string;
+  PaymentDate?: Date;
 }
 
 export interface SelectedLessonDataType {

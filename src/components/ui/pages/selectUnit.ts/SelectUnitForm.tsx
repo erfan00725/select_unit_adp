@@ -23,6 +23,7 @@ import { priceFormatter } from "@/lib/utils/priceFormatter";
 import { useRouter } from "next/navigation";
 import { selectUnitFormConfigs } from "@/constants/configs/GeneralConfigs";
 import { InputValueType } from "@/types/Props";
+import { PaymentMethods } from "@prisma/client";
 
 type Props = {
   studnetId: string;
@@ -108,6 +109,18 @@ export const SelectUnitForm = ({
         paid: {
           value: selectUnit.Paid ? 1 : 0,
           active: true,
+        },
+        paymentMethod: {
+          value: selectUnit.PaymentMethod || "",
+          active: !!selectUnit.PaymentMethod,
+        },
+        paymentDescription: {
+          value: selectUnit.PaymentDescription || "",
+          active: !!selectUnit.PaymentDescription,
+        },
+        paymentDate: {
+          value: selectUnit.PaymentDate?.toString() || "",
+          active: !!selectUnit.PaymentDate,
         },
       });
       setIsLoadingSettings(false);
@@ -213,6 +226,9 @@ export const SelectUnitForm = ({
       BooksFee: BigInt(inputValues.booksFee?.value),
       Discount: BigInt(inputValues.discount?.value),
       Paid: !!inputValues.paid?.value,
+      PaymentMethod: inputValues.paymentMethod?.value,
+      PaymentDescription: inputValues.paymentDescription?.value,
+      PaymentDate: inputValues.paymentDate?.value,
       // Conditionally add Lesson if lessons exist, as schema requires it but it might be empty before validation catch
       ...(lessons.length > 0 ? { Lesson: lessons[0] } : {}),
     };
@@ -231,6 +247,8 @@ export const SelectUnitForm = ({
 
     const action = isEditMode ? "ویرایش" : "انتخاب";
 
+    console.log(validateData);
+
     if (isEditMode && selectUnitData?.selectUnit) {
       const { Lessons: selectedLessonsIds, ...rest } = validateData;
       // Use bulkEditSelectUnits for edit mode
@@ -242,8 +260,15 @@ export const SelectUnitForm = ({
           CertificateFee: validateData.CertificateFee || undefined,
           ExtraClassFee: validateData.ExtraClassFee || undefined,
           BooksFee: validateData.BooksFee || undefined,
+          InsuranceFee: validateData.InsuranceFee || undefined,
           Discount: validateData.Discount || undefined,
           Paid: !!validateData.Paid,
+          PaymentMethod:
+            (validateData.PaymentMethod as PaymentMethods) || undefined,
+          PaymentDescription: validateData.PaymentDescription || undefined,
+          PaymentDate: validateData.PaymentDate
+            ? new Date(validateData.PaymentDate)
+            : undefined,
         },
         validateData.Lessons
       )
@@ -275,8 +300,15 @@ export const SelectUnitForm = ({
           CertificateFee: validateData.CertificateFee || undefined,
           ExtraClassFee: validateData.ExtraClassFee || undefined,
           BooksFee: validateData.BooksFee || undefined,
+          InsuranceFee: validateData.InsuranceFee || undefined,
           Discount: validateData.Discount || undefined,
           Paid: !!validateData.Paid,
+          PaymentMethod:
+            (validateData.PaymentMethod as PaymentMethods) || undefined,
+          PaymentDescription: validateData.PaymentDescription || undefined,
+          PaymentDate: validateData.PaymentDate
+            ? new Date(validateData.PaymentDate)
+            : undefined,
         },
         validateData.Lessons
       )
@@ -298,6 +330,10 @@ export const SelectUnitForm = ({
         });
     }
   };
+
+  useEffect(() => {
+    console.log(inputValues);
+  }, [inputValues]);
 
   const showTable = () => {
     return selectedLessons && selectedLessons.lessons.length > 0 ? (
