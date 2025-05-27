@@ -13,10 +13,12 @@ export const GeneralSchema = z.object({
   Title: z
     .string()
     .max(255, { message: "Title must be 255 characters or less" })
+    .nullable()
     .optional(),
   Description: z
     .string()
     .max(255, { message: "Description must be 255 characters or less" })
+    .nullable()
     .optional(),
 });
 

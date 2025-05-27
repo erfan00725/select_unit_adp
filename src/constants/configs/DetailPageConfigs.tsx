@@ -21,8 +21,12 @@ import { UserSelectUnitList } from "@/components/ui/selectUnit/UserSelectUnitLis
 import Link from "next/link";
 import getAcademicYearJ from "@/lib/utils/getAcademicYearJ";
 import { SelectUnitLessonsTable } from "@/components/ui/selectUnit/SelectUnitLessonsTable";
-import { priceFormatter } from "@/lib/utils/priceFormatter";
-import { gradeRender, periodRender } from "@/lib/utils/dataRenderer";
+import {
+  gradeRender,
+  paymentMethodRender,
+  periodRender,
+} from "@/lib/utils/dataRenderer";
+import { getDateJ } from "@/lib/utils/getCurrentDataJ";
 
 export type DetailPageConfigtReturnType = {
   error?: string;
@@ -100,7 +104,7 @@ export const LessonsDetailConfig = (
         type: "text",
       },
       {
-        label: "استاد",
+        label: "دبیر",
         value: lesson?.teacher
           ? `${lesson?.teacher?.FirstName} ${lesson?.teacher?.LastName}`
           : null,
@@ -148,6 +152,8 @@ export const StudentsDetailConfig = (
 
   const student = studentData.student;
 
+  console.log(student.Birth);
+
   const StudentConfig: InfoPageConfig = {
     id: student?.id.toString() || "",
     title: `${student?.FirstName} ${student?.LastName}`,
@@ -180,7 +186,7 @@ export const StudentsDetailConfig = (
       },
       {
         label: "تاریخ تولد",
-        value: student?.Birth?.toDateString(),
+        value: student?.Birth ? getFarsiDate(student?.Birth) : null,
         type: "text",
       },
       {
@@ -347,38 +353,43 @@ export const SelectUnitDetailConfig = (
         type: "text",
       },
       {
-        label: "شهریه ثابت",
-        value: priceFormatter(selectUnit?.FixedFee?.toString(), true),
+        label: "هزینه شهریه ثابت",
+        value: Number(selectUnit?.FixedFee),
         type: "price",
       },
       {
-        label: "شهریه اضافی",
-        value: priceFormatter(selectUnit?.ExtraFee?.toString(), true),
-        type: "price",
-      },
-      {
-        label: "هزینه مدرک",
-        value: priceFormatter(selectUnit?.CertificateFee?.toString(), true),
+        label: "هزینه صدور مدرک",
+        value: Number(selectUnit?.CertificateFee),
         type: "price",
       },
       {
         label: "هزینه کلاس‌های فوق‌العاده",
-        value: priceFormatter(selectUnit?.ExtraClassFee?.toString(), true),
+        value: Number(selectUnit?.ExtraClassFee),
         type: "price",
       },
       {
         label: "هزینه کتاب‌ها",
-        value: priceFormatter(selectUnit?.BooksFee?.toString(), true),
+        value: Number(selectUnit?.BooksFee),
+        type: "price",
+      },
+      {
+        label: "هزینه ثبت مهارت",
+        value: Number(selectUnit?.SkillRegistrationFee),
         type: "price",
       },
       {
         label: "هزینه بیمه دانش‌آموز",
-        value: priceFormatter(selectUnit?.InsuranceFee?.toString(), true),
+        value: Number(selectUnit?.InsuranceFee),
+        type: "price",
+      },
+      {
+        label: "سایر هزینه‌ها",
+        value: Number(selectUnit?.OtherFee),
         type: "price",
       },
       {
         label: "تخفیف",
-        value: priceFormatter(selectUnit?.Discount?.toString(), true),
+        value: Number(selectUnit?.Discount),
         type: "price",
       },
       {
@@ -388,7 +399,7 @@ export const SelectUnitDetailConfig = (
       },
       {
         label: "مبلغ کل",
-        value: priceFormatter(selectUnit?.totalFee?.toString(), true),
+        value: Number(selectUnit?.totalFee),
         type: "price",
       },
       {
@@ -398,7 +409,7 @@ export const SelectUnitDetailConfig = (
       },
       {
         label: "روش پرداخت",
-        value: selectUnit?.PaymentMethod,
+        value: paymentMethodRender(selectUnit?.PaymentMethod),
         type: "text",
       },
       {
@@ -537,7 +548,7 @@ export const s_DetailPageConfigs: Record<PageType, s_PageConfig> = {
     },
   },
   teachers: {
-    title: "اطلاعات استاد",
+    title: "اطلاعات دبیر",
     deleteConfig: {
       deleteFounction: deleteTeacher,
       backUrl: urls.teachers,
@@ -567,5 +578,6 @@ TODO:
 
 ساعت عملی یا یه همچین چیزی آپدیت نمیشد
 
-استاد دبیر شود
+دبیر دبیر شود
+
 */

@@ -69,7 +69,7 @@ export async function getTeachers(params?: BaseListFilterParams) {
     };
   } catch (error) {
     console.error("Failed to fetch teachers:", error);
-    return { error: "خطا در دریافت لیست اساتید" };
+    return { error: "خطا در دریافت لیست دبیران" };
   }
 }
 
@@ -91,7 +91,7 @@ export async function getTeacherById(id: string) {
     });
 
     if (!teacher) {
-      return { error: "استاد مورد نظر یافت نشد" };
+      return { error: "دبیر مورد نظر یافت نشد" };
     }
 
     const modifiedTeahcer = {
@@ -102,7 +102,7 @@ export async function getTeacherById(id: string) {
     return { teacher: modifiedTeahcer };
   } catch (error) {
     console.error("Failed to fetch teacher:", error);
-    return { error: "خطا در دریافت اطلاعات استاد" };
+    return { error: "خطا در دریافت اطلاعات دبیر" };
   }
 }
 
@@ -114,7 +114,7 @@ export async function createTeacher(data: TeacherDataType) {
     });
 
     if (existingTeacher) {
-      return { error: "استادی با این کد ملی قبلاً ثبت شده است" };
+      return { error: "دبیری با این کد ملی قبلاً ثبت شده است" };
     }
 
     const editedData = {
@@ -130,7 +130,7 @@ export async function createTeacher(data: TeacherDataType) {
     return { teacher };
   } catch (error) {
     console.error("Failed to create teacher:", error);
-    return { error: "خطا در ایجاد استاد جدید" };
+    return { error: "خطا در ایجاد دبیر جدید" };
   }
 }
 
@@ -151,7 +151,7 @@ export async function updateTeacher(
       });
 
       if (existingTeacher) {
-        return { error: "استادی با این کد ملی قبلاً ثبت شده است" };
+        return { error: "دبیری با این کد ملی قبلاً ثبت شده است" };
       }
     }
 
@@ -170,7 +170,7 @@ export async function updateTeacher(
     return { teacher };
   } catch (error) {
     console.error("Failed to update teacher:", error);
-    return { error: "خطا در بروزرسانی اطلاعات استاد" };
+    return { error: "خطا در بروزرسانی اطلاعات دبیر" };
   }
 }
 
@@ -192,7 +192,7 @@ export async function deleteTeacher(id: string): DeleteFunctionReturnType {
     });
 
     if (teacherWithLessons?.lessons.length) {
-      return { error: "امکان حذف استادی که دارای درس است وجود ندارد" };
+      return { error: "امکان حذف دبیری که دارای درس است وجود ندارد" };
     }
 
     await prisma.teacher.delete({
@@ -204,6 +204,6 @@ export async function deleteTeacher(id: string): DeleteFunctionReturnType {
     return { success: true };
   } catch (error) {
     console.error("Failed to delete teacher:", error);
-    return { error: "خطا در حذف استاد" };
+    return { error: "خطا در حذف دبیر" };
   }
 }

@@ -150,20 +150,6 @@ export async function deleteGeneral(Key: string): DeleteFunctionReturnType {
 }
 
 /**
- * Retrieves all general settings.
- * @returns A promise that resolves to an object containing all settings or an error.
- */
-export async function getGeneralSettings() {
-  try {
-    const settings = await prisma.general.findMany();
-    return { settings };
-  } catch (error) {
-    console.error("Failed to fetch general settings:", error);
-    return { error: "خطا در دریافت تنظیمات عمومی" };
-  }
-}
-
-/**
  * Retrieves a single setting by key.
  * @param key - The key of the setting to retrieve.
  * @returns A promise that resolves to an object containing the setting or an error.
@@ -204,7 +190,7 @@ export async function createSetting(data: Omit<GeneralDataType, "id">) {
       data,
     });
 
-    revalidatePath("/dashboard/settings");
+    revalidatePath("/dashboard/generals");
     return { setting };
   } catch (error) {
     console.error("Failed to create setting:", error);
@@ -225,7 +211,7 @@ export async function updateSetting(key: string, value: string) {
       data: { Value: value },
     });
 
-    revalidatePath("/dashboard/settings");
+    revalidatePath("/dashboard/generals");
     return { setting };
   } catch (error) {
     console.error("Failed to update setting:", error);
@@ -244,7 +230,7 @@ export async function deleteSetting(key: string) {
       where: { Key: key },
     });
 
-    revalidatePath("/dashboard/settings");
+    revalidatePath("/dashboard/generals");
     return { success: true };
   } catch (error) {
     console.error("Failed to delete setting:", error);
@@ -265,7 +251,7 @@ export async function upsertSetting(data: GeneralDataType) {
       create: data,
     });
 
-    revalidatePath("/dashboard/settings");
+    revalidatePath("/dashboard/generals");
     return { setting };
   } catch (error) {
     console.error("Failed to upsert setting:", error);
@@ -303,6 +289,9 @@ export async function getFeeSettings() {
         [Settings.BooksFee]: feeSettings.booksFee,
         [Settings.PricePerUnit]: feeSettings.pricePerUnit,
         [Settings.ExtraClassFee]: feeSettings.extraClassFee,
+        [Settings.InsuranceFee]: feeSettings.insuranceFee,
+        [Settings.SkillRegistrationFee]: feeSettings.skillRegistrationFee,
+        [Settings.OtherFee]: feeSettings.otherFee,
       } as Record<Settings, string>,
     };
   } catch (error) {

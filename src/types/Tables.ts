@@ -7,6 +7,7 @@ import {
   UserType,
   Period,
   PaymentMethods,
+  SelectUnit,
 } from "@prisma/client";
 import { Orders } from "./General";
 
@@ -75,23 +76,10 @@ export interface LessonDataType extends DataBaseType {
   Updated_at?: Date;
 }
 
-export interface SelectUnitDataType {
-  id?: bigint;
-  StudentId: bigint;
-  Year: number;
-  Period: Period;
-  ExtraFee?: bigint;
-  FixedFee?: bigint;
-  CertificateFee?: bigint;
-  ExtraClassFee?: bigint;
-  BooksFee?: bigint;
-  InsuranceFee?: bigint;
-  Discount?: bigint;
-  Paid?: boolean;
-  PaymentMethod?: PaymentMethods;
-  PaymentDescription?: string;
-  PaymentDate?: Date;
-}
+export type SelectUnitDataType = Partial<
+  Omit<SelectUnit, "Year" | "Period" | "StudentId">
+> &
+  Pick<SelectUnit, "Year" | "Period" | "StudentId">;
 
 export interface SelectedLessonDataType {
   id?: bigint;

@@ -214,7 +214,7 @@ export async function createLesson(data: LessonDataType) {
       });
 
       if (!teacher) {
-        return { error: "استاد مورد نظر یافت نشد" };
+        return { error: "دبیر مورد نظر یافت نشد" };
       }
     }
 

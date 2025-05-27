@@ -34,7 +34,7 @@ const DetailInfoCard: React.FC<DetailPageProps> = ({
       case "price":
         return (
           <span className="font-semibold">
-            {priceFormatter(row.value?.toString(), true)}
+            {priceFormatter(Number(row.value), true)}
           </span>
         );
       case "hours":

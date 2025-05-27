@@ -6,13 +6,14 @@ const formatter = new Intl.NumberFormat("fa-IR", {
 });
 
 export const priceFormatter = (
-  price?: string | number,
+  Initialprice?: number | string,
   haveRial: boolean = false
 ) => {
-  if (!price) {
-    return "0";
+  let price = Number(Initialprice);
+  if (!price || isNaN(price)) {
+    price = 0;
   }
   return haveRial
-    ? `${formatter.format(Number(price)).replace("ریال", "")} ریال`
-    : formatter.format(Number(price)).replace("ریال", "");
+    ? `${formatter.format(price).replace("ریال", "")}ریال`
+    : formatter.format(price).replace("ریال", "");
 };

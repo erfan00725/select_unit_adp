@@ -19,7 +19,7 @@ const StudentInfoCard: React.FC<StudentInfoProps> = async ({ studentId }) => {
     <div className="bg-white p-6 rounded-lg shadow-sm mb-6">
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <h3 className="text-sm text-gray-500">نام دانشجو:</h3>
+          <h3 className="text-sm text-gray-500">نام دانش‌آموز:</h3>
           <p className="font-medium">{`${student.FirstName} ${student.LastName}`}</p>
         </div>
         <div>
@@ -27,7 +27,7 @@ const StudentInfoCard: React.FC<StudentInfoProps> = async ({ studentId }) => {
           <p className="font-medium">{student.NationalCode}</p>
         </div>
         <div>
-          <h3 className="text-sm text-gray-500">شماره دانشجویی:</h3>
+          <h3 className="text-sm text-gray-500">شناسه دانش‌آموز:</h3>
           <p className="font-medium">#{studentId}</p>
         </div>
         <div>

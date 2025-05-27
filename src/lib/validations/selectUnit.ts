@@ -29,7 +29,7 @@ export const selectUnitSchema = z.object({
   StudentId: z
     .bigint()
     .or(z.string().transform((val) => BigInt(val)))
-    .describe("شناسه دانشجو در صورت وجود"),
+    .describe("شناسه دانش‌آموز در صورت وجود"),
 
   // Optional fields
   Lessons: z
@@ -37,7 +37,7 @@ export const selectUnitSchema = z.object({
     .min(1, { message: "حداقل یک درس باید انتخاب شود" })
     .describe("آرایه‌ای از شناسه‌های دروس انتخاب شده"),
 
-  ExtraFee: z
+  OtherFee: z
     .bigint()
     .or(z.string().transform((val) => BigInt(val)))
     .optional()

@@ -315,56 +315,107 @@ const Settings = {
   BooksFee: "booksFee",
   PricePerUnit: "pricePerUnit",
   ExtraClassFee: "extraClassFee",
+  InsuranceFee: "insuranceFee",
+  SkillRegistrationFee: "skillRegistrationFee",
+  OtherFee: "otherFee",
 } as const;
 
 // Define fee settings data
-const feeSettingsData = [
-  { Key: Settings.FixedFee, Value: "2000000" },
-  { Key: Settings.CertificateFee, Value: "300000" },
-  { Key: Settings.BooksFee, Value: "500000" },
-  { Key: Settings.PricePerUnit, Value: "1000000" },
-  { Key: Settings.ExtraClassFee, Value: "800000" },
+const feeSettings = [
+  {
+    Key: Settings.FixedFee,
+    Value: "2000000",
+    Title: "هزینه شهریه ثابت",
+    Description: null,
+  },
+  {
+    Key: Settings.CertificateFee,
+    Value: "300000",
+    Title: "هزینه صدور مدرک	",
+    Description: null,
+  },
+  {
+    Key: Settings.BooksFee,
+    Value: "500000",
+    Title: "هزینه کتاب‌ها",
+    Description: null,
+  },
+  {
+    Key: Settings.PricePerUnit,
+    Value: "1000000",
+    Title: "هزینه پیش‌فرض هر واحد	",
+    Description: null,
+  },
+  {
+    Key: Settings.ExtraClassFee,
+    Value: "800000",
+    Title: "هزینه کلاس اضافی",
+    Description: null,
+  },
+  {
+    Key: Settings.InsuranceFee,
+    Value: "500000",
+    Title: "هزینه بیمه دانش‌آموزی",
+    Description: null,
+  },
+  {
+    Key: Settings.SkillRegistrationFee,
+    Value: "100000",
+    Title: "هزینه ثبت مهارت",
+    Description: null,
+  },
+  {
+    Key: Settings.OtherFee,
+    Value: "0",
+    Title: "سایر هزینه‌ها",
+    Description: null,
+  },
 ];
-
 const adminUserName = "admin";
 const adminPassword = "@dmin113link";
 
 async function main() {
   console.log(`Start seeding ...`);
 
-  // Seed Admin
-  console.log(`Seeding Admin...`);
-  const admin = await prisma.user.upsert({
-    where: { UserName: adminUserName },
-    update: {},
-    create: {
-      UserName: adminUserName,
-      Password: bcrypt.hashSync(adminPassword, 10),
-      Type: "admin",
-    },
-  });
-  console.log(`Seeded Admin: ${admin.UserName}`);
+  // // Seed Admin
+  // console.log(`Seeding Admin...`);
+  // const admin = await prisma.user.upsert({
+  //   where: { UserName: adminUserName },
+  //   update: {},
+  //   create: {
+  //     UserName: adminUserName,
+  //     Password: bcrypt.hashSync(adminPassword, 10),
+  //     Type: "admin",
+  //   },
+  // });
+  // console.log(`Seeded Admin: ${admin.UserName}`);
 
-  // Seed Lessons
-  console.log(`Seeding ${lessonsData.length} lessons...`);
-  // Clear existing lessons first if needed (optional)
-  // await prisma.lesson.deleteMany();
-  const createdLessons = await prisma.lesson.createMany({
-    data: lessonsData,
-    skipDuplicates: true, // Optional: Skip if a lesson with the same unique constraint already exists
-  });
-  console.log(`Seeded ${createdLessons.count} lessons.`);
+  // // Seed Lessons
+  // console.log(`Seeding ${lessonsData.length} lessons...`);
+  // // Clear existing lessons first if needed (optional)
+  // // await prisma.lesson.deleteMany();
+  // const createdLessons = await prisma.lesson.createMany({
+  //   data: lessonsData,
+  //   skipDuplicates: true, // Optional: Skip if a lesson with the same unique constraint already exists
+  // });
+  // console.log(`Seeded ${createdLessons.count} lessons.`);
 
   // Seed General Settings (Fees)
-  console.log(`Seeding/Updating ${feeSettingsData.length} general settings...`);
-  for (const setting of feeSettingsData) {
+  console.log(`Seeding/Updating ${feeSettings.length} general settings...`);
+  await prisma.general.deleteMany(); // Clear existing data
+  for (const setting of feeSettings) {
     await prisma.general.upsert({
       where: { Key: setting.Key },
       update: { Value: setting.Value },
-      create: { Key: setting.Key, Value: setting.Value },
+      create: {
+        Key: setting.Key,
+        Value: setting.Value,
+        Title: setting.Title,
+        Description: setting.Description,
+      },
     });
   }
-  console.log(`Seeded/Updated ${feeSettingsData.length} general settings.`);
+  console.log(`Seeded/Updated ${feeSettings.length} general settings.`);
 
   console.log(`Seeding finished.`);
 }

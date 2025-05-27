@@ -61,7 +61,7 @@ export const s_ListConfig: StaticConfigsType = {
     title: "مدیریت دروس",
     description: "مدیریت دروس خود را انجام دهید",
     addButtonLabel: "افزودن درس جدید",
-    searchPlaceholder: "جستجوی درس‌ها، اساتید...",
+    searchPlaceholder: "جستجوی درس‌ها، دبیران...",
     filterOptions: [
       {
         name: "grade",
@@ -99,10 +99,10 @@ export const s_ListConfig: StaticConfigsType = {
     searchPlaceholder: "جستجوی رشته‌ها...",
   },
   teachers: {
-    title: "مدیریت اساتید",
-    description: "مدیریت اساتید خود را انجام دهید",
-    addButtonLabel: "افزودن استاد جدید",
-    searchPlaceholder: "جستجوی اساتید، رشته‌ها...",
+    title: "مدیریت دبیران",
+    description: "مدیریت دبیران خود را انجام دهید",
+    addButtonLabel: "افزودن دبیر جدید",
+    searchPlaceholder: "جستجوی دبیران، رشته‌ها...",
   },
   selectUnit: {
     title: "مدیریت انتخاب واحد",
@@ -225,7 +225,7 @@ export const LessonsList = async ({
     "واحد نظری",
     "واحد عملی",
     "کل واحد‌ها",
-    "استاد",
+    "دبیر",
     "قیمت هر واحد",
   ];
 
@@ -306,20 +306,12 @@ const FieldsList = async ({
   const tableData = (fields || []).map((field) => ({
     id: field.id,
     Name: field.Name,
-    FixedFee: field.FixedFee ? `${field.FixedFee}` : "_",
     Students: field.students?.length || 0,
     Lessons: field.lessons?.length || 0,
     Teachers: field.teachers?.length || 0,
   }));
 
-  const headers = [
-    "شناسه",
-    "نام",
-    "شهریه ثابت",
-    "دانش‌آموزان",
-    "دروس",
-    "استادان",
-  ];
+  const headers = ["شناسه", "نام", "دانش‌آموزان", "دروس", "دبیران"];
 
   return {
     tableData: tableData,
@@ -363,8 +355,8 @@ const TeachersList = async ({
   return {
     tableData: tableData,
     headers: headers,
-    title: "مدیریت اساتید",
-    addButtonLabel: "افزودن استاد جدید",
+    title: "مدیریت دبیران",
+    addButtonLabel: "افزودن دبیر جدید",
     baseUrl: urls.teachers,
     limit: pageLimit,
     error: teachersData?.error,
@@ -451,7 +443,7 @@ const generalsList = async ({
   const tableData = (data.generals || []).map((item) => ({
     id: item.Key, // Using Key as id for General entity
     Title: item.Title || "-",
-    Value: priceFormatter(item.Value, true),
+    Value: priceFormatter(Number(item.Value), true),
     Updated_at: getFarsiDate(item.Updated_at),
     Created_at: getFarsiDate(item.Created_at),
   }));
@@ -474,6 +466,7 @@ const generalsList = async ({
     },
     canRemove: false,
     haveSinglePage: false,
+    canAdd: false,
   };
 };
 
@@ -505,6 +498,8 @@ export const d_StudentSelectUnitList = async ({
     order: order ? (order as Orders) : "asc",
   });
   const pageLimit = selectUnitsData.pagination?.limit || defaultListLimit;
+
+  console.log(selectUnitsData);
 
   const selectUnits = selectUnitsData?.selectUnits;
   const tableData = (selectUnits || []).map((unit) => {

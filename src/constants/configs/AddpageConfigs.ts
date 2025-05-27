@@ -55,7 +55,7 @@ export const FieldAddConfigs: CreateEditProps<any, any> = {
 // };
 
 export const TeacherAddConfigs: CreateEditProps<any, any> = {
-  entityName: "استاد",
+  entityName: "دبیر",
   formGenerator: teacherFormConfigGenerator,
   submitFunction: createTeacher,
   validateFunction: validateTeacherSafe,

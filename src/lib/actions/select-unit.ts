@@ -5,6 +5,8 @@ import { prisma } from "../prisma";
 import { revalidatePath } from "next/cache";
 import { BaseListFilterParams, SelectUnitDataType } from "@/types/Tables";
 import { DeleteFunctionReturnType } from "@/types/General";
+import getTotalFee from "../utils/getTotalFee";
+import { getFeeSettings } from "./general";
 
 type ReturnType = Prisma.SelectUnitGetPayload<{
   include: {
@@ -39,35 +41,33 @@ function customReturn(
         };
       };
     };
-  }> | null
+  }> | null,
+  defaultPricePerUnit?: number | string
 ) {
   // Handle null input
   if (!selectUnit) {
     return null;
   }
 
-  // Calculate lesson-based fees
-  const lessonFees = selectUnit.selectedLessons
-    ? selectUnit.selectedLessons.reduce(
-        // @ts-ignore
-        (acc, lesson) =>
-          acc +
-          Number(lesson.lesson?.PricePerUnit || 0) *
-            ((lesson.lesson?.TheoriUnit || 0) +
-              (lesson.lesson?.PracticalUnit || 0)),
-        0
-      )
-    : 0;
+  let lessons = selectUnit.selectedLessons;
 
-  // Calculate additional fees
-  const additionalFees =
-    Number(selectUnit.ExtraFee || 0) +
-    Number(selectUnit.FixedFee || 0) +
-    Number(selectUnit.CertificateFee || 0) +
-    Number(selectUnit.ExtraClassFee || 0) +
-    Number(selectUnit.BooksFee || 0) +
-    Number(selectUnit.InsuranceFee || 0) -
-    Number(selectUnit.Discount || 0);
+  if (defaultPricePerUnit !== undefined || defaultPricePerUnit !== null) {
+    lessons = selectUnit.selectedLessons.map((selectedLesson) => {
+      return {
+        ...selectedLesson,
+        lesson: {
+          ...selectedLesson.lesson,
+          PricePerUnit:
+            selectedLesson.lesson?.PricePerUnit === undefined ||
+            selectedLesson.lesson?.PricePerUnit === null
+              ? BigInt(Number(defaultPricePerUnit))
+              : selectedLesson.lesson?.PricePerUnit,
+        },
+      };
+    });
+  }
+
+  // console.log(lessons);
 
   return {
     ...selectUnit,
@@ -78,7 +78,8 @@ function customReturn(
           );
         }, 0)
       : 0,
-    totalFee: lessonFees + additionalFees,
+    seelctedLessons: lessons,
+    totalFee: getTotalFee(selectUnit, Number(defaultPricePerUnit)),
   };
 }
 
@@ -161,8 +162,15 @@ export async function getSelectUnits(
       take: limit,
     });
 
+    const { settings } = await getFeeSettings();
+    const { pricePerUnit } = settings;
+
     // Apply customReturn to each select unit to calculate totalUnits and totalFee
-    const selectUnitsWithTotal = selectUnits.map((unit) => customReturn(unit));
+    const selectUnitsWithTotal = selectUnits.map((unit) =>
+      customReturn(unit, pricePerUnit)
+    );
+
+    console.log(selectUnitsWithTotal);
 
     // Calculate pagination metadata
     const totalPages = Math.ceil(totalCount / limit);
@@ -227,9 +235,13 @@ export async function getSelectUnitsByStudent(
       skip,
       take: limit,
     });
+    const { settings } = await getFeeSettings();
+    const { pricePerUnit } = settings;
 
     // Apply customReturn to each select unit to calculate totalUnits and totalFee
-    const selectUnitsWithTotal = selectUnits.map((unit) => customReturn(unit));
+    const selectUnitsWithTotal = selectUnits.map((unit) =>
+      customReturn(unit, pricePerUnit)
+    );
 
     // Calculate pagination metadata
     const totalPages = Math.ceil(totalCount / limit);
@@ -245,7 +257,7 @@ export async function getSelectUnitsByStudent(
     };
   } catch (error) {
     console.error("Failed to fetch student select units:", error);
-    return { error: "دریافت اطلاعات انتخاب واحد دانشجو با خطا مواجه شد" };
+    return { error: "دریافت اطلاعات انتخاب واحد دانش‌آموز با خطا مواجه شد" };
   }
 }
 
@@ -294,9 +306,13 @@ export async function getSelectUnitsByLesson(
       skip,
       take: limit,
     });
+    const { settings } = await getFeeSettings();
+    const { pricePerUnit } = settings;
 
     // Apply customReturn to each select unit to calculate totalUnits and totalFee
-    const selectUnitsWithTotal = selectUnits.map((unit) => customReturn(unit));
+    const selectUnitsWithTotal = selectUnits.map((unit) =>
+      customReturn(unit, pricePerUnit)
+    );
 
     // Calculate pagination metadata
     const totalPages = Math.ceil(totalCount / limit);
@@ -345,9 +361,11 @@ export async function getSelectUnitById(selectUnitId: string) {
     if (!selectUnit) {
       return { error: "انتخاب واحد یافت نشد" };
     }
+    const { settings } = await getFeeSettings();
+    const { pricePerUnit } = settings;
 
     // Apply customReturn to calculate totalUnits and totalFee
-    return { selectUnit: customReturn(selectUnit) };
+    return { selectUnit: customReturn(selectUnit, pricePerUnit) };
   } catch (error) {
     console.error("Failed to fetch select unit:", error);
     return { error: "دریافت اطلاعات انتخاب واحد با خطا مواجه شد" };
@@ -391,8 +409,11 @@ export async function getSpecificSelectUnit(
       return { error: "انتخاب واحد یافت نشد" };
     }
 
+    const { settings } = await getFeeSettings();
+    const { pricePerUnit } = settings;
+
     // Apply customReturn to calculate totalUnits and totalFee
-    return { selectUnit: customReturn(selectUnit) };
+    return { selectUnit: customReturn(selectUnit, pricePerUnit) };
   } catch (error) {
     console.error("Failed to fetch specific select unit:", error);
     return { error: "دریافت اطلاعات انتخاب واحد مشخص با خطا مواجه شد" };
@@ -467,8 +488,13 @@ export async function getSelectUnitsByYearPeriod(
     // Calculate pagination metadata
     const totalPages = Math.ceil(totalCount / limit);
 
+    const { settings } = await getFeeSettings();
+    const { pricePerUnit } = settings;
+
     // Apply customReturn to each select unit to calculate totalUnits and totalFee
-    const selectUnitsWithTotal = selectUnits.map((unit) => customReturn(unit));
+    const selectUnitsWithTotal = selectUnits.map((unit) =>
+      customReturn(unit, pricePerUnit)
+    );
 
     return {
       selectUnits: selectUnitsWithTotal,
@@ -523,9 +549,11 @@ export async function getSelectUnitLessons(
     if (!selectUnit) {
       return { error: "انتخاب واحد یافت نشد" };
     }
+    const { settings } = await getFeeSettings();
+    const { pricePerUnit } = settings;
 
     // Apply customReturn to calculate totalUnits and totalFee
-    return { selectUnit: customReturn(selectUnit) };
+    return { selectUnit: customReturn(selectUnit, pricePerUnit) };
   } catch (error) {
     console.error(
       "Failed to fetch select unit by student, year, and period:",
@@ -555,7 +583,7 @@ export async function createSelectUnit(
     });
 
     if (!student) {
-      return { error: "دانشجو یافت نشد" };
+      return { error: "دانش‌آموز یافت نشد" };
     }
 
     // Check if the select unit already exists for this student, year, and period
@@ -618,7 +646,7 @@ export async function createSelectUnit(
 
       return {
         error:
-          "انتخاب واحد برای این دانشجو در این سال و نیمسال قبلاً ثبت شده است",
+          "انتخاب واحد برای این دانش‌آموز در این سال و نیمسال قبلاً ثبت شده است",
       };
     }
 
@@ -628,9 +656,10 @@ export async function createSelectUnit(
         StudentId: data.StudentId,
         Year: data.Year,
         Period: data.Period,
-        ExtraFee: data.ExtraFee,
+        OtherFee: data.OtherFee,
         FixedFee: data.FixedFee,
         CertificateFee: data.CertificateFee,
+        SkillRegistrationFee: data.SkillRegistrationFee,
         ExtraClassFee: data.ExtraClassFee,
         BooksFee: data.BooksFee,
         InsuranceFee: data.InsuranceFee,
@@ -683,10 +712,13 @@ export async function createSelectUnit(
       },
     });
 
+    const { settings } = await getFeeSettings();
+    const { pricePerUnit } = settings;
+
     revalidatePath("/dashboard/select-unit");
     revalidatePath(`/dashboard/students/${data.StudentId}`);
     // Apply customReturn to calculate totalUnits and totalFee
-    return { selectUnit: customReturn(completeSelectUnit) };
+    return { selectUnit: customReturn(completeSelectUnit, pricePerUnit) };
   } catch (error) {
     console.error("Failed to create select unit:", error);
     return { error: "ایجاد انتخاب واحد با خطا مواجه شد" };
@@ -907,8 +939,10 @@ export async function bulkCreateSelectUnits(
         StudentId: baseData.StudentId,
         Year: baseData.Year,
         Period: baseData.Period,
-        ExtraFee: baseData.ExtraFee || 0,
+        OtherFee: baseData.OtherFee || 0,
         FixedFee: baseData.FixedFee || 0,
+        InsuranceFee: baseData.InsuranceFee || 0,
+        SkillRegistrationFee: baseData.SkillRegistrationFee || 0,
         CertificateFee: baseData.CertificateFee || 0,
         ExtraClassFee: baseData.ExtraClassFee || 0,
         BooksFee: baseData.BooksFee || 0,
@@ -966,10 +1000,13 @@ export async function bulkCreateSelectUnits(
       },
     });
 
+    const { settings } = await getFeeSettings();
+    const { pricePerUnit } = settings;
+
     revalidatePath("/dashboard/select-unit");
     revalidatePath(`/dashboard/students/${baseData.StudentId}`);
     // Apply customReturn to calculate totalUnits and totalFee
-    return { selectUnit: customReturn(completeSelectUnit) };
+    return { selectUnit: customReturn(completeSelectUnit, pricePerUnit) };
   } catch (error) {
     console.error("Failed to bulk create select units:", error);
     return { error: "ایجاد گروهی انتخاب واحد با خطا مواجه شد" };
@@ -1070,7 +1107,6 @@ export async function bulkEditSelectUnits(
 
       // Update SelectUnit fields from baseData
       const { StudentId, id, ...updateDataFromBase } = baseData;
-      console.log("baseData: ", baseData);
 
       if (Object.keys(updateDataFromBase).length > 0) {
         await tx.selectUnit.update({
@@ -1107,107 +1143,16 @@ export async function bulkEditSelectUnits(
       revalidatePath(`/dashboard/students/${existingSelectUnit.student.id}`);
     }
 
+    const { settings } = await getFeeSettings();
+    const { pricePerUnit } = settings;
+
     // Apply customReturn to calculate totalUnits and totalFee
     return {
       ...result,
-      selectUnit: customReturn(result.selectUnit),
+      selectUnit: customReturn(result.selectUnit, pricePerUnit),
     };
   } catch (error) {
     console.error("Failed to bulk edit select units:", error);
     return { error: "ویرایش گروهی انتخاب واحد با خطا مواجه شد" };
-  }
-}
-
-// Aggregate select units grouped by studentId, year, and period
-export async function getSelectUnitsGroupedByStudentYearPeriod() {
-  try {
-    const grouped = await prisma.selectUnit.groupBy({
-      by: ["StudentId", "Year", "Period"],
-      _count: true,
-      _sum: { ExtraFee: true },
-    });
-
-    // Fetch student names and lesson/unit info for each group
-    const results = await Promise.all(
-      grouped.map(async (group) => {
-        const student = await prisma.student.findUnique({
-          where: { id: group.StudentId },
-          select: { FirstName: true, LastName: true },
-        });
-
-        // Get the select unit with all selected lessons
-        const selectUnit = await prisma.selectUnit.findUnique({
-          where: {
-            StudentId_Year_Period: {
-              StudentId: group.StudentId,
-              Year: group.Year,
-              Period: group.Period,
-            },
-          },
-          include: {
-            student: true,
-            selectedLessons: {
-              include: {
-                lesson: true,
-              },
-            },
-          },
-        });
-
-        // Count the number of lessons
-        const numberOfLessons = selectUnit?.selectedLessons.length || 0;
-
-        // Calculate total units from all selected lessons
-        const totalUnits =
-          selectUnit?.selectedLessons.reduce(
-            (sum, sl) =>
-              sum +
-              ((sl.lesson.TheoriUnit || 0) + (sl.lesson.PracticalUnit || 0)),
-            0
-          ) || 0;
-
-        // Calculate total price from all selected lessons plus extra fees
-        const totalPrice =
-          (selectUnit?.selectedLessons.reduce(
-            (sum, sl) =>
-              sum +
-              (Number(sl.lesson.PricePerUnit) || 0) *
-                ((sl.lesson.TheoriUnit || 0) + (sl.lesson.PracticalUnit || 0)),
-            0
-          ) || 0) +
-          (selectUnit?.ExtraFee ? Number(selectUnit.ExtraFee) : 0) +
-          (selectUnit?.FixedFee ? Number(selectUnit.FixedFee) : 0) +
-          (selectUnit?.CertificateFee ? Number(selectUnit.CertificateFee) : 0) +
-          (selectUnit?.ExtraClassFee ? Number(selectUnit.ExtraClassFee) : 0) +
-          (selectUnit?.BooksFee ? Number(selectUnit.BooksFee) : 0);
-
-        return {
-          studentId: group.StudentId,
-          studentName: student
-            ? `${student.FirstName} ${student.LastName}`
-            : "-",
-          numberOfLessons,
-          totalUnits,
-          year: group.Year,
-          period: group.Period,
-          totalPrice,
-          extraFees: {
-            extraFee: selectUnit?.ExtraFee ? Number(selectUnit.ExtraFee) : 0,
-            fixedFee: selectUnit?.FixedFee ? Number(selectUnit.FixedFee) : 0,
-            certificateFee: selectUnit?.CertificateFee
-              ? Number(selectUnit.CertificateFee)
-              : 0,
-            extraClassFee: selectUnit?.ExtraClassFee
-              ? Number(selectUnit.ExtraClassFee)
-              : 0,
-            booksFee: selectUnit?.BooksFee ? Number(selectUnit.BooksFee) : 0,
-          },
-        };
-      })
-    );
-    return { data: results };
-  } catch (error) {
-    console.error("Failed to group select units:", error);
-    return { error: "گروه‌بندی انتخاب واحدها با خطا مواجه شد" };
   }
 }

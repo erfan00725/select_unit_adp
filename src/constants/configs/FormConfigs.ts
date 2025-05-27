@@ -112,17 +112,17 @@ export const lessonFormConfigGenerator = async (
         },
       },
       {
-        title: "استاد",
+        title: "دبیر",
         name: "TeacherId",
         type: "select",
-        placeholder: inputDefaultPlaceholder("نام استاد"),
+        placeholder: inputDefaultPlaceholder("نام دبیر"),
         dataType: InputDataType.bigint,
         defaultValue: lesson?.TeacherId?.toString(),
         SelectButtonProps: {
           items: teacherOptions || [],
           singleSelect: true,
           initialSelectedItemId: lesson?.TeacherId?.toString(),
-          title: "انتخاب استاد",
+          title: "انتخاب دبیر",
         },
       },
       {
@@ -219,10 +219,10 @@ export const studentFormConfigGenerator = async (
   }));
 
   return {
-    title: formTitle("دانشجو", !!student),
-    description: formDescription("دانشجو", !!student),
+    title: formTitle("دانش‌آموز", !!student),
+    description: formDescription("دانش‌آموز", !!student),
     useDefaultValues: true,
-    addText: formButton("دانشجو", !!student),
+    addText: formButton("دانش‌آموز", !!student),
     inputs: [
       {
         title: "نام",
@@ -384,10 +384,10 @@ export const teacherFormConfigGenerator = async (
   }));
 
   return {
-    title: formTitle("استاد", !!teacher),
-    description: formDescription("استاد", !!teacher),
+    title: formTitle("دبیر", !!teacher),
+    description: formDescription("دبیر", !!teacher),
     useDefaultValues: true,
-    addText: formButton("استاد", !!teacher),
+    addText: formButton("دبیر", !!teacher),
     inputs: [
       {
         title: "نام",

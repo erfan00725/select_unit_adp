@@ -41,7 +41,7 @@ export const StudentEditConfig: CreateEditProps<any, any> = {
   validateFunction: validateStudentSafe,
   formGenerator: studentFormConfigGenerator,
   getDataById: getStudentById,
-  entityName: "دانشجویان",
+  entityName: "اندانش‌آموز",
   redirectUrl: urls.students,
 };
 
@@ -59,7 +59,7 @@ export const TeacherEditConfig: CreateEditProps<any, any> = {
   validateFunction: validateTeacherSafe,
   formGenerator: teacherFormConfigGenerator,
   getDataById: getTeacherById,
-  entityName: "اساتید",
+  entityName: "دبیران",
   redirectUrl: urls.teachers,
 };
 

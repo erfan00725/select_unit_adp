@@ -27,17 +27,17 @@ const ListPage = ({ searchParams, params, staticConfig }: Props) => {
   const type = params.type;
 
   useEffect(() => {
+    setLoading(true);
     if (d_ListConfig[type]) {
       d_ListConfig[type]({ searchParams })
         .then((res) => {
-          console.log(res);
           setData(res);
         })
         .finally(() => {
           setLoading(false);
         });
     }
-  }, []);
+  }, [searchParams]);
 
   errorCheck(data?.error);
 

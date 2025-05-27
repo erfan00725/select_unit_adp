@@ -5,7 +5,7 @@ import { LessonSelect } from "../../selectUnit/LessonSelect";
 import Link from "next/link";
 import { urls } from "@/constants/urls";
 import { SelectItem } from "../../Form/SelectItems";
-import { ActionReturnType } from "@/types/General";
+import { ActionReturnType, Settings } from "@/types/General";
 import {
   bulkCreateSelectUnits,
   bulkEditSelectUnits,
@@ -81,24 +81,20 @@ export const SelectUnitForm = ({
       setInitialSettings({
         year: { value: selectUnit.Year, active: !!selectUnit.Year },
         period: { value: selectUnit.Period, active: !!selectUnit.Period },
-        extraFee: {
-          value: Number(selectUnit.ExtraFee) || 0,
-          active: !!selectUnit.ExtraFee,
-        },
         fixedFee: {
           value: Number(selectUnit.FixedFee) || 0,
           active: !!selectUnit.FixedFee,
         },
         // Add initialization for new fees
-        certificateFee: {
+        [Settings.CertificateFee]: {
           value: Number(selectUnit.CertificateFee) || 0,
           active: !!selectUnit.CertificateFee,
         },
-        extraClassFee: {
+        [Settings.ExtraClassFee]: {
           value: Number(selectUnit.ExtraClassFee) || 0,
           active: !!selectUnit.ExtraClassFee,
         },
-        booksFee: {
+        [Settings.BooksFee]: {
           value: Number(selectUnit.BooksFee) || 0,
           active: !!selectUnit.BooksFee,
         },
@@ -121,6 +117,18 @@ export const SelectUnitForm = ({
         paymentDate: {
           value: selectUnit.PaymentDate?.toString() || "",
           active: !!selectUnit.PaymentDate,
+        },
+        [Settings.OtherFee]: {
+          value: Number(selectUnit.OtherFee) || 0,
+          active: !!selectUnit.OtherFee,
+        },
+        [Settings.InsuranceFee]: {
+          value: Number(selectUnit.InsuranceFee) || 0,
+          active: !!selectUnit.InsuranceFee,
+        },
+        [Settings.SkillRegistrationFee]: {
+          value: Number(selectUnit.SkillRegistrationFee) || 0,
+          active: !!selectUnit.SkillRegistrationFee,
         },
       });
       setIsLoadingSettings(false);
@@ -247,8 +255,6 @@ export const SelectUnitForm = ({
 
     const action = isEditMode ? "ویرایش" : "انتخاب";
 
-    console.log(validateData);
-
     if (isEditMode && selectUnitData?.selectUnit) {
       const { Lessons: selectedLessonsIds, ...rest } = validateData;
       // Use bulkEditSelectUnits for edit mode
@@ -256,7 +262,7 @@ export const SelectUnitForm = ({
         selectUnitData.selectUnit.id,
         {
           ...rest,
-          ExtraFee: validateData.ExtraFee || undefined,
+          OtherFee: validateData.OtherFee || undefined,
           CertificateFee: validateData.CertificateFee || undefined,
           ExtraClassFee: validateData.ExtraClassFee || undefined,
           BooksFee: validateData.BooksFee || undefined,
@@ -295,7 +301,7 @@ export const SelectUnitForm = ({
           StudentId: validateData.StudentId,
           Period: validateData.Period,
           Year: validateData.Year,
-          ExtraFee: validateData.ExtraFee || undefined,
+          OtherFee: validateData.OtherFee || undefined,
           FixedFee: validateData.FixedFee,
           CertificateFee: validateData.CertificateFee || undefined,
           ExtraClassFee: validateData.ExtraClassFee || undefined,
@@ -330,10 +336,6 @@ export const SelectUnitForm = ({
         });
     }
   };
-
-  useEffect(() => {
-    console.log(inputValues);
-  }, [inputValues]);
 
   const showTable = () => {
     return selectedLessons && selectedLessons.lessons.length > 0 ? (

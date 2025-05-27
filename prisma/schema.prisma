@@ -125,12 +125,13 @@ model SelectUnit {
   StudentId  BigInt   @db.UnsignedBigInt
   Year       Int
   Period     Period
-  ExtraFee   BigInt     @default(0) @db.UnsignedBigInt
   FixedFee   BigInt     @default(0) @db.BigInt // fixed fee for the unit, not for the lesson
   CertificateFee BigInt @default(0) @db.BigInt
   ExtraClassFee BigInt  @default(0) @db.BigInt
   BooksFee   BigInt     @default(0) @db.BigInt
   InsuranceFee  BigInt  @default(0) @db.UnsignedBigInt
+  SkillRegistrationFee BigInt @default(0) @db.UnsignedBigInt
+  OtherFee   BigInt     @default(0) @db.UnsignedBigInt
   Discount   BigInt     @default(0) @db.UnsignedBigInt
   Paid       Boolean    @default(false) @db.Bit(1)
   PaymentMethod     PaymentMethods?

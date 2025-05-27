@@ -186,7 +186,7 @@ export async function deleteField(id: string): DeleteFunctionReturnType {
     }
 
     if (fieldWithRelations?.teachers.length) {
-      return { error: "امکان حذف رشته‌ای که دارای استاد است وجود ندارد" };
+      return { error: "امکان حذف رشته‌ای که دارای دبیر است وجود ندارد" };
     }
 
     await prisma.field.delete({

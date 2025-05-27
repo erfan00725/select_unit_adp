@@ -18,7 +18,7 @@ export const NavBarConfigs = [
     href: urls.lessons,
   },
   {
-    label: "مدیریت اساتید",
+    label: "مدیریت دبیران",
     href: urls.teachers,
   },
   {

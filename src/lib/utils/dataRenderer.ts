@@ -1,4 +1,4 @@
-import { Grade, LessonGrade, Period } from "@prisma/client";
+import { Grade, LessonGrade, PaymentMethods, Period } from "@prisma/client";
 
 export function gradeRender(grade?: Grade | LessonGrade | null) {
   switch (grade) {
@@ -29,6 +29,21 @@ export function periodRender(period?: Period | null) {
       return "نیمسال دوم";
     case "summer":
       return "تابستان";
+    default:
+      return null;
+  }
+}
+
+export function paymentMethodRender(method?: PaymentMethods | null) {
+  switch (method) {
+    case PaymentMethods.cash:
+      return "نقدی";
+    case PaymentMethods.check:
+      return "چک";
+    case PaymentMethods.card:
+      return "کارت";
+    case PaymentMethods.deposit:
+      return "واریز";
     default:
       return null;
   }

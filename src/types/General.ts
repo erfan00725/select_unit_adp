@@ -38,6 +38,9 @@ export enum Settings {
   BooksFee = "booksFee",
   PricePerUnit = "pricePerUnit",
   ExtraClassFee = "extraClassFee",
+  InsuranceFee = "insuranceFee",
+  SkillRegistrationFee = "skillRegistrationFee",
+  OtherFee = "otherFee",
 }
 
 export type DeleteFunctionReturnType = Promise<{
