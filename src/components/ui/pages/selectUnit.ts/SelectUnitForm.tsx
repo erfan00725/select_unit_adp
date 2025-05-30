@@ -241,6 +241,8 @@ export const SelectUnitForm = ({
       ...(lessons.length > 0 ? { Lesson: lessons[0] } : {}),
     };
 
+    console.log(dataToValidate);
+
     const {
       success,
       data: validateData,
@@ -284,7 +286,7 @@ export const SelectUnitForm = ({
             return;
           }
           toast.success(`درس‌ها با موفقیت ${action} شدند`);
-          router.push(`${urls.selectUnit}/${selectUnitData.selectUnit?.id}`);
+          router.back();
           handleReset();
         })
         .catch((err) => {

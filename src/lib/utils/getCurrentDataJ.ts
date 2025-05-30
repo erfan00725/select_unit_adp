@@ -20,7 +20,6 @@ export const getDateJ = (
   date: Date,
   get: "year" | "month" | "day" | "full" = "full"
 ) => {
-  console.log(date);
   switch (get) {
     case "year":
       return new Intl.DateTimeFormat("fa-IR", { year: "numeric" }).format(date);

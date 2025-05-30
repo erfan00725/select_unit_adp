@@ -10,15 +10,14 @@ import {
   getSelectUnits,
   getSelectUnitById,
   getGenerals, // Added for General entity
-  deleteGeneral, // Added for General entity
+  getFeeSettings, // Added for General entity
 } from "@/lib/actions";
-import { FilterOptionType, Orders, PageType, Settings } from "@/types/General";
+import { FilterOptionType, Orders, PageType } from "@/types/General";
 import getAcademicYearJ from "@/lib/utils/getAcademicYearJ";
 import { priceFormatter } from "@/lib/utils/priceFormatter";
 import { gradeRender, periodRender } from "@/lib/utils/dataRenderer";
 import getFarsiDate from "@/lib/getFarsiDate"; // Added for date formatting
 import { LessonGrade, Period } from "@prisma/client";
-import translateGeneralSettings from "@/lib/utils/translateGeneralSettings";
 
 type ListGeneralParamsType = {
   searchParams: { [key: string]: string | undefined };
@@ -30,6 +29,29 @@ export interface ListGeneralReturnType extends DataTableProps<any> {
 }
 
 export const defaultListLimit = 10;
+
+const selectUnitGeneralActions = [
+  {
+    label: "چاپ انتخاب واحد‌ها",
+    onClick: (selectedItems?: string[]) => {
+      window.open(
+        `${window.location.origin}${
+          urls.selectUnitPrint
+        }?selectUnitIds=${selectedItems?.join(",")}`
+      );
+    },
+  },
+  {
+    label: "چاپ درخواست انتخاب واحد‌ها",
+    onClick: (selectedItems?: string[]) => {
+      window.open(
+        `${window.location.origin}${
+          urls.selectUnitPrintAlt
+        }?selectUnitIds=${selectedItems?.join(",")}`
+      );
+    },
+  },
+];
 
 // ________Static Configs________
 
@@ -171,6 +193,8 @@ export const LessonsList = async ({
 
   const lessons = lessonsData?.lessons;
 
+  const { settings } = await getFeeSettings();
+
   // TODO: Fix this shit
 
   const getTableData = () => {
@@ -193,7 +217,7 @@ export const LessonsList = async ({
             : "_",
           PricePerUnit: lesson.PricePerUnit
             ? priceFormatter(Number(lesson.PricePerUnit), true)
-            : "_",
+            : priceFormatter(settings.pricePerUnit, true),
         };
       });
     }
@@ -204,7 +228,9 @@ export const LessonsList = async ({
       Grade: gradeRender(lesson.Grade),
       Field: lesson.field?.Name || "عمومی",
       TheoriUnit: lesson.TheoriUnit,
-      PracticalUnit: lesson.PracticalUnit,
+      PracticalUnit:
+        priceFormatter(lesson.PracticalUnit, true) ||
+        priceFormatter(settings.pricePerUnit, true),
       TotalUnits: lesson.TheoriUnit + lesson.PracticalUnit,
       Teacher: lesson.teacher
         ? `${lesson.teacher.FirstName} ${lesson.teacher.LastName}`
@@ -231,8 +257,9 @@ export const LessonsList = async ({
 
   return {
     tableData: tableData,
+    selectable: true,
     headers: headers,
-    title: "مدیریت دروس",
+    title: "دروس",
     addButtonLabel: "افزودن درس جدید",
     baseUrl: urls.lessons,
     limit: pageLimit,
@@ -419,14 +446,7 @@ export const SelectUnitList = async ({
     pagination: selectUnitsData?.pagination,
     editable: false,
     selectable: true,
-    generalActions: [
-      {
-        label: "پرینت",
-        onClick: (selectedItems) => {
-          console.log(selectedItems);
-        },
-      },
-    ],
+    generalActions: selectUnitGeneralActions,
   };
 };
 
@@ -499,8 +519,6 @@ export const d_StudentSelectUnitList = async ({
   });
   const pageLimit = selectUnitsData.pagination?.limit || defaultListLimit;
 
-  console.log(selectUnitsData);
-
   const selectUnits = selectUnitsData?.selectUnits;
   const tableData = (selectUnits || []).map((unit) => {
     return {
@@ -531,6 +549,8 @@ export const d_StudentSelectUnitList = async ({
     limit: pageLimit,
     error: selectUnitsData?.error,
     pagination: selectUnitsData?.pagination,
+    generalActions: selectUnitGeneralActions,
+    selectable: true,
   };
 };
 

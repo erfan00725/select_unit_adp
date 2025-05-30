@@ -40,7 +40,7 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
     }
     params.delete("page");
     router.push(`?${params.toString()}`);
-  }, 100);
+  }, 1000);
 
   // Handle input and filter changes
   const onChange = (

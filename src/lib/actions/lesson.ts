@@ -52,7 +52,9 @@ const customReturnLessons = async (data: LessonWithOptionalRelations[]) => {
   const { pricePerUnit: defaultPrice } = settings;
 
   return await Promise.all(
-    data.map((item) => customReturn(item, BigInt(defaultPrice)))
+    data.map(
+      async (item) => await customReturn(item, BigInt(defaultPrice), false)
+    )
   );
 };
 
@@ -252,19 +254,17 @@ export async function createLesson(data: LessonDataType) {
         : undefined,
       RequireUnit: data.RequireUnit ? Number(data.RequireUnit) : undefined,
       ValidFrom: data.ValidFrom ? data.ValidFrom : undefined,
+      Grade: data.Grade || undefined,
     };
 
     const lesson = await prisma.lesson.create({
       data: {
         ...editedData,
-        Grade: data.Grade || undefined,
-        teacher: editedData.TeacherId
+        teacher: data.TeacherId
           ? { connect: { id: data.TeacherId } }
           : undefined,
-        field: editedData.fieldId
-          ? { connect: { id: data.fieldId } }
-          : undefined,
-        requiresLesson: editedData.RequireLesson
+        field: data.fieldId ? { connect: { id: data.fieldId } } : undefined,
+        requiresLesson: data.RequireLesson
           ? { connect: { id: data.RequireLesson } }
           : undefined,
       },
@@ -304,6 +304,7 @@ export async function updateLesson(id: string, data: Partial<LessonDataType>) {
       RequireUnit: data.RequireUnit ? Number(data.RequireUnit) : undefined,
       ValidFrom: data.ValidFrom ? data.ValidFrom : undefined,
     };
+
     const lesson = await prisma.lesson.update({
       where: { id: lessonId },
       include: {
@@ -315,13 +316,13 @@ export async function updateLesson(id: string, data: Partial<LessonDataType>) {
       },
       data: {
         ...editedData,
-        teacher: editedData.TeacherId
+        teacher: data.TeacherId
           ? { connect: { id: data.TeacherId } }
           : { disconnect: true },
-        field: editedData.fieldId
+        field: data.fieldId
           ? { connect: { id: data.fieldId } }
           : { disconnect: true },
-        requiresLesson: editedData.RequireLesson
+        requiresLesson: data.RequireLesson
           ? { connect: { id: data.RequireLesson } }
           : { disconnect: true },
       },

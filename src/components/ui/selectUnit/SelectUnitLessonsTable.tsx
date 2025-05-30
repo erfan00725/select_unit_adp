@@ -13,14 +13,14 @@ import { getSelectUnitById } from "@/lib/actions";
 
 type Props = {
   data: Awaited<ReturnType<typeof getSelectUnitById>>;
+  id?: string;
 };
 
-export const SelectUnitLessonsTable = ({ data }: Props) => {
-  const params = useParams();
+export const SelectUnitLessonsTable = ({ data, id }: Props) => {
   const [configs, setConfigs] = useState<ListGeneralReturnType | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  if (!params?.id) return null;
+  if (!id) return null;
 
   useEffect(() => {
     LessonsList({ searchParams: {}, selectUnitLessonData: data })
@@ -36,14 +36,11 @@ export const SelectUnitLessonsTable = ({ data }: Props) => {
   }, []);
 
   const s_selectUnitConfig = s_ListConfig[PageType.SelectUnit];
-  const addUrl = s_selectUnitConfig?.addUrl?.replace(
-    ":id",
-    params?.id as string
-  );
+  const addUrl = s_selectUnitConfig?.addUrl?.replace(":id", id as string);
   return isLoading ? (
     <Loading />
   ) : configs ? (
-    <div className="mt-5">
+    <div className="mt-5 print:mt-0">
       <DataTable {...configs} canAdd={false} addUrl={addUrl} editable={false} />
     </div>
   ) : null;

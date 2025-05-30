@@ -47,3 +47,7 @@ body {
 .tableAction {
   @apply text-indigo-600 hover:text-indigo-900 text-center mr-3;
 }
+
+.printElement {
+  @apply hidden print:block print:shadow-none;
+}

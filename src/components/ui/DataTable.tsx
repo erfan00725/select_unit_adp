@@ -43,8 +43,8 @@ const DataTable = <T extends DataBaseType>({
   const isEditable = editable && (baseUrl || baseEditUrl);
 
   return (
-    <div className="card mb-8 print:shadow-none print:border print:border-gray-300 print:mb-4">
-      <h2 className="text-xl font-bold text-gray-900 mb-6 print:text-lg print:text-black print:mb-4 print:border-b print:border-black print:pb-2">
+    <div className="card mb-8 print:shadow-none! print:p-0! print:rounded-none">
+      <h2 className="text-xl font-bold text-gray-900 mb-6 print:text-sm print:text-black print:mb-4 print:border-b print:border-black print:pb-2 print:hidden">
         {title}
       </h2>
 
@@ -67,7 +67,7 @@ const DataTable = <T extends DataBaseType>({
               {headers.map((header, index) => (
                 <th
                   key={index}
-                  className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider print:px-2 print:py-2 print:text-xs print:text-black print:font-bold print:border print:border-gray-400"
+                  className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider print:px-0.5 print:py-0.5 print:text-[9px] print:text-black print:font-bold print:border print:border-gray-400"
                 >
                   {header}
                 </th>
@@ -112,7 +112,7 @@ const DataTable = <T extends DataBaseType>({
                   {Object.entries(row).map(([_, data], colIndex) => (
                     <td
                       key={colIndex}
-                      className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 print:px-2 print:py-2 print:text-xs print:text-black print:border print:border-gray-400 print:whitespace-normal"
+                      className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 print:px-0.5 print:py-0.5 print:pr-1 print:text-[9px] print:text-black print:border print:border-gray-400 print:whitespace-normal"
                     >
                       {baseUrl && haveSinglePage ? (
                         <Link
@@ -192,7 +192,7 @@ const DataTable = <T extends DataBaseType>({
           generalActions.map((action) => (
             <span
               key={action.label}
-              className={`button ${action.className}`}
+              className={`button mr-2 ${action.className}`}
               onClick={() => action.onClick && action.onClick(selectedItems)}
             >
               {action.label}

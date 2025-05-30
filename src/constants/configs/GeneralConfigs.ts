@@ -83,7 +83,7 @@ export const selectUnitFormConfigs = (): SelectUnitFormConfig[] => {
     },
     {
       id: "SU_FixedFee",
-      label: "هزینه ثابت",
+      label: "هزینه شهریه ثابت",
       type: "price" as const,
       name: Settings.FixedFee,
       canBeDisabled: true,
@@ -91,7 +91,7 @@ export const selectUnitFormConfigs = (): SelectUnitFormConfig[] => {
     // Add new form configurations
     {
       id: "SU_CertificateFee",
-      label: "هزینه مدرک",
+      label: "هزینه صدور مدرک",
       type: "price" as const,
       name: Settings.CertificateFee,
       canBeDisabled: true,

@@ -27,11 +27,12 @@ import {
   periodRender,
 } from "@/lib/utils/dataRenderer";
 import { getDateJ } from "@/lib/utils/getCurrentDataJ";
+import Printbutton from "@/components/ui/common/Printbutton";
 
 export type DetailPageConfigtReturnType = {
   error?: string;
   config?: DetailPageProps;
-  chidlren?: React.ReactNode;
+  children?: React.ReactNode;
 };
 
 interface ConfigFunction<T> {
@@ -152,8 +153,6 @@ export const StudentsDetailConfig = (
 
   const student = studentData.student;
 
-  console.log(student.Birth);
-
   const StudentConfig: InfoPageConfig = {
     id: student?.id.toString() || "",
     title: `${student?.FirstName} ${student?.LastName}`,
@@ -222,7 +221,7 @@ export const StudentsDetailConfig = (
         </Link>,
       ],
     },
-    chidlren: <UserSelectUnitList />,
+    children: <UserSelectUnitList />,
   };
 };
 
@@ -343,7 +342,12 @@ export const SelectUnitDetailConfig = (
         type: "text",
       },
       {
-        label: "سال",
+        label: "کد ملی",
+        value: student?.NationalCode,
+        type: "text",
+      },
+      {
+        label: "سال تحصیلی",
         value: getAcademicYearJ(selectUnit?.Year),
         type: "text",
       },
@@ -406,6 +410,7 @@ export const SelectUnitDetailConfig = (
         label: "وضعیت پرداخت",
         value: !!selectUnit?.Paid,
         type: "status",
+        showInPrint: false,
       },
       {
         label: "روش پرداخت",
@@ -416,11 +421,13 @@ export const SelectUnitDetailConfig = (
         label: "توضیحات پرداخت",
         value: selectUnit?.PaymentDescription,
         type: "text",
+        showInPrint: false,
       },
       {
         label: "تاریخ پرداخت",
         value: getFarsiDate(selectUnit?.PaymentDate?.toDateString()),
         type: "text",
+        showInPrint: false,
       },
     ],
   };
@@ -434,8 +441,23 @@ export const SelectUnitDetailConfig = (
       InfoRows: SelectUnitConfig.rows || [],
       baseUrl: urls.selectUnitEditBase,
       editUrl: `${urls.selectUnitEditBase}/student/${selectUnit.StudentId}/edit/${selectUnit.id}`,
+      actions: [<Printbutton />],
+      printTitle: (
+        <span>
+          اداره آموزش و پرورش ناحیه 2 اصفهان
+          <br />
+          مدرسه از راه دور البرز
+          <br />
+          برگه انتخاب واحد دوره متوسطه
+        </span>
+      ),
     },
-    chidlren: <SelectUnitLessonsTable data={selectUnitData} />,
+    children: (
+      <SelectUnitLessonsTable
+        data={selectUnitData}
+        id={selectUnit.id.toString()}
+      />
+    ),
   };
 };
 

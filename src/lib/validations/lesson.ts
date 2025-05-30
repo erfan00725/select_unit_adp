@@ -111,9 +111,9 @@ export const lessonSchema = z.object({
 
   RequireUnit: z.bigint().optional().nullable(),
 
-  NotifCode: z
-    .bigint()
-    .or(z.string().transform((val) => BigInt(val)))
+  Introducer: z
+    .string()
+    .max(255, { message: errorMassages.maxLength("معرف", 255) })
     .nullable()
     .optional(), // Keeping existing order as nullable().optional()
 

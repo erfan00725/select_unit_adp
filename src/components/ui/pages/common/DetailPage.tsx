@@ -27,11 +27,10 @@ export const DetailPage = async ({ type, id }: Props) => {
     errorCheck(detailConfig?.error);
     return <NotFound />;
   }
-
   return (
     <div className="print:max-w-none print:m-0 print:p-4 print:bg-white print:text-black">
       <DetailInfoCard {...detailConfig.config} />
-      {detailConfig.chidlren}
+      {detailConfig.children}
     </div>
   );
 };

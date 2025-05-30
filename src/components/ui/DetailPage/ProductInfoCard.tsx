@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import InfoRow from "./InfoRow";
 import StatusBadge from "./StatusBadge";
 import Link from "next/link";
@@ -17,6 +17,7 @@ const DetailInfoCard: React.FC<DetailPageProps> = ({
   actions,
   baseUrl,
   editUrl,
+  printTitle,
 }) => {
   const formatValue = (row: DetailPageRow) => {
     if (!row.value && row.type !== "status") return null;
@@ -49,9 +50,10 @@ const DetailInfoCard: React.FC<DetailPageProps> = ({
   return (
     <div className="bg-white rounded-lg shadow-sm overflow-hidden print:shadow-none print:rounded-none print:overflow-visible">
       {/* Header */}
-      <div className="p-6 border-b border-gray-200 flex justify-between items-center print:p-4 print:border-b-2 print:border-black print:flex-col print:items-start print:gap-2">
+      <div className="p-6 border-b border-gray-200 flex justify-between items-center print:p-0 print:pb-0.5 print:mb-0.5 print:border-b-[1px] print:border-black print:flex-col print:items-start print:gap-0">
         <div className="print:w-full">
-          <h1 className="text-2xl font-bold text-gray-900 print:text-xl print:text-black print:mb-2">
+          <h1 className="text-2xl font-bold text-gray-900 print:text-sm print:text-black print:mb-1 print:text-center">
+            <span className="printElement print:mb-2">{printTitle}</span>
             {title}
           </h1>
           <p className="text-sm text-gray-500 mt-1 print:hidden">
@@ -62,7 +64,9 @@ const DetailInfoCard: React.FC<DetailPageProps> = ({
         </div>
         {baseUrl && (
           <div className="flex space-x-2 print:hidden">
-            {actions?.map((action) => action)}
+            {actions?.map((action, index) => (
+              <Suspense key={index}>{action}</Suspense>
+            ))}
             <Link
               href={editUrl ? editUrl : `${formBaseUrl}/edit`}
               className="button_black"
@@ -75,9 +79,14 @@ const DetailInfoCard: React.FC<DetailPageProps> = ({
       </div>
 
       {/* Content */}
-      <div className="p-6 grid grid-cols-1 lg:grid-cols-2 gap-8 print:p-4 print:grid-cols-3 print:gap-2 print:text-black">
+      <div className="p-6 grid grid-cols-1 lg:grid-cols-2 gap-8 print:p-0 print:pt-1 print:grid-cols-3 print:gap-0.5 print:text-black">
         {InfoRows.map((row, rowIndex) => (
-          <InfoRow key={rowIndex} label={row.label} value={formatValue(row)} />
+          <InfoRow
+            {...row}
+            value={formatValue(row)}
+            key={rowIndex}
+            className={`${row.value ? "" : "print:hidden"}`}
+          />
         ))}
       </div>
     </div>

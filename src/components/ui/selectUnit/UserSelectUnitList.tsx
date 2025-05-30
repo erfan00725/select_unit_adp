@@ -17,14 +17,13 @@ export const UserSelectUnitList = () => {
 
   if (!params?.id) return null;
 
-  // TODO: SelectUnits must be combined, List must change for SelectUnits and SelectUnit add, delete, update and single page must added
-
   useEffect(() => {
     d_StudentSelectUnitList({
       studentId: BigInt(params?.id as string),
       searchParams: {},
     })
       .then((res) => {
+        console.log(res);
         setConfigs(res);
       })
       .catch((err) => {

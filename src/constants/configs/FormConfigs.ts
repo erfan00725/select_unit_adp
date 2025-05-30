@@ -170,10 +170,10 @@ export const lessonFormConfigGenerator = async (
       {
         title: "معرف",
         name: "Introducer",
-        type: "number",
+        type: "text",
         placeholder: inputDefaultPlaceholder("معرف"),
         defaultValue: (lesson?.Introducer || "").toString(),
-        dataType: InputDataType.bigint,
+        dataType: InputDataType.string,
       },
       {
         title: "تاریخ شروع اعتبار",

@@ -7,7 +7,7 @@ interface Props {
 const Loading = ({ className }: Props) => {
   return (
     <div
-      className={`w-full flex justify-center items-center py-2 ${className}`}
+      className={`w-full flex justify-center items-center py-2 ${className} print:hidden`}
     >
       <svg
         aria-hidden="true"

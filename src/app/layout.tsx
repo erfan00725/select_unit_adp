@@ -31,7 +31,7 @@ export default async function RootLayout({
         <MainHeader />
         <html lang="en">
           <body className={`antialiased rtl`}>
-            <main className="container">{children}</main>
+            <main className="container print:p-0! print:m-0!">{children}</main>
             <ToastifyProvider />
           </body>
         </html>

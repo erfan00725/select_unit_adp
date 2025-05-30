@@ -100,6 +100,7 @@ export const selectUnitSchema = z.object({
 
   PaymentMethod: z
     .nativeEnum(PaymentMethods)
+    .or(z.string().transform((val) => val as PaymentMethods))
     .optional()
     .nullable()
     .describe("روش پرداخت"),

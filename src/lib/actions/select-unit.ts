@@ -162,6 +162,8 @@ export async function getSelectUnits(
       take: limit,
     });
 
+    console.log(selectUnits);
+
     const { settings } = await getFeeSettings();
     const { pricePerUnit } = settings;
 
@@ -169,8 +171,6 @@ export async function getSelectUnits(
     const selectUnitsWithTotal = selectUnits.map((unit) =>
       customReturn(unit, pricePerUnit)
     );
-
-    console.log(selectUnitsWithTotal);
 
     // Calculate pagination metadata
     const totalPages = Math.ceil(totalCount / limit);
@@ -1066,76 +1066,81 @@ export async function bulkEditSelectUnits(
     }
 
     // Process additions and removals in a transaction
-    const result = await prisma.$transaction(async (tx) => {
-      // Remove lessons that are no longer needed
-      if (lessonsToRemove.length > 0) {
-        await tx.selectedLesson.deleteMany({
-          where: {
-            selectUnitId,
-            lessonId: {
-              in: lessonsToRemove,
+    const result = await prisma.$transaction(
+      async (tx) => {
+        // Remove lessons that are no longer needed
+        if (lessonsToRemove.length > 0) {
+          await tx.selectedLesson.deleteMany({
+            where: {
+              selectUnitId,
+              lessonId: {
+                in: lessonsToRemove,
+              },
             },
-          },
-        });
-      }
-
-      // Add new lessons
-      const addedLessons = [];
-      for (const lessonId of lessonsToAdd) {
-        // Check if the lesson exists
-        const lesson = await tx.lesson.findUnique({
-          where: { id: lessonId },
-        });
-
-        if (!lesson) {
-          throw new Error(`درس با شناسه ${lessonId} یافت نشد`);
+          });
         }
 
-        // Create the selected lesson
-        const selectedLesson = await tx.selectedLesson.create({
-          data: {
-            selectUnitId,
-            lessonId,
-          },
-          include: {
-            lesson: true,
-          },
-        });
+        // Add new lessons
+        const addedLessons = [];
+        for (const lessonId of lessonsToAdd) {
+          // Check if the lesson exists
+          const lesson = await tx.lesson.findUnique({
+            where: { id: lessonId },
+          });
 
-        addedLessons.push(selectedLesson);
-      }
+          if (!lesson) {
+            throw new Error(`درس با شناسه ${lessonId} یافت نشد`);
+          }
 
-      // Update SelectUnit fields from baseData
-      const { StudentId, id, ...updateDataFromBase } = baseData;
-
-      if (Object.keys(updateDataFromBase).length > 0) {
-        await tx.selectUnit.update({
-          where: { id: selectUnitId },
-          data: {
-            ...updateDataFromBase,
-          },
-        });
-      }
-
-      // Get the updated select unit with all lessons
-      const updatedSelectUnit = await tx.selectUnit.findUnique({
-        where: { id: selectUnitId },
-        include: {
-          student: true,
-          selectedLessons: {
+          // Create the selected lesson
+          const selectedLesson = await tx.selectedLesson.create({
+            data: {
+              selectUnitId,
+              lessonId,
+            },
             include: {
               lesson: true,
             },
-          },
-        },
-      });
+          });
 
-      return {
-        selectUnit: updatedSelectUnit,
-        addedLessons,
-        removedLessonIds: lessonsToRemove,
-      };
-    });
+          addedLessons.push(selectedLesson);
+        }
+
+        // Update SelectUnit fields from baseData
+        const { StudentId, id, ...updateDataFromBase } = baseData;
+
+        if (Object.keys(updateDataFromBase).length > 0) {
+          await tx.selectUnit.update({
+            where: { id: selectUnitId },
+            data: {
+              ...updateDataFromBase,
+            },
+          });
+        }
+
+        // Get the updated select unit with all lessons
+        const updatedSelectUnit = await tx.selectUnit.findUnique({
+          where: { id: selectUnitId },
+          include: {
+            student: true,
+            selectedLessons: {
+              include: {
+                lesson: true,
+              },
+            },
+          },
+        });
+
+        return {
+          selectUnit: updatedSelectUnit,
+          addedLessons,
+          removedLessonIds: lessonsToRemove,
+        };
+      },
+      {
+        timeout: 10000, // 10 seconds
+      }
+    );
 
     // Revalidate paths
     revalidatePath("/dashboard/select-unit");

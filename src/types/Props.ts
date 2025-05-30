@@ -121,12 +121,15 @@ export interface DetailPageProps {
   actions?: React.ReactNode[];
   baseUrl?: string;
   editUrl?: string;
+  printTitle?: string | React.ReactNode;
 }
 
 export interface DetailPageRow {
   label: string;
   value?: React.ReactNode;
   type?: "text" | "status" | "category" | "price" | "number" | "hours";
+  showInPrint?: boolean;
+  className?: string;
 }
 
 export type InputValueType = Record<
