@@ -10,7 +10,8 @@ import {
   getSelectUnits,
   getSelectUnitById,
   getGenerals, // Added for General entity
-  getFeeSettings, // Added for General entity
+  getFeeSettings,
+  getUserByUsername, // Added for General entity
 } from "@/lib/actions";
 import { FilterOptionType, Orders, PageType } from "@/types/General";
 import getAcademicYearJ from "@/lib/utils/getAcademicYearJ";
@@ -21,6 +22,17 @@ import { LessonGrade, Period } from "@prisma/client";
 
 type ListGeneralParamsType = {
   searchParams: { [key: string]: string | undefined };
+};
+
+type tableDataType = {
+  id: string;
+  Title: string;
+  Value: string;
+  Updated_at: string;
+  Created_at: string;
+  Config?: {
+    editUrl?: string;
+  };
 };
 
 export interface ListGeneralReturnType extends DataTableProps<any> {
@@ -257,7 +269,6 @@ export const LessonsList = async ({
 
   return {
     tableData: tableData,
-    selectable: true,
     headers: headers,
     title: "دروس",
     addButtonLabel: "افزودن درس جدید",
@@ -459,14 +470,25 @@ const generalsList = async ({
     : defaultListLimit;
   const query = searchParams?.query;
   const data = await getGenerals({ page, limit, query });
+  const admin = await getUserByUsername("admin");
 
-  const tableData = (data.generals || []).map((item) => ({
+  const tableData: tableDataType[] = (data.generals || []).map((item) => ({
     id: item.Key, // Using Key as id for General entity
     Title: item.Title || "-",
     Value: priceFormatter(Number(item.Value), true),
     Updated_at: getFarsiDate(item.Updated_at),
     Created_at: getFarsiDate(item.Created_at),
   }));
+  tableData.push({
+    id: admin.user?.id || "_",
+    Title: "رمز عبور",
+    Value: "_",
+    Updated_at: "_",
+    Created_at: "_",
+    Config: {
+      editUrl: urls.user + `/${admin.user?.id}/edit`,
+    },
+  });
 
   const headers = ["شناسه", "عنوان", "مقدار", "آخرین بروزرسانی", "تاریخ ایجاد"];
 
@@ -490,7 +512,7 @@ const generalsList = async ({
   };
 };
 
-export const d_ListConfig: DynamicConfigsType = {
+export const d_ListConfig: Partial<DynamicConfigsType> = {
   lessons: LessonsList,
   students: StudentsList,
   fields: FieldsList,

@@ -1,18 +1,15 @@
 // Data type definitions
 
 // Import necessary enum types from Prisma
-import {
-  Grade,
-  LessonGrade,
-  UserType,
-  Period,
-  PaymentMethods,
-  SelectUnit,
-} from "@prisma/client";
+import { Grade, LessonGrade, UserType, SelectUnit } from "@prisma/client";
 import { Orders } from "./General";
 
 export type DataBaseType = {
   id: string | bigint;
+  Config?: {
+    editUrl?: string;
+    [key: string]: any;
+  };
 };
 
 export type pagination = {

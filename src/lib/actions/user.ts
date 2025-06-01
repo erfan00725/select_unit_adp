@@ -89,6 +89,7 @@ export async function updateUser(id: string, data: Partial<UserDataType>) {
     const editedData = {
       ...data,
       id: undefined,
+      ConfirmPassword: undefined,
     };
 
     const user = await prisma.user.update({

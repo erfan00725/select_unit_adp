@@ -26,6 +26,7 @@ export enum PageType {
   Teacher = "teachers",
   SelectUnit = "selectUnit",
   General = "generals",
+  User = "user",
 }
 
 export type ActionReturnType<T extends (...args: any[]) => any> = Awaited<

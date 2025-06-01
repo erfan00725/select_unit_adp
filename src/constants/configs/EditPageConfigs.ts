@@ -8,7 +8,9 @@ import {
   updateField,
   updateTeacher,
   getGeneralByKey, // Added for General entity
-  updateGeneral, // Added for General entity
+  updateGeneral,
+  updateUser,
+  getUserById, // Added for General entity
 } from "@/lib/actions";
 import { validateLessonSafe, validateStudentSafe } from "@/lib/validations";
 import {
@@ -23,9 +25,11 @@ import {
   studentFormConfigGenerator,
   fieldFormConfigGenerator,
   teacherFormConfigGenerator,
-  generalFormConfigGenerator, // Added for General entity
+  generalFormConfigGenerator,
+  userFormConfigGenerator, // Added for General entity
 } from "./FormConfigs";
 import { PageType } from "@/types/General";
+import { validateUserSafe } from "@/lib/validations/user";
 
 export const LessonEditConfig: CreateEditProps<any, any> = {
   submitFunction: updateLesson,
@@ -73,11 +77,22 @@ export const GeneralEditConfig: CreateEditProps<any, any> = {
   backToSingle: false,
 };
 
+export const UserEditConfig: CreateEditProps<any, any> = {
+  submitFunction: updateUser,
+  validateFunction: validateUserSafe,
+  formGenerator: userFormConfigGenerator,
+  getDataById: getUserById,
+  entityName: "کاربران",
+  redirectUrl: urls.generals,
+  backToSingle: false,
+};
+
 export const EditPageConfigs: { [K in PageType]?: CreateEditProps<any, any> } =
   {
     fields: FieldEditConfig,
     lessons: LessonEditConfig,
     students: StudentEditConfig,
     teachers: TeacherEditConfig,
-    generals: GeneralEditConfig, // Added for General entity
+    generals: GeneralEditConfig,
+    user: UserEditConfig, // Added for User entity
   };

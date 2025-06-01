@@ -540,7 +540,7 @@ interface s_PageConfig {
   };
 }
 
-export const s_DetailPageConfigs: Record<PageType, s_PageConfig> = {
+export const s_DetailPageConfigs: Partial<Record<PageType, s_PageConfig>> = {
   generals: {
     title: "اطلاعات تنظیم عمومی",
     deleteConfig: {

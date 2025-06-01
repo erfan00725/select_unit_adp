@@ -13,6 +13,7 @@ export const urls = {
   [PageType.Teacher]: homeUrl + `/${PageType.Teacher}`,
   [PageType.SelectUnit]: homeUrl + `/${PageType.SelectUnit}`,
   [PageType.General]: homeUrl + `/${PageType.General}`,
+  [PageType.User]: homeUrl + `/${PageType.User}`,
   selectUnitPrint: homeUrl + "/print/selectUnits",
   selectUnitPrintAlt: homeUrl + "/print/selectUnitsAlt",
 };

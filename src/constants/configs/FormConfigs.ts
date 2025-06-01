@@ -6,7 +6,8 @@ import {
   getStudentById,
   getTeacherById,
   getTeachers,
-  getGeneralByKey, // Added for General entity
+  getGeneralByKey,
+  getUserById, // Added for General entity
 } from "@/lib/actions";
 import { FormInputProps, FormPageProps, InputDataType } from "@/types/Props";
 import {
@@ -521,6 +522,62 @@ export const generalFormConfigGenerator = async (
         placeholder: inputDefaultPlaceholder("توضیحات"),
         defaultValue: general?.Description || "",
       },
+    ],
+  };
+};
+
+export const userFormConfigGenerator = async (
+  data?: Awaited<ReturnType<typeof getUserById>>
+): Promise<FormPageProps> => {
+  const user = data?.user;
+
+  return {
+    title: formTitle("کاربر", !!user),
+    description: formDescription("کاربر", !!user),
+    useDefaultValues: true,
+    addText: formButton("کاربر", !!user),
+    inputs: [
+      {
+        title: "نام کاربری",
+        name: "UserName",
+        type: "text",
+        placeholder: inputDefaultPlaceholder("نام کاربری"),
+        required: true,
+        defaultValue: user?.UserName,
+        disabled: !!user,
+      },
+      {
+        title: "رمز عبور",
+        name: "Password",
+        type: "password",
+        placeholder: inputDefaultPlaceholder("رمز عبور"),
+        required: true,
+        defaultValue: "", // Password should not be pre-filled
+      },
+      {
+        title: "تایید رمز عبور",
+        name: "ConfirmPassword",
+        type: "password",
+        placeholder: inputDefaultPlaceholder("تایید رمز عبور"),
+        required: true,
+        defaultValue: "", // Confirm Password should not be pre-filled
+      },
+      // {
+      //   title: "نوع کاربر",
+      //   name: "Type",
+      //   type: "select",
+      //   placeholder: inputDefaultPlaceholder("نوع کاربر"),
+      //   defaultValue: user?.Type?.toString(),
+      //   SelectButtonProps: {
+      //     items: [
+      //       { id: "admin", name: "مدیر" },
+      //       { id: "user", name: "کاربر" },
+      //     ],
+      //     singleSelect: true,
+      //     initialSelectedItemId: user?.Type?.toString(),
+      //     title: "انتخاب نوع کاربر",
+      //   },
+      // },
     ],
   };
 };

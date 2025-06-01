@@ -4,7 +4,6 @@ import { DataBaseType } from "@/types/Tables";
 import clsx from "clsx";
 import Link from "next/link";
 import React, { useState } from "react";
-import { number } from "zod";
 
 const DataTable = <T extends DataBaseType>({
   tableData,
@@ -109,23 +108,26 @@ const DataTable = <T extends DataBaseType>({
                       />
                     </td>
                   )}
-                  {Object.entries(row).map(([_, data], colIndex) => (
-                    <td
-                      key={colIndex}
-                      className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 print:px-0.5 print:py-0.5 print:pr-1 print:text-[9px] print:text-black print:border print:border-gray-400 print:whitespace-normal"
-                    >
-                      {baseUrl && haveSinglePage ? (
-                        <Link
-                          href={`${baseUrl}/${row.id}`}
-                          className="print:no-underline print:text-black"
+                  {Object.entries(row).map(
+                    ([key, data], colIndex) =>
+                      key === "Config" || (
+                        <td
+                          key={colIndex}
+                          className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 print:px-0.5 print:py-0.5 print:pr-1 print:text-[9px] print:text-black print:border print:border-gray-400 print:whitespace-normal"
                         >
-                          {data || "_"}
-                        </Link>
-                      ) : (
-                        data || "_"
-                      )}
-                    </td>
-                  ))}
+                          {baseUrl && haveSinglePage ? (
+                            <Link
+                              href={`${baseUrl}/${row.id}`}
+                              className="print:no-underline print:text-black"
+                            >
+                              {(data as String) || "_"}
+                            </Link>
+                          ) : (
+                            (data as String) || "_"
+                          )}
+                        </td>
+                      )
+                  )}
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium print:hidden">
                     {actions &&
                       actions.map((action) =>
@@ -152,8 +154,11 @@ const DataTable = <T extends DataBaseType>({
                       )}
                     {isEditable && (
                       <Link
-                        // @ts-expect-error
-                        href={editUrl(row.id.toString())}
+                        href={
+                          row.Config && row.Config.editUrl
+                            ? row.Config?.editUrl
+                            : editUrl(row.id.toString()) || ""
+                        }
                         className="tableAction text-blue-600! hover:text-blue-900!"
                       >
                         ویرایش{" "}

@@ -14,6 +14,8 @@ type Props = {
   params: Promise<{ type: PageType }>;
 };
 
+// TODO: search functionality dont work porperly( specially in selectUnits)
+
 const Page = async ({ searchParams, params }: Props) => {
   const type = (await params).type;
   const config: ListStaticConfigType | null = s_ListConfig[type] || null;
