@@ -1,19 +1,23 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import DataTable from "../DataTable";
-import { ActionReturnType } from "@/types/General";
-import { getLessonsByIds } from "@/lib/actions";
+import { ActionReturnType, PageType } from "@/types/General";
+import { getFeeSettings, getLessonsByIds } from "@/lib/actions";
 import { DataTableAction } from "@/types/Props";
 import { priceFormatter } from "@/lib/utils/priceFormatter";
 import { gradeRender } from "@/lib/utils/dataRenderer";
+import { d_ListConfig } from "@/constants/configs/ListPageConfigs";
 
 interface SelectUnitTableProps {
   lessons: ActionReturnType<typeof getLessonsByIds>;
   onRemoveLesson: (lessonId: string) => void;
+  defaultPrice: number;
 }
 
 const SelectUnitTable: React.FC<SelectUnitTableProps> = ({
   lessons,
   onRemoveLesson,
+  defaultPrice,
 }) => {
   // جدول انتخاب واحد؛ این کامپوننت برای نمایش لیست دروس انتخاب شده توسط دانش‌آموز استفاده می‌شود
   const headers = [
@@ -39,7 +43,7 @@ const SelectUnitTable: React.FC<SelectUnitTableProps> = ({
       `${lesson?.teacher?.FirstName} ${lesson?.teacher?.LastName}`,
     theoriUnit: lesson?.TheoriUnit,
     practicalUnit: lesson?.PracticalUnit,
-    price: priceFormatter(Number(lesson?.PricePerUnit), true),
+    price: priceFormatter(Number(lesson?.PricePerUnit || defaultPrice), true),
   }));
 
   const actions: DataTableAction[] = [

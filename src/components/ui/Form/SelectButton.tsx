@@ -21,7 +21,7 @@ export const SelectButton = ({
   onSave,
   buttunTitle,
   buttnClassName,
-  showSelectOnButton = false,
+  showSelectOnButton = true,
   children,
   ...rest
 }: SelectButtonProps) => {

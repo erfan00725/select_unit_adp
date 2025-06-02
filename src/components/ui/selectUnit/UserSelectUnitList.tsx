@@ -23,7 +23,6 @@ export const UserSelectUnitList = () => {
       searchParams: {},
     })
       .then((res) => {
-        console.log(res);
         setConfigs(res);
       })
       .catch((err) => {

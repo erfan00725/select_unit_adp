@@ -83,6 +83,14 @@ export const selectUnitSchema = z.object({
     .default(BigInt(0))
     .describe("هزینه بیمه"),
 
+  SkillRegistrationFee: z
+    .bigint()
+    .or(z.string().transform((val) => BigInt(val)))
+    .optional()
+    .nullable()
+    .default(BigInt(0))
+    .describe("هزینه بیمه"),
+
   Discount: z
     .bigint()
     .or(z.string().transform((val) => BigInt(val)))

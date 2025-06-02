@@ -3,5 +3,5 @@ import React from "react";
 import { ToastContainer } from "react-toastify";
 
 export const ToastifyProvider = () => {
-  return <ToastContainer position="top-left" />;
+  return <ToastContainer position="top-right" />;
 };

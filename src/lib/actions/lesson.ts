@@ -291,17 +291,17 @@ export async function updateLesson(id: string, data: Partial<LessonDataType>) {
     if (!existingLesson) {
       return { error: "درس مورد نظر یافت نشد" };
     }
+
     const editedData = {
       ...data,
       id: undefined,
       TeacherId: undefined,
       fieldId: undefined,
       RequireLesson: undefined,
-      TheoriHours: data.TheoriHours ? Number(data.TheoriHours) : undefined,
-      PracticalHours: data.PracticalHours
-        ? Number(data.PracticalHours)
-        : undefined,
-      RequireUnit: data.RequireUnit ? Number(data.RequireUnit) : undefined,
+      Grade: data.Grade || LessonGrade.GENERAL,
+      TheoriHours: data.TheoriHours ? Number(data.TheoriHours) : 0,
+      PracticalHours: data.PracticalHours ? Number(data.PracticalHours) : 0,
+      RequireUnit: data.RequireUnit ? Number(data.RequireUnit) : 0,
       ValidFrom: data.ValidFrom ? data.ValidFrom : undefined,
     };
 

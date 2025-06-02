@@ -75,13 +75,6 @@ export const selectUnitFormConfigs = (): SelectUnitFormConfig[] => {
       canBeDisabled: true,
     },
     {
-      id: "SU_ExtraFee",
-      label: "هزینه اضافی",
-      type: "price" as const,
-      name: "extraFee",
-      canBeDisabled: true,
-    },
-    {
       id: "SU_FixedFee",
       label: "هزینه شهریه ثابت",
       type: "price" as const,
@@ -98,7 +91,7 @@ export const selectUnitFormConfigs = (): SelectUnitFormConfig[] => {
     },
     {
       id: "SU_ExtraClassFee",
-      label: "هزینه کلاس اضافی",
+      label: "هزینه کلاس‌های فوق‌العاده",
       type: "price" as const,
       name: Settings.ExtraClassFee,
       canBeDisabled: true,
@@ -108,6 +101,27 @@ export const selectUnitFormConfigs = (): SelectUnitFormConfig[] => {
       label: "هزینه کتاب",
       type: "price" as const,
       name: Settings.BooksFee,
+      canBeDisabled: true,
+    },
+    {
+      id: "SU_SkillRegistrationFee",
+      label: "هزینه ثبت مهارت",
+      type: "price" as const,
+      name: Settings.SkillRegistrationFee,
+      canBeDisabled: true,
+    },
+    {
+      id: "SU_InsuranceFee",
+      label: "هزینه بیمه دانش‌آموز",
+      type: "price" as const,
+      name: Settings.InsuranceFee,
+      canBeDisabled: true,
+    },
+    {
+      id: "SU_OtherFee",
+      label: "سایر هزینه‌ها",
+      type: "price" as const,
+      name: Settings.OtherFee,
       canBeDisabled: true,
     },
     {
@@ -127,7 +141,6 @@ export const selectUnitFormConfigs = (): SelectUnitFormConfig[] => {
         { value: PaymentMethods.check, label: "چک" },
         { value: PaymentMethods.deposit, label: "انتقال" },
       ],
-      canBeDisabled: true,
     },
     {
       id: "SU_PaymentDescription",
@@ -141,7 +154,6 @@ export const selectUnitFormConfigs = (): SelectUnitFormConfig[] => {
       label: "تاریخ پرداخت",
       type: "date" as const,
       name: "paymentDate",
-      canBeDisabled: true,
     },
   ];
 };

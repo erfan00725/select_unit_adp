@@ -67,8 +67,6 @@ function customReturn(
     });
   }
 
-  // console.log(lessons);
-
   return {
     ...selectUnit,
     totalUnits: selectUnit.selectedLessons
@@ -161,8 +159,6 @@ export async function getSelectUnits(
       skip,
       take: limit,
     });
-
-    console.log(selectUnits);
 
     const { settings } = await getFeeSettings();
     const { pricePerUnit } = settings;

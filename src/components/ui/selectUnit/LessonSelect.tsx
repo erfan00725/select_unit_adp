@@ -32,6 +32,7 @@ export const LessonSelect = ({
       singleSelect={false}
       onSave={onSelectSave}
       clearOnSave={true}
+      showSelectOnButton={false}
     />
   );
 };

@@ -23,11 +23,14 @@ import { priceFormatter } from "@/lib/utils/priceFormatter";
 import { useRouter } from "next/navigation";
 import { selectUnitFormConfigs } from "@/constants/configs/GeneralConfigs";
 import { InputValueType } from "@/types/Props";
-import { PaymentMethods } from "@prisma/client";
+import { Lesson, PaymentMethods } from "@prisma/client";
+import calcTotalUnit from "@/lib/utils/calcTotalUnit";
+import { castBigInt, returnActiveValue } from "@/lib/utils/castBigInt";
 
 type Props = {
   studnetId: string;
   lessons: ActionReturnType<typeof getLessons>;
+  defaultPrice: number;
   selectUnitData?: ActionReturnType<typeof getSelectUnitById>; // Data for edit mode
   isEditMode?: boolean; // Flag to indicate edit mode
 };
@@ -37,6 +40,7 @@ export const SelectUnitForm = ({
   lessons,
   selectUnitData,
   isEditMode = false,
+  defaultPrice,
 }: Props) => {
   const router = useRouter();
   // Initialize input values with data from selectUnitData if in edit mode
@@ -162,7 +166,7 @@ export const SelectUnitForm = ({
     // Calculate total price
     const lessonsPrice =
       selectedLessons?.lessons?.reduce((total, lesson) => {
-        const price = Number(lesson?.PricePerUnit) || 0;
+        const price = Number(lesson?.PricePerUnit) || defaultPrice;
         const a = Number(lesson?.TheoriUnit) + Number(lesson?.PracticalUnit);
         return (
           total + price * (a || 1) // if a is 0, use 1
@@ -221,27 +225,34 @@ export const SelectUnitForm = ({
     }
     setIsSubmitting(true);
 
-    const lessons = seLectedLessonsIds.map((id) => BigInt(id));
+    const lessons = seLectedLessonsIds.map((id) => castBigInt(id));
+    const bigintZero = BigInt(0);
     const dataToValidate = {
-      StudentId: BigInt(studnetId),
+      StudentId: castBigInt(studnetId),
       Period: inputValues.period?.value,
       Year: inputValues.year?.value,
       Lessons: lessons,
-      ExtraFee: BigInt(inputValues.extraFee?.value),
-      FixedFee: BigInt(inputValues.fixedFee?.value),
-      CertificateFee: BigInt(inputValues.certificateFee?.value),
-      ExtraClassFee: BigInt(inputValues.extraClassFee?.value),
-      BooksFee: BigInt(inputValues.booksFee?.value),
-      Discount: BigInt(inputValues.discount?.value),
+      OtherFee: returnActiveValue(inputValues.otherFee, "bigint") || bigintZero,
+      FixedFee: returnActiveValue(inputValues.fixedFee, "bigint") || bigintZero,
+      CertificateFee:
+        returnActiveValue(inputValues.certificateFee, "bigint") || bigintZero,
+      ExtraClassFee:
+        returnActiveValue(inputValues.extraClassFee, "bigint") || bigintZero,
+      BooksFee: returnActiveValue(inputValues.booksFee, "bigint") || bigintZero,
+      Discount: returnActiveValue(inputValues.discount, "bigint") || bigintZero,
+      InsuranceFee:
+        returnActiveValue(inputValues.insuranceFee, "bigint") || bigintZero,
+      SkillRegistrationFee:
+        returnActiveValue(inputValues.skillRegistrationFee, "bigint") ||
+        bigintZero,
       Paid: !!inputValues.paid?.value,
-      PaymentMethod: inputValues.paymentMethod?.value,
-      PaymentDescription: inputValues.paymentDescription?.value,
-      PaymentDate: inputValues.paymentDate?.value,
+      PaymentMethod: returnActiveValue(inputValues.paymentMethod),
+      PaymentDescription:
+        returnActiveValue(inputValues.paymentDescription) || "",
+      PaymentDate: returnActiveValue(inputValues.paymentDate),
       // Conditionally add Lesson if lessons exist, as schema requires it but it might be empty before validation catch
       ...(lessons.length > 0 ? { Lesson: lessons[0] } : {}),
     };
-
-    console.log(dataToValidate);
 
     const {
       success,
@@ -264,16 +275,17 @@ export const SelectUnitForm = ({
         selectUnitData.selectUnit.id,
         {
           ...rest,
-          OtherFee: validateData.OtherFee || undefined,
-          CertificateFee: validateData.CertificateFee || undefined,
-          ExtraClassFee: validateData.ExtraClassFee || undefined,
-          BooksFee: validateData.BooksFee || undefined,
-          InsuranceFee: validateData.InsuranceFee || undefined,
-          Discount: validateData.Discount || undefined,
+          OtherFee: validateData.OtherFee || bigintZero,
+          CertificateFee: validateData.CertificateFee || bigintZero,
+          ExtraClassFee: validateData.ExtraClassFee || bigintZero,
+          BooksFee: validateData.BooksFee || bigintZero,
+          InsuranceFee: validateData.InsuranceFee || bigintZero,
+          SkillRegistrationFee: validateData.SkillRegistrationFee || bigintZero,
+          Discount: validateData.Discount || bigintZero,
           Paid: !!validateData.Paid,
           PaymentMethod:
             (validateData.PaymentMethod as PaymentMethods) || undefined,
-          PaymentDescription: validateData.PaymentDescription || undefined,
+          PaymentDescription: validateData.PaymentDescription || "",
           PaymentDate: validateData.PaymentDate
             ? new Date(validateData.PaymentDate)
             : undefined,
@@ -309,6 +321,7 @@ export const SelectUnitForm = ({
           ExtraClassFee: validateData.ExtraClassFee || undefined,
           BooksFee: validateData.BooksFee || undefined,
           InsuranceFee: validateData.InsuranceFee || undefined,
+          SkillRegistrationFee: validateData.SkillRegistrationFee || undefined,
           Discount: validateData.Discount || undefined,
           Paid: !!validateData.Paid,
           PaymentMethod:
@@ -344,6 +357,7 @@ export const SelectUnitForm = ({
       <SelectUnitTable
         lessons={selectedLessons}
         onRemoveLesson={handleRemoveLesson}
+        defaultPrice={defaultPrice}
       />
     ) : (
       <h3 className="w-full text-center text-gray-500">درسی انتخاب نشده است</h3>
@@ -384,7 +398,12 @@ export const SelectUnitForm = ({
           <button type="button" className="button" onClick={handleReset}>
             بازنشانی
           </button>
-          {/* TODO: add total unit */}
+          {/* total unit */}
+          <p className="text-lg font-bold">
+            {calcTotalUnit((selectedLessons?.lessons || []) as Lesson[])} :جمع
+            واحد‌ها
+          </p>
+          {/* Total Price */}
           <p className="text-lg font-bold">
             {priceFormatter(Number(totalPrice), true)} :جمع کل
           </p>
