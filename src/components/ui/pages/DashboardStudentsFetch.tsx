@@ -3,6 +3,9 @@ import React from "react";
 import DataTable from "../DataTable";
 
 export default async function DashboardStudentFetch() {
+  if (!d_ListConfig.students) {
+    return null;
+  }
   const studentConfig = await d_ListConfig.students({
     searchParams: { limit: "5", order: "desc" },
   });
