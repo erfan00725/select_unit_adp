@@ -68,3 +68,26 @@ body {
 .page-break {
   page-break-before: always; /* Forces a page break before the element */
 }
+
+@media print {
+  @page {
+    size: A4;
+    margin: 1cm;
+  }
+  /* body * {
+    visibility: hidden;
+  } */
+  .printable-area,
+  .printable-area * {
+    visibility: visible;
+  }
+  .printable-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+  .no-print {
+    display: none;
+  }
+}

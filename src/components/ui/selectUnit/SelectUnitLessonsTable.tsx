@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import DataTable from "../DataTable";
 import {
+  LessonPrintList,
   LessonsList,
   ListGeneralReturnType,
   s_ListConfig,
@@ -13,26 +14,40 @@ import { getSelectUnitById } from "@/lib/actions";
 
 type Props = {
   data: Awaited<ReturnType<typeof getSelectUnitById>>;
+  isPrint: boolean;
   id?: string;
 };
 
-export const SelectUnitLessonsTable = ({ data, id }: Props) => {
+export const SelectUnitLessonsTable = ({ data, id, isPrint }: Props) => {
   const [configs, setConfigs] = useState<ListGeneralReturnType | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   if (!id) return null;
 
   useEffect(() => {
-    LessonsList({ searchParams: {}, selectUnitLessonData: data })
-      .then((res) => {
-        setConfigs(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    if (isPrint) {
+      LessonPrintList({ searchParams: {}, selectUnitLessonData: data })
+        .then((res) => {
+          setConfigs(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    } else {
+      LessonsList({ searchParams: {}, selectUnitLessonData: data })
+        .then((res) => {
+          setConfigs(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
   }, []);
 
   const s_selectUnitConfig = s_ListConfig[PageType.SelectUnit];

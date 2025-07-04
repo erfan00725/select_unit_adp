@@ -1,8 +1,6 @@
 import Loading from "@/components/common/Loading";
-import Printbutton from "@/components/ui/common/Printbutton";
-import { DetailPage } from "@/components/ui/pages/common/DetailPage";
-import SelectUnitPrintAlt from "@/components/ui/pages/selectUnit.ts/SelectUnitPrintAlt";
-import { PageType } from "@/types/General";
+import { Printbutton } from "@/components/ui/common/Printbutton";
+import SelectUnitPrintAlt from "@/components/ui/pages/selectUnit/print/SelectUnitPrintAlt";
 import React, { Suspense } from "react";
 
 async function page({

@@ -19,6 +19,7 @@ import { priceFormatter } from "@/lib/utils/priceFormatter";
 import { gradeRender, periodRender } from "@/lib/utils/dataRenderer";
 import getFarsiDate from "@/lib/getFarsiDate"; // Added for date formatting
 import { LessonGrade, Period } from "@prisma/client";
+import printOnclick from "@/lib/utils/printOnclick";
 
 type ListGeneralParamsType = {
   searchParams: { [key: string]: string | undefined };
@@ -45,23 +46,13 @@ export const defaultListLimit = 10;
 const selectUnitGeneralActions = [
   {
     label: "چاپ انتخاب واحد‌ها",
-    onClick: (selectedItems?: string[]) => {
-      window.open(
-        `${window.location.origin}${
-          urls.selectUnitPrint
-        }?selectUnitIds=${selectedItems?.join(",")}`
-      );
-    },
+    onClick: (selectedItems?: string[]) =>
+      printOnclick(urls.selectUnitPrint, selectedItems),
   },
   {
-    label: "چاپ درخواست انتخاب واحد‌ها",
-    onClick: (selectedItems?: string[]) => {
-      window.open(
-        `${window.location.origin}${
-          urls.selectUnitPrintAlt
-        }?selectUnitIds=${selectedItems?.join(",")}`
-      );
-    },
+    label: "چاپ فرم پرداخت شهریه",
+    onClick: (selectedItems?: string[]) =>
+      printOnclick(urls.SU_PayForm, selectedItems),
   },
 ];
 
@@ -215,6 +206,7 @@ export const LessonsList = async ({
         const lesson = l.lesson;
         return {
           id: lesson.id,
+          LessonNumber: lesson.LessonNumber,
           Name: lesson.LessonName,
           Grade: gradeRender(lesson.Grade),
           // @ts-expect-error
@@ -236,6 +228,7 @@ export const LessonsList = async ({
 
     return (lessons || []).map((lesson) => ({
       id: lesson.id,
+      LessonNumber: lesson.LessonNumber,
       Name: lesson.LessonName,
       Grade: gradeRender(lesson.Grade),
       Field: lesson.field?.Name || "عمومی",
@@ -257,6 +250,7 @@ export const LessonsList = async ({
 
   const headers = [
     "شناسه",
+    "شماره درس",
     "نام",
     "مقطع",
     "رشته",
@@ -276,6 +270,55 @@ export const LessonsList = async ({
     limit: pageLimit,
     error: lessonsData?.error,
     pagination: lessonsData?.pagination,
+    showId: false,
+  };
+};
+
+export const LessonPrintList = async ({
+  searchParams,
+  selectUnitLessonData,
+}: ListGeneralParamsType & {
+  selectUnitLessonData?: Awaited<ReturnType<typeof getSelectUnitById>>;
+}): Promise<ListGeneralReturnType> => {
+  const { settings } = await getFeeSettings();
+
+  const data = selectUnitLessonData?.selectUnit?.selectedLessons.map((l, i) => {
+    const lesson = l.lesson;
+    return {
+      id: lesson.id,
+      index: i + 1,
+      LessonNumber: lesson.LessonNumber,
+      Name: lesson.LessonName,
+      Grade: gradeRender(lesson.Grade),
+      // @ts-expect-error
+      Field: lesson.field?.Name || "عمومی",
+      TotalUnits: lesson.TheoriUnit + lesson.PracticalUnit,
+      // @ts-expect-error
+      Teacher: lesson.teacher
+        ? // @ts-expect-error
+          `${lesson.teacher.FirstName} ${lesson.teacher.LastName}`
+        : "_",
+    };
+  });
+
+  const headers = [
+    "ردیف",
+    "شماره درس",
+    "نام درس",
+    "مقطع",
+    "رشته",
+    "تعداد واحد‌",
+    "نام دبیر",
+  ];
+
+  return {
+    tableData: data || [],
+    headers: headers,
+    title: "دروس",
+    addButtonLabel: "افزودن درس جدید",
+    baseUrl: urls.lessons,
+    limit: 100,
+    showId: false,
   };
 };
 

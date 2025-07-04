@@ -26,8 +26,8 @@ import {
   paymentMethodRender,
   periodRender,
 } from "@/lib/utils/dataRenderer";
-import { getDateJ } from "@/lib/utils/getCurrentDataJ";
-import Printbutton from "@/components/ui/common/Printbutton";
+import printOnclick from "@/lib/utils/printOnclick";
+import { DetailPrintButton } from "@/components/ui/common/Printbutton";
 
 export type DetailPageConfigtReturnType = {
   error?: string;
@@ -65,6 +65,10 @@ export const LessonsDetailConfig = (
       {
         label: "نام",
         value: lesson?.LessonName,
+      },
+      {
+        label: "شماره درس",
+        value: lesson.LessonNumber,
       },
       {
         label: "واحد نظری",
@@ -320,7 +324,8 @@ export const TeachersDetailConfig = (
 };
 
 export const SelectUnitDetailConfig = (
-  selectUnitData: Awaited<ReturnType<typeof getSelectUnitById>>
+  selectUnitData: Awaited<ReturnType<typeof getSelectUnitById>>,
+  isPrint: boolean = false
 ): DetailPageConfigtReturnType => {
   if (!selectUnitData.selectUnit || selectUnitData.error)
     return { error: selectUnitData.error };
@@ -441,7 +446,7 @@ export const SelectUnitDetailConfig = (
       InfoRows: SelectUnitConfig.rows || [],
       baseUrl: urls.selectUnitEditBase,
       editUrl: `${urls.selectUnitEditBase}/student/${selectUnit.StudentId}/edit/${selectUnit.id}`,
-      actions: [<Printbutton />],
+      actions: [<DetailPrintButton id={selectUnit.id.toString()} />],
       printTitle: (
         <span>
           اداره آموزش و پرورش ناحیه 2 اصفهان
@@ -456,6 +461,7 @@ export const SelectUnitDetailConfig = (
       <SelectUnitLessonsTable
         data={selectUnitData}
         id={selectUnit.id.toString()}
+        isPrint={isPrint}
       />
     ),
   };

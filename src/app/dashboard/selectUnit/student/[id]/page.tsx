@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import StudentInfoCard from "@/components/ui/DetailPage/StudentInfoCard";
-import { SelectUnitFormFetch } from "@/components/ui/pages/selectUnit.ts/SelectUnitFormFetch";
+import { SelectUnitFormFetch } from "@/components/ui/pages/selectUnit/print/SelectUnitFormFetch";
 import Loading from "@/components/common/Loading";
 import PageHeader from "@/components/ui/common/PageHeader";
 

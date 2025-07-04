@@ -14,6 +14,12 @@ export const lessonSchema = z.object({
     .min(1, { message: errorMassages.requiredField("نام درس") })
     .max(255, { message: errorMassages.maxLength("نام درس", 255) }),
 
+  LessonNumber: z
+    .number()
+    .or(z.string().transform((val) => Number(val)))
+    .nullable()
+    .optional(),
+
   TheoriUnit: z
     .number()
     .or(z.string().transform((val) => Number(val)))

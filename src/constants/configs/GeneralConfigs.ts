@@ -33,6 +33,10 @@ export const NavBarConfigs = [
     label: "تنظیمات عمومی",
     href: urls.generals,
   },
+  {
+    label: "چاپ فرم ثبت نام",
+    href: "/dashboard/print",
+  },
 ];
 
 export const selectUnitFormConfigs = (): SelectUnitFormConfig[] => {

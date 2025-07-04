@@ -99,6 +99,7 @@ export type DataTableProps<T extends DataBaseType> = {
   haveSinglePage?: boolean;
   selectable?: boolean;
   generalActions?: DataTableGeneralAction[];
+  showId?: boolean;
 };
 
 export type CreateEditProps<T extends (...args: any) => any, S> = {

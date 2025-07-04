@@ -1,5 +1,5 @@
 import { getFeeSettings, getLessons, getSelectUnitById } from "@/lib/actions";
-import { SelectUnitForm } from "./SelectUnitForm";
+import { SelectUnitForm } from "../SelectUnitForm";
 
 type Props = {
   studnetId: string;

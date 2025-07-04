@@ -22,6 +22,7 @@ const DataTable = <T extends DataBaseType>({
   haveSinglePage = true,
   selectable = false,
   generalActions,
+  showId = true,
 }: DataTableProps<T>) => {
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
@@ -63,14 +64,18 @@ const DataTable = <T extends DataBaseType>({
                   انتخاب
                 </th>
               )}
-              {headers.map((header, index) => (
-                <th
-                  key={index}
-                  className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider print:px-0.5 print:py-0.5 print:text-[9px] print:text-black print:font-bold print:border print:border-gray-400"
-                >
-                  {header}
-                </th>
-              ))}
+              {headers.map((header, index) => {
+                if (!showId && (header == "شناسه" || header == "id"))
+                  return null;
+                return (
+                  <th
+                    key={index}
+                    className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider print:px-0.5 print:py-0.5 print:text-[9px] print:text-black print:font-bold print:border print:border-gray-400"
+                  >
+                    {header}
+                  </th>
+                );
+              })}
               {isEditable || (actions || []).length > 0 ? (
                 <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider print:hidden">
                   عملیات
@@ -108,26 +113,27 @@ const DataTable = <T extends DataBaseType>({
                       />
                     </td>
                   )}
-                  {Object.entries(row).map(
-                    ([key, data], colIndex) =>
-                      key === "Config" || (
-                        <td
-                          key={colIndex}
-                          className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 print:px-0.5 print:py-0.5 print:pr-1 print:text-[9px] print:text-black print:border print:border-gray-400 print:whitespace-normal"
-                        >
-                          {baseUrl && haveSinglePage ? (
-                            <Link
-                              href={`${baseUrl}/${row.id}`}
-                              className="print:no-underline print:text-black"
-                            >
-                              {(data as String) || "_"}
-                            </Link>
-                          ) : (
-                            (data as String) || "_"
-                          )}
-                        </td>
-                      )
-                  )}
+                  {Object.entries(row).map(([key, data], colIndex) => {
+                    if (key === "Config" || (!showId && colIndex == 0))
+                      return null;
+                    return (
+                      <td
+                        key={colIndex}
+                        className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 print:px-0.5 print:py-0.5 print:pr-1 print:text-[9px] print:text-black print:border print:border-gray-400 print:whitespace-normal"
+                      >
+                        {baseUrl && haveSinglePage ? (
+                          <Link
+                            href={`${baseUrl}/${row.id}`}
+                            className="print:no-underline print:text-black"
+                          >
+                            {(data as String) || "_"}
+                          </Link>
+                        ) : (
+                          (data as String) || "_"
+                        )}
+                      </td>
+                    );
+                  })}
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium print:hidden">
                     {actions &&
                       actions.map((action) =>
