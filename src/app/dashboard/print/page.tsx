@@ -1,5 +1,5 @@
 import Loading from "@/components/common/Loading";
-import SelectUnitPrintForm from "@/components/ui/pages/selectUnit/SelectUnitPrintForm";
+import SelectUnitPrintForm from "@/components/ui/pages/selectUnit/print/SelectUnitPrintForm";
 import { Suspense } from "react";
 
 const PrintPage = async () => {

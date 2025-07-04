@@ -33,10 +33,6 @@ export const NavBarConfigs = [
     label: "تنظیمات عمومی",
     href: urls.generals,
   },
-  {
-    label: "چاپ فرم ثبت نام",
-    href: "/dashboard/print",
-  },
 ];
 
 export const selectUnitFormConfigs = (): SelectUnitFormConfig[] => {
@@ -47,7 +43,7 @@ export const selectUnitFormConfigs = (): SelectUnitFormConfig[] => {
     .map((_, i) => Number(year) + (i - 3))
     .map((year) => ({
       value: year.toString(),
-      label: getAcademicYearJ(year),
+      label: getAcademicYearJ(year) || "_",
     }));
 
   return [

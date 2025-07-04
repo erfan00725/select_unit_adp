@@ -12,12 +12,12 @@ async function page({
   const selectUnits = params.selectUnitIds?.split(",") || [];
   return (
     <div>
-      <div className="flex justify-between items-center w-full print:hidden mb-4 card">
+      <div className="flex justify-between items-center w-full print:hidden mb-4 print:m-0 card">
         <h2 className="text-xl font-bold">چاپ انتخاب واحد‌ها</h2>
         <Printbutton />
       </div>
       {selectUnits.map((unitId, index) => (
-        <div className={`mb-6 page-break`} key={index}>
+        <div className={`mb-6 last:mb-0 print:m-0 page-break`} key={index}>
           <Suspense fallback={<Loading />}>
             <SelectUnitPrint id={unitId} />
           </Suspense>

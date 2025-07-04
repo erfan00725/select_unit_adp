@@ -1,6 +1,7 @@
 import { getSelectUnitById } from "@/lib/actions";
 import { gradeRender, periodRender } from "@/lib/utils/dataRenderer";
 import getAcademicYearJ from "@/lib/utils/getAcademicYearJ";
+import { getCurrentDateJ } from "@/lib/utils/getCurrentDataJ";
 import { priceFormatter } from "@/lib/utils/priceFormatter";
 
 type Props = {
@@ -18,15 +19,15 @@ const SelectUnitPrintForm = async ({ id }: Props) => {
   console.log(data);
 
   return (
-    <div className="bg-white p-8 font-['Tahoma'] text-sm" dir="rtl">
+    <div className="bg-white p-6 print:p-0 font-['Tahoma'] text-sm" dir="rtl">
       <div className="printable-area">
-        <div className="text-center mb-4">
-          <h1 className="font-bold text-lg">
+        <div className="text-center mb-2">
+          <h1 className="font-bold text-lg ">
             فرم قرارداد پرداخت شهریه ثبت نام دانش آموزان مدارس آموزش از راه دور
           </h1>
         </div>
 
-        <div className="flex justify-between items-center mb-4 text-xs">
+        <div className="flex justify-between items-center text-xs">
           <div>
             <span>
               سال تحصیلی: {<RenderData data={getAcademicYearJ(data?.Year)} />}
@@ -50,11 +51,12 @@ const SelectUnitPrintForm = async ({ id }: Props) => {
         </div>
 
         <div className="border border-black p-4">
-          <p className="font-bold text-lg">ماده ۱- طرفین قرارداد</p>
+          <p className="font-bold">ماده ۱- طرفین قرارداد</p>
           <p className="my-2">
-            قرارداد زیر در تاریخ ۱۴۰ / / بین موسس{" "}
-            <span className="font-bold">محمد حمید</span> با ولی دانش آموز/دانش
-            آموز جناب آقای / سرکار خانم{" "}
+            قرارداد زیر در تاریخ{" "}
+            <span className="font-bold">{getCurrentDateJ()}</span> بین موسس{" "}
+            <span className="font-bold">.............</span> با ولی دانش
+            آموز/دانش آموز جناب آقای / سرکار خانم{" "}
             <RenderData
               data={`${data?.student.FirstName} ${data?.student.LastName}`}
             />{" "}
@@ -75,14 +77,14 @@ const SelectUnitPrintForm = async ({ id }: Props) => {
             نشانی منزل: <RenderData data={data?.student.Address} />
           </p>
 
-          <p className="font-bold text-lg mt-4">ماده ۲- موضوع قرارداد</p>
+          <p className="font-bold mt-2">ماده ۲- موضوع قرارداد</p>
           <p>پرداخت شهریه ثبت نام دانش آموز آموزش از راه دور</p>
 
-          <p className="font-bold text-lg mt-4">
+          <p className="font-bold mt-2">
             ماده ۳- مبلغ قرارداد به شرح زیر میباشد.
           </p>
 
-          <table className="w-full border-collapse border border-black mt-2 text-center">
+          <table className="w-full border-collapse border border-black mt-2 text-center text-xs">
             <thead>
               <tr className="bg-gray-100">
                 <th className="border border-black p-1">ردیف</th>
@@ -172,7 +174,7 @@ const SelectUnitPrintForm = async ({ id }: Props) => {
             </tbody>
           </table>
 
-          <div className="mt-2 text-xs">
+          <div className="mt-1 text-[10px]">
             <p>
               <span className="font-bold">تبصره:</span> دانش آموزانی که پس از
               ثبت نام قطعی از ادامه تحصیل در واحد آموزشی در اوایل شروع نیمسال /
@@ -182,22 +184,22 @@ const SelectUnitPrintForm = async ({ id }: Props) => {
             </p>
           </div>
 
-          <p className="font-bold mt-4">ماده ۴- تعهدات پرداخت</p>
+          <p className="font-bold mt-2">ماده ۴- تعهدات پرداخت</p>
           <p>
             ولی دانش آموز / دانش آموز متعهد به پرداخت مبلغ{" "}
             <RenderData
               data={priceFormatter(data?.totalFee.toString(), true)}
             />{" "}
-            به حروف ................................................. ریال مطابق
-            با زمان های مقرر در جدول زیر در وجه واحد آموزشی{" "}
+            به حروف ................................. ریال مطابق با زمان های
+            مقرر در جدول زیر در وجه واحد آموزشی{" "}
             <span className="font-bold">...................</span> به شماره حساب{" "}
-            <span className="font-bold">۱۰/۵۳۵۷۷۴/۱</span> بانک{" "}
+            <span className="font-bold">................</span> بانک{" "}
             <span className="font-bold">...................</span> شعبه{" "}
             <span className="font-bold">...................</span> کد{" "}
             <span className="font-bold">...................</span> می باشد.
           </p>
 
-          <table className="w-full border-collapse border border-black mt-2 text-center">
+          <table className="w-full border-collapse border border-black mt-2 text-center text-xs">
             <thead>
               <tr className="bg-gray-100">
                 <th className="border border-black p-1">نوبت پرداخت</th>
@@ -212,7 +214,7 @@ const SelectUnitPrintForm = async ({ id }: Props) => {
             <tbody>
               {[...Array(4)].map((_, i) => (
                 <tr key={i}>
-                  <td className="border border-black p-2 h-8"></td>
+                  <td className="border border-black p-2 h-7"></td>
                   <td className="border border-black p-2"></td>
                   <td className="border border-black p-2"></td>
                   <td className="border border-black p-2"></td>
@@ -224,29 +226,29 @@ const SelectUnitPrintForm = async ({ id }: Props) => {
             </tbody>
           </table>
 
-          <p className="mt-4 text-xs">
+          <p className="mt-2 text-[10px]">
             این قرارداد در دو نسخه تنظیم گردد. (نسخه اول نگهداری در پرونده دانش
             آموز نسخه دوم تحویل به دانش آموز یا ولی)
           </p>
 
-          <div className="flex justify-around mt-12 pt-8">
+          <div className="flex justify-around mt-8 text-xs">
             <div className="text-center">
               <p>نام و نام خانوادگی</p>
               <p>ولی دانش آموز/دانش آموز</p>
-              <p className="mt-8">امضاء و تاریخ</p>
+              <p className="mt-4">امضاء و تاریخ</p>
             </div>
             <div className="text-center">
               <p>
-                نام و نام خانوادگی <span className="font-bold">محمد حیدری</span>
+                نام و نام خانوادگی <span className="font-bold"></span>
               </p>
               <p>
-                موسس مدرسه <span className="font-bold">راه دور نور اکبر</span>
+                موسس مدرسه <span className="font-bold"></span>
               </p>
-              <p className="mt-8">مهر، امضاء و تاریخ</p>
+              <p className="mt-4">مهر، امضاء و تاریخ</p>
             </div>
           </div>
 
-          <p className="mt-8 text-center text-xs">
+          <p className="mt-2 text-center text-xs">
             در صورت مغایرت دریافتی با پوستر شهریه با شماره ی
             .......................... منطقه / شهرستان تماس حاصل فرمایید.
           </p>

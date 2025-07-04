@@ -18,6 +18,7 @@ const DetailInfoCard: React.FC<DetailPageProps> = ({
   baseUrl,
   editUrl,
   printTitle,
+  canEdit = true,
 }) => {
   const formatValue = (row: DetailPageRow) => {
     if (!row.value && row.type !== "status") return null;
@@ -50,8 +51,8 @@ const DetailInfoCard: React.FC<DetailPageProps> = ({
   return (
     <div className="bg-white rounded-lg shadow-sm overflow-hidden print:shadow-none print:rounded-none print:overflow-visible">
       {/* Header */}
-      <div className="p-6 border-b border-gray-200 flex justify-between items-center print:p-0 print:pb-0.5 print:mb-0.5 print:border-b-[1px] print:border-black print:flex-col print:items-start print:gap-0">
-        <div className="print:w-full">
+      <div className="p-6 border-b border-gray-200 flex justify-between items-center print:p-0 print:pb-0.5 print:mb-0.5 print:border-b-[1px] print:border-black print:flex-col print:items-start print:gap-0 md:flex-row flex-col">
+        <div className="print:w-full md:mb-0 mb-3">
           <h1 className="text-2xl font-bold text-gray-900 print:text-sm print:text-black print:mb-1 print:text-center">
             <span className="printElement print:mb-2">{printTitle}</span>
             {title}
@@ -62,7 +63,7 @@ const DetailInfoCard: React.FC<DetailPageProps> = ({
             {modifiedAt && ` • ویرایش: ${getFarsiDate(modifiedAt)}`}
           </p>
         </div>
-        {baseUrl && (
+        {baseUrl && canEdit && (
           <div className="flex space-x-2 print:hidden">
             {actions?.map((action, index) => (
               <Suspense key={index}>{action}</Suspense>

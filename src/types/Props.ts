@@ -123,6 +123,7 @@ export interface DetailPageProps {
   baseUrl?: string;
   editUrl?: string;
   printTitle?: string | React.ReactNode;
+  canEdit?: boolean;
 }
 
 export interface DetailPageRow {

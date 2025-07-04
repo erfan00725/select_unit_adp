@@ -18,7 +18,11 @@ const SelectUnitPrint = async ({ id }: Props) => {
   }
   return (
     <div className="print:max-w-none print:m-0 print:p-4 print:bg-white print:text-black">
-      <DetailInfoCard {...detailConfig.config} />
+      <DetailInfoCard
+        {...detailConfig.config}
+        actions={undefined}
+        canEdit={false}
+      />
       {detailConfig.children}
     </div>
   );

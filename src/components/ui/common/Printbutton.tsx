@@ -29,6 +29,5 @@ export const DetailPrintButton = ({ id }: { id: string }) => (
     >
       چاپ فرم پرداخت شهریه
     </button>
-    ,
   </>
 );

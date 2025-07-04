@@ -1,6 +1,6 @@
 import Loading from "@/components/common/Loading";
 import { Printbutton } from "@/components/ui/common/Printbutton";
-import SelectUnitPrintForm from "@/components/ui/pages/selectUnit/SelectUnitPrintForm";
+import SelectUnitPrintForm from "@/components/ui/pages/selectUnit/print/SelectUnitPrintForm";
 import React, { Suspense } from "react";
 
 async function page({
@@ -12,12 +12,12 @@ async function page({
   const selectUnits = params.selectUnitIds?.split(",") || [];
   return (
     <div>
-      <div className="flex justify-between items-center w-full print:hidden mb-4 card">
+      <div className="flex justify-between items-center w-full print:hidden mb-4 print:m-0 card">
         <h2 className="text-xl font-bold">چاپ فرم پرداخت شهریه </h2>
         <Printbutton />
       </div>
       {selectUnits.map((unitId, i) => (
-        <div className={`mb-6 page-break`} key={i}>
+        <div className={`mb-6 last:mb-0 print:m-0 page-break`} key={i}>
           <Suspense fallback={<Loading />}>
             <SelectUnitPrintForm id={unitId} key={i} />
           </Suspense>

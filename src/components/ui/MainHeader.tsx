@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react"; // Import useState
+import React, { Suspense, useEffect, useState } from "react"; // Import useState
 import Logo from "./common/Logo";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -58,24 +58,33 @@ function MainHeader() {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden xl:flex justify-center items-center space-x-8 h-full">
+          <nav className="hidden lg:flex justify-center items-center xl:space-x-4 space-x-2 h-full text-sm xl:text-base">
             {NavBarConfigs.map((config, index) => (
-              <Link
-                key={index}
-                href={config.href}
-                className={clsx(
-                  "text-gray-900 font-light hover:text-indigo-600 text-center whitespace-nowrap", // Added whitespace-nowrap
-                  { "font-bold text-indigo-600": pathName === config.href } // Adjusted active style
-                )}
-              >
-                {config.label}
-              </Link>
+              <Suspense key={index}>
+                <Link
+                  key={index}
+                  href={config.href}
+                  className={clsx(
+                    "text-gray-900 font-light hover:text-indigo-600 text-center whitespace-nowrap", // Added whitespace-nowrap
+                    { "font-bold text-indigo-600": pathName === config.href } // Adjusted active style
+                  )}
+                >
+                  {config.label}
+                </Link>
+                <div
+                  className="border-l-[1px] border-gray-500 h-[80%] last-of-type:hidden"
+                  key={index + "line"}
+                />
+              </Suspense>
             ))}
           </nav>
 
           {/* Desktop Sign Out Button */}
-          <div className="hidden xl:block">
-            <button onClick={handleSignOut} className="button_black">
+          <div className="hidden lg:block">
+            <button
+              onClick={handleSignOut}
+              className="button_black  xl:!text-base !text-sm"
+            >
               <FontAwesomeIcon
                 icon={faSignOutAlt}
                 className="ml-2 w-4 h-auto" // Changed mr-2 to ml-2 for RTL consistency
@@ -85,7 +94,7 @@ function MainHeader() {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="xl:hidden flex items-center">
+          <div className="lg:hidden flex items-center">
             <button
               onClick={toggleMenu}
               className="text-gray-900 hover:text-indigo-600 focus:outline-none"

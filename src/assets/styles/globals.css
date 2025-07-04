@@ -65,13 +65,15 @@ body {
   }
 }
 
-.page-break {
-  page-break-before: always; /* Forces a page break before the element */
-}
-
 @media print {
+  .page-break {
+    page-break-before: always; /* Forces a page break before the element */
+  }
+  .page-break:first-child {
+    page-break-before: unset;
+  }
   @page {
-    size: A4;
+    /* size: A4; */
     margin: 1cm;
   }
   /* body * {
@@ -82,10 +84,10 @@ body {
     visibility: visible;
   }
   .printable-area {
-    position: absolute;
-    left: 0;
-    top: 0;
     width: 100%;
+    /* position: absolute; */
+    /* left: 0; */
+    /* top: 0; */
   }
   .no-print {
     display: none;

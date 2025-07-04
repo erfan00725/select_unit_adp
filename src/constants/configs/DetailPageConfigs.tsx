@@ -365,41 +365,49 @@ export const SelectUnitDetailConfig = (
         label: "هزینه شهریه ثابت",
         value: Number(selectUnit?.FixedFee),
         type: "price",
+        showInPrint: false,
       },
       {
         label: "هزینه صدور مدرک",
         value: Number(selectUnit?.CertificateFee),
         type: "price",
+        showInPrint: false,
       },
       {
         label: "هزینه کلاس‌های فوق‌العاده",
         value: Number(selectUnit?.ExtraClassFee),
         type: "price",
+        showInPrint: false,
       },
       {
         label: "هزینه کتاب‌ها",
         value: Number(selectUnit?.BooksFee),
         type: "price",
+        showInPrint: false,
       },
       {
         label: "هزینه ثبت مهارت",
         value: Number(selectUnit?.SkillRegistrationFee),
         type: "price",
+        showInPrint: false,
       },
       {
         label: "هزینه بیمه دانش‌آموز",
         value: Number(selectUnit?.InsuranceFee),
         type: "price",
+        showInPrint: false,
       },
       {
         label: "سایر هزینه‌ها",
         value: Number(selectUnit?.OtherFee),
         type: "price",
+        showInPrint: false,
       },
       {
         label: "تخفیف",
         value: Number(selectUnit?.Discount),
         type: "price",
+        showInPrint: false,
       },
       {
         label: "تعداد کل واحد‌ها",
@@ -410,6 +418,7 @@ export const SelectUnitDetailConfig = (
         label: "مبلغ کل",
         value: Number(selectUnit?.totalFee),
         type: "price",
+        showInPrint: false,
       },
       {
         label: "وضعیت پرداخت",
@@ -421,6 +430,7 @@ export const SelectUnitDetailConfig = (
         label: "روش پرداخت",
         value: paymentMethodRender(selectUnit?.PaymentMethod),
         type: "text",
+        showInPrint: false,
       },
       {
         label: "توضیحات پرداخت",
