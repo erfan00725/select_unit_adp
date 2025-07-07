@@ -66,6 +66,7 @@ export const lessonFormConfigGenerator = async (
         name: "LessonNumber",
         type: "number",
         placeholder: inputDefaultPlaceholder("شماره درس"),
+        defaultValue: lesson?.LessonNumber?.toString(),
       },
       {
         title: "نام درس",
