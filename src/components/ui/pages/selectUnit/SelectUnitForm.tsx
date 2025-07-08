@@ -9,7 +9,7 @@ import { ActionReturnType, Settings } from "@/types/General";
 import {
   bulkCreateSelectUnits,
   bulkEditSelectUnits,
-  getFeeSettings,
+  getSettings,
   getLessons,
   getLessonsByIds,
   getSelectUnitById,
@@ -70,9 +70,10 @@ export const SelectUnitForm = ({
       const teacherName = lesson.teacher
         ? `${lesson.teacher?.FirstName} ${lesson.teacher?.LastName}`
         : "بدون معلم";
+      const LessonNumber = lesson.LessonNumber || "_";
       return {
         id: lesson.id.toString(),
-        name: `${lesson.LessonName} (${teacherName})`,
+        name: `${lesson.LessonName} (${LessonNumber}) (${teacherName})`,
       };
     }) || [];
 
@@ -137,7 +138,7 @@ export const SelectUnitForm = ({
       });
       setIsLoadingSettings(false);
     } else {
-      getFeeSettings()
+      getSettings()
         .then((res) => {
           Object.entries(res.settings).forEach(([key, value]) => {
             setInitialSettings((prev) => ({

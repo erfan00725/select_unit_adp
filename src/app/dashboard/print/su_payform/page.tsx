@@ -1,6 +1,7 @@
 import Loading from "@/components/common/Loading";
 import { Printbutton } from "@/components/ui/common/Printbutton";
 import SelectUnitPrintForm from "@/components/ui/pages/selectUnit/print/SelectUnitPrintForm";
+import { getSettings } from "@/lib/actions";
 import React, { Suspense } from "react";
 
 async function page({
@@ -10,6 +11,7 @@ async function page({
 }) {
   const params = await searchParams;
   const selectUnits = params.selectUnitIds?.split(",") || [];
+  const settings = await getSettings();
   return (
     <div>
       <div className="flex justify-between items-center w-full print:hidden mb-4 print:m-0 card">
@@ -19,7 +21,7 @@ async function page({
       {selectUnits.map((unitId, i) => (
         <div className={`mb-6 last:mb-0 print:m-0 page-break`} key={i}>
           <Suspense fallback={<Loading />}>
-            <SelectUnitPrintForm id={unitId} key={i} />
+            <SelectUnitPrintForm id={unitId} key={i} settings={settings} />
           </Suspense>
         </div>
       ))}

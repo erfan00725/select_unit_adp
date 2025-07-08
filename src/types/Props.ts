@@ -67,7 +67,8 @@ export interface SearchFilterBarProps {
 
 // in href "$?" will replace with data id
 export type DataTableAction = {
-  label: string;
+  label?: string;
+  labelFn?: (id: string) => any;
   href?: string;
   onClick?: (id: string) => void;
   className?: string;

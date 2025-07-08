@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client";
-import { getFeeSettings } from "../actions";
+import { getSettings } from "../actions";
 
 type selectUnitType = Partial<
   Prisma.SelectUnitGetPayload<{

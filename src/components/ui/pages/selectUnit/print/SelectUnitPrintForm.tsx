@@ -1,20 +1,24 @@
-import { getSelectUnitById } from "@/lib/actions";
+import { SchoolName } from "@/constants/commonTexts";
+import { getSelectUnitById, getSettings } from "@/lib/actions";
 import { gradeRender, periodRender } from "@/lib/utils/dataRenderer";
 import getAcademicYearJ from "@/lib/utils/getAcademicYearJ";
 import { getCurrentDateJ } from "@/lib/utils/getCurrentDataJ";
 import { priceFormatter } from "@/lib/utils/priceFormatter";
+import { numberToWords } from "@persian-tools/persian-tools";
 
 type Props = {
   id: string;
+  settings: Awaited<ReturnType<typeof getSettings>>;
 };
 
 const RenderData = ({ data }: { data?: string | number | null }) => {
   return data ? <span className="font-bold">{data}</span> : "..............";
 };
 
-const SelectUnitPrintForm = async ({ id }: Props) => {
+const SelectUnitPrintForm = async ({ id, settings: settingsData }: Props) => {
   const selectUnit = await getSelectUnitById(id);
   const data = selectUnit.selectUnit;
+  const settings = settingsData.settings;
 
   console.log(data);
 
@@ -23,11 +27,12 @@ const SelectUnitPrintForm = async ({ id }: Props) => {
       <div className="printable-area">
         <div className="text-center mb-2">
           <h1 className="font-bold text-lg ">
-            فرم قرارداد پرداخت شهریه ثبت نام دانش آموزان مدارس آموزش از راه دور
+            فرم قرارداد پرداخت شهریه ثبت نام دانش آموزان مدرسه آموزش{" "}
+            {SchoolName}
           </h1>
         </div>
 
-        <div className="flex justify-between items-center text-xs">
+        <div className="flex flex-col space-y-3 justify-between items-center text-xs mb-3">
           <div>
             <span>
               سال تحصیلی: {<RenderData data={getAcademicYearJ(data?.Year)} />}
@@ -39,15 +44,13 @@ const SelectUnitPrintForm = async ({ id }: Props) => {
             {/* <input type="checkbox" className="ml-1 mx-2" /> دوم */}
             {/* <input type="checkbox" className="ml-1 mx-2" /> تابستانی */}
           </div>
-          <div className="w-16 h-16 border border-black"></div>
-        </div>
-
-        <div className="mb-4 text-xs">
-          <span>دوره تحصیلی:</span>
-          <input type="checkbox" className="ml-1 mr-2" /> دوره اول متوسطه
-          <input type="checkbox" className="ml-1 mx-2" /> دوره دوم متوسطه
-          <input type="checkbox" className="ml-1 mx-2" /> شاخه نظری
-          <input type="checkbox" className="ml-1 mx-2" /> شاخه کارودانش
+          <div>
+            <span>دوره تحصیلی:</span>
+            <input type="checkbox" className="ml-1 mr-2" /> دوره اول متوسطه
+            <input type="checkbox" className="ml-1 mx-2" /> دوره دوم متوسطه
+            <input type="checkbox" className="ml-1 mx-2" /> شاخه نظری
+            <input type="checkbox" className="ml-1 mx-2" /> شاخه کارودانش
+          </div>
         </div>
 
         <div className="border border-black p-4">
@@ -55,8 +58,8 @@ const SelectUnitPrintForm = async ({ id }: Props) => {
           <p className="my-2">
             قرارداد زیر در تاریخ{" "}
             <span className="font-bold">{getCurrentDateJ()}</span> بین موسس{" "}
-            <span className="font-bold">.............</span> با ولی دانش
-            آموز/دانش آموز جناب آقای / سرکار خانم{" "}
+            <RenderData data={settings?.founder} /> با ولی دانش آموز/دانش آموز
+            جناب آقای / سرکار خانم{" "}
             <RenderData
               data={`${data?.student.FirstName} ${data?.student.LastName}`}
             />{" "}
@@ -190,13 +193,20 @@ const SelectUnitPrintForm = async ({ id }: Props) => {
             <RenderData
               data={priceFormatter(data?.totalFee.toString(), true)}
             />{" "}
-            به حروف ................................. ریال مطابق با زمان های
-            مقرر در جدول زیر در وجه واحد آموزشی{" "}
-            <span className="font-bold">...................</span> به شماره حساب{" "}
-            <span className="font-bold">................</span> بانک{" "}
-            <span className="font-bold">...................</span> شعبه{" "}
-            <span className="font-bold">...................</span> کد{" "}
-            <span className="font-bold">...................</span> می باشد.
+            به حروف{" "}
+            <RenderData
+              data={
+                data?.totalFee
+                  ? (numberToWords(data?.totalFee) as string)
+                  : null
+              }
+            />{" "}
+            ریال مطابق با زمان های مقرر در جدول زیر در وجه واحد آموزشی{" "}
+            <span className="font-bold">{SchoolName}</span> به شماره حساب{" "}
+            <RenderData data={settings?.bankAccount} /> بانک{" "}
+            <RenderData data={settings?.bankName} /> شعبه{" "}
+            <RenderData data={settings?.bankBranch} /> کد{" "}
+            <RenderData data={settings?.bankCode} /> می باشد.
           </p>
 
           <table className="w-full border-collapse border border-black mt-2 text-center text-xs">
@@ -235,23 +245,19 @@ const SelectUnitPrintForm = async ({ id }: Props) => {
             <div className="text-center">
               <p>نام و نام خانوادگی</p>
               <p>ولی دانش آموز/دانش آموز</p>
-              <p className="mt-4">امضاء و تاریخ</p>
+              <p>امضاء و تاریخ</p>
             </div>
             <div className="text-center">
+              {/* TOTO : add database value  */}
               <p>
-                نام و نام خانوادگی <span className="font-bold"></span>
+                نام و نام خانوادگی <RenderData data={settings.founder} />
               </p>
               <p>
-                موسس مدرسه <span className="font-bold"></span>
+                موسس مدرسه <span className="font-bold">{SchoolName}</span>
               </p>
-              <p className="mt-4">مهر، امضاء و تاریخ</p>
+              <p>مهر، امضاء و تاریخ</p>
             </div>
           </div>
-
-          <p className="mt-2 text-center text-xs">
-            در صورت مغایرت دریافتی با پوستر شهریه با شماره ی
-            .......................... منطقه / شهرستان تماس حاصل فرمایید.
-          </p>
         </div>
       </div>
     </div>

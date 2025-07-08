@@ -1,7 +1,5 @@
 import React, { Suspense } from "react";
 import PageHeader from "@/components/ui/common/PageHeader";
-import DataTable from "@/components/ui/DataTable";
-import { d_ListConfig } from "@/constants/configs/ListPageConfigs";
 import DashboardLessonsFetch from "@/components/ui/pages/DashboardLessonsFetch";
 import Loading from "@/components/common/Loading";
 import DashboardStudentFetch from "@/components/ui/pages/DashboardStudentsFetch";

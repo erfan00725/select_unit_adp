@@ -136,25 +136,29 @@ const DataTable = <T extends DataBaseType>({
                   })}
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium print:hidden">
                     {actions &&
-                      actions.map((action) =>
+                      actions.map((action, i) =>
                         action.href ? (
                           <Link
-                            key={action.label}
+                            key={i}
                             href={action.href.replace("$?", row.id.toString())}
-                            className={`tableAction ${action.className}`}
+                            className={`tableAction first:mr-0! ${action.className}`}
                           >
-                            {action.label}
+                            {action.labelFn
+                              ? action.labelFn(row.id.toString())
+                              : action.label || "_"}{" "}
                           </Link>
                         ) : (
                           <span
-                            key={action.label}
-                            className={`tableAction ${action.className} cursor-pointer`}
+                            key={i}
+                            className={`tableAction first:mr-0! ${action.className} cursor-pointer`}
                             onClick={() =>
                               action.onClick &&
                               action.onClick(row.id.toString())
                             }
                           >
-                            {action.label}
+                            {action.labelFn
+                              ? action.labelFn(row.id.toString())
+                              : action.label || "_"}{" "}
                           </span>
                         )
                       )}

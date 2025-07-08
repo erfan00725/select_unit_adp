@@ -1,4 +1,4 @@
-import { getFeeSettings, getLessons, getSelectUnitById } from "@/lib/actions";
+import { getSettings, getLessons, getSelectUnitById } from "@/lib/actions";
 import { SelectUnitForm } from "../SelectUnitForm";
 
 type Props = {
@@ -12,7 +12,7 @@ export const SelectUnitFormFetch = async ({
 }: Props) => {
   // TODO: Get only related lessons
   const lessons = await getLessons({ limit: 500 });
-  const settings = await getFeeSettings();
+  const settings = await getSettings();
 
   // If selectUnitId is provided, fetch the select unit data for editing
   let selectUnitData = undefined;

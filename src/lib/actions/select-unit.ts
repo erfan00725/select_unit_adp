@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 import { BaseListFilterParams, SelectUnitDataType } from "@/types/Tables";
 import { DeleteFunctionReturnType } from "@/types/General";
 import getTotalFee from "../utils/getTotalFee";
-import { getFeeSettings } from "./general";
+import { getSettings } from "./general";
 
 type ReturnType = Prisma.SelectUnitGetPayload<{
   include: {
@@ -160,7 +160,7 @@ export async function getSelectUnits(
       take: limit,
     });
 
-    const { settings } = await getFeeSettings();
+    const { settings } = await getSettings();
     const { pricePerUnit } = settings;
 
     // Apply customReturn to each select unit to calculate totalUnits and totalFee
@@ -231,7 +231,7 @@ export async function getSelectUnitsByStudent(
       skip,
       take: limit,
     });
-    const { settings } = await getFeeSettings();
+    const { settings } = await getSettings();
     const { pricePerUnit } = settings;
 
     // Apply customReturn to each select unit to calculate totalUnits and totalFee
@@ -302,7 +302,7 @@ export async function getSelectUnitsByLesson(
       skip,
       take: limit,
     });
-    const { settings } = await getFeeSettings();
+    const { settings } = await getSettings();
     const { pricePerUnit } = settings;
 
     // Apply customReturn to each select unit to calculate totalUnits and totalFee
@@ -357,7 +357,7 @@ export async function getSelectUnitById(selectUnitId: string) {
     if (!selectUnit) {
       return { error: "انتخاب واحد یافت نشد" };
     }
-    const { settings } = await getFeeSettings();
+    const { settings } = await getSettings();
     const { pricePerUnit } = settings;
 
     // Apply customReturn to calculate totalUnits and totalFee
@@ -405,7 +405,7 @@ export async function getSpecificSelectUnit(
       return { error: "انتخاب واحد یافت نشد" };
     }
 
-    const { settings } = await getFeeSettings();
+    const { settings } = await getSettings();
     const { pricePerUnit } = settings;
 
     // Apply customReturn to calculate totalUnits and totalFee
@@ -484,7 +484,7 @@ export async function getSelectUnitsByYearPeriod(
     // Calculate pagination metadata
     const totalPages = Math.ceil(totalCount / limit);
 
-    const { settings } = await getFeeSettings();
+    const { settings } = await getSettings();
     const { pricePerUnit } = settings;
 
     // Apply customReturn to each select unit to calculate totalUnits and totalFee
@@ -545,7 +545,7 @@ export async function getSelectUnitLessons(
     if (!selectUnit) {
       return { error: "انتخاب واحد یافت نشد" };
     }
-    const { settings } = await getFeeSettings();
+    const { settings } = await getSettings();
     const { pricePerUnit } = settings;
 
     // Apply customReturn to calculate totalUnits and totalFee
@@ -708,7 +708,7 @@ export async function createSelectUnit(
       },
     });
 
-    const { settings } = await getFeeSettings();
+    const { settings } = await getSettings();
     const { pricePerUnit } = settings;
 
     revalidatePath("/dashboard/select-unit");
@@ -996,7 +996,7 @@ export async function bulkCreateSelectUnits(
       },
     });
 
-    const { settings } = await getFeeSettings();
+    const { settings } = await getSettings();
     const { pricePerUnit } = settings;
 
     revalidatePath("/dashboard/select-unit");
@@ -1144,7 +1144,7 @@ export async function bulkEditSelectUnits(
       revalidatePath(`/dashboard/students/${existingSelectUnit.student.id}`);
     }
 
-    const { settings } = await getFeeSettings();
+    const { settings } = await getSettings();
     const { pricePerUnit } = settings;
 
     // Apply customReturn to calculate totalUnits and totalFee

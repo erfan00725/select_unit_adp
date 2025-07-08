@@ -1,8 +1,8 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import DataTable from "../DataTable";
 import { ActionReturnType, PageType } from "@/types/General";
-import { getFeeSettings, getLessonsByIds } from "@/lib/actions";
+import { getSettings, getLessonsByIds } from "@/lib/actions";
 import { DataTableAction } from "@/types/Props";
 import { priceFormatter } from "@/lib/utils/priceFormatter";
 import { gradeRender } from "@/lib/utils/dataRenderer";
@@ -34,6 +34,8 @@ const SelectUnitTable: React.FC<SelectUnitTableProps> = ({
     return null; // Handle the case where lessons is false
   }
 
+  const [learendLessons, setLearendLessons] = useState(new Set<number>());
+
   const tableData = lessons?.lessons?.map((lesson) => ({
     id: lesson?.id.toString() as string,
     lessonName: lesson?.LessonName,
@@ -48,7 +50,34 @@ const SelectUnitTable: React.FC<SelectUnitTableProps> = ({
 
   const actions: DataTableAction[] = [
     {
-      label: "حذف",
+      labelFn: (id) => {
+        const learned = learendLessons.has(Number(id));
+        return (
+          <span
+            className={
+              (learned ? "text-green-600" : "text-blue-600") +
+              " w-24 text-right inline-block"
+            }
+          >
+            {learned ? "آموخته شده" : "آموخته"}
+          </span>
+        );
+      },
+      onClick: (id) => {
+        if (learendLessons.has(Number(id))) {
+          setLearendLessons((prev) => {
+            const t = new Set(prev);
+            t.delete(Number(id));
+            return t;
+          });
+        } else {
+          setLearendLessons((prev) => new Set(prev).add(Number(id)));
+        }
+      },
+      className: "text-green-600",
+    },
+    {
+      labelFn: () => "حذف",
       onClick: (id) => {
         onRemoveLesson(id);
       },

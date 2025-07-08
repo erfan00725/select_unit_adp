@@ -263,7 +263,7 @@ export async function upsertSetting(data: GeneralDataType) {
  * Retrieves fee-related settings as key-value pairs.
  * @returns A promise that resolves to an object containing fee settings or an error.
  */
-export async function getFeeSettings() {
+export async function getSettings() {
   try {
     const feeKeys = [...Object.keys(Settings)];
 
@@ -292,6 +292,11 @@ export async function getFeeSettings() {
         [Settings.InsuranceFee]: feeSettings.insuranceFee,
         [Settings.SkillRegistrationFee]: feeSettings.skillRegistrationFee,
         [Settings.OtherFee]: feeSettings.otherFee,
+        [Settings.Founder]: feeSettings.founder,
+        [Settings.BankAccount]: feeSettings.bankAccount,
+        [Settings.BankName]: feeSettings.bankName,
+        [Settings.BankBranch]: feeSettings.bankBranch,
+        [Settings.BankCode]: feeSettings.bankCode,
       } as Record<Settings, string>,
     };
   } catch (error) {

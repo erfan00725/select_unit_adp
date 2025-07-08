@@ -10,10 +10,10 @@ import {
   getSelectUnits,
   getSelectUnitById,
   getGenerals, // Added for General entity
-  getFeeSettings,
+  getSettings,
   getUserByUsername, // Added for General entity
 } from "@/lib/actions";
-import { FilterOptionType, Orders, PageType } from "@/types/General";
+import { FilterOptionType, Orders, PageType, Settings } from "@/types/General";
 import getAcademicYearJ from "@/lib/utils/getAcademicYearJ";
 import { priceFormatter } from "@/lib/utils/priceFormatter";
 import { gradeRender, periodRender } from "@/lib/utils/dataRenderer";
@@ -41,7 +41,7 @@ export interface ListGeneralReturnType extends DataTableProps<any> {
   pagination?: pagination;
 }
 
-export const defaultListLimit = 10;
+export const defaultListLimit = 15;
 
 const selectUnitGeneralActions = [
   {
@@ -196,7 +196,7 @@ export const LessonsList = async ({
 
   const lessons = lessonsData?.lessons;
 
-  const { settings } = await getFeeSettings();
+  const { settings } = await getSettings();
 
   // TODO: Fix this shit
 
@@ -280,7 +280,7 @@ export const LessonPrintList = async ({
 }: ListGeneralParamsType & {
   selectUnitLessonData?: Awaited<ReturnType<typeof getSelectUnitById>>;
 }): Promise<ListGeneralReturnType> => {
-  const { settings } = await getFeeSettings();
+  const { settings } = await getSettings();
 
   const data = selectUnitLessonData?.selectUnit?.selectedLessons.map((l, i) => {
     const lesson = l.lesson;
@@ -290,14 +290,8 @@ export const LessonPrintList = async ({
       LessonNumber: lesson.LessonNumber,
       Name: lesson.LessonName,
       Grade: gradeRender(lesson.Grade),
-      // @ts-expect-error
-      Field: lesson.field?.Name || "عمومی",
       TotalUnits: lesson.TheoriUnit + lesson.PracticalUnit,
-      // @ts-expect-error
-      Teacher: lesson.teacher
-        ? // @ts-expect-error
-          `${lesson.teacher.FirstName} ${lesson.teacher.LastName}`
-        : "_",
+      Others: l.Learned ? "آموخته" : "_",
     };
   });
 
@@ -306,9 +300,8 @@ export const LessonPrintList = async ({
     "شماره درس",
     "نام درس",
     "مقطع",
-    "رشته",
     "تعداد واحد‌",
-    "نام دبیر",
+    "ملاحضات",
   ];
 
   return {
@@ -508,17 +501,27 @@ const generalsList = async ({
   searchParams,
 }: ListGeneralParamsType): Promise<ListGeneralReturnType> => {
   const page = searchParams?.page ? parseInt(searchParams.page) : 1;
-  const limit = searchParams?.limit
-    ? parseInt(searchParams.limit)
-    : defaultListLimit;
+  const limit = searchParams?.limit ? parseInt(searchParams.limit) : 50;
   const query = searchParams?.query;
   const data = await getGenerals({ page, limit, query });
   const admin = await getUserByUsername("admin");
+  const priceSettings = [
+    Settings.FixedFee,
+    Settings.BooksFee,
+    Settings.OtherFee,
+    Settings.PricePerUnit,
+    Settings.CertificateFee,
+    Settings.ExtraClassFee,
+    Settings.InsuranceFee,
+    Settings.SkillRegistrationFee,
+  ];
 
   const tableData: tableDataType[] = (data.generals || []).map((item) => ({
     id: item.Key, // Using Key as id for General entity
     Title: item.Title || "-",
-    Value: priceFormatter(Number(item.Value), true),
+    Value: priceSettings.includes(item.Key as Settings)
+      ? priceFormatter(item.Value)
+      : item.Value,
     Updated_at: getFarsiDate(item.Updated_at),
     Created_at: getFarsiDate(item.Created_at),
   }));

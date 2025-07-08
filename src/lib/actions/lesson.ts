@@ -11,7 +11,7 @@ import {
   Teacher,
 } from "@prisma/client";
 import { DeleteFunctionReturnType } from "@/types/General";
-import { getFeeSettings } from "./general";
+import { getSettings } from "./general";
 
 // Define a type that represents a Lesson with potentially included relations
 type LessonWithOptionalRelations = Lesson & {
@@ -33,7 +33,7 @@ const customReturn = async (
     useDefault
   ) {
     if (P_defaultPrice == undefined || P_defaultPrice == null) {
-      const { settings } = await getFeeSettings();
+      const { settings } = await getSettings();
       defaultPrice = BigInt(settings.pricePerUnit);
     } else {
       defaultPrice = P_defaultPrice;
@@ -48,7 +48,7 @@ const customReturn = async (
   }
 };
 const customReturnLessons = async (data: LessonWithOptionalRelations[]) => {
-  const { settings } = await getFeeSettings();
+  const { settings } = await getSettings();
   const { pricePerUnit: defaultPrice } = settings;
 
   return await Promise.all(

@@ -309,7 +309,7 @@ const lessonsData = [
 ];
 
 // Settings keys for fee settings
-const Settings = {
+export const Settings = {
   FixedFee: "fixedFee",
   CertificateFee: "certificateFee",
   BooksFee: "booksFee",
@@ -318,10 +318,15 @@ const Settings = {
   InsuranceFee: "insuranceFee",
   SkillRegistrationFee: "skillRegistrationFee",
   OtherFee: "otherFee",
+  Founder: "founder",
+  BankAccount: "bankAccount",
+  BankName: "bankName",
+  BankBranch: "bankBranch",
+  BankCode: "bankCode",
 } as const;
 
 // Define fee settings data
-const feeSettings = [
+const initialSettings = [
   {
     Key: Settings.FixedFee,
     Value: "2000000",
@@ -370,6 +375,36 @@ const feeSettings = [
     Title: "سایر هزینه‌ها",
     Description: null,
   },
+  {
+    Key: Settings.Founder,
+    Value: "محمد حمیدی",
+    Title: "نام موسس",
+    Description: null,
+  },
+  {
+    Key: Settings.BankAccount,
+    Value: "10/5357174/4",
+    Title: "شماره حساب",
+    Description: null,
+  },
+  {
+    Key: Settings.BankName,
+    Value: "رسالت",
+    Title: "نام بانک",
+    Description: null,
+  },
+  {
+    Key: Settings.BankBranch,
+    Value: "خواجو",
+    Title: "شعبه بانک",
+    Description: null,
+  },
+  {
+    Key: Settings.BankCode,
+    Value: "357",
+    Title: "کد بانک",
+    Description: null,
+  },
 ];
 const adminUserName = "admin";
 const adminPassword = "@dmin113link";
@@ -401,9 +436,9 @@ async function main() {
   // console.log(`Seeded ${createdLessons.count} lessons.`);
 
   // Seed General Settings (Fees)
-  console.log(`Seeding/Updating ${feeSettings.length} general settings...`);
+  console.log(`Seeding/Updating ${initialSettings.length} general settings...`);
   await prisma.general.deleteMany(); // Clear existing data
-  for (const setting of feeSettings) {
+  for (const setting of initialSettings) {
     await prisma.general.upsert({
       where: { Key: setting.Key },
       update: { Value: setting.Value },
@@ -415,7 +450,7 @@ async function main() {
       },
     });
   }
-  console.log(`Seeded/Updated ${feeSettings.length} general settings.`);
+  console.log(`Seeded/Updated ${initialSettings.length} general settings.`);
 
   console.log(`Seeding finished.`);
 }

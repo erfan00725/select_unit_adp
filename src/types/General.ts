@@ -1,3 +1,4 @@
+import { Settings as SettingsInit } from "../../prisma/db_seed";
 import { DetailPageRow } from "./Props";
 
 export type InfoPageConfig = {
@@ -32,7 +33,6 @@ export enum PageType {
 export type ActionReturnType<T extends (...args: any[]) => any> = Awaited<
   ReturnType<T>
 >;
-
 export enum Settings {
   FixedFee = "fixedFee",
   CertificateFee = "certificateFee",
@@ -42,6 +42,11 @@ export enum Settings {
   InsuranceFee = "insuranceFee",
   SkillRegistrationFee = "skillRegistrationFee",
   OtherFee = "otherFee",
+  Founder = "founder",
+  BankAccount = "bankAccount",
+  BankName = "bankName",
+  BankBranch = "bankBranch",
+  BankCode = "bankCode",
 }
 
 export type DeleteFunctionReturnType = Promise<{
