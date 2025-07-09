@@ -12,16 +12,21 @@ interface SelectUnitTableProps {
   lessons: ActionReturnType<typeof getLessonsByIds>;
   onRemoveLesson: (lessonId: string) => void;
   defaultPrice: number;
+  setLearendLessons: React.Dispatch<React.SetStateAction<Number[]>>;
+  initialLearendLessons?: Number[];
 }
 
 const SelectUnitTable: React.FC<SelectUnitTableProps> = ({
   lessons,
   onRemoveLesson,
   defaultPrice,
+  setLearendLessons: P_setLearendLessons,
+  initialLearendLessons,
 }) => {
   // جدول انتخاب واحد؛ این کامپوننت برای نمایش لیست دروس انتخاب شده توسط دانش‌آموز استفاده می‌شود
   const headers = [
     "شناسه",
+    "شماره درس",
     "نام درس",
     "مقطع",
     "نام دبیر",
@@ -38,6 +43,7 @@ const SelectUnitTable: React.FC<SelectUnitTableProps> = ({
 
   const tableData = lessons?.lessons?.map((lesson) => ({
     id: lesson?.id.toString() as string,
+    Lessonumber: lesson?.LessonNumber,
     lessonName: lesson?.LessonName,
     grade: gradeRender(lesson?.Grade),
     teacherName:
@@ -47,6 +53,16 @@ const SelectUnitTable: React.FC<SelectUnitTableProps> = ({
     practicalUnit: lesson?.PracticalUnit,
     price: priceFormatter(Number(lesson?.PricePerUnit || defaultPrice), true),
   }));
+
+  useEffect(() => {
+    if (initialLearendLessons) {
+      setLearendLessons(new Set(initialLearendLessons.map(Number)));
+    }
+  }, []);
+
+  useEffect(() => {
+    P_setLearendLessons([...learendLessons]);
+  }, [learendLessons]);
 
   const actions: DataTableAction[] = [
     {
@@ -90,6 +106,7 @@ const SelectUnitTable: React.FC<SelectUnitTableProps> = ({
       tableData={tableData}
       title=""
       actions={actions}
+      showId={false}
     />
   );
 };

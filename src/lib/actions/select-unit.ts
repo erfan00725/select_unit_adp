@@ -8,6 +8,11 @@ import { DeleteFunctionReturnType } from "@/types/General";
 import getTotalFee from "../utils/getTotalFee";
 import { getSettings } from "./general";
 
+type SelectUnitLessonTyoe = {
+  id: bigint;
+  learned?: boolean;
+};
+
 type ReturnType = Prisma.SelectUnitGetPayload<{
   include: {
     student: true;
@@ -841,7 +846,7 @@ export async function removeSelectedLesson(
 // Bulk create select units for a student
 export async function bulkCreateSelectUnits(
   baseData: SelectUnitDataType,
-  lessonIds: bigint[]
+  lessonIds: SelectUnitLessonTyoe[]
 ) {
   try {
     if (lessonIds.length === 0) {
@@ -871,7 +876,7 @@ export async function bulkCreateSelectUnits(
 
       // Filter out lessons that are already selected
       const newLessonIds = lessonIds.filter(
-        (id) => !existingLessonIds.includes(id)
+        ({ id }) => !existingLessonIds.includes(id)
       );
 
       if (newLessonIds.length === 0) {
@@ -883,7 +888,7 @@ export async function bulkCreateSelectUnits(
         try {
           // Check if the lesson exists
           const lesson = await prisma.lesson.findUnique({
-            where: { id: lessonId },
+            where: { id: lessonId.id },
           });
 
           if (!lesson) {
@@ -894,7 +899,8 @@ export async function bulkCreateSelectUnits(
           const selectedLesson = await prisma.selectedLesson.create({
             data: {
               selectUnitId: existingSelectUnit.id,
-              lessonId,
+              lessonId: lessonId.id,
+              Learned: lessonId.learned,
             },
             include: {
               lesson: true,
@@ -955,7 +961,7 @@ export async function bulkCreateSelectUnits(
       try {
         // Check if the lesson exists
         const lesson = await prisma.lesson.findUnique({
-          where: { id: lessonId },
+          where: { id: lessonId.id },
         });
 
         if (!lesson) {
@@ -970,7 +976,8 @@ export async function bulkCreateSelectUnits(
         await prisma.selectedLesson.create({
           data: {
             selectUnitId: selectUnit.id,
-            lessonId,
+            lessonId: lessonId.id,
+            Learned: lessonId.learned,
           },
         });
       } catch (error) {
@@ -1013,7 +1020,7 @@ export async function bulkCreateSelectUnits(
 export async function bulkEditSelectUnits(
   selectUnitId: bigint,
   baseData: Partial<SelectUnitDataType>,
-  lessonIds: bigint[]
+  lessonIds: SelectUnitLessonTyoe[]
 ) {
   try {
     if (lessonIds.length === 0) {
@@ -1044,13 +1051,21 @@ export async function bulkEditSelectUnits(
       (sl) => sl.lessonId
     );
 
-    // Determine which lessons to add and which to remove
+    // Determine which lessons to add, remove, and update
     const lessonsToAdd = lessonIds.filter(
-      (id) => !currentLessonIds.includes(id)
+      ({ id }) => !currentLessonIds.includes(id)
     );
     const lessonsToRemove = currentLessonIds.filter(
-      (id) => !lessonIds.includes(id)
+      (id) => !lessonIds.some(({ id: lessonId }) => lessonId === id)
     );
+
+    // Determine lessons to update (existing lessons with changed learned status)
+    const lessonsToUpdate = lessonIds.filter(({ id, learned }) => {
+      const existingLesson = existingSelectUnit.selectedLessons.find(
+        (sl) => sl.lessonId === id
+      );
+      return existingLesson && existingLesson.Learned !== learned;
+    });
 
     // If no changes are needed, return early
     if (
@@ -1081,7 +1096,7 @@ export async function bulkEditSelectUnits(
         for (const lessonId of lessonsToAdd) {
           // Check if the lesson exists
           const lesson = await tx.lesson.findUnique({
-            where: { id: lessonId },
+            where: { id: lessonId.id },
           });
 
           if (!lesson) {
@@ -1092,7 +1107,8 @@ export async function bulkEditSelectUnits(
           const selectedLesson = await tx.selectedLesson.create({
             data: {
               selectUnitId,
-              lessonId,
+              lessonId: lessonId.id,
+              Learned: lessonId.learned,
             },
             include: {
               lesson: true,
@@ -1100,6 +1116,19 @@ export async function bulkEditSelectUnits(
           });
 
           addedLessons.push(selectedLesson);
+        }
+
+        // Update learned status for existing lessons if changed
+        for (const lessonToUpdate of lessonsToUpdate) {
+          await tx.selectedLesson.updateMany({
+            where: {
+              selectUnitId,
+              lessonId: lessonToUpdate.id,
+            },
+            data: {
+              Learned: lessonToUpdate.learned,
+            },
+          });
         }
 
         // Update SelectUnit fields from baseData

@@ -177,8 +177,10 @@ type DynamicConfigsType = {
 export const LessonsList = async ({
   searchParams,
   selectUnitLessonData,
+  learned,
 }: ListGeneralParamsType & {
   selectUnitLessonData?: Awaited<ReturnType<typeof getSelectUnitById>>;
+  learned?: Number[];
 }): Promise<ListGeneralReturnType> => {
   const { page, q, from, to, order, unit, limit, grade } = searchParams;
 
@@ -246,7 +248,7 @@ export const LessonsList = async ({
     }));
   };
 
-  const tableData = getTableData();
+  let tableData: any[] = getTableData();
 
   const headers = [
     "شناسه",
@@ -260,6 +262,16 @@ export const LessonsList = async ({
     "دبیر",
     "قیمت هر واحد",
   ];
+
+  if (!!learned) {
+    tableData = tableData.map((lesson) => {
+      return {
+        ...lesson,
+        isLearned: learned.includes(Number(lesson.id)) ? "آموخته" : "_",
+      };
+    });
+    headers.push("ملاحضات");
+  }
 
   return {
     tableData: tableData,
@@ -277,12 +289,14 @@ export const LessonsList = async ({
 export const LessonPrintList = async ({
   searchParams,
   selectUnitLessonData,
+  learned,
 }: ListGeneralParamsType & {
   selectUnitLessonData?: Awaited<ReturnType<typeof getSelectUnitById>>;
+  learned?: Number[];
 }): Promise<ListGeneralReturnType> => {
   const { settings } = await getSettings();
 
-  const data = selectUnitLessonData?.selectUnit?.selectedLessons.map((l, i) => {
+  let data = selectUnitLessonData?.selectUnit?.selectedLessons.map((l, i) => {
     const lesson = l.lesson;
     return {
       id: lesson.id,
@@ -291,7 +305,7 @@ export const LessonPrintList = async ({
       Name: lesson.LessonName,
       Grade: gradeRender(lesson.Grade),
       TotalUnits: lesson.TheoriUnit + lesson.PracticalUnit,
-      Others: l.Learned ? "آموخته" : "_",
+      Others: "_",
     };
   });
 
@@ -303,6 +317,15 @@ export const LessonPrintList = async ({
     "تعداد واحد‌",
     "ملاحضات",
   ];
+
+  if (!!learned) {
+    data = data?.map((lesson) => {
+      return {
+        ...lesson,
+        Others: learned.includes(Number(lesson.id)) ? "آموخته" : "_",
+      };
+    });
+  }
 
   return {
     tableData: data || [],

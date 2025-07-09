@@ -21,12 +21,20 @@ type Props = {
 export const SelectUnitLessonsTable = ({ data, id, isPrint }: Props) => {
   const [configs, setConfigs] = useState<ListGeneralReturnType | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const learnedLessons = data.selectUnit?.seelctedLessons
+    .map((sl) => (!!sl.Learned ? Number(sl.lesson.id) : undefined))
+    .filter((l) => !!l);
+  console.log(learnedLessons);
 
   if (!id) return null;
 
   useEffect(() => {
     if (isPrint) {
-      LessonPrintList({ searchParams: {}, selectUnitLessonData: data })
+      LessonPrintList({
+        searchParams: {},
+        selectUnitLessonData: data,
+        learned: learnedLessons as number[],
+      })
         .then((res) => {
           setConfigs(res);
         })
@@ -37,7 +45,11 @@ export const SelectUnitLessonsTable = ({ data, id, isPrint }: Props) => {
           setIsLoading(false);
         });
     } else {
-      LessonsList({ searchParams: {}, selectUnitLessonData: data })
+      LessonsList({
+        searchParams: {},
+        selectUnitLessonData: data,
+        learned: learnedLessons as number[],
+      })
         .then((res) => {
           setConfigs(res);
         })

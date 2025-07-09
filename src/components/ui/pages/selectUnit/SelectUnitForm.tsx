@@ -47,6 +47,7 @@ export const SelectUnitForm = ({
   const [inputValues, setInputValues] = useState<InputValueType>({});
   const [initialSettings, setInitialSettings] = useState<InputValueType>({});
   const [isLoadingSettings, setIsLoadingSettings] = useState(true);
+  let [learnedLessons, setLearendLessons] = useState<Number[]>([]);
 
   // Extract lesson IDs from selectUnitData if in edit mode
   const initialLessonIds =
@@ -81,6 +82,12 @@ export const SelectUnitForm = ({
   useEffect(() => {
     if (isEditMode && selectUnitData?.selectUnit) {
       const selectUnit = selectUnitData.selectUnit;
+
+      setLearendLessons(
+        selectUnit.selectedLessons
+          .map((sl) => (sl.Learned ? Number(sl.lesson.id) : undefined))
+          .filter((l) => !!l) as number[]
+      );
 
       // Set initial form values
       setInitialSettings({
@@ -291,7 +298,10 @@ export const SelectUnitForm = ({
             ? new Date(validateData.PaymentDate)
             : undefined,
         },
-        validateData.Lessons
+        validateData.Lessons.map((l) => ({
+          id: l,
+          learned: learnedLessons.includes(Number(l)),
+        }))
       )
         .then((res) => {
           if (res.error) {
@@ -332,7 +342,10 @@ export const SelectUnitForm = ({
             ? new Date(validateData.PaymentDate)
             : undefined,
         },
-        validateData.Lessons
+        validateData.Lessons.map((l) => ({
+          id: l,
+          learned: learnedLessons.includes(Number(l)),
+        }))
       )
         .then((res) => {
           if (res.error) {
@@ -353,12 +366,18 @@ export const SelectUnitForm = ({
     }
   };
 
+  // useEffect(() => {
+  //   console.log(learnedLessons);
+  // }, [learnedLessons]);
+
   const showTable = () => {
     return selectedLessons && selectedLessons.lessons.length > 0 ? (
       <SelectUnitTable
         lessons={selectedLessons}
         onRemoveLesson={handleRemoveLesson}
         defaultPrice={defaultPrice}
+        setLearendLessons={setLearendLessons}
+        initialLearendLessons={learnedLessons}
       />
     ) : (
       <h3 className="w-full text-center text-gray-500">درسی انتخاب نشده است</h3>

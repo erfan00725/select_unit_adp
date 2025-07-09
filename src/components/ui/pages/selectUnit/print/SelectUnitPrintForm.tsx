@@ -20,8 +20,6 @@ const SelectUnitPrintForm = async ({ id, settings: settingsData }: Props) => {
   const data = selectUnit.selectUnit;
   const settings = settingsData.settings;
 
-  console.log(data);
-
   return (
     <div className="bg-white p-6 print:p-0 font-['Tahoma'] text-sm" dir="rtl">
       <div className="printable-area">
