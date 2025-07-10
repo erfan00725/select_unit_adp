@@ -47,7 +47,8 @@ function customReturn(
       };
     };
   }> | null,
-  defaultPricePerUnit?: number | string
+  defaultPricePerUnit?: number | string,
+  defaultLearend?: number | string
 ) {
   // Handle null input
   if (!selectUnit) {
@@ -82,7 +83,11 @@ function customReturn(
         }, 0)
       : 0,
     seelctedLessons: lessons,
-    totalFee: getTotalFee(selectUnit, Number(defaultPricePerUnit)),
+    totalFee: getTotalFee(
+      selectUnit,
+      Number(defaultPricePerUnit),
+      Number(defaultLearend)
+    ),
   };
 }
 
@@ -166,11 +171,11 @@ export async function getSelectUnits(
     });
 
     const { settings } = await getSettings();
-    const { pricePerUnit } = settings;
+    const { pricePerUnit, learnedFee } = settings;
 
     // Apply customReturn to each select unit to calculate totalUnits and totalFee
     const selectUnitsWithTotal = selectUnits.map((unit) =>
-      customReturn(unit, pricePerUnit)
+      customReturn(unit, pricePerUnit, learnedFee)
     );
 
     // Calculate pagination metadata
@@ -237,11 +242,11 @@ export async function getSelectUnitsByStudent(
       take: limit,
     });
     const { settings } = await getSettings();
-    const { pricePerUnit } = settings;
+    const { pricePerUnit, learnedFee } = settings;
 
     // Apply customReturn to each select unit to calculate totalUnits and totalFee
     const selectUnitsWithTotal = selectUnits.map((unit) =>
-      customReturn(unit, pricePerUnit)
+      customReturn(unit, pricePerUnit, learnedFee)
     );
 
     // Calculate pagination metadata
@@ -308,11 +313,11 @@ export async function getSelectUnitsByLesson(
       take: limit,
     });
     const { settings } = await getSettings();
-    const { pricePerUnit } = settings;
+    const { pricePerUnit, learnedFee } = settings;
 
     // Apply customReturn to each select unit to calculate totalUnits and totalFee
     const selectUnitsWithTotal = selectUnits.map((unit) =>
-      customReturn(unit, pricePerUnit)
+      customReturn(unit, pricePerUnit, learnedFee)
     );
 
     // Calculate pagination metadata
@@ -363,10 +368,10 @@ export async function getSelectUnitById(selectUnitId: string) {
       return { error: "انتخاب واحد یافت نشد" };
     }
     const { settings } = await getSettings();
-    const { pricePerUnit } = settings;
+    const { pricePerUnit, learnedFee } = settings;
 
     // Apply customReturn to calculate totalUnits and totalFee
-    return { selectUnit: customReturn(selectUnit, pricePerUnit) };
+    return { selectUnit: customReturn(selectUnit, pricePerUnit, learnedFee) };
   } catch (error) {
     console.error("Failed to fetch select unit:", error);
     return { error: "دریافت اطلاعات انتخاب واحد با خطا مواجه شد" };
@@ -411,10 +416,10 @@ export async function getSpecificSelectUnit(
     }
 
     const { settings } = await getSettings();
-    const { pricePerUnit } = settings;
+    const { pricePerUnit, learnedFee } = settings;
 
     // Apply customReturn to calculate totalUnits and totalFee
-    return { selectUnit: customReturn(selectUnit, pricePerUnit) };
+    return { selectUnit: customReturn(selectUnit, pricePerUnit, learnedFee) };
   } catch (error) {
     console.error("Failed to fetch specific select unit:", error);
     return { error: "دریافت اطلاعات انتخاب واحد مشخص با خطا مواجه شد" };
@@ -490,11 +495,11 @@ export async function getSelectUnitsByYearPeriod(
     const totalPages = Math.ceil(totalCount / limit);
 
     const { settings } = await getSettings();
-    const { pricePerUnit } = settings;
+    const { pricePerUnit, learnedFee } = settings;
 
     // Apply customReturn to each select unit to calculate totalUnits and totalFee
     const selectUnitsWithTotal = selectUnits.map((unit) =>
-      customReturn(unit, pricePerUnit)
+      customReturn(unit, pricePerUnit, learnedFee)
     );
 
     return {
@@ -551,10 +556,10 @@ export async function getSelectUnitLessons(
       return { error: "انتخاب واحد یافت نشد" };
     }
     const { settings } = await getSettings();
-    const { pricePerUnit } = settings;
+    const { pricePerUnit, learnedFee } = settings;
 
     // Apply customReturn to calculate totalUnits and totalFee
-    return { selectUnit: customReturn(selectUnit, pricePerUnit) };
+    return { selectUnit: customReturn(selectUnit, pricePerUnit, learnedFee) };
   } catch (error) {
     console.error(
       "Failed to fetch select unit by student, year, and period:",
@@ -714,7 +719,7 @@ export async function createSelectUnit(
     });
 
     const { settings } = await getSettings();
-    const { pricePerUnit } = settings;
+    const { pricePerUnit, learnedFee } = settings;
 
     revalidatePath("/dashboard/select-unit");
     revalidatePath(`/dashboard/students/${data.StudentId}`);
@@ -1004,7 +1009,7 @@ export async function bulkCreateSelectUnits(
     });
 
     const { settings } = await getSettings();
-    const { pricePerUnit } = settings;
+    const { pricePerUnit, learnedFee } = settings;
 
     revalidatePath("/dashboard/select-unit");
     revalidatePath(`/dashboard/students/${baseData.StudentId}`);
@@ -1174,12 +1179,12 @@ export async function bulkEditSelectUnits(
     }
 
     const { settings } = await getSettings();
-    const { pricePerUnit } = settings;
+    const { pricePerUnit, learnedFee } = settings;
 
     // Apply customReturn to calculate totalUnits and totalFee
     return {
       ...result,
-      selectUnit: customReturn(result.selectUnit, pricePerUnit),
+      selectUnit: customReturn(result.selectUnit, pricePerUnit, learnedFee),
     };
   } catch (error) {
     console.error("Failed to bulk edit select units:", error);

@@ -15,7 +15,8 @@ type selectUnitType = Partial<
 
 export default function getTotalFee(
   selectUnit: selectUnitType,
-  defaultPricePerUnit: number = 0
+  defaultPricePerUnit: number = 0,
+  defaultLearend: number = 0
 ) {
   // Calculate lesson-based fees
   const lessonFees = selectUnit.selectedLessons
@@ -27,7 +28,7 @@ export default function getTotalFee(
             lesson.lesson?.PricePerUnit == null ||
             lesson.lesson?.PricePerUnit == undefined
           ) {
-            lessonPrice = defaultPricePerUnit;
+            lessonPrice = lesson.Learned ? defaultLearend : defaultPricePerUnit;
           } else {
             lessonPrice = lesson.lesson?.PricePerUnit;
           }

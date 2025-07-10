@@ -121,11 +121,6 @@ export const LessonsDetailConfig = (
         type: "price",
       },
       {
-        label: "معرف",
-        value: lesson?.Introducer,
-        type: "text",
-      },
-      {
         label: "تاریخ شروع اعتبار",
         value: getFarsiDate(lesson?.ValidFrom?.toDateString()),
         type: "text",
@@ -205,6 +200,10 @@ export const StudentsDetailConfig = (
         label: "رشته",
         value: student?.field.Name,
       },
+      {
+        label: "معرف",
+        value: student.Introducer,
+      },
     ],
   };
   return {
@@ -216,6 +215,13 @@ export const StudentsDetailConfig = (
       InfoRows: StudentConfig.rows || [],
       baseUrl: urls.students,
       actions: [
+        <Link
+          className="button"
+          key={"learnedForm-" + student.id}
+          href={`${urls.learnedForm}?studentIds=${student.id}`}
+        >
+          چاپ فرم آموخته
+        </Link>,
         <Link
           href={`${urls.selectUnitEditBase}/student/${student.id}`}
           className="button "

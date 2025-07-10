@@ -30,7 +30,6 @@ type tableDataType = {
   Title: string;
   Value: string;
   Updated_at: string;
-  Created_at: string;
   Config?: {
     editUrl?: string;
   };
@@ -537,6 +536,7 @@ const generalsList = async ({
     Settings.ExtraClassFee,
     Settings.InsuranceFee,
     Settings.SkillRegistrationFee,
+    Settings.LearnedFee,
   ];
 
   const tableData: tableDataType[] = (data.generals || []).map((item) => ({
@@ -546,20 +546,18 @@ const generalsList = async ({
       ? priceFormatter(item.Value)
       : item.Value,
     Updated_at: getFarsiDate(item.Updated_at),
-    Created_at: getFarsiDate(item.Created_at),
   }));
   tableData.push({
     id: admin.user?.id || "_",
     Title: "رمز عبور",
     Value: "_",
     Updated_at: "_",
-    Created_at: "_",
     Config: {
       editUrl: urls.user + `/${admin.user?.id}/edit`,
     },
   });
 
-  const headers = ["شناسه", "عنوان", "مقدار", "آخرین بروزرسانی", "تاریخ ایجاد"];
+  const headers = ["شناسه", "عنوان", "مقدار", "آخرین بروزرسانی"];
 
   return {
     tableData,
@@ -578,6 +576,7 @@ const generalsList = async ({
     canRemove: false,
     haveSinglePage: false,
     canAdd: false,
+    showId: false,
   };
 };
 

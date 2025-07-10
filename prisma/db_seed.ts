@@ -317,6 +317,7 @@ export const Settings = {
   ExtraClassFee: "extraClassFee",
   InsuranceFee: "insuranceFee",
   SkillRegistrationFee: "skillRegistrationFee",
+  LearnedFee: "learnedFee",
   OtherFee: "otherFee",
   Founder: "founder",
   BankAccount: "bankAccount",
@@ -329,32 +330,38 @@ export const Settings = {
 const initialSettings = [
   {
     Key: Settings.FixedFee,
-    Value: "2000000",
+    Value: "3200000",
     Title: "هزینه شهریه ثابت",
     Description: null,
   },
   {
     Key: Settings.CertificateFee,
-    Value: "300000",
+    Value: "0",
     Title: "هزینه صدور مدرک	",
     Description: null,
   },
   {
     Key: Settings.BooksFee,
-    Value: "500000",
+    Value: "0",
     Title: "هزینه کتاب‌ها",
     Description: null,
   },
   {
     Key: Settings.PricePerUnit,
-    Value: "1000000",
+    Value: "960000",
     Title: "هزینه پیش‌فرض هر واحد	",
     Description: null,
   },
   {
     Key: Settings.ExtraClassFee,
-    Value: "800000",
+    Value: "0",
     Title: "هزینه کلاس اضافی",
+    Description: null,
+  },
+  {
+    Key: Settings.LearnedFee,
+    Value: "320000",
+    Title: "هزینه پیش‌فرض هر واحد آموخته",
     Description: null,
   },
   {
@@ -365,7 +372,7 @@ const initialSettings = [
   },
   {
     Key: Settings.SkillRegistrationFee,
-    Value: "100000",
+    Value: "3200000",
     Title: "هزینه ثبت مهارت",
     Description: null,
   },
@@ -435,22 +442,22 @@ async function main() {
   // });
   // console.log(`Seeded ${createdLessons.count} lessons.`);
 
-  // Seed General Settings (Fees)
-  console.log(`Seeding/Updating ${initialSettings.length} general settings...`);
-  await prisma.general.deleteMany(); // Clear existing data
-  for (const setting of initialSettings) {
-    await prisma.general.upsert({
-      where: { Key: setting.Key },
-      update: { Value: setting.Value },
-      create: {
-        Key: setting.Key,
-        Value: setting.Value,
-        Title: setting.Title,
-        Description: setting.Description,
-      },
-    });
-  }
-  console.log(`Seeded/Updated ${initialSettings.length} general settings.`);
+  // // Seed General Settings (Fees)
+  // console.log(`Seeding/Updating ${initialSettings.length} general settings...`);
+  // await prisma.general.deleteMany(); // Clear existing data
+  // for (const setting of initialSettings) {
+  //   await prisma.general.upsert({
+  //     where: { Key: setting.Key },
+  //     update: { Value: setting.Value },
+  //     create: {
+  //       Key: setting.Key,
+  //       Value: setting.Value,
+  //       Title: setting.Title,
+  //       Description: setting.Description,
+  //     },
+  //   });
+  // }
+  // console.log(`Seeded/Updated ${initialSettings.length} general settings.`);
 
   console.log(`Seeding finished.`);
 }

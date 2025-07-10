@@ -176,14 +176,6 @@ export const lessonFormConfigGenerator = async (
         dataType: InputDataType.bigint,
       },
       {
-        title: "معرف",
-        name: "Introducer",
-        type: "text",
-        placeholder: inputDefaultPlaceholder("معرف"),
-        defaultValue: (lesson?.Introducer || "").toString(),
-        dataType: InputDataType.string,
-      },
-      {
         title: "تاریخ شروع اعتبار",
         name: "ValidFrom",
         type: "date",
@@ -341,6 +333,13 @@ export const studentFormConfigGenerator = async (
           title: "انتخاب جنسیت",
           required: true,
         },
+      },
+      {
+        title: "معرف",
+        name: "Introducer",
+        type: "text",
+        placeholder: inputDefaultPlaceholder("معرف"),
+        defaultValue: !!student?.Introducer ? student?.Introducer : undefined,
       },
     ],
   };

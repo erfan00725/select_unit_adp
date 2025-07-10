@@ -38,6 +38,7 @@ export enum Settings {
   CertificateFee = "certificateFee",
   BooksFee = "booksFee",
   PricePerUnit = "pricePerUnit",
+  LearnedFee = "learnedFee",
   ExtraClassFee = "extraClassFee",
   InsuranceFee = "insuranceFee",
   SkillRegistrationFee = "skillRegistrationFee",

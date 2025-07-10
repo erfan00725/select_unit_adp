@@ -15,6 +15,6 @@ export const urls = {
   [PageType.General]: homeUrl + `/${PageType.General}`,
   [PageType.User]: homeUrl + `/${PageType.User}`,
   selectUnitPrint: homeUrl + "/print/selectUnits",
-  selectUnitPrintAlt: homeUrl + "/print/selectUnitsAlt",
+  learnedForm: homeUrl + "/print/learnedForm",
   SU_PayForm: homeUrl + "/print/su_payform",
 };

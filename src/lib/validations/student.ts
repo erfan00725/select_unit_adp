@@ -79,6 +79,12 @@ export const studentSchema = z.object({
         return val === "true" || val === "1";
       })
     ),
+
+  Introducer: z
+    .string()
+    .max(255, { message: errorMassages.maxLength("معرف", 255) })
+    .nullable()
+    .optional(), // Keeping existing order as nullable().optional()
 });
 
 /**

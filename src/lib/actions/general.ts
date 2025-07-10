@@ -283,21 +283,10 @@ export async function getSettings() {
     );
 
     return {
-      settings: {
-        [Settings.FixedFee]: feeSettings.fixedFee,
-        [Settings.CertificateFee]: feeSettings.certificateFee,
-        [Settings.BooksFee]: feeSettings.booksFee,
-        [Settings.PricePerUnit]: feeSettings.pricePerUnit,
-        [Settings.ExtraClassFee]: feeSettings.extraClassFee,
-        [Settings.InsuranceFee]: feeSettings.insuranceFee,
-        [Settings.SkillRegistrationFee]: feeSettings.skillRegistrationFee,
-        [Settings.OtherFee]: feeSettings.otherFee,
-        [Settings.Founder]: feeSettings.founder,
-        [Settings.BankAccount]: feeSettings.bankAccount,
-        [Settings.BankName]: feeSettings.bankName,
-        [Settings.BankBranch]: feeSettings.bankBranch,
-        [Settings.BankCode]: feeSettings.bankCode,
-      } as Record<Settings, string>,
+      settings: Object.values(Settings).reduce((acc, value) => {
+        acc[value] = feeSettings[value];
+        return acc;
+      }, {} as Record<Settings, string>),
     };
   } catch (error) {
     console.error("Failed to fetch fee settings:", error);

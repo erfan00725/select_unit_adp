@@ -1,6 +1,6 @@
 import Loading from "@/components/common/Loading";
 import { Printbutton } from "@/components/ui/common/Printbutton";
-import SelectUnitPrintAlt from "@/components/ui/pages/selectUnit/print/SelectUnitPrintAlt";
+import LearnedFormFetch from "@/components/ui/pages/selectUnit/print/LearnedFormFetch";
 import React, { Suspense } from "react";
 
 async function page({
@@ -9,7 +9,7 @@ async function page({
   searchParams: Promise<{ [key: string]: string | undefined }>;
 }) {
   const params = await searchParams;
-  const selectUnits = params.selectUnitIds?.split(",") || [];
+  const selectUnits = params.studentIds?.split(",") || [];
   return (
     <div>
       <div className="flex justify-between items-center w-full print:hidden mb-4 card">
@@ -19,7 +19,7 @@ async function page({
       {selectUnits.map((unitId, index) => (
         <div className={`mb-6 page-break`} key={index}>
           <Suspense fallback={<Loading />}>
-            <SelectUnitPrintAlt id={unitId} key={index} />
+            <LearnedFormFetch id={unitId} key={index} />
           </Suspense>
         </div>
       ))}

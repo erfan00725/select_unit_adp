@@ -4,7 +4,7 @@ import { gradeRender, periodRender } from "@/lib/utils/dataRenderer";
 import getAcademicYearJ from "@/lib/utils/getAcademicYearJ";
 import { getCurrentDateJ } from "@/lib/utils/getCurrentDataJ";
 import { priceFormatter } from "@/lib/utils/priceFormatter";
-import { numberToWords } from "@persian-tools/persian-tools";
+import { digitsEnToFa, numberToWords } from "@persian-tools/persian-tools";
 
 type Props = {
   id: string;
@@ -19,6 +19,37 @@ const SelectUnitPrintForm = async ({ id, settings: settingsData }: Props) => {
   const selectUnit = await getSelectUnitById(id);
   const data = selectUnit.selectUnit;
   const settings = settingsData.settings;
+
+  const regularLessons = data?.selectedLessons.filter((item) => !item.Learned);
+  const learnedLessons = data?.selectedLessons.filter((item) => item.Learned);
+
+  console.log("settings price: ", settings.pricePerUnit);
+
+  const calcUnit = (lessons: typeof regularLessons) =>
+    lessons?.reduce(
+      (acc, item) => acc + item.lesson.TheoriUnit + item.lesson.PracticalUnit,
+      0
+    );
+
+  const regularLessonPrice = () =>
+    regularLessons?.reduce((acc, item) => {
+      const lessonPrice = Number(item.lesson.PricePerUnit);
+      return (
+        acc +
+        Number(!!lessonPrice ? lessonPrice : settings.pricePerUnit) *
+          (item.lesson.TheoriUnit + item.lesson.PracticalUnit)
+      );
+    }, 0);
+
+  const learnedLessonPrice = () =>
+    learnedLessons?.reduce((acc, item) => {
+      const lessonPrice = Number(item.lesson.PricePerUnit);
+      return (
+        acc +
+        Number(settings.learnedFee) *
+          (item.lesson.TheoriUnit + item.lesson.PracticalUnit)
+      );
+    }, 0);
 
   return (
     <div className="bg-white p-6 print:p-0 font-['Tahoma'] text-sm" dir="rtl">
@@ -108,16 +139,29 @@ const SelectUnitPrintForm = async ({ id, settings: settingsData }: Props) => {
                 </td>
               </tr>
               <tr>
-                <td className="border border-black p-1" rowSpan={2}>
-                  ۲
-                </td>
+                <td className="border border-black p-1">۲</td>
                 <td className="border border-black p-1 text-right">
                   واحد درسی
                 </td>
-                <td className="border border-black p-1"></td>
-                <td className="border border-black p-1"></td>
+                <td className="border border-black p-1">
+                  <RenderData data={calcUnit(regularLessons)} />{" "}
+                </td>
+                <td className="border border-black p-1">
+                  <RenderData data={priceFormatter(regularLessonPrice())} />
+                </td>
               </tr>
               <tr>
+                <td className="border border-black p-1">۳</td>
+                <td className="border border-black p-1 text-right">آموخته</td>
+                <td className="border border-black p-1">
+                  <RenderData data={calcUnit(learnedLessons)} />
+                </td>
+                <td className="border border-black p-1">
+                  <RenderData data={priceFormatter(learnedLessonPrice())} />
+                </td>
+              </tr>
+              <tr>
+                <td className="border border-black p-1">۴</td>
                 <td className="border border-black p-1 text-right">
                   عادی / الکترونیکی
                 </td>
@@ -125,7 +169,7 @@ const SelectUnitPrintForm = async ({ id, settings: settingsData }: Props) => {
                 <td className="border border-black p-1"></td>
               </tr>
               <tr>
-                <td className="border border-black p-1">۳</td>
+                <td className="border border-black p-1">۵</td>
                 <td className="border border-black p-1 text-right">
                   هزینه ثبت نمرات مهارت و صدور گواهینامه دیپلم کاردانش (برای
                   کلیه مهارت ها)
@@ -136,7 +180,7 @@ const SelectUnitPrintForm = async ({ id, settings: settingsData }: Props) => {
                 </td>
               </tr>
               <tr>
-                <td className="border border-black p-1">۴</td>
+                <td className="border border-black p-1">۶</td>
                 <td className="border border-black p-1 text-right">
                   هزینه کلاس اضافه به ازاء هر جلسه
                 </td>
@@ -146,7 +190,7 @@ const SelectUnitPrintForm = async ({ id, settings: settingsData }: Props) => {
                 </td>
               </tr>
               <tr>
-                <td className="border border-black p-1">۵</td>
+                <td className="border border-black p-1">۷</td>
                 <td className="border border-black p-1 text-right">
                   هزینه کتاب و سی دی های آموزشی
                 </td>
@@ -156,7 +200,7 @@ const SelectUnitPrintForm = async ({ id, settings: settingsData }: Props) => {
                 </td>
               </tr>
               <tr>
-                <td className="border border-black p-1">۶</td>
+                <td className="border border-black p-1">۸</td>
                 <td className="border border-black p-1 text-right">
                   هزینه ارایه خدمات آموزش الکترونیکی
                 </td>
@@ -246,7 +290,6 @@ const SelectUnitPrintForm = async ({ id, settings: settingsData }: Props) => {
               <p>امضاء و تاریخ</p>
             </div>
             <div className="text-center">
-              {/* TOTO : add database value  */}
               <p>
                 نام و نام خانوادگی <RenderData data={settings.founder} />
               </p>
@@ -256,6 +299,11 @@ const SelectUnitPrintForm = async ({ id, settings: settingsData }: Props) => {
               <p>مهر، امضاء و تاریخ</p>
             </div>
           </div>
+          <p className="mt-6 text-right text-xs">
+            در صورت مغایرت دریافتی با پوستر شهریه با شماره ی{" "}
+            <RenderData data={digitsEnToFa("02182284232")} /> منطقه / شهرستان
+            تماس حاصل فرمایید.
+          </p>
         </div>
       </div>
     </div>

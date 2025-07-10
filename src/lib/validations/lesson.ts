@@ -117,12 +117,6 @@ export const lessonSchema = z.object({
 
   RequireUnit: z.bigint().optional().nullable(),
 
-  Introducer: z
-    .string()
-    .max(255, { message: errorMassages.maxLength("معرف", 255) })
-    .nullable()
-    .optional(), // Keeping existing order as nullable().optional()
-
   ValidFrom: z
     .date()
     .or(z.string().transform((val) => new Date(val) || new Date()))
