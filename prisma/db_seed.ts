@@ -314,10 +314,14 @@ export const Settings = {
   CertificateFee: "certificateFee",
   BooksFee: "booksFee",
   PricePerUnit: "pricePerUnit",
+  PricePerUnitFirst: "pricePerUnitFirst",
+  PricePerUnitSecond: "pricePerUnitSecond",
   ExtraClassFee: "extraClassFee",
   InsuranceFee: "insuranceFee",
   SkillRegistrationFee: "skillRegistrationFee",
   LearnedFee: "learnedFee",
+  LearnedFeeFirst: "learnedFeeFirst",
+  LearnedFeeSecond: "learnedFeeSecond",
   OtherFee: "otherFee",
   Founder: "founder",
   BankAccount: "bankAccount",
@@ -346,10 +350,22 @@ const initialSettings = [
     Title: "هزینه کتاب‌ها",
     Description: null,
   },
+  // {
+  //   Key: Settings.PricePerUnit,
+  //   Value: "960000",
+  //   Title: "هزینه پیش‌فرض هر واحد	",
+  //   Description: null,
+  // },
   {
-    Key: Settings.PricePerUnit,
+    Key: Settings.PricePerUnitFirst,
+    Value: "880000",
+    Title: "هزینه هر واحد متوسطه اول",
+    Description: null,
+  },
+  {
+    Key: Settings.PricePerUnitSecond,
     Value: "960000",
-    Title: "هزینه پیش‌فرض هر واحد	",
+    Title: "هزینه هر واحد متوسطه دوم",
     Description: null,
   },
   {
@@ -358,10 +374,22 @@ const initialSettings = [
     Title: "هزینه کلاس اضافی",
     Description: null,
   },
+  // {
+  //   Key: Settings.LearnedFee,
+  //   Value: "320000",
+  //   Title: "هزینه پیش‌فرض هر واحد آموخته",
+  //   Description: null,
+  // },
   {
-    Key: Settings.LearnedFee,
+    Key: Settings.LearnedFeeFirst,
+    Value: "300000",
+    Title: "هزینه هر واحد آموخته متوسطه اول",
+    Description: null,
+  },
+  {
+    Key: Settings.LearnedFeeSecond,
     Value: "320000",
-    Title: "هزینه پیش‌فرض هر واحد آموخته",
+    Title: "هزینه هر واحد آموخته متوسطه دوم",
     Description: null,
   },
   {
@@ -413,8 +441,8 @@ const initialSettings = [
     Description: null,
   },
 ];
-const adminUserName = "admin";
-const adminPassword = "@dmin113link";
+// const adminUserName = "admin";
+// const adminPassword = "test123";
 
 async function main() {
   console.log(`Start seeding ...`);
@@ -458,6 +486,17 @@ async function main() {
   //   });
   // }
   // console.log(`Seeded/Updated ${initialSettings.length} general settings.`);
+
+  // Seed Fields
+  console.log(`Seeding Settings...`);
+  const fields = await prisma.general.deleteMany({
+    where: {
+      Key: {
+        in: [Settings.PricePerUnit, Settings.LearnedFee],
+      },
+    },
+  });
+  console.log(`Seeded ${fields.count} fields.`);
 
   console.log(`Seeding finished.`);
 }

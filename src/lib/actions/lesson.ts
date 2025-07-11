@@ -27,35 +27,21 @@ const customReturn = async (
   P_defaultPrice?: BigInt,
   useDefault: boolean = true
 ) => {
-  let defaultPrice;
   if (
-    (data.PricePerUnit == undefined || data.PricePerUnit == null) &&
-    useDefault
+    (data.PricePerUnit === undefined || data.PricePerUnit === null) &&
+    useDefault &&
+    P_defaultPrice !== undefined &&
+    P_defaultPrice !== null
   ) {
-    if (P_defaultPrice == undefined || P_defaultPrice == null) {
-      const { settings } = await getSettings();
-      defaultPrice = BigInt(settings.pricePerUnit);
-    } else {
-      defaultPrice = P_defaultPrice;
-    }
-
     return {
       ...data,
-      PricePerUnit: defaultPrice,
+      PricePerUnit: P_defaultPrice,
     };
-  } else {
-    return data;
   }
+  return data;
 };
 const customReturnLessons = async (data: LessonWithOptionalRelations[]) => {
-  const { settings } = await getSettings();
-  const { pricePerUnit: defaultPrice } = settings;
-
-  return await Promise.all(
-    data.map(
-      async (item) => await customReturn(item, BigInt(defaultPrice), false)
-    )
-  );
+  return data;
 };
 
 type LessonsParams = {
@@ -155,10 +141,8 @@ export async function getLessons(
     // Calculate pagination metadata
     const totalPages = Math.ceil(totalCount / limit);
 
-    const processedLessons = await customReturnLessons(lessons);
-
     return {
-      lessons: processedLessons,
+      lessons: lessons,
       pagination: {
         total: totalCount,
         totalPages,
@@ -199,7 +183,7 @@ export async function getLessonById(
       return { error: "درس مورد نظر یافت نشد" };
     }
 
-    return { lesson: await customReturn(lesson, undefined, UserDefaultPrice) };
+    return { lesson };
   } catch (error) {
     console.error("Failed to fetch lesson:", error);
     return { error: "خطا در دریافت درس" };
@@ -393,7 +377,7 @@ export async function getLessonsByIds(ids: (bigint | string | number)[]) {
       },
     });
 
-    return { lessons: await customReturnLessons(lessons) };
+    return { lessons };
   } catch (error) {
     console.error("Failed to fetch lessons by IDs:", error);
     return { error: "خطا در دریافت دروس با شناسه‌های مورد نظر", lessons: [] };

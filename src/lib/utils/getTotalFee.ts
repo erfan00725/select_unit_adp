@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { Grade, Prisma } from "@prisma/client";
 import { getSettings } from "../actions";
 
 type selectUnitType = Partial<
@@ -9,15 +9,34 @@ type selectUnitType = Partial<
           lesson: true;
         };
       };
+      student: true;
     };
   }>
 >;
 
 export default function getTotalFee(
   selectUnit: selectUnitType,
-  defaultPricePerUnit: number = 0,
-  defaultLearend: number = 0
+  defaultPricePerUnitFirst: number = 0,
+  defaultPricePerUnitSecond: number = 0,
+  defaultLearendFirst: number = 0,
+  defaultLearendSecond: number = 0
 ) {
+  const studentGrade = selectUnit.student?.Grade;
+  const firstTierGrades: Grade[] = [
+    Grade.GRADE_7,
+    Grade.GRADE_8,
+    Grade.GRADE_9,
+  ];
+  const isFirstTier =
+    studentGrade && firstTierGrades.includes(studentGrade);
+
+  const defaultPricePerUnit = isFirstTier
+    ? defaultPricePerUnitFirst
+    : defaultPricePerUnitSecond;
+
+  const defaultLearend = isFirstTier
+    ? defaultLearendFirst
+    : defaultLearendSecond;
   // Calculate lesson-based fees
   const lessonFees = selectUnit.selectedLessons
     ? selectUnit.selectedLessons.reduce(

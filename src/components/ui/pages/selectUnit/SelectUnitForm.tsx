@@ -23,14 +23,16 @@ import { priceFormatter } from "@/lib/utils/priceFormatter";
 import { useRouter } from "next/navigation";
 import { selectUnitFormConfigs } from "@/constants/configs/GeneralConfigs";
 import { InputValueType } from "@/types/Props";
-import { Lesson, PaymentMethods } from "@prisma/client";
+import { Lesson, PaymentMethods, Grade } from "@prisma/client";
 import calcTotalUnit from "@/lib/utils/calcTotalUnit";
 import { castBigInt, returnActiveValue } from "@/lib/utils/castBigInt";
 
 type Props = {
   studnetId: string;
   lessons: ActionReturnType<typeof getLessons>;
-  defaultPrice: number;
+  defaultPriceFirst: number;
+  defaultPriceSecond: number;
+  studentGrade: Grade;
   selectUnitData?: ActionReturnType<typeof getSelectUnitById>; // Data for edit mode
   isEditMode?: boolean; // Flag to indicate edit mode
 };
@@ -40,9 +42,20 @@ export const SelectUnitForm = ({
   lessons,
   selectUnitData,
   isEditMode = false,
-  defaultPrice,
+  defaultPriceFirst,
+  defaultPriceSecond,
+  studentGrade,
 }: Props) => {
   const router = useRouter();
+
+  const firstTierGrades: Grade[] = [
+    Grade.GRADE_7,
+    Grade.GRADE_8,
+    Grade.GRADE_9,
+  ];
+  const isFirstTier = firstTierGrades.includes(studentGrade);
+  const defaultPrice = isFirstTier ? defaultPriceFirst : defaultPriceSecond;
+
   // Initialize input values with data from selectUnitData if in edit mode
   const [inputValues, setInputValues] = useState<InputValueType>({});
   const [initialSettings, setInitialSettings] = useState<InputValueType>({});

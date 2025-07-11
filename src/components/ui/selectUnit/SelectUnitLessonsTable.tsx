@@ -7,7 +7,6 @@ import {
   ListGeneralReturnType,
   s_ListConfig,
 } from "@/constants/configs/ListPageConfigs";
-import { useParams } from "next/navigation";
 import Loading from "@/components/common/Loading";
 import { PageType } from "@/types/General";
 import { getSelectUnitById } from "@/lib/actions";
@@ -21,7 +20,7 @@ type Props = {
 export const SelectUnitLessonsTable = ({ data, id, isPrint }: Props) => {
   const [configs, setConfigs] = useState<ListGeneralReturnType | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const learnedLessons = data.selectUnit?.seelctedLessons
+  const learnedLessons = data.selectUnit?.selectedLessons
     .map((sl) => (!!sl.Learned ? Number(sl.lesson.id) : undefined))
     .filter((l) => !!l);
   console.log(learnedLessons);

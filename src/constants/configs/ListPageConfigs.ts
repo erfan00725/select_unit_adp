@@ -18,7 +18,7 @@ import getAcademicYearJ from "@/lib/utils/getAcademicYearJ";
 import { priceFormatter } from "@/lib/utils/priceFormatter";
 import { gradeRender, periodRender } from "@/lib/utils/dataRenderer";
 import getFarsiDate from "@/lib/getFarsiDate"; // Added for date formatting
-import { LessonGrade, Period } from "@prisma/client";
+import { LessonGrade, Period, Grade } from "@prisma/client";
 import printOnclick from "@/lib/utils/printOnclick";
 
 type ListGeneralParamsType = {
@@ -197,14 +197,13 @@ export const LessonsList = async ({
 
   const lessons = lessonsData?.lessons;
 
-  const { settings } = await getSettings();
-
   // TODO: Fix this shit
 
   const getTableData = () => {
     if (selectUnitLessonData?.selectUnit?.selectedLessons?.length) {
-      return selectUnitLessonData?.selectUnit?.selectedLessons.map((l) => {
-        const lesson = l.lesson;
+        return selectUnitLessonData?.selectUnit?.selectedLessons.map((l) => {
+          const lesson = l.lesson;
+
         return {
           id: lesson.id,
           LessonNumber: lesson.LessonNumber,
@@ -222,29 +221,30 @@ export const LessonsList = async ({
             : "_",
           PricePerUnit: lesson.PricePerUnit
             ? priceFormatter(Number(lesson.PricePerUnit), true)
-            : priceFormatter(settings.pricePerUnit, true),
+            : priceFormatter(0, true),
         };
       });
     }
 
-    return (lessons || []).map((lesson) => ({
-      id: lesson.id,
-      LessonNumber: lesson.LessonNumber,
-      Name: lesson.LessonName,
-      Grade: gradeRender(lesson.Grade),
-      Field: lesson.field?.Name || "عمومی",
-      TheoriUnit: lesson.TheoriUnit,
-      PracticalUnit:
-        priceFormatter(lesson.PracticalUnit, true) ||
-        priceFormatter(settings.pricePerUnit, true),
-      TotalUnits: lesson.TheoriUnit + lesson.PracticalUnit,
-      Teacher: lesson.teacher
-        ? `${lesson.teacher.FirstName} ${lesson.teacher.LastName}`
-        : "_",
-      PricePerUnit: lesson.PricePerUnit
-        ? priceFormatter(Number(lesson.PricePerUnit), true)
-        : "_",
-    }));
+    return (lessons || []).map((lesson) => {
+      return ({
+        id: lesson.id,
+        LessonNumber: lesson.LessonNumber,
+        Name: lesson.LessonName,
+        Grade: gradeRender(lesson.Grade),
+        Field: lesson.field?.Name || "عمومی",
+        TheoriUnit: lesson.TheoriUnit,
+        PracticalUnit:
+              priceFormatter(lesson.PracticalUnit, true),
+        TotalUnits: lesson.TheoriUnit + lesson.PracticalUnit,
+        Teacher: lesson.teacher
+          ? `${lesson.teacher.FirstName} ${lesson.teacher.LastName}`
+          : "_",
+        PricePerUnit: lesson.PricePerUnit
+          ? priceFormatter(Number(lesson.PricePerUnit), true)
+          : priceFormatter(0, true),
+      })
+    });
   };
 
   let tableData: any[] = getTableData();
@@ -302,20 +302,12 @@ export const LessonPrintList = async ({
       index: i + 1,
       LessonNumber: lesson.LessonNumber,
       Name: lesson.LessonName,
-      Grade: gradeRender(lesson.Grade),
       TotalUnits: lesson.TheoriUnit + lesson.PracticalUnit,
       Others: "_",
     };
   });
 
-  const headers = [
-    "ردیف",
-    "شماره درس",
-    "نام درس",
-    "مقطع",
-    "تعداد واحد‌",
-    "ملاحضات",
-  ];
+  const headers = ["ردیف", "شماره درس", "نام درس", "تعداد واحد‌", "ملاحضات"];
 
   if (!!learned) {
     data = data?.map((lesson) => {
@@ -531,12 +523,14 @@ const generalsList = async ({
     Settings.FixedFee,
     Settings.BooksFee,
     Settings.OtherFee,
-    Settings.PricePerUnit,
+    Settings.PricePerUnitFirst,
+    Settings.PricePerUnitSecond,
+    Settings.LearnedFeeFirst,
+    Settings.LearnedFeeSecond,
     Settings.CertificateFee,
     Settings.ExtraClassFee,
     Settings.InsuranceFee,
     Settings.SkillRegistrationFee,
-    Settings.LearnedFee,
   ];
 
   const tableData: tableDataType[] = (data.generals || []).map((item) => ({

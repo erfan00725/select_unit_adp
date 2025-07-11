@@ -26,7 +26,6 @@ import {
   paymentMethodRender,
   periodRender,
 } from "@/lib/utils/dataRenderer";
-import printOnclick from "@/lib/utils/printOnclick";
 import { DetailPrintButton } from "@/components/ui/common/Printbutton";
 
 export type DetailPageConfigtReturnType = {

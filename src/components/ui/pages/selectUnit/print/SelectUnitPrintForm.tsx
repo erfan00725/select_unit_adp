@@ -1,10 +1,11 @@
+import { CalenderFarsi } from "@/components/ui/Form/CalenderFarsi";
 import { SchoolName } from "@/constants/commonTexts";
 import { getSelectUnitById, getSettings } from "@/lib/actions";
 import { gradeRender, periodRender } from "@/lib/utils/dataRenderer";
 import getAcademicYearJ from "@/lib/utils/getAcademicYearJ";
-import { getCurrentDateJ } from "@/lib/utils/getCurrentDataJ";
 import { priceFormatter } from "@/lib/utils/priceFormatter";
 import { digitsEnToFa, numberToWords } from "@persian-tools/persian-tools";
+import { Grade } from "@prisma/client";
 
 type Props = {
   id: string;
@@ -20,10 +21,24 @@ const SelectUnitPrintForm = async ({ id, settings: settingsData }: Props) => {
   const data = selectUnit.selectUnit;
   const settings = settingsData.settings;
 
+  if (!data) return null;
+
   const regularLessons = data?.selectedLessons.filter((item) => !item.Learned);
   const learnedLessons = data?.selectedLessons.filter((item) => item.Learned);
 
-  console.log("settings price: ", settings.pricePerUnit);
+  const studentGrade = data.student.Grade;
+  const firstTierGrades: Grade[] = [
+    Grade.GRADE_7,
+    Grade.GRADE_8,
+    Grade.GRADE_9,
+  ];
+  const isFirstTier = firstTierGrades.includes(studentGrade);
+  const pricePerUnit = isFirstTier
+    ? settings.pricePerUnitFirst
+    : settings.pricePerUnitSecond;
+  const learnedFee = isFirstTier
+    ? settings.learnedFeeFirst
+    : settings.learnedFeeSecond;
 
   const calcUnit = (lessons: typeof regularLessons) =>
     lessons?.reduce(
@@ -36,7 +51,7 @@ const SelectUnitPrintForm = async ({ id, settings: settingsData }: Props) => {
       const lessonPrice = Number(item.lesson.PricePerUnit);
       return (
         acc +
-        Number(!!lessonPrice ? lessonPrice : settings.pricePerUnit) *
+        Number(!!lessonPrice ? lessonPrice : pricePerUnit) *
           (item.lesson.TheoriUnit + item.lesson.PracticalUnit)
       );
     }, 0);
@@ -46,7 +61,7 @@ const SelectUnitPrintForm = async ({ id, settings: settingsData }: Props) => {
       const lessonPrice = Number(item.lesson.PricePerUnit);
       return (
         acc +
-        Number(settings.learnedFee) *
+        Number(learnedFee) *
           (item.lesson.TheoriUnit + item.lesson.PracticalUnit)
       );
     }, 0);
@@ -84,16 +99,19 @@ const SelectUnitPrintForm = async ({ id, settings: settingsData }: Props) => {
 
         <div className="border border-black p-4">
           <p className="font-bold">ماده ۱- طرفین قرارداد</p>
-          <p className="my-2">
-            قرارداد زیر در تاریخ{" "}
-            <span className="font-bold">{getCurrentDateJ()}</span> بین موسس{" "}
+          <div className="my-2">
+            <span>قرارداد زیر در تاریخ</span>{" "}
+            <CalenderFarsi className="inline-block font-bold" buttonClassName="print:border-none print:py-1! print:px-1! print:font-bold!" calendarClassName="right-0" name="year" defaultValue={new Date().toISOString()} /> 
+            <span>
+            بین موسس{" "}
             <RenderData data={settings?.founder} /> با ولی دانش آموز/دانش آموز
             جناب آقای / سرکار خانم{" "}
             <RenderData
               data={`${data?.student.FirstName} ${data?.student.LastName}`}
             />{" "}
             منعقد می گردد.
-          </p>
+            </span>
+          </div>
           <div className="flex justify-between">
             <span>
               پایه: <RenderData data={gradeRender(data?.student.Grade)} />

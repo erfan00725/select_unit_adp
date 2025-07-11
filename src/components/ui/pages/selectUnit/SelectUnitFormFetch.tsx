@@ -1,5 +1,11 @@
-import { getSettings, getLessons, getSelectUnitById } from "@/lib/actions";
-import { SelectUnitForm } from "../SelectUnitForm";
+import {
+  getSettings,
+  getLessons,
+  getSelectUnitById,
+  getStudentById,
+} from "@/lib/actions";
+import { SelectUnitForm } from "./SelectUnitForm";
+import { Grade } from "@prisma/client";
 
 type Props = {
   studnetId: string;
@@ -13,6 +19,7 @@ export const SelectUnitFormFetch = async ({
   // TODO: Get only related lessons
   const lessons = await getLessons({ limit: 500 });
   const settings = await getSettings();
+  const student = await getStudentById(studnetId);
 
   // If selectUnitId is provided, fetch the select unit data for editing
   let selectUnitData = undefined;
@@ -26,7 +33,9 @@ export const SelectUnitFormFetch = async ({
       lessons={lessons}
       selectUnitData={selectUnitData} // Pass the select unit data for editing
       isEditMode={!!selectUnitId} // Flag to indicate edit mode
-      defaultPrice={Number(settings.settings.pricePerUnit)}
+      defaultPriceFirst={Number(settings.settings.pricePerUnitFirst)}
+      defaultPriceSecond={Number(settings.settings.pricePerUnitSecond)}
+      studentGrade={student.student?.Grade as Grade}
     />
   );
 };

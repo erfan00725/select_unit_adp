@@ -6,5 +6,4 @@ export * from "./lesson";
 export * from "./select-unit";
 export * from "./field";
 export * from "./teacher";
-export * from "./seedDatabase";
 export * from "./general";

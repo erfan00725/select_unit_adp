@@ -9,7 +9,7 @@ import {
   getGeneralByKey,
   getUserById, // Added for General entity
 } from "@/lib/actions";
-import { FormInputProps, FormPageProps, InputDataType } from "@/types/Props";
+import { FormPageProps, InputDataType } from "@/types/Props";
 import {
   formTitle,
   formDescription,
@@ -17,8 +17,6 @@ import {
   inputDefaultPlaceholder,
 } from "@/constants/commonTexts";
 import { gradeRender } from "@/lib/utils/dataRenderer";
-import translateGeneralSettings from "@/lib/utils/translateGeneralSettings";
-import { Settings } from "@/types/General";
 
 export const lessonFormConfigGenerator = async (
   data?: Awaited<ReturnType<typeof getLessonById>>
@@ -482,7 +480,7 @@ export const generalFormConfigGenerator = async (
   return {
     title: formTitle(
       !!general
-        ? translateGeneralSettings(general.Key as Settings)
+        ? general.Title || "تنظیم عمومی"
         : "تنظیم عمومی",
       !!general
     ),
@@ -491,7 +489,7 @@ export const generalFormConfigGenerator = async (
 
     addText: formButton(
       !!general
-        ? translateGeneralSettings(general.Key as Settings)
+        ? general.Title || "تنظیم عمومی"
         : "تنظیم عمومی",
       !!general
     ),

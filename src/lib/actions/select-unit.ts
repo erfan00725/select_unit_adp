@@ -13,20 +13,6 @@ type SelectUnitLessonTyoe = {
   learned?: boolean;
 };
 
-type ReturnType = Prisma.SelectUnitGetPayload<{
-  include: {
-    student: true;
-    selectedLessons: {
-      include: {
-        lesson: true;
-      };
-    };
-  };
-}> & {
-  totalUnits: number;
-  totalFee: number;
-};
-
 /**
  * Processes a select unit and calculates total units and fees
  * @param selectUnit - The select unit to process, can be null
@@ -47,8 +33,10 @@ function customReturn(
       };
     };
   }> | null,
-  defaultPricePerUnit?: number | string,
-  defaultLearend?: number | string
+  defaultPricePerUnitFirst?: number | string,
+  defaultPricePerUnitSecond?: number | string,
+  defaultLearendFirst?: number | string,
+  defaultLearendSecond?: number | string,
 ) {
   // Handle null input
   if (!selectUnit) {
@@ -57,8 +45,28 @@ function customReturn(
 
   let lessons = selectUnit.selectedLessons;
 
-  if (defaultPricePerUnit !== undefined || defaultPricePerUnit !== null) {
-    lessons = selectUnit.selectedLessons.map((selectedLesson) => {
+  const studentGrade = selectUnit.student?.Grade;
+  const isFirstTier =
+    studentGrade &&
+    ["GRADE_7", "GRADE_8", "GRADE_9"].includes(studentGrade);
+
+
+  const initialDefaultPrice = isFirstTier
+    ? defaultPricePerUnitFirst
+    : defaultPricePerUnitSecond;
+  let defaultPricePerUnit = initialDefaultPrice;
+
+
+    
+    if (defaultPricePerUnit !== undefined || defaultPricePerUnit !== null) {
+      lessons = selectUnit.selectedLessons.map((selectedLesson) => {
+      if (selectedLesson.Learned) {
+        defaultPricePerUnit = isFirstTier
+          ? defaultLearendFirst
+          : defaultLearendSecond;
+      }else{
+        defaultPricePerUnit = initialDefaultPrice;
+      }
       return {
         ...selectedLesson,
         lesson: {
@@ -82,11 +90,13 @@ function customReturn(
           );
         }, 0)
       : 0,
-    seelctedLessons: lessons,
+    selectedLessons: lessons,
     totalFee: getTotalFee(
       selectUnit,
-      Number(defaultPricePerUnit),
-      Number(defaultLearend)
+      Number(defaultPricePerUnitFirst),
+      Number(defaultPricePerUnitSecond),
+      Number(defaultLearendFirst),
+      Number(defaultLearendSecond)
     ),
   };
 }
@@ -171,11 +181,20 @@ export async function getSelectUnits(
     });
 
     const { settings } = await getSettings();
-    const { pricePerUnit, learnedFee } = settings;
+    const pricePerUnitFirst = settings["pricePerUnitFirst"];
+    const pricePerUnitSecond = settings["pricePerUnitSecond"];
+    const learnedFeeFirst = settings["learnedFeeFirst"];
+    const learnedFeeSecond = settings["learnedFeeSecond"];
 
     // Apply customReturn to each select unit to calculate totalUnits and totalFee
     const selectUnitsWithTotal = selectUnits.map((unit) =>
-      customReturn(unit, pricePerUnit, learnedFee)
+      customReturn(
+        unit,
+        pricePerUnitFirst,
+        pricePerUnitSecond,
+        learnedFeeFirst,
+        learnedFeeSecond
+      )
     );
 
     // Calculate pagination metadata
@@ -242,11 +261,20 @@ export async function getSelectUnitsByStudent(
       take: limit,
     });
     const { settings } = await getSettings();
-    const { pricePerUnit, learnedFee } = settings;
+    const pricePerUnitFirst = settings["pricePerUnitFirst"];
+    const pricePerUnitSecond = settings["pricePerUnitSecond"];
+    const learnedFeeFirst = settings["learnedFeeFirst"];
+    const learnedFeeSecond = settings["learnedFeeSecond"];
 
     // Apply customReturn to each select unit to calculate totalUnits and totalFee
     const selectUnitsWithTotal = selectUnits.map((unit) =>
-      customReturn(unit, pricePerUnit, learnedFee)
+      customReturn(
+        unit,
+        pricePerUnitFirst,
+        pricePerUnitSecond,
+        learnedFeeFirst,
+        learnedFeeSecond
+      )
     );
 
     // Calculate pagination metadata
@@ -313,11 +341,20 @@ export async function getSelectUnitsByLesson(
       take: limit,
     });
     const { settings } = await getSettings();
-    const { pricePerUnit, learnedFee } = settings;
+    const pricePerUnitFirst = settings["pricePerUnitFirst"];
+    const pricePerUnitSecond = settings["pricePerUnitSecond"];
+    const learnedFeeFirst = settings["learnedFeeFirst"];
+    const learnedFeeSecond = settings["learnedFeeSecond"];
 
     // Apply customReturn to each select unit to calculate totalUnits and totalFee
     const selectUnitsWithTotal = selectUnits.map((unit) =>
-      customReturn(unit, pricePerUnit, learnedFee)
+      customReturn(
+        unit,
+        pricePerUnitFirst,
+        pricePerUnitSecond,
+        learnedFeeFirst,
+        learnedFeeSecond
+      )
     );
 
     // Calculate pagination metadata
@@ -367,11 +404,23 @@ export async function getSelectUnitById(selectUnitId: string) {
     if (!selectUnit) {
       return { error: "انتخاب واحد یافت نشد" };
     }
+
     const { settings } = await getSettings();
-    const { pricePerUnit, learnedFee } = settings;
+    const pricePerUnitFirst = settings["pricePerUnitFirst"];
+    const pricePerUnitSecond = settings["pricePerUnitSecond"];
+    const learnedFeeFirst = settings["learnedFeeFirst"];
+    const learnedFeeSecond = settings["learnedFeeSecond"];
 
     // Apply customReturn to calculate totalUnits and totalFee
-    return { selectUnit: customReturn(selectUnit, pricePerUnit, learnedFee) };
+    return {
+      selectUnit: customReturn(
+        selectUnit,
+        pricePerUnitFirst,
+        pricePerUnitSecond,
+        learnedFeeFirst,
+        learnedFeeSecond
+      ),
+    };
   } catch (error) {
     console.error("Failed to fetch select unit:", error);
     return { error: "دریافت اطلاعات انتخاب واحد با خطا مواجه شد" };
@@ -416,10 +465,21 @@ export async function getSpecificSelectUnit(
     }
 
     const { settings } = await getSettings();
-    const { pricePerUnit, learnedFee } = settings;
+    const pricePerUnitFirst = settings["pricePerUnitFirst"];
+    const pricePerUnitSecond = settings["pricePerUnitSecond"];
+    const learnedFeeFirst = settings["learnedFeeFirst"];
+    const learnedFeeSecond = settings["learnedFeeSecond"];
 
     // Apply customReturn to calculate totalUnits and totalFee
-    return { selectUnit: customReturn(selectUnit, pricePerUnit, learnedFee) };
+    return {
+      selectUnit: customReturn(
+        selectUnit,
+        pricePerUnitFirst,
+        pricePerUnitSecond,
+        learnedFeeFirst,
+        learnedFeeSecond
+      ),
+    };
   } catch (error) {
     console.error("Failed to fetch specific select unit:", error);
     return { error: "دریافت اطلاعات انتخاب واحد مشخص با خطا مواجه شد" };
@@ -495,11 +555,20 @@ export async function getSelectUnitsByYearPeriod(
     const totalPages = Math.ceil(totalCount / limit);
 
     const { settings } = await getSettings();
-    const { pricePerUnit, learnedFee } = settings;
+    const pricePerUnitFirst = settings["pricePerUnitFirst"];
+    const pricePerUnitSecond = settings["pricePerUnitSecond"];
+    const learnedFeeFirst = settings["learnedFeeFirst"];
+    const learnedFeeSecond = settings["learnedFeeSecond"];
 
     // Apply customReturn to each select unit to calculate totalUnits and totalFee
     const selectUnitsWithTotal = selectUnits.map((unit) =>
-      customReturn(unit, pricePerUnit, learnedFee)
+      customReturn(
+        unit,
+        pricePerUnitFirst,
+        pricePerUnitSecond,
+        learnedFeeFirst,
+        learnedFeeSecond
+      )
     );
 
     return {
@@ -556,10 +625,21 @@ export async function getSelectUnitLessons(
       return { error: "انتخاب واحد یافت نشد" };
     }
     const { settings } = await getSettings();
-    const { pricePerUnit, learnedFee } = settings;
+    const pricePerUnitFirst = settings["pricePerUnitFirst"];
+    const pricePerUnitSecond = settings["pricePerUnitSecond"];
+    const learnedFeeFirst = settings["learnedFeeFirst"];
+    const learnedFeeSecond = settings["learnedFeeSecond"];
 
     // Apply customReturn to calculate totalUnits and totalFee
-    return { selectUnit: customReturn(selectUnit, pricePerUnit, learnedFee) };
+    return {
+      selectUnit: customReturn(
+        selectUnit,
+        pricePerUnitFirst,
+        pricePerUnitSecond,
+        learnedFeeFirst,
+        learnedFeeSecond
+      ),
+    };
   } catch (error) {
     console.error(
       "Failed to fetch select unit by student, year, and period:",
@@ -719,13 +799,27 @@ export async function createSelectUnit(
     });
 
     const { settings } = await getSettings();
-    const { pricePerUnit, learnedFee } = settings;
+    const pricePerUnitFirst = settings["pricePerUnitFirst"];
+    const pricePerUnitSecond = settings["pricePerUnitSecond"];
+    const learnedFeeFirst = settings["learnedFeeFirst"];
+    const learnedFeeSecond = settings["learnedFeeSecond"];
 
     revalidatePath("/dashboard/select-unit");
     revalidatePath(`/dashboard/students/${data.StudentId}`);
     // Apply customReturn to calculate totalUnits and totalFee
-    return { selectUnit: customReturn(completeSelectUnit, pricePerUnit) };
-  } catch (error) {
+    return {
+      selectUnit: customReturn(
+        completeSelectUnit,
+        pricePerUnitFirst,
+        pricePerUnitSecond,
+        learnedFeeFirst,
+        learnedFeeSecond
+      ),
+    };
+  } catch (error: any) {
+    if (error.code === "P2002") {
+      return { error: "این دانش‌آموز در این سال و نیمسال قبلاً انتخاب واحد دارد" };
+    }
     console.error("Failed to create select unit:", error);
     return { error: "ایجاد انتخاب واحد با خطا مواجه شد" };
   }
@@ -745,7 +839,7 @@ export async function updateSelectUnit(
     if (!existingSelectUnit) {
       return { error: "انتخاب واحد مورد نظر یافت نشد" };
     }
-    const editedData = {
+    const editedData: Partial<SelectUnitDataType> = {
       ...data,
       id: undefined,
     };
@@ -1009,12 +1103,23 @@ export async function bulkCreateSelectUnits(
     });
 
     const { settings } = await getSettings();
-    const { pricePerUnit, learnedFee } = settings;
+    const pricePerUnitFirst = settings["pricePerUnitFirst"];
+    const pricePerUnitSecond = settings["pricePerUnitSecond"];
+    const learnedFeeFirst = settings["learnedFeeFirst"];
+    const learnedFeeSecond = settings["learnedFeeSecond"];
 
     revalidatePath("/dashboard/select-unit");
     revalidatePath(`/dashboard/students/${baseData.StudentId}`);
     // Apply customReturn to calculate totalUnits and totalFee
-    return { selectUnit: customReturn(completeSelectUnit, pricePerUnit) };
+    return {
+      selectUnit: customReturn(
+        completeSelectUnit,
+        pricePerUnitFirst,
+        pricePerUnitSecond,
+        learnedFeeFirst,
+        learnedFeeSecond
+      ),
+    };
   } catch (error) {
     console.error("Failed to bulk create select units:", error);
     return { error: "ایجاد گروهی انتخاب واحد با خطا مواجه شد" };
@@ -1137,6 +1242,7 @@ export async function bulkEditSelectUnits(
         }
 
         // Update SelectUnit fields from baseData
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { StudentId, id, ...updateDataFromBase } = baseData;
 
         if (Object.keys(updateDataFromBase).length > 0) {
@@ -1179,12 +1285,21 @@ export async function bulkEditSelectUnits(
     }
 
     const { settings } = await getSettings();
-    const { pricePerUnit, learnedFee } = settings;
+    const pricePerUnitFirst = settings["pricePerUnitFirst"];
+    const pricePerUnitSecond = settings["pricePerUnitSecond"];
+    const learnedFeeFirst = settings["learnedFeeFirst"];
+    const learnedFeeSecond = settings["learnedFeeSecond"];
 
     // Apply customReturn to calculate totalUnits and totalFee
     return {
       ...result,
-      selectUnit: customReturn(result.selectUnit, pricePerUnit, learnedFee),
+      selectUnit: customReturn(
+        result.selectUnit,
+        pricePerUnitFirst,
+        pricePerUnitSecond,
+        learnedFeeFirst,
+        learnedFeeSecond
+      ),
     };
   } catch (error) {
     console.error("Failed to bulk edit select units:", error);
