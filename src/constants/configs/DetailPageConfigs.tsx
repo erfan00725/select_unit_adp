@@ -367,6 +367,22 @@ export const SelectUnitDetailConfig = (
         type: "text",
       },
       {
+        label: "رشته",
+        // @ts-expect-error
+        value: selectUnit?.student.field?.Name || "",
+        type: "text",
+      },
+      {
+        label: "شماره تلفن منزل",
+        value: selectUnit?.student.HomeNumber || "_",
+        type: "number",
+      },
+      {
+        label: "همراه",
+        value: selectUnit?.student.PhoneNumber,
+        type: "number",
+      },
+      {
         label: "هزینه شهریه ثابت",
         value: Number(selectUnit?.FixedFee),
         type: "price",

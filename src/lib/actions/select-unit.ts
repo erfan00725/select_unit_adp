@@ -21,7 +21,11 @@ type SelectUnitLessonTyoe = {
 function customReturn(
   selectUnit: Prisma.SelectUnitGetPayload<{
     include: {
-      student?: true;
+      student?: {
+        include?: {
+          field?: true;
+        };
+      };
       selectedLessons: {
         include: {
           lesson: {
@@ -36,7 +40,7 @@ function customReturn(
   defaultPricePerUnitFirst?: number | string,
   defaultPricePerUnitSecond?: number | string,
   defaultLearendFirst?: number | string,
-  defaultLearendSecond?: number | string,
+  defaultLearendSecond?: number | string
 ) {
   // Handle null input
   if (!selectUnit) {
@@ -47,24 +51,20 @@ function customReturn(
 
   const studentGrade = selectUnit.student?.Grade;
   const isFirstTier =
-    studentGrade &&
-    ["GRADE_7", "GRADE_8", "GRADE_9"].includes(studentGrade);
-
+    studentGrade && ["GRADE_7", "GRADE_8", "GRADE_9"].includes(studentGrade);
 
   const initialDefaultPrice = isFirstTier
     ? defaultPricePerUnitFirst
     : defaultPricePerUnitSecond;
   let defaultPricePerUnit = initialDefaultPrice;
 
-
-    
-    if (defaultPricePerUnit !== undefined || defaultPricePerUnit !== null) {
-      lessons = selectUnit.selectedLessons.map((selectedLesson) => {
+  if (defaultPricePerUnit !== undefined || defaultPricePerUnit !== null) {
+    lessons = selectUnit.selectedLessons.map((selectedLesson) => {
       if (selectedLesson.Learned) {
         defaultPricePerUnit = isFirstTier
           ? defaultLearendFirst
           : defaultLearendSecond;
-      }else{
+      } else {
         defaultPricePerUnit = initialDefaultPrice;
       }
       return {
@@ -387,7 +387,11 @@ export async function getSelectUnitById(selectUnitId: string) {
     const selectUnit = await prisma.selectUnit.findUnique({
       where: { id: unitId },
       include: {
-        student: true,
+        student: {
+          include: {
+            field: true,
+          },
+        },
         selectedLessons: {
           include: {
             lesson: {
@@ -818,7 +822,9 @@ export async function createSelectUnit(
     };
   } catch (error: any) {
     if (error.code === "P2002") {
-      return { error: "این دانش‌آموز در این سال و نیمسال قبلاً انتخاب واحد دارد" };
+      return {
+        error: "این دانش‌آموز در این سال و نیمسال قبلاً انتخاب واحد دارد",
+      };
     }
     console.error("Failed to create select unit:", error);
     return { error: "ایجاد انتخاب واحد با خطا مواجه شد" };

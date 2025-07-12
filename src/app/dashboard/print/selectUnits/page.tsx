@@ -25,6 +25,7 @@ async function page({
             <span>امضای دانش‌آموز:</span>
             <span>امضای مشاور:</span>
             <span>امضای مدیر:</span>
+            <span>ثبت رایانه شد مسئول رایانه:</span>
           </div>
         </div>
       ))}
