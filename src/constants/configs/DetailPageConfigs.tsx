@@ -214,13 +214,14 @@ export const StudentsDetailConfig = (
       InfoRows: StudentConfig.rows || [],
       baseUrl: urls.students,
       actions: [
-        <Link
+        <a
           className="button"
           key={"learnedForm-" + student.id}
           href={`${urls.learnedForm}?studentIds=${student.id}`}
+          target="_blank"
         >
           چاپ فرم آموخته
-        </Link>,
+        </a>,
         <Link
           href={`${urls.selectUnitEditBase}/student/${student.id}`}
           className="button "

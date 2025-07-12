@@ -80,10 +80,10 @@ export default function LearnedForm({ data, lessonsData }: Props) {
             examPeriod != 1 && "print:hidden"
           }`}
         >
-          <label htmlFor="paysal">پایان سال</label>
+          <label htmlFor="firstTier">نیم‌سال اول</label>
           <input
             onChange={(e) => setExamPeriod(1)}
-            id="paysal"
+            id="firstTier"
             type="radio"
             name="exam-period"
             className="print:hidden"
@@ -94,9 +94,23 @@ export default function LearnedForm({ data, lessonsData }: Props) {
             examPeriod != 2 && "print:hidden"
           }`}
         >
-          <label htmlFor="tabes">دوره تابستان</label>
+          <label htmlFor="secondTier">نیم‌سال دوم</label>
           <input
             onChange={(e) => setExamPeriod(2)}
+            id="secondTier"
+            type="radio"
+            name="exam-period"
+            className="print:hidden"
+          />
+        </div>{" "}
+        <div
+          className={`inline-block font-bold ${
+            examPeriod != 3 && "print:hidden"
+          }`}
+        >
+          <label htmlFor="tabes">دوره تابستان</label>
+          <input
+            onChange={(e) => setExamPeriod(3)}
             id="tabes"
             type="radio"
             name="exam-period"

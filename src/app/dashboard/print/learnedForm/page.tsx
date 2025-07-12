@@ -13,7 +13,7 @@ async function page({
   return (
     <div>
       <div className="flex justify-between items-center w-full print:hidden mb-4 card">
-        <h2 className="text-xl font-bold">چاپ درخواست انتخاب واحد‌ها </h2>
+        <h2 className="text-xl font-bold">چاپ درخواست آموخته </h2>
         <Printbutton />
       </div>
       {selectUnits.map((unitId, index) => (
