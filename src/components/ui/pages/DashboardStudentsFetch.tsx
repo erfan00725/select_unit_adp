@@ -8,6 +8,7 @@ export default async function DashboardStudentFetch() {
   }
   const studentConfig = await d_ListConfig.students({
     searchParams: { limit: "5", order: "desc" },
+    canPrint: false,
   });
 
   return (

@@ -1,12 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import DataTable from "../DataTable";
-import { ActionReturnType, PageType } from "@/types/General";
-import { getSettings, getLessonsByIds } from "@/lib/actions";
+import { ActionReturnType } from "@/types/General";
+import { getLessonsByIds } from "@/lib/actions";
 import { DataTableAction } from "@/types/Props";
 import { priceFormatter } from "@/lib/utils/priceFormatter";
 import { gradeRender } from "@/lib/utils/dataRenderer";
-import { d_ListConfig } from "@/constants/configs/ListPageConfigs";
 
 interface SelectUnitTableProps {
   lessons: ActionReturnType<typeof getLessonsByIds>;

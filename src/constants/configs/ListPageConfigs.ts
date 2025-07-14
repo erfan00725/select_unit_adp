@@ -1,5 +1,9 @@
 import { pagination } from "../../types/Tables";
-import { DataTableAction, DataTableProps } from "@/types/Props";
+import {
+  DataTableAction,
+  DataTableGeneralAction,
+  DataTableProps,
+} from "@/types/Props";
 import { urls } from "../urls";
 import {
   getLessons,
@@ -23,6 +27,7 @@ import printOnclick from "@/lib/utils/printOnclick";
 
 type ListGeneralParamsType = {
   searchParams: { [key: string]: string | undefined };
+  canPrint?: boolean;
 };
 
 type tableDataType = {
@@ -201,8 +206,8 @@ export const LessonsList = async ({
 
   const getTableData = () => {
     if (selectUnitLessonData?.selectUnit?.selectedLessons?.length) {
-        return selectUnitLessonData?.selectUnit?.selectedLessons.map((l) => {
-          const lesson = l.lesson;
+      return selectUnitLessonData?.selectUnit?.selectedLessons.map((l) => {
+        const lesson = l.lesson;
 
         return {
           id: lesson.id,
@@ -227,15 +232,14 @@ export const LessonsList = async ({
     }
 
     return (lessons || []).map((lesson) => {
-      return ({
+      return {
         id: lesson.id,
         LessonNumber: lesson.LessonNumber,
         Name: lesson.LessonName,
         Grade: gradeRender(lesson.Grade),
         Field: lesson.field?.Name || "عمومی",
         TheoriUnit: lesson.TheoriUnit,
-        PracticalUnit:
-              priceFormatter(lesson.PracticalUnit, true),
+        PracticalUnit: priceFormatter(lesson.PracticalUnit, true),
         TotalUnits: lesson.TheoriUnit + lesson.PracticalUnit,
         Teacher: lesson.teacher
           ? `${lesson.teacher.FirstName} ${lesson.teacher.LastName}`
@@ -243,7 +247,7 @@ export const LessonsList = async ({
         PricePerUnit: lesson.PricePerUnit
           ? priceFormatter(Number(lesson.PricePerUnit), true)
           : priceFormatter(0, true),
-      })
+      };
     });
   };
 
@@ -331,6 +335,7 @@ export const LessonPrintList = async ({
 
 const StudentsList = async ({
   searchParams,
+  canPrint = true,
 }: ListGeneralParamsType): Promise<ListGeneralReturnType> => {
   const { page, q, from, to, order, limit } = searchParams;
 
@@ -362,6 +367,16 @@ const StudentsList = async ({
     },
   ];
 
+  const generalActions: DataTableGeneralAction[] | undefined = canPrint
+    ? [
+        {
+          label: "چاپ فرم آموخته",
+          onClick: (selectedItems?: string[]) =>
+            printOnclick(urls.learnedForm, selectedItems, "studentIds"),
+        },
+      ]
+    : undefined;
+
   return {
     tableData: tableData,
     headers: headers,
@@ -372,6 +387,8 @@ const StudentsList = async ({
     error: studentsData?.error,
     pagination: studentsData?.pagination,
     actions,
+    selectable: canPrint,
+    generalActions: generalActions,
   };
 };
 
