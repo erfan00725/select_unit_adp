@@ -139,7 +139,7 @@ export const s_ListConfig: StaticConfigsType = {
     addButtonLabel: "افزودن انتخاب واحد جدید",
     addUrl: urls.selectUnitEditBase + "/student/:id",
     editUrl: urls.selectUnitEditBase + "/student/:studentId/edit/:id",
-    searchPlaceholder: "جستجوی دانش‌آموزان، دروس...",
+    searchPlaceholder: "جستجوی دانش‌آموزان...",
     filterOptions: [
       {
         name: "year",
@@ -164,6 +164,11 @@ export const s_ListConfig: StaticConfigsType = {
           { label: "پرداخت شده", value: 1 },
           { label: "پرداخت نشده", value: 0 },
         ],
+      },
+      {
+        name: "lessonNumber",
+        type: "number",
+        placeholder: "شماره درس",
       },
     ],
   },
@@ -472,7 +477,8 @@ const TeachersList = async ({
 export const SelectUnitList = async ({
   searchParams,
 }: ListGeneralParamsType): Promise<ListGeneralReturnType> => {
-  const { page, q, from, to, order, year, period, paid, limit } = searchParams;
+  const { page, q, from, to, order, year, period, paid, limit, lessonNumber } =
+    searchParams;
 
   const selectUnitsData = await getSelectUnits({
     page: page ? Number(page) : 1,
@@ -484,6 +490,7 @@ export const SelectUnitList = async ({
     year: year ? Number(year) : undefined,
     period: period ? (period as Period) : undefined,
     paid: paid ? Number(paid) : undefined,
+    lessonNumber: lessonNumber ? Number(lessonNumber) : undefined,
   });
   const pageLimit = selectUnitsData.pagination?.limit || defaultListLimit;
 

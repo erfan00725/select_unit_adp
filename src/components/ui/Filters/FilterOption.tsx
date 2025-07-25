@@ -3,6 +3,7 @@ import { useSearchParams } from "@/lib/hooks/useSeachParams";
 import { FilterOptionType } from "@/types/General";
 import clsx from "clsx";
 import React from "react";
+import { useDebouncedCallback } from "use-debounce";
 
 type Props = {
   option: FilterOptionType;
@@ -15,6 +16,17 @@ type Props = {
 
 export default function FilterOption({ option, onChange }: Props) {
   const { getSearchParam } = useSearchParams();
+
+  // Create debounced callback for text and number inputs
+  const debouncedOnChange = useDebouncedCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      onChange(e);
+    },
+    1000
+  );
+
+  // Determine if this input type should use debouncing
+  const shouldUseDebounce = option.type === "text" || option.type === "number";
 
   let Input: React.ReactElement | undefined = (
     <input
@@ -29,7 +41,7 @@ export default function FilterOption({ option, onChange }: Props) {
       name={option.name}
       id={option.name}
       placeholder={option.placeholder ? option.placeholder : "جستجو..."}
-      onChange={onChange}
+      onChange={shouldUseDebounce ? debouncedOnChange : onChange}
       defaultChecked={getSearchParam(option.name) === "true"}
       onWheel={(e) => e.currentTarget.blur()}
     />

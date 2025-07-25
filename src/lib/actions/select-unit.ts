@@ -7,6 +7,7 @@ import { BaseListFilterParams, SelectUnitDataType } from "@/types/Tables";
 import { DeleteFunctionReturnType } from "@/types/General";
 import getTotalFee from "../utils/getTotalFee";
 import { getSettings } from "./general";
+import { equal } from "node:assert";
 
 type SelectUnitLessonTyoe = {
   id: bigint;
@@ -107,6 +108,7 @@ export async function getSelectUnits(
     year?: number;
     period?: Period;
     paid?: number;
+    lessonNumber?: number;
   }
 ) {
   try {
@@ -120,22 +122,45 @@ export async function getSelectUnits(
       year,
       period,
       paid,
+      lessonNumber,
     } = params || {};
 
     // Calculate skip for pagination
     const skip = (page - 1) * limit;
 
     // Build where condition for search
-    const where: any = query
+    const where: Prisma.SelectUnitWhereInput = query
       ? {
           OR: [
             { student: { FirstName: { contains: query } } },
             { student: { LastName: { contains: query } } },
             { student: { NationalCode: { contains: query } } },
-            { lesson: { LessonName: { contains: query } } },
+            {
+              selectedLessons: {
+                some: {
+                  lesson: {
+                    LessonName: {
+                      contains: query,
+                    },
+                  },
+                },
+              },
+            },
           ],
         }
       : {};
+
+    if (lessonNumber) {
+      where.selectedLessons = {
+        some: {
+          lesson: {
+            LessonNumber: {
+              equals: BigInt(lessonNumber),
+            },
+          },
+        },
+      };
+    }
 
     // Add date range filter if provided
     if (from || to) {
